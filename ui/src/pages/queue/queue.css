@@ -1,0 +1,35 @@
+/* 队列/历史页 */
+
+.lx-task-list { display: flex; flex-direction: column; gap: 9px; }
+.lx-task-row {
+  display: flex; align-items: center; gap: 13px;
+  padding: 11px 14px;
+  border: var(--lx-border-w, 1px) solid var(--lx-border);
+  border-radius: var(--lx-radius); background: var(--lx-field-bg);
+  transition: border-color var(--lx-dur-fast);
+}
+.lx-task-row:hover { border-color: var(--lx-accent); }
+.lx-task-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+.lx-task-main b { font: 700 13px var(--lx-font-display); letter-spacing: 0.03em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lx-task-main > span { font-size: 10px; color: var(--lx-dim); letter-spacing: 0.06em; }
+.lx-task-err { color: var(--lx-danger); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 60ch; }
+.lx-task-progress { display: flex; align-items: center; gap: 8px; width: 130px; flex: none; }
+.lx-task-progress .lx-bar { flex: 1; }
+.lx-task-progress .lx-num { font-size: 10px; color: var(--lx-dim); }
+.lx-task-actions { display: flex; gap: 6px; flex: none; }
+
+.lx-filter-btn {
+  font: 600 10px var(--lx-font-mono); letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 4px 9px; color: var(--lx-dim);
+  border: var(--lx-border-w, 1px) solid transparent;
+  border-radius: var(--lx-btn-radius, var(--lx-radius));
+  transition: all var(--lx-dur-fast);
+}
+.lx-filter-btn i { font-style: normal; color: var(--lx-accent); }
+.lx-filter-btn:hover { color: var(--lx-text); }
+.lx-filter-btn.on { color: var(--lx-text); border-color: var(--lx-border); background: var(--lx-field-bg); }
+
+@media (max-width: 720px) {
+  .lx-task-row { flex-wrap: wrap; }
+  .lx-task-progress { width: 100%; order: 5; }
+}

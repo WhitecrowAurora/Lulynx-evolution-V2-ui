@@ -1,0 +1,74 @@
+/* 主题:Stitch 深色 —— 工业灰阶 5 级层级 × PyTorch 橙唯一强调 × 零阴影 × 2px 圆角
+   层级:shell 最深 #0e0e0e → content #131313 → inputs #1c1b1b → 顶/底栏 #201f1f → hover #2a2a2a
+   蓝色仅用于 "Sync Active" 徽标与 focus ring,不作为强调色。 */
+html[data-theme='stitch-dark'] { color-scheme: dark; }
+html[data-theme='stitch-dark'] body {
+  --lx-bg: #0e0e0e;              /* shell 最深 */
+  --lx-bg-soft: #131313;         /* content 内容区 */
+  --lx-surface: #131313;
+  --lx-surface-color: #131313;
+  --lx-surface-2: #1c1b1b;       /* 卡片/次级面 */
+  --lx-border: #2a2a2a;          /* 发丝分割线 */
+  --lx-border-strong: #353534;
+  --lx-border-w: 1px;
+  --lx-text: #e8e6e3;
+  --lx-dim: #8b8783;
+  --lx-accent: #ee4c2c;          /* PyTorch 橙,唯一动作/强调色 */
+  --lx-accent-contrast: #0e0e0e;
+  --lx-accent-soft: rgba(238, 76, 44, 0.12);
+  --lx-accent-glow: rgba(238, 76, 44, 0.22);
+  --lx-sync: #4d8eff;            /* 蓝:仅 Sync Active + focus ring */
+  --lx-sync-soft: rgba(77, 142, 255, 0.16);
+  --lx-ok: #3ba55d;
+  --lx-warn: #d08b1f;
+  --lx-danger: #e0483f;
+  --lx-danger-glow: rgba(224, 72, 63, 0.2);
+  --lx-field-bg: #1c1b1b;        /* inputs */
+  --lx-bar-bg: #2a2a2a;
+  --lx-grid-line: #232322;       /* 行间发丝线 */
+  --lx-radius: 2px;
+  --lx-radius-lg: 2px;
+  --lx-btn-radius: 2px;
+  --lx-switch-radius: 2px;
+  --lx-thumb-radius: 1px;
+  --lx-bar-radius: 2px;
+  --lx-title-size: clamp(18px, 2.4vw, 22px);
+}
+
+/* 顶/底栏统一为第 4 级灰(#201f1f),由 AppShell 结构类消费 */
+html[data-theme='stitch-dark'] .lx-topbar,
+html[data-theme='stitch-dark'] .lx-actionbar { background: #201f1f; }
+
+/* 零阴影:清掉组件层遗留投影 */
+html[data-theme='stitch-dark'] .lx-btn,
+html[data-theme='stitch-dark'] .lx-btn:hover,
+html[data-theme='stitch-dark'] .lx-btn.primary,
+html[data-theme='stitch-dark'] .lx-btn.primary:hover,
+html[data-theme='stitch-dark'] .lx-panel,
+html[data-theme='stitch-dark'] .lx-panel:hover,
+html[data-theme='stitch-dark'] .lx-modal,
+html[data-theme='stitch-dark'] .lx-toast,
+html[data-theme='stitch-dark'] .lx-input:focus,
+html[data-theme='stitch-dark'] .lx-textarea:focus,
+html[data-theme='stitch-dark'] .lx-select:focus,
+html[data-theme='stitch-dark'] .lx-dot { box-shadow: none; }
+
+/* Ignite 主按钮:实心橙 */
+html[data-theme='stitch-dark'] .lx-btn.primary {
+  background: var(--lx-accent); color: #fff; border-color: var(--lx-accent);
+}
+html[data-theme='stitch-dark'] .lx-btn.primary:hover { background: #f5613f; border-color: #f5613f; }
+
+/* focus ring 用蓝色,与橙强调解耦 */
+html[data-theme='stitch-dark'] .lx-input:focus,
+html[data-theme='stitch-dark'] .lx-textarea:focus,
+html[data-theme='stitch-dark'] .lx-select:focus {
+  border-color: var(--lx-sync); box-shadow: 0 0 0 2px var(--lx-sync-soft);
+}
+html[data-theme='stitch-dark'] :focus-visible { outline-color: var(--lx-sync); }
+
+/* Sync Active 徽标:蓝 */
+html[data-theme='stitch-dark'] .lx-badge.sync { color: var(--lx-sync); border-color: var(--lx-sync); }
+
+/* editorial 专属跑马灯在本主题隐藏 */
+html[data-theme='stitch-dark'] .lx-marquee { display: none; }

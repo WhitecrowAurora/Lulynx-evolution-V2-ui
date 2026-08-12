@@ -1,0 +1,69 @@
+/* 主题 B:先锋编辑版式 Brutalist Editorial(默认)——纸白高反差 × 超大版式字 × 裸露网格 */
+html[data-theme='editorial'] { color-scheme: light; }
+html[data-theme='editorial'] body {
+  --lx-bg: #f2efe8;
+  --lx-bg-soft: #ebe7dd;
+  --lx-surface: transparent;
+  --lx-surface-color: #f2efe8;
+  --lx-surface-2: rgba(20, 19, 17, 0.035);
+  --lx-border: #141311;
+  --lx-border-strong: #141311;
+  --lx-border-w: 1.5px;
+  --lx-text: #141311;
+  --lx-dim: #6d6960;
+  --lx-accent: #ff4400;
+  --lx-accent-contrast: #f2efe8;
+  --lx-accent-soft: rgba(255, 68, 0, 0.08);
+  --lx-accent-glow: rgba(255, 68, 0, 0.22);
+  --lx-ok: #0a7d4f;
+  --lx-warn: #a06a00;
+  --lx-danger: #c81e1e;
+  --lx-danger-glow: rgba(200, 30, 30, 0.2);
+  --lx-field-bg: #faf8f2;
+  --lx-bar-bg: #dcd8cd;
+  --lx-grid-line: rgba(20, 19, 17, 0.12);
+  --lx-radius: 0px;
+  --lx-radius-lg: 0px;
+  --lx-btn-radius: 0px;
+  --lx-switch-radius: 0px;
+  --lx-thumb-radius: 0px;
+  --lx-bar-radius: 0px;
+  --lx-title-size: clamp(44px, 7.2vw, 96px);
+}
+
+/* 版式:标题更狠、字距收紧 */
+html[data-theme='editorial'] .lx-page-title { letter-spacing: -0.03em; }
+html[data-theme='editorial'] .lx-page-title .line.outline {
+  -webkit-text-stroke: 2px var(--lx-text);
+  color: transparent;
+}
+
+/* 按钮:2px 硬边框,hover 反色,primary 位移 + 硬投影 */
+html[data-theme='editorial'] .lx-btn { border-width: 2px; border-color: var(--lx-text); font-weight: 700; }
+html[data-theme='editorial'] .lx-btn:hover { background: var(--lx-text); color: var(--lx-bg); box-shadow: none; }
+html[data-theme='editorial'] .lx-btn.primary { background: var(--lx-accent); border-color: var(--lx-text); color: var(--lx-bg); }
+html[data-theme='editorial'] .lx-btn.primary:hover { background: var(--lx-text); color: var(--lx-bg); box-shadow: 5px 5px 0 var(--lx-accent); transform: translate(-2px, -2px); }
+html[data-theme='editorial'] .lx-btn.primary:active { transform: translate(0, 0); box-shadow: 2px 2px 0 var(--lx-accent); }
+html[data-theme='editorial'] .lx-btn.danger { border-color: var(--lx-danger); color: var(--lx-danger); }
+html[data-theme='editorial'] .lx-btn.danger:hover { background: var(--lx-danger); color: var(--lx-bg); box-shadow: none; }
+
+/* 表单:墨线描边,focus 硬投影 */
+html[data-theme='editorial'] .lx-input:focus,
+html[data-theme='editorial'] .lx-textarea:focus,
+html[data-theme='editorial'] .lx-select:focus { box-shadow: 3px 3px 0 var(--lx-accent); }
+html[data-theme='editorial'] .lx-switch span { background: var(--lx-text); }
+html[data-theme='editorial'] .lx-switch.on { background: var(--lx-accent); }
+html[data-theme='editorial'] .lx-switch.on span { background: var(--lx-bg); }
+html[data-theme='editorial'] .lx-range::-webkit-slider-thumb { background: var(--lx-text); box-shadow: 0 0 0 1.5px var(--lx-text); }
+
+/* 状态点:方形(编辑版式的几何语言) */
+html[data-theme='editorial'] .lx-dot { border-radius: 0; box-shadow: none; }
+
+/* 面板 hover:位移 + 硬投影 */
+html[data-theme='editorial'] .lx-panel.hoverable:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--lx-border); }
+
+/* 跑马灯:editorial 独有 */
+html[data-theme='editorial'] .lx-marquee { display: block; }
+
+/* 表格行 hover 反白 */
+html[data-theme='editorial'] .lx-table tbody tr:hover { background: rgba(20, 19, 17, 0.05); }

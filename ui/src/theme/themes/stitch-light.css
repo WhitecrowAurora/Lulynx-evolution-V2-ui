@@ -1,0 +1,73 @@
+/* Stitch 浅色主题(默认)——工业灰白 × PyTorch 橙唯一强调 × 发丝分割线 × 零阴影 */
+html[data-theme='stitch-light'] { color-scheme: light; }
+html[data-theme='stitch-light'] body {
+  /* 浅色 5 级映射:纸白最外 → 内容 → 输入 → 顶/底栏 → hover */
+  --lx-bg: #f4f4f3;
+  --lx-bg-soft: #eeeeed;
+  --lx-surface: #fbfbfa;
+  --lx-surface-color: #fbfbfa;
+  --lx-surface-2: rgba(20, 19, 17, 0.04);
+  --lx-border: #dcdcda;
+  --lx-border-strong: #c4c4c1;
+  --lx-border-w: 1px;
+  --lx-text: #1a1a19;
+  --lx-dim: #6d6d69;
+  --lx-accent: #EE4C2C;
+  --lx-accent-contrast: #ffffff;
+  --lx-accent-soft: rgba(238, 76, 44, 0.10);
+  --lx-accent-glow: rgba(238, 76, 44, 0.20);
+  --lx-ok: #0a7d4f;
+  --lx-warn: #a06a00;
+  --lx-danger: #c81e1e;
+  --lx-danger-glow: rgba(200, 30, 30, 0.18);
+  /* 蓝:仅 Sync Active 徽标 + focus ring */
+  --lx-sync: #3B82F6;
+  --lx-sync-soft: rgba(59, 130, 246, 0.12);
+  --lx-field-bg: #ffffff;
+  --lx-bar-bg: #e2e2e0;
+  --lx-grid-line: rgba(20, 19, 17, 0.08);
+  --lx-radius: 2px;
+  --lx-radius-lg: 2px;
+  --lx-btn-radius: 2px;
+  --lx-switch-radius: 999px;
+  --lx-thumb-radius: 50%;
+  --lx-bar-radius: 2px;
+  --lx-title-size: 18px;
+}
+
+/* 顶/底栏第 4 级灰(略深于内容区,拉开层级) */
+html[data-theme='stitch-light'] .lx-topbar,
+html[data-theme='stitch-light'] .lx-actionbar { background: #e8e8e6; }
+
+/* 零阴影:覆盖组件层里所有 box-shadow */
+html[data-theme='stitch-light'] .lx-btn.primary:hover,
+html[data-theme='stitch-light'] .lx-btn.danger:hover,
+html[data-theme='stitch-light'] .lx-panel.hoverable:hover,
+html[data-theme='stitch-light'] .lx-modal,
+html[data-theme='stitch-light'] .lx-toast,
+html[data-theme='stitch-light'] .lx-dot.ok,
+html[data-theme='stitch-light'] .lx-dot.accent,
+html[data-theme='stitch-light'] .lx-dot.danger,
+html[data-theme='stitch-light'] .lx-switch.on span,
+html[data-theme='stitch-light'] .lx-range::-webkit-slider-thumb { box-shadow: none; }
+
+/* 页标题降到 18px/600(非 editorial 超大版式) */
+html[data-theme='stitch-light'] .lx-page-title { font-weight: 600; letter-spacing: -0.01em; text-transform: none; }
+html[data-theme='stitch-light'] .lx-page-title .line.outline { -webkit-text-stroke: 0; color: var(--lx-text); }
+
+/* 主按钮:橙底白字实心 */
+html[data-theme='stitch-light'] .lx-btn.primary { background: var(--lx-accent); border-color: var(--lx-accent); color: var(--lx-accent-contrast); }
+html[data-theme='stitch-light'] .lx-btn.primary:hover { background: #d8401f; border-color: #d8401f; color: #ffffff; }
+
+/* 输入 focus:蓝色 ring(唯一蓝色用途之一) */
+html[data-theme='stitch-light'] .lx-input:focus,
+html[data-theme='stitch-light'] .lx-textarea:focus,
+html[data-theme='stitch-light'] .lx-select:focus { border-color: var(--lx-sync); box-shadow: 0 0 0 2px var(--lx-sync-soft); }
+html[data-theme='stitch-light'] :focus-visible { outline-color: var(--lx-sync); }
+
+/* Sync Active 徽标:蓝色 */
+html[data-theme='stitch-light'] .lx-badge.sync { color: var(--lx-sync); border-color: var(--lx-sync); }
+html[data-theme='stitch-light'] .lx-dot.sync { background: var(--lx-sync); }
+
+/* 状态点方形化以外保持圆;发丝分割线走 --lx-grid-line */
+html[data-theme='stitch-light'] .lx-marquee { display: none; }

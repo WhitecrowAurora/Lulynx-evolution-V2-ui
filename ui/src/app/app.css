@@ -1,0 +1,100 @@
+/* 应用壳:顶栏 / 主区 / 加载态 */
+.lx-topbar {
+  position: sticky; top: 0; z-index: var(--lx-z-nav);
+  display: flex; align-items: center; gap: 22px;
+  height: var(--lx-topbar-h); padding: 0 26px;
+  background: var(--lx-bg);
+  border-bottom: var(--lx-border-w, 1px) solid var(--lx-border);
+}
+html[data-theme='editorial'] .lx-topbar { border-bottom-width: 2px; }
+
+.lx-brand { display: flex; align-items: baseline; gap: 8px; user-select: none; }
+.lx-brand-mark { width: 10px; height: 10px; background: var(--lx-accent); transform: rotate(45deg) translateY(-1px); flex: none; align-self: center; }
+html[data-theme='editorial'] .lx-brand-mark { transform: none; }
+html[data-theme='acid'] .lx-brand-mark { border-radius: 50%; background: var(--lx-pink); box-shadow: 0 0 10px var(--lx-pink); transform: none; }
+html[data-theme='glass'] .lx-brand-mark { border-radius: 3px; box-shadow: 0 0 12px var(--lx-accent-glow); }
+.lx-brand-name { font: 700 15px var(--lx-font-display); letter-spacing: 0.24em; }
+.lx-brand-sub { font: 500 9.5px var(--lx-font-display); letter-spacing: 0.34em; color: var(--lx-dim); }
+
+.lx-nav { display: flex; gap: 2px; margin-left: auto; }
+.lx-nav a {
+  padding: 8px 12px; font: 600 11.5px var(--lx-font-display); letter-spacing: 0.11em;
+  color: var(--lx-dim); text-transform: uppercase;
+  display: flex; gap: 6px; align-items: center;
+  border: 1px solid transparent; border-radius: var(--lx-btn-radius, var(--lx-radius));
+  cursor: pointer; transition: color var(--lx-dur-fast), background var(--lx-dur-fast);
+}
+.lx-nav a i { font: 400 9px var(--lx-font-mono); color: var(--lx-accent); font-style: normal; }
+.lx-nav a:hover { color: var(--lx-text); }
+.lx-nav a.on { color: var(--lx-accent); border-color: var(--lx-border); }
+html[data-theme='editorial'] .lx-nav a.on { background: var(--lx-text); color: var(--lx-bg); border-color: var(--lx-text); }
+html[data-theme='editorial'] .lx-nav a.on i { color: var(--lx-accent); }
+html[data-theme='acid'] .lx-nav a.on { background: linear-gradient(120deg, rgba(192, 255, 46, 0.14), rgba(157, 92, 255, 0.18)); border-color: transparent; }
+html[data-theme='acid'] .lx-nav a i { color: var(--lx-pink); }
+html[data-theme='glass'] .lx-nav a { text-transform: none; letter-spacing: 0.02em; font-size: 12.5px; }
+html[data-theme='glass'] .lx-nav a i { display: none; }
+html[data-theme='glass'] .lx-nav a.on { background: rgba(255, 255, 255, 0.07); color: var(--lx-text); border-color: transparent; }
+
+.lx-topbar-right { display: flex; align-items: center; gap: 12px; }
+.lx-conn { display: flex; align-items: center; gap: 7px; font: 500 9.5px var(--lx-font-mono); letter-spacing: 0.12em; color: var(--lx-dim); text-transform: uppercase; }
+
+/* 状态徽标组:仿设计稿 LULYNX 优化 / TURBOCORE / PYTORCH READY */
+.lx-status-pills { display: flex; align-items: center; gap: 6px; }
+.lx-pill {
+  font: 600 9px var(--lx-font-mono); letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 3px 8px; color: var(--lx-dim);
+  border: var(--lx-border-w, 1px) solid var(--lx-border);
+  border-radius: var(--lx-btn-radius, var(--lx-radius));
+  white-space: nowrap;
+}
+.lx-pill.accent { color: var(--lx-accent); border-color: color-mix(in srgb, var(--lx-accent) 55%, var(--lx-border)); }
+.lx-pill.accent.on { background: var(--lx-accent); color: var(--lx-accent-contrast); border-color: var(--lx-accent); }
+@media (max-width: 1100px) { .lx-status-pills { display: none; } }
+
+.lx-theme-seg { display: flex; border: var(--lx-border-w, 1px) solid var(--lx-border); border-radius: var(--lx-btn-radius, var(--lx-radius)); overflow: hidden; }
+.lx-theme-seg button {
+  font: 700 10px var(--lx-font-display); letter-spacing: 0.06em; padding: 5px 10px;
+  color: var(--lx-dim); text-transform: uppercase; transition: all var(--lx-dur-fast);
+}
+.lx-theme-seg button:hover { color: var(--lx-text); }
+.lx-theme-seg button.on { background: var(--lx-accent); color: var(--lx-accent-contrast); }
+
+.lx-motion-btn {
+  font: 600 9.5px var(--lx-font-mono); letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 5px 10px; border: var(--lx-border-w, 1px) solid var(--lx-border);
+  color: var(--lx-dim); border-radius: var(--lx-btn-radius, var(--lx-radius)); transition: all var(--lx-dur-fast);
+}
+.lx-motion-btn:hover { color: var(--lx-text); border-color: var(--lx-text); }
+.lx-motion-btn.eco { color: var(--lx-warn); border-color: var(--lx-warn); }
+
+.lx-main { max-width: var(--lx-page-max); margin: 0 auto; padding: 0 28px 90px; }
+.lx-page-loading { padding: 70px; text-align: center; font: 600 11px var(--lx-font-mono); letter-spacing: 0.34em; color: var(--lx-dim); text-transform: uppercase; }
+
+@media (max-width: 920px) {
+  .lx-nav { display: none; }
+  .lx-main { padding: 0 16px 90px; }
+}
+
+
+/* language toggle — mirrors theme segment */
+.lx-lang-seg {
+  display: inline-flex;
+  gap: 2px;
+  border: 1px solid var(--lx-line, rgba(255,255,255,.12));
+  border-radius: 6px;
+  padding: 2px;
+}
+.lx-lang-seg button {
+  background: transparent;
+  border: 0;
+  color: var(--lx-dim, #999);
+  font: inherit;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.lx-lang-seg button.on {
+  color: var(--lx-fg, #fff);
+  background: var(--lx-fill-2, rgba(255,255,255,.08));
+}

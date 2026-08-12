@@ -1,0 +1,18 @@
+/* 结构令牌:与主题无关的字体/时长/缓动/层级/布局尺寸 */
+:root {
+  --lx-font-display: 'Inter', 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  --lx-font-mono: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+
+  --lx-dur-fast: 150ms;
+  --lx-dur: 250ms;
+  --lx-dur-slow: 400ms;
+  --lx-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --lx-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --lx-topbar-h: 58px;
+  --lx-page-max: 1520px;
+
+  --lx-z-nav: 40;
+  --lx-z-modal: 80;
+  --lx-z-toast: 90;
+}

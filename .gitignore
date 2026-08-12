@@ -1,0 +1,32 @@
+# --- dependencies (reinstallable from package-lock.json, ~204 MB) ---
+ui/node_modules/
+node_modules/
+
+# --- build/tool caches ---
+ui/.vite/
+ui/node_modules/.vite/
+.eslintcache
+*.tsbuildinfo
+
+# --- logs ---
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- local env overrides (keep .env.example if one is ever added) ---
+.env
+.env.local
+.env.*.local
+
+# --- editor / OS noise ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# NOTE: ui/dist/ is intentionally NOT ignored.
+# resources/web/app.py:462 mounts ui/dist directly at /ui/, so a clone without a
+# prebuilt dist serves nothing until someone runs `npm install && npm run build`.
+# Shipping dist keeps the plugin usable out of the box.

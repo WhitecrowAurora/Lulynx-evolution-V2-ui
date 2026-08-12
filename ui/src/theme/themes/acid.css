@@ -1,0 +1,79 @@
+/* 主题 C:酸性前卫 Acid / Y2K Chrome —— 铬渐变 × 荧光酸绿 × glitch */
+html[data-theme='acid'] { color-scheme: dark; }
+html[data-theme='acid'] body {
+  --lx-bg: #0b0716;
+  --lx-bg-soft: #0e0a1c;
+  --lx-surface: rgba(20, 12, 36, 0.75);
+  --lx-surface-color: #140c24;
+  --lx-surface-2: rgba(28, 18, 50, 0.5);
+  --lx-border: #31245a;
+  --lx-border-strong: #4a3782;
+  --lx-border-w: 1px;
+  --lx-text: #efe9ff;
+  --lx-dim: #8d80b0;
+  --lx-accent: #c0ff2e;
+  --lx-accent-contrast: #0b0716;
+  --lx-accent-soft: rgba(192, 255, 46, 0.12);
+  --lx-accent-glow: rgba(192, 255, 46, 0.3);
+  --lx-accent-2: #9d5cff;
+  --lx-pink: #ff4ecd;
+  --lx-ok: #c0ff2e;
+  --lx-warn: #ffb454;
+  --lx-danger: #ff4ecd;
+  --lx-danger-glow: rgba(255, 78, 205, 0.3);
+  --lx-field-bg: #120b24;
+  --lx-bar-bg: #1d1435;
+  --lx-grid-line: #1c1338;
+  --lx-radius: 4px;
+  --lx-radius-lg: 14px 4px 14px 4px;
+  --lx-btn-radius: 999px;
+  --lx-switch-radius: 999px;
+  --lx-thumb-radius: 50%;
+  --lx-bar-radius: 99px;
+  --lx-title-size: clamp(34px, 5.4vw, 68px);
+}
+
+/* 铬渐变标题(常驻流动 = .lx-loop,eco 档自动暂停) */
+html[data-theme='acid'] .lx-page-title {
+  background: linear-gradient(100deg, #e8e8f0 0%, #a8a8c0 12%, #ffffff 22%, #8f8fa8 30%, #c0ff2e 46%, #e8e8e8 58%, #9d5cff 74%, #ffffff 86%, #b8b8c8 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: lx-chromeflow 8s linear infinite;
+  letter-spacing: -0.01em;
+}
+@keyframes lx-chromeflow { to { background-position: 220% 0; } }
+
+/* 面板:混合圆角 + hover 霓虹描边 */
+html[data-theme='acid'] .lx-panel:hover { border-color: var(--lx-accent-2); box-shadow: 0 0 0 1px var(--lx-accent-2), 0 0 26px rgba(157, 92, 255, 0.16); }
+html[data-theme='acid'] .lx-panel-title .lx-idx { color: var(--lx-pink); }
+
+/* 按钮:primary 液态渐变胶囊 */
+html[data-theme='acid'] .lx-btn.primary {
+  background: linear-gradient(110deg, var(--lx-accent), #7de84a 35%, var(--lx-accent-2) 90%);
+  color: var(--lx-accent-contrast); border-color: transparent; font-weight: 700;
+  box-shadow: 0 0 22px rgba(192, 255, 46, 0.2);
+}
+html[data-theme='acid'] .lx-btn.primary:hover { filter: hue-rotate(28deg) saturate(1.25); box-shadow: 0 0 34px var(--lx-accent-glow); color: var(--lx-accent-contrast); }
+html[data-theme='acid'] .lx-btn.ghost { border-color: var(--lx-accent-2); color: #cdb8ff; }
+html[data-theme='acid'] .lx-btn.ghost:hover { box-shadow: 0 0 18px rgba(157, 92, 255, 0.3); border-color: var(--lx-accent-2); color: #e6dbff; }
+
+/* 表单:粉色系开关/滑杆 */
+html[data-theme='acid'] .lx-switch.on { border-color: var(--lx-pink); background: rgba(255, 78, 205, 0.15); }
+html[data-theme='acid'] .lx-switch.on span { background: var(--lx-pink); }
+html[data-theme='acid'] .lx-range::-webkit-slider-thumb { background: var(--lx-pink); box-shadow: 0 0 0 1.5px var(--lx-pink), 0 0 12px var(--lx-pink); }
+html[data-theme='acid'] .lx-field-label b { color: var(--lx-pink); }
+
+/* 进度条:渐变填充 */
+html[data-theme='acid'] .lx-bar > span { background: linear-gradient(90deg, var(--lx-accent), var(--lx-accent-2)); }
+
+/* glitch 抖动:JS 周期性给 <html> 加 .lx-glitch-burst */
+html[data-theme='acid'].lx-glitch-burst .lx-page-title,
+html[data-theme='acid'].lx-glitch-burst .lx-brand { animation: lx-gjit 0.16s steps(2) 4; }
+@keyframes lx-gjit {
+  0% { transform: translate(0); }
+  25% { transform: translate(-2.5px, 1.5px) skewX(-4deg); }
+  75% { transform: translate(2.5px, -1px) skewX(3deg); }
+  100% { transform: translate(0); }
+}

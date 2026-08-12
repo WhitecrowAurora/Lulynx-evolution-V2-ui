@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "id": "lulynx.ui_theme.lulynx_evolution_v2_ui",
+  "name": "Lulynx Evolution V2 UI",
+  "version": "0.1.0",
+  "description": "Lulynx Evolution V2 WebUI with PyTorch-orange industrial light/dark themes",
+  "author": "Lulynx",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "enabled_by_default": false,
+  "capabilities": [
+    "ui_theme"
+  ],
+  "ui_theme_metadata": {
+    "entry_file": "ui/dist/index.html",
+    "dist_dir": "ui/dist",
+    "themes": [
+      "stitch-light",
+      "stitch-dark"
+    ],
+    "default_theme": "stitch-dark"
+  }
+}

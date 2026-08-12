@@ -1,0 +1,7 @@
+{
+  "id": "community:lulynx-evolution-v2-ui",
+  "name": "Lulynx Evolution V2 UI",
+  "version": "0.1.0",
+  "entry_file": "ui/dist/index.html",
+  "description": "Lulynx Evolution V2 WebUI — PyTorch-orange industrial theme (light/dark), served at /ui/"
+}
