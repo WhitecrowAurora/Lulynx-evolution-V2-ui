@@ -33,7 +33,7 @@ function optionsOf(
   field: SchemaField,
   language: string,
   config: Record<string, unknown>,
-): { value: string; label: string }[] {
+): { value: string; label: string; disabled?: boolean; title?: string }[] {
   const source = typeof field.options === 'function' ? field.options(config) : field.options
   const rows = source && typeof source !== 'string' && Symbol.iterator in Object(source)
     ? Array.from(source)
@@ -45,6 +45,8 @@ function optionsOf(
       return {
         value,
         label: resolveOptionLabel(field.key, opt, language),
+        disabled: opt.disabled === true || undefined,
+        title: opt.disabledReason ? String(opt.disabledReason) : undefined,
       }
     }
     const value = String(o)

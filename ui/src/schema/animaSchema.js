@@ -56,6 +56,10 @@ import {
   S_COMPILE_EXPERT,
   S_MEMORY_OFFLOAD,
   S_MODULE_OFFLOAD_EXPERT,
+  S_ANIMA_CACHE,
+  S_ANIMA_DIT_ADAPTER,
+  S_ANIMA_MERGE_EXPORT,
+  S_PREFUSE,
 } from './schemaFieldGroups.js';
 import {
   S_QUALITY_OPTIMIZATION_PACK, S_LORA_VARIANTS, S_PERCEPTUAL_ANCHOR_LOSS,
@@ -67,6 +71,7 @@ import {
   S_ADAPTIVE_CACHING, S_SAMPLE_PROBES,
   S_EASYCONTROL, S_PIXEL_SPACE,
   S_WEIGHT_COMPOSER, S_REGION_FOCUS, S_PROGRESSIVE_TRAINING, S_ADAPTIVE_TRAINING,
+  S_SOFT_PROMPT_TUNING, S_ANIMA_PREDICTION_TYPE, S_CONCEPT_EDIT_CURRICULUM,
 } from './schemaFrontierGroups.js';
 
 // Anima 预览出图推理加速(DiT 块缓存 skip)。仅 Anima 路线;默认关=精确逐块计算=parity。
@@ -395,6 +400,7 @@ const animaConceptEditSections = ({ typeId, mode, maxTrainSteps, minTimestep = '
   sec('advanced-settings', 'advanced', '其他设置', '噪声、种子与其它选项。', [...S_ADV_DIT]),
   sec('thermal-settings', 'training', '散热与功耗', '训练期间冷却与功率管理。', [...S_THERMAL]),
   sec('distributed-settings', 'advanced', '分布式训练', 'Anima 概念编辑首版不建议多机多卡；这里仍保留通用入口。', [...S_DISTRIBUTED]),
+  sec('concept-edit-curriculum', 'frontier', '概念编辑时间步课程', '按 band 循环限制 timestep 范围，由易到难。', [...S_CONCEPT_EDIT_CURRICULUM], { expert: true }),
 ];
 
 // ---- Anima LoRA ----
@@ -420,6 +426,8 @@ export const ANIMA_LORA_SECTIONS = [
     { key: 'vae', type: 'file', pickerType: 'model-file', label: 'Qwen Image VAE 路径', title: 'vae', desc: 'Qwen Image VAE 路径', defaultValue: '' },
     { key: 'qwen3', type: 'file', pickerType: 'model-file', allowModelDirectory: true, label: 'Qwen3 文本模型路径', title: 'qwen3', desc: 'Qwen3 文本模型文件或本地模型目录', defaultValue: '' },
     { key: 'llm_adapter_path', type: 'file', pickerType: 'model-file', label: 'LLM Adapter 路径', title: 'llm_adapter_path', desc: 'LLM Adapter 路径', defaultValue: '' },
+    ...S_ANIMA_DIT_ADAPTER,
+    ...S_PREFUSE,
     { key: 'network_weights', type: 'file', pickerType: 'output-model-file', label: '继续训练 LoRA', title: 'network_weights', desc: '从已有的 LoRA 模型上继续训练，填写路径', defaultValue: '' },
     { key: 'resume', type: 'folder', pickerType: 'output-folder', label: '继续训练路径', title: 'resume', desc: '从某个 save_state 保存的中断状态继续训练，选择 save-state 目录', defaultValue: '' },
   ]),
@@ -435,8 +443,8 @@ export const ANIMA_LORA_SECTIONS = [
     { key: 'split_attn', type: 'boolean', label: '拆分 attention', title: 'split_attn', desc: '拆分 attention 以节省显存', defaultValue: false },
     { key: 'vae_chunk_size', type: 'number', label: 'VAE 分块大小', title: 'vae_chunk_size', desc: 'VAE 解码时的分块大小，更小值更省显存', defaultValue: '', min: 2 },
   ]),
-  sec('save-settings', 'model', '保存设置', '', [...S_SAVE]),
-  sec('dataset-settings', 'dataset', '数据集设置', '', ds('1024,1024', 2048, 64)),
+  sec('save-settings', 'model', '保存设置', '', [...S_SAVE, ...S_ANIMA_MERGE_EXPORT]),
+  sec('dataset-settings', 'dataset', '数据集设置', '', [...ds('1024,1024', 2048, 64), ...S_ANIMA_CACHE]),
   sec('caption-settings', 'dataset', 'Caption 选项', '', S_CAPTION.filter((f) => f.key !== 'max_token_length')),
   sec('data-aug-settings', 'dataset', '数据增强', '颜色、翻转与裁剪增强。', [...S_DATA_AUG]),
   sec('network-settings', 'network', '网络设置', 'LoRA / T-LoRA / LoKr 模式。', [
@@ -523,7 +531,7 @@ export const ANIMA_LORA_SECTIONS = [
     sec('quantization-settings', 'speed', '量化 / QLoRA', '底模量化加载与 bnb 4bit。', [...S_QUANTIZATION], { expert: true }),
   sec('turbo-lora-settings', 'speed', 'TurboLoRA 投机采样', '草稿网络盲猜多步，大模型批量验证，接受步骤几乎免费。训练时自动蒸馏草稿网络，推理时可跳过已验证步骤。', [...S_TURBO_LORA], { expert: true }),
   sec('cache-system-settings', 'speed', '缓存系统', '训练缓存配置：latent/文本编码器输出的磁盘格式、精度与存储位置。', [...S_CACHE_SYSTEM, ...S_CACHED_DATALOADER]),
-  sec('anima-advanced-settings', 'model', 'Anima 高级配置', 'Anima 分组学习率、LoRA 目标模块与其他高级选项。仅在需要精细控制时调整。', [...S_ANIMA_ADVANCED], { expert: true }),
+  sec('anima-advanced-settings', 'model', 'Anima 高级配置', 'Anima 分组学习率、LoRA 目标模块与其他高级选项。仅在需要精细控制时调整。', [...S_ANIMA_ADVANCED, ...S_ANIMA_PREDICTION_TYPE], { expert: true }),
   sec('training-misc-settings', 'training', '其他训练选项', '随机种子、蒙版损失、训练备注与断点续训偏移。', [
     { key: 'goal_forecast_tool', type: 'action', label: '训练达标预测（Copilot 只读预测器）', desc: '读取已训练 run 的 loss / 验证 loss / L2 时序', buttonLabel: ' 打开达标预测', handler: 'openGoalForecastTool' },
     { key: 'copilot_tool', type: 'action', label: '自动训练 Copilot（全自动闭环编排）', desc: '一次授权无人值守：设定目标阈值（loss / 验证 loss / L2）+', buttonLabel: ' 自动训练 Copilot', handler: 'openCopilotTool' },
@@ -544,9 +552,10 @@ export const ANIMA_LORA_SECTIONS = [
   ]),
   // Wavelet 已并入 quality-optimization；此处仅 SafeGuard
   sec('safeguard-settings', 'frontier', 'SafeGuard', 'NaN/Spike 拦截。', [...S_SAFEGUARD]),
+  sec('soft-prompt-tuning', 'frontier', 'Soft Prompt / ALLoRA', 'Prefix/Postfix soft-prompt 与 ALLoRA 优化器增强。', [...S_SOFT_PROMPT_TUNING], { expert: true }),
   sec('system-settings', 'advanced', '系统设置', '指定 GPU 与自定义 TOML 覆盖。', [
     { key: 'gpu_ids', type: 'string', label: '指定显卡', title: 'gpu_ids', desc: '指定参与训练的 GPU 编号，多卡用逗号分隔（如 0,1）。', defaultValue: '' },
-    { key: 'ui_custom_params', type: 'textarea', label: '自定义 TOML 覆盖', title: 'ui_custom_params', desc: '危险：会直接覆盖界面中的参数', defaultValue: '' },
+    { key: 'custom_toml', type: 'textarea', label: '自定义 TOML 覆盖', title: 'custom_toml', desc: '危险：会直接覆盖界面中的参数', defaultValue: '' },
   ]),
   sec('thermal-settings', 'training', '散热与功耗', '训练期间冷却与功率管理。', [...S_THERMAL]),
   sec('distributed-settings', 'advanced', '分布式训练', '多 GPU / 多机分布式训练配置。', [...S_DISTRIBUTED]),
@@ -664,7 +673,7 @@ export const ANIMA_FT_SECTIONS = [
       { value: 'all', label: '训练全部层' },
     ], visibleWhen: when('anima_depth_expansion_enabled', true) },
   ]),
-  sec('save-settings', 'model', '保存设置', '', [...S_SAVE]),
+  sec('save-settings', 'model', '保存设置', '', [...S_SAVE, ...S_ANIMA_MERGE_EXPORT]),
   sec('dataset-settings', 'dataset', '数据集设置', '', ds('1024,1024', 2048, 64)),
   sec('caption-settings', 'dataset', 'Caption 选项', '', S_CAPTION.filter((f) => f.key !== 'max_token_length')),
   sec('data-aug-settings', 'dataset', '数据增强', '颜色、翻转与裁剪增强。', [...S_DATA_AUG]),

@@ -54,12 +54,12 @@ export function Select({
   options,
   className,
   ...rest
-}: SelectHTMLAttributes<HTMLSelectElement> & { options: { value: string; label: string }[] }) {
+}: SelectHTMLAttributes<HTMLSelectElement> & { options: { value: string; label: string; disabled?: boolean; title?: string }[] }) {
   return (
     <span className="lx-select-wrap">
       <select className={['lx-select', className].filter(Boolean).join(' ')} {...rest}>
         {options.map((o) => (
-          <option key={o.value} value={o.value}>
+          <option key={o.value} value={o.value} disabled={o.disabled} title={o.title}>
             {o.label}
           </option>
         ))}

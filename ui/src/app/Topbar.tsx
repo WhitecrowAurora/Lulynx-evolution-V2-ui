@@ -6,6 +6,8 @@ import type { MotionMode, ThemeId } from '@/stores/themeStore'
 import { Dot } from '@/components/primitives'
 import { useI18n } from '@/i18n/useI18n'
 import { useLocaleStore } from '@/stores/localeStore'
+import { usePerfModeStore } from '@/stores/perfModeStore'
+import { useTrainConfigStore } from '@/stores/configStore'
 
 type Health = 'unknown' | 'ok' | 'down'
 
@@ -23,6 +25,24 @@ export function Topbar() {
 
   const [health, setHealth] = useState<Health>('unknown')
   const [mode, setMode] = useState('')
+
+  const lulynxOpt = usePerfModeStore((s) => s.lulynxOptimization)
+  const turbocore = usePerfModeStore((s) => s.turbocore)
+  const setLulynxOptimization = usePerfModeStore((s) => s.setLulynxOptimization)
+  const setTurbocore = usePerfModeStore((s) => s.setTurbocore)
+  const typeId = useTrainConfigStore((s) => s.typeId)
+  const diskHydrated = useTrainConfigStore((s) => s.diskHydrated)
+
+  // 顶栏开关是全局的,草稿按训练类型分份:把全局状态写进当前草稿,
+  // 使 schema visibleWhen 互斥(TurboCore vs Lulynx Triton)即时反应,
+  // 且 payload/JSON 预览与顶栏一致。类型切换与磁盘 hydrate 后需要重刷,
+  // 否则会被旧草稿里的陈旧值盖回去。
+  useEffect(() => {
+    const { setValue } = useTrainConfigStore.getState()
+    setValue('lulynx_optimization_enabled', lulynxOpt)
+    setValue('turbocore_enabled', turbocore)
+    if (turbocore) setValue('turbocore_optimizer_mode', 'off')
+  }, [lulynxOpt, turbocore, typeId, diskHydrated])
 
   useEffect(() => {
     let alive = true
@@ -67,9 +87,25 @@ export function Topbar() {
         ))}
       </nav>
       <div className="lx-topbar-right">
-        <div className="lx-status-pills" aria-hidden>
-          <span className="lx-pill">LULYNX 优化</span>
-          <span className="lx-pill">TURBOCORE</span>
+        <div className="lx-status-pills">
+          <button
+            type="button"
+            className={['lx-pill', 'lx-pill-toggle', lulynxOpt ? 'on' : ''].filter(Boolean).join(' ')}
+            aria-pressed={lulynxOpt}
+            onClick={() => setLulynxOptimization(!lulynxOpt)}
+            title={lulynxOpt ? 'Lulynx 优化已开启(Triton 融合内核)。点击切换到经典兼容路径。' : 'Lulynx 优化已关闭(经典兼容路径)。点击启用 Triton 融合内核。'}
+          >
+            LULYNX 优化
+          </button>
+          <button
+            type="button"
+            className={['lx-pill', 'lx-pill-toggle', turbocore ? 'on' : ''].filter(Boolean).join(' ')}
+            aria-pressed={turbocore}
+            onClick={() => setTurbocore(!turbocore)}
+            title={turbocore ? 'TurboCore CUDA 优化器已开启(Lulynx Triton 优化器自动置 off)。点击切换到标准 PyTorch 优化器。' : 'TurboCore 已关闭(标准 PyTorch 优化器)。点击启用 TurboCore CUDA 优化器。'}
+          >
+            TURBOCORE
+          </button>
           <span className={['lx-pill', 'accent', health === 'ok' ? 'on' : ''].filter(Boolean).join(' ')}>
             PYTORCH {health === 'ok' ? 'READY' : health === 'down' ? 'OFFLINE' : '…'}
           </span>

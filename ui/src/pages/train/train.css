@@ -414,23 +414,6 @@ html[data-theme='glass'] .lx-type-btn.on { box-shadow: 0 4px 18px var(--lx-accen
 .lx-cmdline-body { color: var(--lx-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .lx-cmdline + .lx-actionbar { margin-top: 10px; }
 
-/* 右下快速启动 FAB:橙色圆钮,固定视口右下角 */
-.lx-fab {
-  position: fixed; right: 26px; bottom: 26px; z-index: var(--lx-z-fab, 45);
-  width: 52px; height: 52px; border-radius: 50%;
-  display: inline-flex; align-items: center; justify-content: center;
-  background: var(--lx-accent); color: var(--lx-accent-contrast);
-  border: none; cursor: pointer;
-  box-shadow: 0 6px 20px var(--lx-accent-glow);
-  transition: transform var(--lx-dur-fast) var(--lx-ease), background var(--lx-dur-fast), box-shadow var(--lx-dur-fast);
-}
-.lx-fab svg { display: block; margin-left: 2px; }
-.lx-fab:hover:not(:disabled) { background: #f5613f; transform: scale(1.06); }
-.lx-fab:active:not(:disabled) { transform: scale(0.96); }
-.lx-fab:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
-/* 训练进行中动效降档:停掉 hover 放大等交互形变的过渡 */
-html[data-motion='eco'] .lx-fab { transition: none; }
-
 .lx-actionbar {
   position: sticky; bottom: 0; z-index: var(--lx-z-bar, 30);
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
@@ -445,6 +428,31 @@ html[data-theme='glass'] .lx-actionbar { background: var(--lx-panel); box-shadow
 .lx-actionbar-meta { margin-right: auto; display: flex; flex-direction: column; gap: 3px; }
 .lx-actionbar-meta b { font: 700 12.5px var(--lx-font-display); letter-spacing: 0.06em; }
 .lx-actionbar-meta span { font: 500 9.5px var(--lx-font-mono); letter-spacing: 0.14em; color: var(--lx-dim); text-transform: uppercase; }
+
+/* 主按钮与其余操作物理隔离,降低误触 */
+.lx-actionbar .lx-btn.lx-ignite { margin-left: 14px; }
+
+/* 「预设」上拉菜单:收纳低频与破坏性操作 */
+.lx-actionbar-menuwrap { position: relative; }
+.lx-actionbar-menu {
+  position: absolute; bottom: calc(100% + 8px); left: 0; z-index: var(--lx-z-modal, 80);
+  min-width: 210px; padding: 5px;
+  display: flex; flex-direction: column; gap: 2px;
+  background: var(--lx-bg);
+  border: var(--lx-border-w, 1px) solid var(--lx-border);
+  border-radius: var(--lx-radius);
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.28);
+}
+.lx-actionbar-menu button {
+  text-align: left; font: 500 12px var(--lx-font-display); letter-spacing: 0.03em;
+  padding: 8px 10px; color: var(--lx-text);
+  background: transparent; border: none; border-radius: var(--lx-radius); cursor: pointer;
+}
+.lx-actionbar-menu button:hover { background: var(--lx-surface-2); }
+.lx-actionbar-menu button.danger { color: var(--lx-danger); }
+.lx-actionbar-menu button.danger:hover { background: var(--lx-danger-glow, rgba(224, 72, 63, 0.12)); }
+.lx-actionbar-menu hr { border: none; border-top: var(--lx-border-w, 1px) solid var(--lx-border); margin: 3px 4px; }
+html[data-theme='editorial'] .lx-actionbar-menu { border-width: 2px; box-shadow: 5px 5px 0 var(--lx-text); }
 
 /* ---- 预检弹层 ---- */
 .lx-preflight-running { letter-spacing: 0.3em; color: var(--lx-dim); text-transform: uppercase; font-size: 11px; padding: 18px 0; text-align: center; }

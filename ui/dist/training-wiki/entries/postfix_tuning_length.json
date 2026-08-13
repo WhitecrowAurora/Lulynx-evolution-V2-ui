@@ -1,0 +1,31 @@
+{
+  "key": "postfix_tuning_length",
+  "title": "Postfix Tuning 长度",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "sdxl-lora",
+    "sd-lora",
+    "anima-lora"
+  ],
+  "layers": [
+    "条件层"
+  ],
+  "standard": {
+    "summary": "在文本条件序列末尾追加的可学习 soft-prompt token 数；0 = 关闭。与 prefix_tuning_length（前缀）互补，可同时开启。",
+    "effect": "开启后（>0）安装 prefix-tuning 模块，向文本嵌入序列尾部拼接该数量的可学习向量；这些向量与 LoRA 参数一起进入优化器，并随训练产物一起保存。",
+    "whenToUse": "想用极少参数补充「全局风格/质量」信息而不动模型权重时；与 LoRA 联合训练可让触发语义部分转移到 soft prompt 上。",
+    "avoidWhen": "文本 token 长度已接近编码器上限时（追加 token 挤占真实 caption 空间）；不理解 soft prompt 语义就大量堆叠（前后缀各 >20）容易学出不可解释的捷径。"
+  },
+  "advanced": {
+    "principle": "P-Tuning/Prefix-Tuning 思想：冻结模型，学习一小段连续嵌入向量拼接到输入序列，等价于在嵌入空间学习一个「万能提示词」。postfix 版本拼在序列尾部，与 prefix 的注意力位置分布不同：前缀影响全局早期注意力，后缀更接近「补充修饰」。",
+    "intervention": "trainer_prepare_side_adapters_mixin.py：prefix/postfix 任一 >0 时调用 prefix_tuning.install_prefix_tuning；trainer_optimizer_param_assembly.py 把这些参数加入优化器参数组；trainer_artifact_state.py 把 soft prompt 状态并入保存产物。",
+    "expectedImpact": "参数量极小（长度 × 嵌入维度），显存开销可忽略；对整体风格类信息有补充效果，对局部细节作用有限。",
+    "tradeoffs": "产物包含非标准 LoRA 键，第三方推理端可能忽略 soft prompt 部分导致效果不完整；初始化方式由 prefix_tuning_init 控制。",
+    "codePath": "trainer_prepare_side_adapters_mixin.py:install_prefix_tuning；trainer_optimizer_param_assembly.py:get_prefix_tuning_params；trainer_artifact_state.py 保存；configs_training_methods.py 定义"
+  },
+  "relatedConfigs": [
+    "prefix_tuning_length",
+    "prefix_tuning_init",
+    "network_train_unet_only"
+  ]
+}

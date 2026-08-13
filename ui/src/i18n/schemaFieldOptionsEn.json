@@ -105,6 +105,8 @@
   "hard_negative_mining_mode|topk": "Top-K Mode",
   "krea2_block_residency|block_offload": "block_offload (Adaptive Offload)",
   "krea2_block_residency|resident": "resident (GPU)",
+  "krea2_text_fusion_mode|fusion_frozen": "Fusion Frozen (default; cache fused text, tower frozen)",
+  "krea2_text_fusion_mode|fusion_trainable": "Fusion Trainable (cache 12-layer stack, train tower)",
   "krea2_training_mode|de_turbo": "De-Turbo (Turbo Recommended; Raw Auto standard)",
   "krea2_training_mode|frozen_delta": "Frozen Delta (Base Model / Turbo)",
   "krea2_training_mode|sigma_selective": "Sigma Selective (Noise)",

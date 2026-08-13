@@ -71,6 +71,13 @@ import {
   S_COMPILE_EXPERT,
   S_MODULE_OFFLOAD_CORE,
   S_MODULE_OFFLOAD_EXPERT,
+  S_FLUX_TRAINING,
+  S_WAN22_VIDEO,
+  S_LTX23_VIDEO,
+  S_KREA2_MERGE_EXPORT,
+  S_BOOGU_MERGE_EXPORT,
+  S_NEWBIE_MERGE_EXPORT,
+  S_PREFUSE,
 } from './schemaFieldGroups.js';
 import {
   S_QUALITY_OPTIMIZATION_PACK, S_LORA_VARIANTS, S_PERCEPTUAL_ANCHOR_LOSS,
@@ -97,7 +104,8 @@ export const FLUX_LORA_SECTIONS = [
     { key: 't5xxl', type: 'file', pickerType: 'model-file', label: 'T5-XXL 路径', title: 't5xxl', desc: 'T5-XXL 文本编码器路径', defaultValue: '' },
     { key: 'network_weights', type: 'file', pickerType: 'output-model-file', label: '继续训练 LoRA', title: 'network_weights', desc: '从已有的 LoRA 模型上继续训练，填写路径', defaultValue: '' },
 
-    { key: 'resume', type: 'folder', pickerType: 'output-folder', label: '继续训练路径', title: 'resume', desc: '从某个 save_state 保存的中断状态继续训练，选择 save-state 目录', defaultValue: '' }
+    { key: 'resume', type: 'folder', pickerType: 'output-folder', label: '继续训练路径', title: 'resume', desc: '从某个 save_state 保存的中断状态继续训练，选择 save-state 目录', defaultValue: '' },
+    ...S_PREFUSE,
 ]),
   sec('flux-params', 'model', 'FLUX 专用参数', '时间步采样、CFG、损失函数等。', [
     ...flowParams({ ts: 'sigmoid', gs: 1.0 }),
@@ -115,13 +123,13 @@ export const FLUX_LORA_SECTIONS = [
     { value: 'lycoris.kohya', label: 'LyCORIS', disabled: true, disabledReason: 'FLUX LyCORIS 暂未接入后端训练器' }
 ], false)),
   sec('optimizer-settings', 'optimizer', '学习率与优化器', '', [...S_LR_DIT]),
-  sec('training-settings', 'training', '训练参数', '', S_TRAIN(20)),
+  sec('training-settings', 'training', '训练参数', '', [...S_TRAIN(20), ...S_FLUX_TRAINING.filter((f) => f.key === 'ddpm_timestep_sampling')]),
   sec('weight-composer', 'frontier', '统一权重组合', '空间/语义、时间步、噪声与样本难度权重按乘法组合，并保持均值尺度。', [...S_WEIGHT_COMPOSER]),
   sec('region-focus', 'frontier', '区域聚焦配方', '在语义区域权重上叠加聚焦强度×步程衰减；需预处理语义 mask。', [...S_REGION_FOCUS]),
   sec('progressive-training', 'frontier', '渐进式 / 分阶段训练', '按 optimizer progress 切换阶段；当前首版使用稳定 JSON contract。', [...S_PROGRESSIVE_TRAINING, ...S_ADAPTIVE_TRAINING]),
   sec('preview-settings', 'preview', '预览图设置', '', [...S_PREVIEW, ...S_QUALITY_EVAL]),
   sec('validation-settings', 'preview', '验证设置', '验证集划分与验证频率。', [...S_VALIDATION]),
-  sec('speed-settings', 'speed', '速度优化', '', [...S_SPEED_FLOW]),
+  sec('speed-settings', 'speed', '速度优化', '', [...S_SPEED_FLOW, ...S_FLUX_TRAINING.filter((f) => f.key === 'flux_transformer_offload')]),
     sec('compile-settings', 'speed', '编译与执行后端',
     'execution_backend / torch.compile / Thunder 与 compile expert 旋钮；从速度页拆出以免与缓存/注意力搅在一起。',
     [...S_EXECUTION_BACKEND, ...S_COMPILE_EXPERT], { expert: true }),
@@ -454,6 +462,7 @@ export const NEWBIE_LORA_SECTIONS = [
     { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图片目录', title: 'train_data_dir', desc: '训练图片目录', defaultValue: './output/lulynx' },
     { key: 'resolution', type: 'string', label: '训练分辨率', title: 'resolution', desc: '训练分辨率，宽x高。当前建议 1024 起步', defaultValue: '1024,1024' },
     { key: 'dataloader_num_workers', type: 'number', label: 'DataLoader 线程数', title: 'dataloader_num_workers', desc: 'DataLoader 工作线程数', defaultValue: 4, min: 0 },
+    { key: 'newbie_dataloader_workers', type: 'number', label: 'Newbie DataLoader 线程数', title: 'newbie_dataloader_workers', desc: 'Newbie 专用 dataloader worker 数（覆盖通用 dataloader_num_workers）。', defaultValue: 4, min: 0 },
     { key: 'enable_bucket', type: 'boolean', label: '启用 Bucket', title: 'enable_bucket', desc: 'DiT cache-first 路径：分桶多为 partial。已缓存 latent/TE 回放通常不改分辨率；主要影响 online/rebuild。勿当 UNet 全 arb。', defaultValue: true },
     { key: 'min_bucket_reso', type: 'number', label: 'Bucket 最小分辨率', title: 'min_bucket_reso', desc: 'bucket 最小边（cache-first 回放通常沿用缓存分辨率）', defaultValue: 256, min: 64 },
     { key: 'max_bucket_reso', type: 'number', label: 'Bucket 最大分辨率', title: 'max_bucket_reso', desc: 'bucket 最大边（cache-first 回放通常沿用缓存分辨率）', defaultValue: 2048, min: 64 },
@@ -477,8 +486,9 @@ export const NEWBIE_LORA_SECTIONS = [
 ], visibleWhen: (c) => Number(c.gradient_accumulation_steps || 1) > 1 },
     ditGradientCheckpointingField('Newbie'),
     { key: 'mixed_precision', type: 'select', label: '训练精度', title: 'mixed_precision', desc: '训练精度', defaultValue: 'bf16', options: ['bf16', 'fp16', 'fp32'] },
-    { key: 'seed', type: 'number', label: '随机种子', title: 'seed', desc: '随机种子', defaultValue: 42 }
-]),
+    { key: 'seed', type: 'number', label: '随机种子', title: 'seed', desc: '随机种子', defaultValue: 42 },
+    ...S_NEWBIE_MERGE_EXPORT
+  ]),
   sec('optimizer-settings', 'training', '优化器与学习率', '', [
     { key: 'optimizer_type', type: 'select', label: '优化器', title: 'optimizer_type', desc: 'Newbie 优化器设置', defaultValue: 'AdamW8bit', options: TARGET_LORA_OPTIMIZERS },
     { key: 'optimizer_backend', type: 'select', label: 'AdamW 后端', title: 'optimizer_backend', desc: 'AdamW 后端档位；compiled_step 可包装 step', defaultValue: 'auto', options: OPTIMIZER_BACKEND_OPTIONS, visibleWhen: all(when('performance_expert_mode', true), adamwFamilyOptimizer) },
@@ -504,6 +514,11 @@ export const NEWBIE_LORA_SECTIONS = [
 
   sec('adapter-settings', 'network', '适配器设置', 'LoRA / LoKr 适配器参数。', [
     { key: 'adapter_type', type: 'select', label: '适配器类型', title: 'adapter_type', desc: 'Newbie 适配器类型，会映射到原生 LoRA', defaultValue: 'lora', options: NATIVE_ADAPTER_TYPES },
+    { key: 'newbie_lora_target', type: 'select', label: 'LoRA 目标预设', title: 'newbie_lora_target', desc: '控制哪些 transformer 层注入 adapter。', defaultValue: 'balanced', options: [
+      { value: 'minimal', label: 'minimal（最轻）' },
+      { value: 'balanced', label: 'balanced（均衡）' },
+      { value: 'full', label: 'full（全覆盖）' }
+    ] },
     { key: 'network_dim', type: 'number', label: 'Rank (Dim)', desc: 'LoRA / LoKr rank', defaultValue: 32, min: 1 },
     { key: 'network_alpha', type: 'number', label: 'Alpha', desc: 'LoRA / LoKr alpha', defaultValue: 32, min: 1 },
     { key: 'network_dropout', type: 'number', label: 'Dropout', desc: 'LoRA dropout', defaultValue: 0.05, min: 0, step: 0.01 },
@@ -529,6 +544,7 @@ export const NEWBIE_LORA_SECTIONS = [
     { key: 'newbie_gemma_max_token_length', type: 'number', label: 'Gemma 最大 Token', title: 'newbie_gemma_max_token_length', desc: 'Gemma 最大 token 长度', defaultValue: 512, min: 32 },
     { key: 'newbie_clip_max_token_length', type: 'number', label: 'CLIP 最大 Token', title: 'newbie_clip_max_token_length', desc: 'CLIP 最大 token 长度', defaultValue: 2048, min: 32 },
     { key: 'newbie_caption_length_bucket_size', type: 'number', label: 'Caption Bucket 大小', title: 'newbie_caption_length_bucket_size', desc: 'caption 长度 bucket 大小。', defaultValue: 0, min: 0 },
+    { key: 'newbie_use_flash_attn2', type: 'boolean', label: 'Newbie FlashAttention 2', title: 'newbie_use_flash_attn2', desc: 'Newbie 路线启用 FlashAttention 2（需环境支持）。默认开启。', defaultValue: true },
     ...VRAM_AUTO_ENHANCE_FIELDS,
     ...NEWBIE_BLOCK_RESIDENCY_FIELDS,
     { key: 'swap_granularity', type: 'select', label: '显存交换模式', title: 'swap_granularity', desc: '显存交换模式', defaultValue: 'off', options: ['off', 'auto', 'block', 'merged_block', 'layer'] },
@@ -604,6 +620,17 @@ export const KREA2_LORA_SECTIONS = [
 ],
     },
     {
+      key: 'krea2_text_fusion_mode',
+      type: 'select',
+      label: '文本融合模式',
+      desc: '决定缓存与 DiT 装载：fusion_frozen 缓存 txtfusion 后输出（默认，塔不参训）；fusion_trainable 缓存 12 层原始 stack 并装回 343M txtfusion 塔参训。两种模式的缓存互不兼容，切换需重建缓存',
+      defaultValue: 'fusion_frozen',
+      options: [
+        { value: 'fusion_frozen', label: 'Fusion Frozen（默认；缓存融合后文本，塔冻结）' },
+        { value: 'fusion_trainable', label: 'Fusion Trainable（缓存 12 层 stack，塔参训）' }
+],
+    },
+    {
       key: 'krea2_sigma_selective_threshold',
       type: 'number',
       label: 'Sigma Selective 阈值',
@@ -628,7 +655,8 @@ export const KREA2_LORA_SECTIONS = [
     { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', defaultValue: 0, min: 0 },
     { key: 'save_every_n_epochs', type: 'number', label: '每 N 轮保存', title: 'save_every_n_epochs', defaultValue: 1, min: 0 },
     { key: 'train_batch_size', type: 'number', label: 'Batch Size', title: 'train_batch_size', defaultValue: 1, min: 1 },
-    ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key))
+    ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key)),
+    ...S_KREA2_MERGE_EXPORT
 ]),
   sec('adapter-settings', 'network', 'LoRA 适配器', 'Krea-2 LoRA 参数。', [
     { key: 'network_dim', type: 'number', label: 'Rank (Dim)', desc: 'LoRA rank', defaultValue: 16, min: 1 },
@@ -676,7 +704,24 @@ const KREA2_FT_EXCLUDED_FIELDS = new Set([
   'network_train_unet_only', 'network_train_text_encoder_only',
 ]);
 
-export const KREA2_FT_SECTIONS = KREA2_LORA_SECTIONS
+// krea2-finetune 派生自 KREA2_LORA_SECTIONS，若不处理会把 krea2-lora 的三条历史
+// 重复（save_every_n_steps / save_every_n_epochs / train_batch_size）带进新类型，
+// 撞 webui_duplicate_field_key_smoke 的重复总量基线。跨 section 按 key 去重：
+// 两份定义的默认值相同，保留首份不改变 createDefaultConfig 的生效结果。
+const dropDuplicateFieldKeys = (sections) => {
+  const seen = new Set();
+  return sections.map((section) => ({
+    ...section,
+    fields: section.fields.filter((field) => {
+      if (!field?.key) return true;
+      if (seen.has(field.key)) return false;
+      seen.add(field.key);
+      return true;
+    }),
+  }));
+};
+
+export const KREA2_FT_SECTIONS = dropDuplicateFieldKeys(KREA2_LORA_SECTIONS
   .filter((section) => section.id !== 'adapter-settings')
   .map((section) => {
     const sourceFields = section.id === 'optimizer-settings' ? S_LR_FT_DIT : section.fields;
@@ -692,7 +737,7 @@ export const KREA2_FT_SECTIONS = KREA2_LORA_SECTIONS
     });
     if (section.id !== 'model-settings') return { ...section, fields };
     return { ...section, title: 'Krea-2 全参微调', description: '训练完整 Krea-2 DiT，或扩展深度后只训练新增层。', fields: [...fields, ...KREA2_DEPTH_EXPANSION_FIELDS] };
-  });
+  }));
 
 // ---- FLUX.2 Klein LoRA ----
 // 分模型默认：slots=4 / prefetch=3 / pin=true（与 krea2 4/2 字段分离）
@@ -728,7 +773,8 @@ export const FLUX2_LORA_SECTIONS = [
     { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', defaultValue: 0, min: 0 },
     { key: 'save_every_n_epochs', type: 'number', label: '每 N 轮保存', title: 'save_every_n_epochs', defaultValue: 1, min: 0 },
     { key: 'train_batch_size', type: 'number', label: 'Batch Size', title: 'train_batch_size', defaultValue: 1, min: 1 },
-    ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key))
+    ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key)),
+    ...S_BOOGU_MERGE_EXPORT
 ]),
   sec('adapter-settings', 'network', 'LoRA 适配器', 'FLUX.2 Klein LoRA 参数。', [
     { key: 'network_dim', type: 'number', label: 'Rank (Dim)', desc: 'LoRA rank', defaultValue: 16, min: 1 },
@@ -788,7 +834,8 @@ export const ZIMAGE_LORA_SECTIONS = [
     { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', defaultValue: 0, min: 0 },
     { key: 'save_every_n_epochs', type: 'number', label: '每 N 轮保存', title: 'save_every_n_epochs', defaultValue: 1, min: 0 },
     { key: 'train_batch_size', type: 'number', label: 'Batch Size', title: 'train_batch_size', defaultValue: 1, min: 1 },
-    ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key))
+    ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key)),
+    ...S_BOOGU_MERGE_EXPORT
 ]),
   sec('adapter-settings', 'network', 'LoRA 网络', 'Z-Image LoRA 默认 rank/alpha 16。', [
     { key: 'network_dim', type: 'number', label: 'Rank (Dim)', desc: 'LoRA rank', defaultValue: 16, min: 1 },
@@ -846,20 +893,22 @@ export const WAN22_TI2V_LORA_SECTIONS = [
     { key: 'max_bucket_reso', type: 'number', label: 'Bucket 最大分辨率', defaultValue: 1024, min: 64 },
     { key: 'caption_extension', type: 'string', label: 'Caption 扩展名', title: 'caption_extension', defaultValue: '.txt' },
     { key: 'dataloader_num_workers', type: 'number', label: 'DataLoader 线程数', defaultValue: 2, min: 0 },
-    { key: 'use_cache', type: 'boolean', label: '使用磁盘缓存', title: 'use_cache', desc: '首版 live/合成 embeds 可用；后续 *_wan22.npz。', defaultValue: false }
-]),
+    { key: 'use_cache', type: 'boolean', label: '使用磁盘缓存', title: 'use_cache', desc: '首版 live/合成 embeds 可用；后续 *_wan22.npz。', defaultValue: false },
+    ...S_WAN22_VIDEO
+  ]),
   sec('save-settings', 'model', '保存设置', '', [
     { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', defaultValue: 0, min: 0 },
     { key: 'save_every_n_epochs', type: 'number', label: '每 N 轮保存', title: 'save_every_n_epochs', defaultValue: 1, min: 0 },
     { key: 'train_batch_size', type: 'number', label: 'Batch Size', title: 'train_batch_size', defaultValue: 1, min: 1 },
-    ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key))
-]),
+    ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key)),
+    ...S_BOOGU_MERGE_EXPORT
+  ]),
   sec('adapter-settings', 'network', 'LoRA 设置', 'Wan2.2 LoRA 默认 rank/alpha 16；目标 attn1/attn2 + FFN。', [
     { key: 'network_dim', type: 'number', label: 'Rank (Dim)', desc: 'LoRA rank', defaultValue: 16, min: 1 },
     { key: 'network_alpha', type: 'number', label: 'Alpha', desc: 'LoRA alpha', defaultValue: 16, min: 1 },
     { key: 'network_dropout', type: 'number', label: 'Dropout', defaultValue: 0.05, min: 0, step: 0.01 },
     ...S_LAYERED_ALPHA_GENERIC
-]),
+  ]),
   sec('optimizer-settings', 'optimizer', '学习率与优化器', '', [...S_LR_DIT]),
   sec('training-settings', 'training', '训练设置', '', S_TRAIN(20)),
   sec('weight-composer', 'frontier', '统一权重组合', '空间/语义、时间步、噪声与样本难度权重按乘法组合，并保持均值尺度。', [...S_WEIGHT_COMPOSER]),
@@ -909,20 +958,22 @@ export const WAN22_T2V_A14B_LORA_SECTIONS = [
     { key: 'max_bucket_reso', type: 'number', label: 'Bucket 最大分辨率', defaultValue: 1024, min: 64 },
     { key: 'caption_extension', type: 'string', label: 'Caption 扩展名', title: 'caption_extension', defaultValue: '.txt' },
     { key: 'dataloader_num_workers', type: 'number', label: 'DataLoader 线程数', defaultValue: 2, min: 0 },
-    { key: 'use_cache', type: 'boolean', label: '使用磁盘缓存', title: 'use_cache', desc: '首版 live/合成 embeds 可用；后续 *_wan22.npz。', defaultValue: false }
-]),
+    { key: 'use_cache', type: 'boolean', label: '使用磁盘缓存', title: 'use_cache', desc: '首版 live/合成 embeds 可用；后续 *_wan22.npz。', defaultValue: false },
+    ...S_WAN22_VIDEO
+  ]),
   sec('save-settings', 'model', '保存设置', '', [
     { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', defaultValue: 0, min: 0 },
     { key: 'save_every_n_epochs', type: 'number', label: '每 N 轮保存', title: 'save_every_n_epochs', defaultValue: 1, min: 0 },
     { key: 'train_batch_size', type: 'number', label: 'Batch Size', title: 'train_batch_size', defaultValue: 1, min: 1 },
-    ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key))
-]),
+    ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key)),
+    ...S_BOOGU_MERGE_EXPORT
+  ]),
   sec('adapter-settings', 'network', 'LoRA 设置', 'Wan2.2 LoRA 默认 rank/alpha 16；目标 attn1/attn2 + FFN。', [
     { key: 'network_dim', type: 'number', label: 'Rank (Dim)', desc: 'LoRA rank', defaultValue: 16, min: 1 },
     { key: 'network_alpha', type: 'number', label: 'Alpha', desc: 'LoRA alpha', defaultValue: 16, min: 1 },
     { key: 'network_dropout', type: 'number', label: 'Dropout', defaultValue: 0.05, min: 0, step: 0.01 },
     ...S_LAYERED_ALPHA_GENERIC
-]),
+  ]),
   sec('optimizer-settings', 'optimizer', '学习率与优化器', '', [...S_LR_DIT]),
   sec('training-settings', 'training', '训练设置', '', S_TRAIN(20)),
   sec('weight-composer', 'frontier', '统一权重组合', '空间/语义、时间步、噪声与样本难度权重按乘法组合，并保持均值尺度。', [...S_WEIGHT_COMPOSER]),
@@ -966,14 +1017,16 @@ export const LTX23_LORA_SECTIONS = [
     { key: 'max_bucket_reso', type: 'number', label: 'Bucket 最大分辨率', defaultValue: 1024, min: 64 },
     { key: 'caption_extension', type: 'string', label: 'Caption 扩展名', title: 'caption_extension', defaultValue: '.txt' },
     { key: 'dataloader_num_workers', type: 'number', label: 'DataLoader 线程数', defaultValue: 2, min: 0 },
-    { key: 'use_cache', type: 'boolean', label: '使用磁盘缓存', title: 'use_cache', desc: '首版 live/合成 embeds；后续 *_ltx23.npz。', defaultValue: false }
-]),
+    { key: 'use_cache', type: 'boolean', label: '使用磁盘缓存', title: 'use_cache', desc: '首版 live/合成 embeds；后续 *_ltx23.npz。', defaultValue: false },
+    ...S_LTX23_VIDEO
+  ]),
   sec('save-settings', 'model', '保存设置', '', [
     { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', defaultValue: 0, min: 0 },
     { key: 'save_every_n_epochs', type: 'number', label: '每 N 轮保存', title: 'save_every_n_epochs', defaultValue: 1, min: 0 },
     { key: 'train_batch_size', type: 'number', label: 'Batch Size', title: 'train_batch_size', defaultValue: 1, min: 1 },
-    ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key))
-]),
+    ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key)),
+    ...S_BOOGU_MERGE_EXPORT
+  ]),
   sec('adapter-settings', 'network', 'LoRA 设置', '22B 建议小 rank；仅 video attn1/attn2 + ff。', [
     { key: 'network_dim', type: 'number', label: 'Rank (Dim)', desc: 'LoRA rank', defaultValue: 16, min: 1 },
     { key: 'network_alpha', type: 'number', label: 'Alpha', desc: 'LoRA alpha', defaultValue: 16, min: 1 },
@@ -1141,3 +1194,139 @@ export const BOOGU_EDIT_LORA_SECTIONS = [
   sec('diagnostics-settings', 'frontier', '诊断监控', '', [...S_DIAGNOSTICS_MONITORING], { expert: true }),
   sec('turbocore-settings', 'speed', 'TurboCore 内核优化', 'CUDA/Triton 内核自动调优。', [...S_TURBOCORE], { expert: true })
 ];
+
+const BOOGU_DEPTH_EXPANSION_FIELDS = [
+  { key: 'boogu_depth_expansion_enabled', type: 'boolean', label: '扩展 Transformer 深度', title: 'boogu_depth_expansion_enabled', desc: '交错复制 Boogu 单流 block，并以恒等残差初始化新增层。最终保存完整新底座。', defaultValue: false },
+  { key: 'boogu_depth_expansion_target_layers', type: 'number', label: '目标层数', title: 'boogu_depth_expansion_target_layers', desc: '扩层后的单流 Transformer block 总数（Base 原生 32）。', defaultValue: 40, min: 2, step: 1, visibleWhen: when('boogu_depth_expansion_enabled', true) },
+  { key: 'boogu_depth_expansion_train_scope', type: 'select', label: '训练范围', title: 'boogu_depth_expansion_train_scope', desc: '选择只训练新增层、同时训练外围模块，或训练全部参数。', defaultValue: 'new_layers', visibleWhen: when('boogu_depth_expansion_enabled', true), options: [
+    { value: 'new_layers', label: '只训练新增层' },
+    { value: 'new_layers_periphery', label: '新增层 + 外围模块' },
+    { value: 'all', label: '全部参数' },
+  ] },
+];
+
+// boogu-finetune 派生自 BOOGU_LORA_SECTIONS：去掉 LoRA 适配器 section 与
+// LoRA/量化专属字段（复用 krea2 的排除清单），并跨 section 按 key 去重，
+// 避免撞 webui_duplicate_field_key_smoke 的重复总量基线。
+export const BOOGU_FT_SECTIONS = dropDuplicateFieldKeys(BOOGU_LORA_SECTIONS
+  .filter((section) => section.id !== 'adapter-settings')
+  .map((section) => {
+    const sourceFields = section.id === 'optimizer-settings' ? S_LR_FT_DIT : section.fields;
+    const fields = sourceFields
+      .filter((field) => !KREA2_FT_EXCLUDED_FIELDS.has(field.key))
+      .map((field) => {
+      if (field.key === 'model_train_type') return { ...field, defaultValue: 'boogu-finetune' };
+      if (field.key === 'output_name') return { ...field, label: '底座输出名称', desc: '完整 Boogu 底座输出文件名', defaultValue: 'boogu-expanded' };
+      return field;
+    });
+    if (section.id !== 'model-settings') return { ...section, fields };
+    return { ...section, title: 'Boogu 全参微调', description: '训练完整 Boogu-Image DiT，或扩展深度后只训练新增单流层。需要 BF16/FP16 稠密底座（官方 FP8 包加载时自动 dequant）。', fields: [...fields, ...BOOGU_DEPTH_EXPANSION_FIELDS] };
+  }));
+
+const LTX23_DEPTH_EXPANSION_FIELDS = [
+  { key: 'ltx23_depth_expansion_enabled', type: 'boolean', label: '扩展 Transformer 深度', title: 'ltx23_depth_expansion_enabled', desc: '交错复制 LTX-2.3 双流 block，并以恒等残差初始化新增层（视频+音频 8 处输出投影含 bias 一并归零）。最终保存完整新底座。', defaultValue: false },
+  { key: 'ltx23_depth_expansion_target_layers', type: 'number', label: '目标层数', title: 'ltx23_depth_expansion_target_layers', desc: '扩层后的 Transformer block 总数（22B-dev 原生 48）。', defaultValue: 64, min: 2, step: 1, visibleWhen: when('ltx23_depth_expansion_enabled', true) },
+  { key: 'ltx23_depth_expansion_train_scope', type: 'select', label: '训练范围', title: 'ltx23_depth_expansion_train_scope', desc: '选择只训练新增层、同时训练外围模块，或训练全部参数。', defaultValue: 'new_layers', visibleWhen: when('ltx23_depth_expansion_enabled', true), options: [
+    { value: 'new_layers', label: '只训练新增层' },
+    { value: 'new_layers_periphery', label: '新增层 + 外围模块' },
+    { value: 'all', label: '全部参数' },
+  ] },
+];
+
+// ltx23-finetune 派生自 LTX23_LORA_SECTIONS：去掉 LoRA 适配器 section 与
+// LoRA/量化专属字段（复用 krea2 的排除清单），并跨 section 按 key 去重。
+export const LTX23_FT_SECTIONS = dropDuplicateFieldKeys(LTX23_LORA_SECTIONS
+  .filter((section) => section.id !== 'adapter-settings')
+  .map((section) => {
+    const sourceFields = section.id === 'optimizer-settings' ? S_LR_FT_DIT : section.fields;
+    const fields = sourceFields
+      .filter((field) => !KREA2_FT_EXCLUDED_FIELDS.has(field.key))
+      .map((field) => {
+      if (field.key === 'model_train_type') return { ...field, defaultValue: 'ltx23-finetune' };
+      if (field.key === 'output_name') return { ...field, label: '底座输出名称', desc: '完整 LTX-2.3 底座输出文件名', defaultValue: 'ltx23-expanded' };
+      return field;
+    });
+    if (section.id !== 'model-settings') return { ...section, fields };
+    return { ...section, title: 'LTX-2.3 全参微调', description: '训练完整 LTX-2.3 DiT，或扩展深度后只训练新增层。22B 模型全参/扩层显存与磁盘开销极大，请确认资源后再启用。', fields: [...fields, ...LTX23_DEPTH_EXPANSION_FIELDS] };
+  }));
+
+const FLUX2_DEPTH_EXPANSION_FIELDS = [
+  { key: 'flux2_depth_expansion_enabled', type: 'boolean', label: '扩展 Transformer 深度', title: 'flux2_depth_expansion_enabled', desc: '交错复制 FLUX.2 单流 block（并行块，注意力/MLP 融合输出投影归零），以恒等残差初始化新增层。最终保存完整新底座。', defaultValue: false },
+  { key: 'flux2_depth_expansion_target_layers', type: 'number', label: '目标层数', title: 'flux2_depth_expansion_target_layers', desc: '扩层后的单流 Transformer block 总数（Klein-9B 原生 48；双流 8 层不参与扩层）。', defaultValue: 60, min: 2, step: 1, visibleWhen: when('flux2_depth_expansion_enabled', true) },
+  { key: 'flux2_depth_expansion_train_scope', type: 'select', label: '训练范围', title: 'flux2_depth_expansion_train_scope', desc: '选择只训练新增层、同时训练外围模块，或训练全部参数。', defaultValue: 'new_layers', visibleWhen: when('flux2_depth_expansion_enabled', true), options: [
+    { value: 'new_layers', label: '只训练新增层' },
+    { value: 'new_layers_periphery', label: '新增层 + 外围模块' },
+    { value: 'all', label: '全部参数' },
+  ] },
+];
+
+// flux2-finetune 派生自 FLUX2_LORA_SECTIONS：去掉 LoRA 适配器 section 与
+// LoRA/量化专属字段（复用 krea2 的排除清单），并跨 section 按 key 去重。
+export const FLUX2_FT_SECTIONS = dropDuplicateFieldKeys(FLUX2_LORA_SECTIONS
+  .filter((section) => section.id !== 'adapter-settings')
+  .map((section) => {
+    const sourceFields = section.id === 'optimizer-settings' ? S_LR_FT_DIT : section.fields;
+    const fields = sourceFields
+      .filter((field) => !KREA2_FT_EXCLUDED_FIELDS.has(field.key))
+      .map((field) => {
+      if (field.key === 'model_train_type') return { ...field, defaultValue: 'flux2-finetune' };
+      if (field.key === 'output_name') return { ...field, label: '底座输出名称', desc: '完整 FLUX.2 底座输出文件名', defaultValue: 'flux2-expanded' };
+      return field;
+    });
+    if (section.id !== 'model-settings') return { ...section, fields };
+    return { ...section, title: 'FLUX.2 全参微调', description: '训练完整 FLUX.2 Klein DiT，或扩展深度后只训练新增单流层。需要未旋转的稠密底座（ConvRot INT8 包仅支持冻结底座 LoRA）。', fields: [...fields, ...FLUX2_DEPTH_EXPANSION_FIELDS] };
+  }));
+
+const ZIMAGE_DEPTH_EXPANSION_FIELDS = [
+  { key: 'zimage_depth_expansion_enabled', type: 'boolean', label: '扩展 Transformer 深度', title: 'zimage_depth_expansion_enabled', desc: '交错复制 Z-Image 主干 layers block（attention 输出投影与 FFN w2 归零），以恒等残差初始化新增层。refiner 层不参与扩层。最终保存完整新底座。', defaultValue: false },
+  { key: 'zimage_depth_expansion_target_layers', type: 'number', label: '目标层数', title: 'zimage_depth_expansion_target_layers', desc: '扩层后的主干 Transformer block 总数（Z-Image 6B 原生 30）。', defaultValue: 38, min: 2, step: 1, visibleWhen: when('zimage_depth_expansion_enabled', true) },
+  { key: 'zimage_depth_expansion_train_scope', type: 'select', label: '训练范围', title: 'zimage_depth_expansion_train_scope', desc: '选择只训练新增层、同时训练外围模块，或训练全部参数。', defaultValue: 'new_layers', visibleWhen: when('zimage_depth_expansion_enabled', true), options: [
+    { value: 'new_layers', label: '只训练新增层' },
+    { value: 'new_layers_periphery', label: '新增层 + 外围模块' },
+    { value: 'all', label: '全部参数' },
+  ] },
+];
+
+// zimage-finetune 派生自 ZIMAGE_LORA_SECTIONS：去掉 LoRA 适配器 section 与
+// LoRA/量化专属字段（复用 krea2 的排除清单），并跨 section 按 key 去重。
+export const ZIMAGE_FT_SECTIONS = dropDuplicateFieldKeys(ZIMAGE_LORA_SECTIONS
+  .filter((section) => section.id !== 'adapter-settings')
+  .map((section) => {
+    const sourceFields = section.id === 'optimizer-settings' ? S_LR_FT_DIT : section.fields;
+    const fields = sourceFields
+      .filter((field) => !KREA2_FT_EXCLUDED_FIELDS.has(field.key))
+      .map((field) => {
+      if (field.key === 'model_train_type') return { ...field, defaultValue: 'zimage-finetune' };
+      if (field.key === 'output_name') return { ...field, label: '底座输出名称', desc: '完整 Z-Image 底座输出文件名', defaultValue: 'zimage-expanded' };
+      return field;
+    });
+    if (section.id !== 'model-settings') return { ...section, fields };
+    return { ...section, title: 'Z-Image 全参微调', description: '训练完整 Z-Image DiT，或扩展深度后只训练新增主干层。', fields: [...fields, ...ZIMAGE_DEPTH_EXPANSION_FIELDS] };
+  }));
+
+const WAN22_DEPTH_EXPANSION_FIELDS = [
+  { key: 'wan22_depth_expansion_enabled', type: 'boolean', label: '扩展 Transformer 深度', title: 'wan22_depth_expansion_enabled', desc: '交错复制 Wan2.2 TI2V-5B block（自注意/交叉注意/FFN 三个输出投影归零），以恒等残差初始化新增层。仅支持 TI2V-5B 单塔；A14B 双塔不支持。最终保存完整新底座。', defaultValue: false },
+  { key: 'wan22_depth_expansion_target_layers', type: 'number', label: '目标层数', title: 'wan22_depth_expansion_target_layers', desc: '扩层后的 Transformer block 总数（TI2V-5B 原生 30）。', defaultValue: 38, min: 2, step: 1, visibleWhen: when('wan22_depth_expansion_enabled', true) },
+  { key: 'wan22_depth_expansion_train_scope', type: 'select', label: '训练范围', title: 'wan22_depth_expansion_train_scope', desc: '选择只训练新增层、同时训练外围模块，或训练全部参数。', defaultValue: 'new_layers', visibleWhen: when('wan22_depth_expansion_enabled', true), options: [
+    { value: 'new_layers', label: '只训练新增层' },
+    { value: 'new_layers_periphery', label: '新增层 + 外围模块' },
+    { value: 'all', label: '全部参数' },
+  ] },
+];
+
+// wan22-finetune 派生自 WAN22_TI2V_LORA_SECTIONS：去掉 LoRA 适配器 section 与
+// LoRA/量化专属字段（复用 krea2 的排除清单），并跨 section 按 key 去重。
+export const WAN22_FT_SECTIONS = dropDuplicateFieldKeys(WAN22_TI2V_LORA_SECTIONS
+  .filter((section) => section.id !== 'adapter-settings')
+  .map((section) => {
+    const sourceFields = section.id === 'optimizer-settings' ? S_LR_FT_DIT : section.fields;
+    const fields = sourceFields
+      .filter((field) => !KREA2_FT_EXCLUDED_FIELDS.has(field.key))
+      .map((field) => {
+      if (field.key === 'model_train_type') return { ...field, defaultValue: 'wan22-finetune' };
+      if (field.key === 'output_name') return { ...field, label: '底座输出名称', desc: '完整 Wan2.2 底座输出文件名', defaultValue: 'wan22-expanded' };
+      return field;
+    });
+    if (section.id !== 'model-settings') return { ...section, fields };
+    return { ...section, title: 'Wan2.2 全参微调', description: '训练完整 Wan2.2 TI2V-5B DiT，或扩展深度后只训练新增层。扩层仅支持 TI2V-5B 单塔。', fields: [...fields, ...WAN22_DEPTH_EXPANSION_FIELDS] };
+  }));

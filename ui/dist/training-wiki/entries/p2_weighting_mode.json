@@ -1,0 +1,32 @@
+{
+  "key": "p2_weighting_mode",
+  "title": "P2 感知加权模式",
+  "category": "正则 / Loss",
+  "appliesTo": [
+    "sdxl-lora",
+    "anima-lora",
+    "flux-lora"
+  ],
+  "layers": [
+    "Loss 层"
+  ],
+  "standard": {
+    "summary": "Flow 域的 P2（perception-prioritized）风格损失加权：按噪声水平（sigma）给每个样本的 loss 乘一个权重，structure 偏向高噪声/结构阶段，detail 偏向低噪声/细节阶段。off = 恒等权重。",
+    "effect": "off 或 strength=0 时与不开完全一致（parity）；structure 让构图、姿态等大结构的 timestep 获得更大梯度；detail 让纹理、质感等低噪声 timestep 获得更大梯度。",
+    "whenToUse": "风格训练想强化笔触细节时选 detail；角色/构图训练想优先学对形体结构时选 structure。也可通过 scale_guidance 预设自动配置。",
+    "avoidWhen": "已经用 min_snr_gamma、wavelet 2D 调度等多个 loss 加权时不建议叠太多层，权重相乘后难以归因；默认 off 保持基线。"
+  },
+  "advanced": {
+    "principle": "P2 weighting（Choi et al.）指出扩散模型不同噪声阶段学习的内容不同：高噪声学全局结构、低噪声学高频细节。对 loss 按 sigma 做单调加权即可把训练容量向目标阶段倾斜；此实现把该思想移植到 flow matching 的 sigma 轴上，权重为乘性 per-sample 因子。",
+    "intervention": "training_step_loss_execution_core.py：主 loss 计算后、其它 reweight（memory-gap、HNM）之前，p2_mode != off 时调用 p2_weighting.p2_perception_weight(sigmas, mode, strength) 得到逐样本权重相乘。",
+    "expectedImpact": "目标阶段的收敛加快；非目标阶段学习变慢，总体 loss 数值不再与基线可比。",
+    "tradeoffs": "strength 过大（>1.0）会明显牺牲另一端（结构↔细节此消彼长）；scale_guidance 预设（detail/style/composition 模式）会自动写入本键，手动值可能被预设覆盖或冲突。",
+    "codePath": "training_step_loss_execution_core.py——loss = loss * p2_perception_weight(sigmas, mode, strength)；p2_weighting.py；scale_guidance.py 预设注入"
+  },
+  "relatedConfigs": [
+    "p2_weighting_strength",
+    "min_snr_gamma",
+    "wavelet_loss_enabled",
+    "scale_guidance_mode"
+  ]
+}

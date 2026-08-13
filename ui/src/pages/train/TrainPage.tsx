@@ -187,6 +187,20 @@ export default function TrainPage() {
   const [showPreflight, setShowPreflight] = useState(false)
   const [showSaved, setShowSaved] = useState(false)
   const [igniting, setIgniting] = useState(false)
+  /** 操作栏「预设」上拉菜单(收纳低频/破坏性操作,与主按钮物理隔离) */
+  const [showDraftMenu, setShowDraftMenu] = useState(false)
+  const draftMenuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!showDraftMenu) return
+    const onDown = (e: MouseEvent) => {
+      if (draftMenuRef.current && !draftMenuRef.current.contains(e.target as Node)) {
+        setShowDraftMenu(false)
+      }
+    }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [showDraftMenu])
   /** P0-A: incomplete last run banner (never auto-enqueue). */
   const [resumeBanner, setResumeBanner] = useState<ResumeOffer | null>(null)
   const [resumeBannerDismissed, setResumeBannerDismissed] = useState(false)
@@ -285,6 +299,12 @@ export default function TrainPage() {
   const doIgnite = async () => {
     setIgniting(true)
     try {
+      // 提交前把草稿落盘(替代原独立「落盘」按钮;失败不阻断提交,草稿另有 debounce 自动写盘兜底)
+      try {
+        await flushTrainDraftsToDisk()
+      } catch {
+        /* ignore */
+      }
       // 输出目录同名产物冲突提示(检查失败不阻断提交)
       const dir = String(draft.output_dir ?? '')
       const name = String(draft.output_name ?? '')
@@ -317,15 +337,6 @@ export default function TrainPage() {
       resetDraft()
       explicitFields.clear()
       toast.info(tt('train.reset_ok'), 'RESET')
-    }
-  }
-
-  const doFlushDraft = async () => {
-    try {
-      await flushTrainDraftsToDisk()
-      toast.ok(tt('train.draft_ok'), 'DRAFT')
-    } catch (e) {
-      toast.err((e as Error).message, 'DRAFT')
     }
   }
 
@@ -501,15 +512,52 @@ export default function TrainPage() {
           <div className="lx-actionbar">
             <div className="lx-actionbar-meta">
               <b>{typeLabel}</b>
-              <span className="lx-num">{typeId} · REV {schemaRev}</span>
+              <span className="lx-num">{typeId}</span>
+            </div>
+            <div className="lx-actionbar-menuwrap" ref={draftMenuRef}>
+              <Button
+                aria-haspopup="menu"
+                aria-expanded={showDraftMenu}
+                onClick={() => setShowDraftMenu((v) => !v)}
+              >
+                {tt('train.presets')} ▴
+              </Button>
+              {showDraftMenu && (
+                <div className="lx-actionbar-menu" role="menu">
+                  <button type="button" role="menuitem" onClick={() => { setShowDraftMenu(false); setShowSaved(true) }}>
+                    {tt('train.presets_open')}
+                  </button>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    title={tt('train.restore_last_title')}
+                    onClick={() => { setShowDraftMenu(false); void doRestoreLast() }}
+                  >
+                    {tt('train.last')}
+                  </button>
+                  <hr />
+                  <button type="button" role="menuitem" onClick={() => { setShowDraftMenu(false); doReset() }}>
+                    {tt('train.reset')}
+                  </button>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="danger"
+                    title={tt('train.clear_draft_title')}
+                    onClick={() => { setShowDraftMenu(false); void doClearTypeDraft() }}
+                  >
+                    {tt('train.clear_type')}
+                  </button>
+                </div>
+              )}
             </div>
             <Button onClick={() => setShowPreflight(true)}>{tt('train.preflight')}</Button>
-            <Button onClick={() => setShowSaved(true)}>{tt('train.presets')}</Button>
-            <Button onClick={() => void doRestoreLast()} title={tt('train.restore_last_title')}>{tt('train.last')}</Button>
-            <Button onClick={() => void doFlushDraft()} title={tt('train.flush_draft_title')}>{tt('train.flush')}</Button>
-            <Button onClick={() => void doClearTypeDraft()} title={tt('train.clear_draft_title')}>{tt('train.clear_type')}</Button>
-            <Button onClick={doReset}>{tt('train.reset')}</Button>
-            <Button variant="primary" disabled={igniting || validation.errors.length > 0} onClick={() => void doIgnite()}>
+            <Button
+              className="lx-ignite"
+              variant="primary"
+              disabled={igniting || validation.errors.length > 0}
+              onClick={() => void doIgnite()}
+            >
               {igniting ? tt('train.submitting') : tt('train.ignite')}
             </Button>
           </div>
@@ -526,20 +574,6 @@ export default function TrainPage() {
         currentDraft={draftSnapshot}
         onLoad={(config) => { replaceDraft(config); markExplicit(Object.keys(config)) }}
       />
-
-      {/* 右下快速启动:与底部 Ignite 同逻辑、同禁用条件 */}
-      <button
-        type="button"
-        className="lx-fab"
-        disabled={igniting || validation.errors.length > 0}
-        onClick={() => void doIgnite()}
-        aria-label={tt('train.ignite')}
-        title={tt('train.ignite')}
-      >
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden>
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      </button>
     </div>
   )
 }

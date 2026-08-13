@@ -441,6 +441,7 @@ export function normalizeAdapterEntityMutex(payload = {}) {
     payload.use_dora = true;
   }
   if (loraType === 'rs_lora') payload.rs_lora_enabled = true;
+  if (loraType === 'lora_plus') payload.lora_plus_enabled = true;
 
   const winner = resolveWinningAdapterEntity(payload);
   for (const ent of ADAPTER_ENTITY_PRIORITY) {
@@ -469,6 +470,34 @@ export function normalizeAdapterEntityMutex(payload = {}) {
     const mode = String(payload.turbocore_optimizer_mode || 'off').trim().toLowerCase();
     if (mode && mode !== 'off') payload.turbocore_optimizer_mode = 'off';
   }
+
+  // ── 语义重复入口收敛：同一后端功能的多个 UI 入口在提交前统一 ──
+
+  // DoRA 单一事实源：lora_type=dora（下拉） > dora_wd（网络区原生路线） > dora_enabled（先锋区通用入口）
+  if (loraType === 'dora') {
+    payload.dora_wd = false;
+  } else if (_truthy(payload.dora_wd) && _truthy(payload.dora_enabled)) {
+    payload.dora_enabled = false;
+    payload.use_dora = false;
+  }
+
+  // 高级优化策略下拉优先表达意图：显式选择 LoRA+ / RS-LoRA 时同步布尔 master，避免两处矛盾
+  const advStrategy = String(payload.advanced_optimizer_strategy || 'auto').trim().toLowerCase();
+  if (advStrategy === 'lora_plus') payload.lora_plus_enabled = true;
+  if (advStrategy === 'rs_lora') payload.rs_lora_enabled = true;
+
+  // SDXL 低显存档接管 block swap（section 文案已承诺此行为）：独立兜底开关让位
+  if (
+    _truthy(payload.sdxl_low_vram_optimization)
+    && _truthy(payload.sdxl_low_vram_fixed_block_swap)
+    && _truthy(payload.sdxl_block_swap_enabled)
+  ) {
+    payload.sdxl_block_swap_enabled = false;
+  }
+
+  // 量化快捷糖非 off 时以糖为准，镜像后端 apply_recommended_train_quant_preset 的覆盖语义
+  const tqPreset = String(payload.train_quant_preset || 'off').trim().toLowerCase();
+  if (tqPreset !== 'off') payload.weight_compression_preset = tqPreset;
 
   return payload;
 }

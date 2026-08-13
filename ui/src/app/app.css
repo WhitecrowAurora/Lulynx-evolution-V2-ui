@@ -49,6 +49,11 @@ html[data-theme='glass'] .lx-nav a.on { background: rgba(255, 255, 255, 0.07); c
 }
 .lx-pill.accent { color: var(--lx-accent); border-color: color-mix(in srgb, var(--lx-accent) 55%, var(--lx-border)); }
 .lx-pill.accent.on { background: var(--lx-accent); color: var(--lx-accent-contrast); border-color: var(--lx-accent); }
+/* 可点击的性能开关 pill(LULYNX 优化 / TURBOCORE):on 亮起,off 置灰 */
+.lx-pill-toggle { cursor: pointer; background: transparent; transition: all var(--lx-dur-fast); }
+.lx-pill-toggle:hover { color: var(--lx-text); border-color: color-mix(in srgb, var(--lx-accent) 55%, var(--lx-border)); }
+.lx-pill-toggle.on { background: var(--lx-accent); color: var(--lx-accent-contrast); border-color: var(--lx-accent); }
+.lx-pill-toggle:not(.on) { opacity: 0.6; }
 @media (max-width: 1100px) { .lx-status-pills { display: none; } }
 
 .lx-theme-seg { display: flex; border: var(--lx-border-w, 1px) solid var(--lx-border); border-radius: var(--lx-btn-radius, var(--lx-radius)); overflow: hidden; }

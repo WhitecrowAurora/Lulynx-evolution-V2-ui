@@ -4,6 +4,8 @@
 export interface SchemaFieldOption {
   value: string
   label?: string
+  disabled?: boolean
+  disabledReason?: string
 }
 
 export interface SchemaField {

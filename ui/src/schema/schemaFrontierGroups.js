@@ -273,12 +273,13 @@ export const S_LORA_VARIANTS = [
   // 只剩 reader-free 的兼容别名，所以放在训练页等于让用户调一组无人读取的旋钮。现在归
   // 出图页（pages/generate），键名统一为 regional_lora_*，开关是 regions 本身而非布尔。
   { key: 'delta_lora_enabled', type: 'boolean', label: 'Delta-LoRA (ΔBA 动态缩放)', desc: 'ΔBA 动态缩放 LoRA 更新，提升表达力。', defaultValue: false },
-  { key: 'dora_enabled', type: 'boolean', label: 'DoRA (权重分解)', desc: '分解权重为方向+幅度，比标准 LoRA 表达力强但稍慢。', defaultValue: false },
-  { key: 'dora_mode', type: 'select', label: 'DoRA 模式', desc: '实现模式。full=完整分解', defaultValue: 'full', options: [{ value: 'full', label: 'full' }, { value: 'split', label: 'split' }, { value: 'merged', label: 'merged' }], visibleWhen: (c) => c.dora_enabled },
-  { key: 'dora_variant', type: 'select', label: 'DoRA 变体', desc: 'classic=现有经典 DoRA（默认）；set= Set-DoRA（幅度稳定，可选）。', defaultValue: 'classic', options: [{ value: 'classic', label: 'classic（默认）' }, { value: 'set', label: 'set（Set-DoRA）' }], visibleWhen: (c) => c.dora_enabled || c.use_dora || c.dora_wd },
-  { key: 'dora_init_scale', type: 'number', label: 'DoRA 初始化缩放', desc: 'magnitude 初始化缩放', defaultValue: 1.0, min: 0, step: 0.05, visibleWhen: (c) => c.dora_enabled },
-  { key: 'dora_use_scalar_magnitude', type: 'boolean', label: 'DoRA 标量 magnitude', desc: '用标量 magnitude 代替向量。', defaultValue: false, visibleWhen: (c) => c.dora_enabled },
-  { key: 'dora_normalize_magnitude', type: 'boolean', label: 'DoRA 归一化 magnitude', desc: '对 magnitude 做归一化。', defaultValue: true, visibleWhen: (c) => c.dora_enabled },
+  // DoRA 与网络区的原生入口(dora_wd)互斥:网络区开着时这里隐藏,提交层同样收敛
+  { key: 'dora_enabled', type: 'boolean', label: 'DoRA (权重分解)', desc: '分解权重为方向+幅度，比标准 LoRA 表达力强但稍慢。与网络区「启用 DoRA」(dora_wd) 同源，后者开启时以后者为准。', defaultValue: false, visibleWhen: (c) => !c.dora_wd },
+  { key: 'dora_mode', type: 'select', label: 'DoRA 模式', desc: '实现模式。full=完整分解', defaultValue: 'full', options: [{ value: 'full', label: 'full' }, { value: 'split', label: 'split' }, { value: 'merged', label: 'merged' }], visibleWhen: (c) => c.dora_enabled && !c.dora_wd },
+  { key: 'dora_variant', type: 'select', label: 'DoRA 变体', desc: 'classic=现有经典 DoRA（默认）；set= Set-DoRA（幅度稳定，可选）。', defaultValue: 'classic', options: [{ value: 'classic', label: 'classic（默认）' }, { value: 'set', label: 'set（Set-DoRA）' }], visibleWhen: (c) => c.dora_enabled || c.dora_wd },
+  { key: 'dora_init_scale', type: 'number', label: 'DoRA 初始化缩放', desc: 'magnitude 初始化缩放', defaultValue: 1.0, min: 0, step: 0.05, visibleWhen: (c) => c.dora_enabled && !c.dora_wd },
+  { key: 'dora_use_scalar_magnitude', type: 'boolean', label: 'DoRA 标量 magnitude', desc: '用标量 magnitude 代替向量。', defaultValue: false, visibleWhen: (c) => c.dora_enabled && !c.dora_wd },
+  { key: 'dora_normalize_magnitude', type: 'boolean', label: 'DoRA 归一化 magnitude', desc: '对 magnitude 做归一化。', defaultValue: true, visibleWhen: (c) => c.dora_enabled && !c.dora_wd },
   { key: 'hydralora_enabled', type: 'boolean', label: 'HydraLoRA (多分支)', desc: '多分支 LoRA + 分支平衡损失。', defaultValue: false },
   { key: 'hydralora_num_experts', type: 'number', label: 'Hydra 专家数', desc: '多分支专家数量', defaultValue: 4, min: 2, step: 1, visibleWhen: (c) => c.hydralora_enabled },
   { key: 'hydralora_routing', type: 'select', label: 'Hydra 路由', desc: '专家路由策略', defaultValue: 'top_k', options: [{ value: 'top_k', label: 'top_k' }, { value: 'soft', label: 'soft' }], visibleWhen: (c) => c.hydralora_enabled },
@@ -583,6 +584,19 @@ export const S_NEGATIVE_SEMANTIC_REGULARIZATION = [
   { key: 'negative_semantic_regularization_mode', type: 'select', label: '负面语义正则模式', desc: '当前后端实现为 lora_delta：约束负面提示词下', defaultValue: 'lora_delta', options: [{ value: 'lora_delta', label: 'LoRA Delta (lora_delta)' }], visibleWhen: (c) => c.negative_semantic_regularization_enabled },
 ];
 
+// ── 概念方向训练（SD1.5/SDXL LoRA）───────────────────────────────────────────
+// 通过正/负 prompt 对学习"编辑向量"式的可叠加属性 LoRA。每次计算做 4 次额外
+// UNet 前向（LoRA 开/关 × 正/负），与文本编码器输出缓存互斥（开缓存时自动停用）。
+export const S_CONCEPT_DIRECTION = [
+  { key: 'concept_direction_enabled', type: 'boolean', label: '启用概念方向训练', desc: '通过正/负 prompt 对学习概念的「编辑向量」，推理时缩放 LoRA 权重即可控制概念强度。每次计算额外做 4 次 UNet 前向，训练明显变慢；开启文本编码器输出缓存时自动停用。', defaultValue: false },
+  { key: 'concept_direction_pairs', type: 'textarea', label: '概念方向 Prompt 对 JSON', desc: '格式：[{"positive":"a smiling person","negative":"a person"}]。每步随机采样一对。留空或 JSON 无效时本功能不生效。', defaultValue: '', visibleWhen: when('concept_direction_enabled', true) },
+  { key: 'concept_direction_weight', type: 'number', label: '方向损失权重', desc: '方向损失叠加到主损失的权重。', defaultValue: 1.0, min: 0, step: 0.01, visibleWhen: when('concept_direction_enabled', true) },
+  { key: 'concept_direction_guidance_scale', type: 'number', label: '方向放大强度', desc: '目标方向 = 该值 × 底模方向差。大于 1 鼓励 LoRA 放大概念方向。', defaultValue: 1.0, min: 0, step: 0.1, visibleWhen: when('concept_direction_enabled', true) },
+  { key: 'concept_direction_every_n_steps', type: 'number', label: '每 N 步计算一次', desc: '节流开关：每 N 个 step 才计算一次方向损失，降低 4 次额外前向的开销。1 = 每步都算。', defaultValue: 1, min: 1, step: 1, visibleWhen: when('concept_direction_enabled', true) },
+  { key: 'concept_direction_timestep_range', type: 'string', label: '时间步范围', desc: '可选，如 "200,800"：仅当本步时间步落在范围内才计算方向损失。留空不限制。', defaultValue: '', visibleWhen: when('concept_direction_enabled', true) },
+  { key: 'concept_direction_neutral_reg', type: 'number', label: '负向保持正则', desc: '约束负 prompt 下的输出与底模一致，防止负方向被 LoRA 带偏。0 = 关闭。', defaultValue: 0, min: 0, step: 0.01, visibleWhen: when('concept_direction_enabled', true) },
+];
+
 // ── 实验探针 ──────────────────────────────────────────────────────────────────
 export const S_EXPERIMENTAL_PROBES = [
   { key: 'fera_enabled', type: 'boolean', label: 'FERA 探测', desc: '特征探测。', defaultValue: false },
@@ -877,4 +891,32 @@ export const S_TURBOCORE = [
   { key: 'turbocore_prefetch_depth', type: 'number', label: '预取深度', desc: '预取队列深度，默认 2，增加可隐藏延迟但增加显存。', defaultValue: 2, min: 1, max: 8, step: 1 },
   { key: 'turbocore_features', type: 'textarea', label: '启用功能列表', desc: '额外启用的优化功能（逗号分隔），留空=使用 profile 默认。', defaultValue: '' },
   { key: 'turbocore_disable', type: 'textarea', label: '禁用功能列表', desc: '要禁用的优化功能（逗号分隔），用于排查兼容性问题。', defaultValue: '' },
+];
+
+export const S_STAGED_RESOLUTION_ADVANCED = [
+  { key: 'mixed_resolution_strategy', type: 'select', label: '混合分辨率策略', title: 'mixed_resolution_strategy', desc: 'staged=按 epoch 阶段切换分辨率；within_epoch_free_fit=同 epoch 内多样本分辨率。', defaultValue: 'staged', options: [
+    { value: 'staged', label: 'staged（分阶段）' },
+    { value: 'within_epoch_free_fit', label: 'within_epoch_free_fit（epoch 内自由适配）' }
+  ], visibleWhen: when('enable_mixed_resolution_training', true) },
+  { key: 'mixed_resolution_profiles_per_sample', type: 'number', label: '每样本分辨率档位数', title: 'mixed_resolution_profiles_per_sample', desc: 'within_epoch_free_fit 模式下每样本可用的分辨率 profile 数。', defaultValue: 2, min: 2, max: 8, step: 1, visibleWhen: all(when('enable_mixed_resolution_training', true), when('mixed_resolution_strategy', 'within_epoch_free_fit')) }
+];
+
+export const S_SOFT_PROMPT_TUNING = [
+  { key: 'use_allora', type: 'boolean', label: 'ALLoRA 自适应梯度缩放', title: 'use_allora', desc: '优化器 step 中对 LoRA 梯度做 ALLoRA 自适应重缩放。默认关闭（关闭时与基础优化器行为一致）。', defaultValue: false },
+  { key: 'prefix_tuning_length', type: 'number', label: 'Prefix Tuning 长度', title: 'prefix_tuning_length', desc: '可学习 prefix soft-prompt token 数；0=关闭。', defaultValue: 0, min: 0, step: 1 },
+  { key: 'postfix_tuning_length', type: 'number', label: 'Postfix Tuning 长度', title: 'postfix_tuning_length', desc: '可学习 postfix soft-prompt token 数；0=关闭。', defaultValue: 0, min: 0, step: 1 }
+];
+
+export const S_CONCEPT_EDIT_CURRICULUM = [
+  { key: 'concept_edit_timestep_curriculum', type: 'boolean', label: '时间步课程学习', title: 'concept_edit_timestep_curriculum', desc: '概念编辑训练按 band 循环限制 timestep 范围，由易到难。', defaultValue: false },
+  { key: 'concept_edit_timestep_curriculum_buckets', type: 'number', label: '课程 Band 数', title: 'concept_edit_timestep_curriculum_buckets', desc: '每个循环划分的 timestep band 数量。', defaultValue: 10, min: 2, max: 50, step: 1, visibleWhen: when('concept_edit_timestep_curriculum', true) }
+];
+
+export const S_ANIMA_PREDICTION_TYPE = [
+  { key: 'anima_model_prediction_type', type: 'select', label: 'Anima 预测类型', title: 'anima_model_prediction_type', desc: 'DiT 训练目标形式：velocity（Flow 默认）、noise、epsilon、sample。', defaultValue: 'velocity', options: [
+    { value: 'velocity', label: 'velocity' },
+    { value: 'noise', label: 'noise' },
+    { value: 'epsilon', label: 'epsilon' },
+    { value: 'sample', label: 'sample' }
+  ] }
 ];

@@ -416,6 +416,18 @@ function removeUiOnlyFields(payload) {
   }
   if (payload) delete payload.wan22_tower_choice;
 
+  // 键名漂移兼容（2026-08-13 暴露度审计）：旧草稿的死键搬运到后端真实键
+  // ui_custom_params -> custom_toml（launcher training_config_resolver 消费）
+  if (payload && payload.ui_custom_params != null && String(payload.ui_custom_params).trim() && !payload.custom_toml) {
+    payload.custom_toml = payload.ui_custom_params;
+  }
+  if (payload) delete payload.ui_custom_params;
+  // thunder_jit_warmup -> thunder_jit_warmup_enabled（thunder_jit_compiler 消费）
+  if (payload && payload.thunder_jit_warmup != null && payload.thunder_jit_warmup_enabled == null) {
+    payload.thunder_jit_warmup_enabled = Boolean(payload.thunder_jit_warmup);
+  }
+  if (payload) delete payload.thunder_jit_warmup;
+
   if (!payload.enable_block_weights) {
     delete payload.down_lr_weight;
     delete payload.mid_lr_weight;
@@ -511,9 +523,21 @@ function normalizeUniversalDitRoute(payload) {
   }
 }
 
+function passthroughTopbarPerfToggles(payload, config) {
+  // 顶栏性能开关(perfModeStore/Topbar 同步进草稿):turbocore_enabled 在多数
+  // schema 里是 hidden 字段,但 TI/CN 等类型的 sections 不含 S_TURBOCORE 组;
+  // lulynx_optimization_enabled 则完全不是 schema 字段。两者都从草稿透传。
+  // 草稿缺席时不注入,保持 node 侧 schema 工具输出稳定(由后端默认值接管)。
+  // 必须在 normalizeAdapterEnabledFlags 之前调用,TurboCore vs Triton 互斥依赖该值。
+  for (const key of ['lulynx_optimization_enabled', 'turbocore_enabled']) {
+    if (key in config) payload[key] = Boolean(config[key]);
+  }
+}
+
 export function buildRunConfigFromSections(config, typeId, { getSectionsForType, isFieldVisible }) {
   const resolvedTypeId = typeId || config.model_train_type || 'sdxl-lora';
   const payload = collectVisiblePayload(config, resolvedTypeId, getSectionsForType, isFieldVisible);
+  passthroughTopbarPerfToggles(payload, config);
   normalizeScheduler(payload);
   normalizeOptimizerArgs(payload);
   normalizeLycorisNetworkArgs(payload, resolvedTypeId);

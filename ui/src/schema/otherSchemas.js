@@ -36,11 +36,14 @@ import {
   S_EXECUTION_BACKEND,
   S_COMPILE_EXPERT,
   S_MODULE_OFFLOAD_EXPERT,
+  S_DREAMBOOTH,
+  S_LLLITE,
 } from './schemaFieldGroups.js';
 import {
   S_NEGATIVE_SEMANTIC_REGULARIZATION,
   S_QUALITY_OPTIMIZATION_PACK,
   S_DIAGNOSTICS_MONITORING,
+  S_CONCEPT_DIRECTION,
 } from './schemaFrontierGroups.js';
 
 // ---- SD 1.5 LoRA ----
@@ -61,6 +64,7 @@ export const SD15_LORA_SECTIONS = [
   sec('optimizer-settings', 'optimizer', '学习率与优化器', '', [...S_LR]),
   sec('training-settings', 'training', '训练参数', '', S_TRAIN(10)),
   sec('negative-semantic-regularization', 'frontier', '负面语义正则', '用负面提示词约束 LoRA 在不希望语义上的增量。', [...S_NEGATIVE_SEMANTIC_REGULARIZATION]),
+  sec('concept-direction', 'frontier', '概念方向训练', '用正/负 prompt 对学习可叠加的「编辑向量」LoRA；与 TE 输出缓存互斥。', [...S_CONCEPT_DIRECTION]),
   sec('v-parameterization-settings', 'training', 'V 参数化', 'v-pred 训练目标开关。', vParameterizationFields()),
   sec('rf-settings', 'training', 'Rectified Flow', 'RF / Flow Matching 训练目标与时间步策略。', rectifiedFlowParams()),
   sec('preview-settings', 'preview', '预览图设置', '', [...S_PREVIEW, ...S_QUALITY_EVAL]),
@@ -117,7 +121,7 @@ export const DB_SECTIONS = [
     { key: 'v2', type: 'boolean', label: 'SD 2.x 模型', title: 'v2', desc: '使用 SD 2.x 模型', defaultValue: false },
   ]),
   sec('save-settings', 'model', '保存设置', '', [...S_SAVE]),
-  sec('dataset-settings', 'dataset', '数据集设置', '', ds('512,512', 1024, 64)),
+  sec('dataset-settings', 'dataset', '数据集设置', '', [...ds('512,512', 1024, 64), ...S_DREAMBOOTH]),
   sec('caption-settings', 'dataset', 'Caption 选项', '', [...S_CAPTION]),
   sec('data-aug-settings', 'dataset', '数据增强', '颜色、翻转与裁剪增强。', [...S_DATA_AUG]),
   sec('optimizer-settings', 'optimizer', '学习率与优化器', '', [...S_LR]),
@@ -149,6 +153,7 @@ export const SD_CN_SECTIONS = [
   sec('caption-settings', 'dataset', 'Caption 选项', '', [...S_CAPTION]),
   sec('data-aug-settings', 'dataset', '数据增强', '颜色、翻转与裁剪增强。', [...S_DATA_AUG]),
   sec('optimizer-settings', 'optimizer', '学习率与优化器', '', [...cnLR]),
+  sec('lllite-settings', 'network', 'LLLite 条件适配器', 'UNet 侧 LLLite adapter 结构参数（SD 系 ControlNet）。', [...S_LLLITE]),
   sec('training-settings', 'training', '训练参数', '', [...cnTrainFields]),
   sec('preview-settings', 'preview', '预览图设置', '', [...S_PREVIEW, ...S_QUALITY_EVAL]),
   sec('validation-settings', 'preview', '验证设置', '验证集划分与验证频率。', [...S_VALIDATION]),
