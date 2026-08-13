@@ -655,6 +655,15 @@ export const ANIMA_FT_SECTIONS = [
     { key: 't5_max_token_length', type: 'number', label: 'T5 最大 token', title: 't5_max_token_length', desc: 'T5 最大 token', defaultValue: 512, min: 1 },
     { key: 'split_attn', type: 'boolean', label: '拆分 attention', title: 'split_attn', desc: '拆分 attention', defaultValue: false },
   ]),
+  sec('depth-expansion-settings', 'model', '模型扩层', '以恒等残差块扩展 DiT 深度，最终保存完整的新底座。', [
+    { key: 'anima_depth_expansion_enabled', type: 'boolean', label: '启用模型扩层', title: 'anima_depth_expansion_enabled', desc: '训练加载时交错复制相邻层，并将新层输出投影归零。仅支持 Anima 全参微调。', defaultValue: false },
+    { key: 'anima_depth_expansion_target_layers', type: 'number', label: '目标层数', title: 'anima_depth_expansion_target_layers', desc: '必须大于底座实际层数；Anima Base 28 层可设置为 40。', defaultValue: 40, min: 2, step: 1, visibleWhen: when('anima_depth_expansion_enabled', true) },
+    { key: 'anima_depth_expansion_train_scope', type: 'select', label: '训练范围', title: 'anima_depth_expansion_train_scope', desc: '只训练新层最接近标准 Depth Up-Scaling；外围模块包括输入、时间嵌入和最终输出层。', defaultValue: 'new_layers', options: [
+      { value: 'new_layers', label: '只训练新层' },
+      { value: 'new_layers_periphery', label: '新层 + 外围模块' },
+      { value: 'all', label: '训练全部层' },
+    ], visibleWhen: when('anima_depth_expansion_enabled', true) },
+  ]),
   sec('save-settings', 'model', '保存设置', '', [...S_SAVE]),
   sec('dataset-settings', 'dataset', '数据集设置', '', ds('1024,1024', 2048, 64)),
   sec('caption-settings', 'dataset', 'Caption 选项', '', S_CAPTION.filter((f) => f.key !== 'max_token_length')),

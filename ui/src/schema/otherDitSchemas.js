@@ -656,6 +656,44 @@ export const KREA2_LORA_SECTIONS = [
   sec('turbocore-settings', 'speed', 'TurboCore 内核优化', 'CUDA/Triton 内核自动调优。', [...S_TURBOCORE], { expert: true })
 ];
 
+const KREA2_DEPTH_EXPANSION_FIELDS = [
+  { key: 'krea2_depth_expansion_enabled', type: 'boolean', label: '扩展 Transformer 深度', title: 'krea2_depth_expansion_enabled', desc: '交错复制 Krea-2 block，并以恒等残差初始化新增层。最终保存完整新底座。', defaultValue: false },
+  { key: 'krea2_depth_expansion_target_layers', type: 'number', label: '目标层数', title: 'krea2_depth_expansion_target_layers', desc: '扩层后的 Transformer block 总数。', defaultValue: 40, min: 2, step: 1, visibleWhen: when('krea2_depth_expansion_enabled', true) },
+  { key: 'krea2_depth_expansion_train_scope', type: 'select', label: '训练范围', title: 'krea2_depth_expansion_train_scope', desc: '选择只训练新增层、同时训练外围模块，或训练全部参数。', defaultValue: 'new_layers', visibleWhen: when('krea2_depth_expansion_enabled', true), options: [
+    { value: 'new_layers', label: '只训练新增层' },
+    { value: 'new_layers_periphery', label: '新增层 + 外围模块' },
+    { value: 'all', label: '全部参数' },
+  ] },
+];
+
+const KREA2_FT_EXCLUDED_FIELDS = new Set([
+  'lora_plus_enabled', 'lora_plus_lr_ratio', 'rs_lora_enabled',
+  'weight_compression_preset', 'weight_compression_verify', 'train_quant_preset',
+  'weight_compression_enabled', 'weight_compression_target', 'weight_compression_format',
+  'quant_train_mode', 'keep_w8_vram_prefer', 'quant_train_convrot', 'vram_swap_to_ram',
+  'lulynx_weight_noise_enabled', 'lulynx_weight_noise_mode', 'lulynx_weight_noise_sigma',
+  'lulynx_weight_noise_bound_norm', 'lulynx_weight_noise_log_every', 'merge_export',
+  'network_train_unet_only', 'network_train_text_encoder_only',
+]);
+
+export const KREA2_FT_SECTIONS = KREA2_LORA_SECTIONS
+  .filter((section) => section.id !== 'adapter-settings')
+  .map((section) => {
+    const sourceFields = section.id === 'optimizer-settings' ? S_LR_FT_DIT : section.fields;
+    const fields = sourceFields
+      .filter((field) => !KREA2_FT_EXCLUDED_FIELDS.has(field.key))
+      .map((field) => {
+      if (field.key === 'model_train_type') return { ...field, defaultValue: 'krea2-finetune' };
+      if (field.key === 'output_name') return { ...field, label: '底座输出名称', desc: '完整 Krea-2 底座输出文件名', defaultValue: 'krea2-expanded' };
+      if (field.key === 'krea2_training_mode') {
+        return { ...field, options: field.options.filter((option) => option.value !== 'frozen_delta') };
+      }
+      return field;
+    });
+    if (section.id !== 'model-settings') return { ...section, fields };
+    return { ...section, title: 'Krea-2 全参微调', description: '训练完整 Krea-2 DiT，或扩展深度后只训练新增层。', fields: [...fields, ...KREA2_DEPTH_EXPANSION_FIELDS] };
+  });
+
 // ---- FLUX.2 Klein LoRA ----
 // 分模型默认：slots=4 / prefetch=3 / pin=true（与 krea2 4/2 字段分离）
 // 不挂：krea2_training_mode / vram_preset / layer_offload / de_turbo

@@ -325,6 +325,21 @@ function _normalizeAttentionId(value) {
   return raw;
 }
 
+
+function normalizeAnimaVramOptimizer(payload) {
+  const enabled = _truthyFlag(payload.anima_vram_optimizer);
+  const backend = _normalizeAttentionId(payload.attention_backend);
+  if (!enabled || backend !== 'flash2') {
+    payload.anima_vram_optimizer = false;
+    payload.anima_packed_attention_backend = 'dense';
+    return;
+  }
+  payload.anima_vram_optimizer = true;
+  payload.anima_packed_attention_backend = 'flash2_varlen';
+  payload.anima_block_checkpointing = true;
+  payload.anima_block_checkpointing_mode = 'block';
+  payload.anima_block_checkpointing_interval = 1;
+}
 function normalizeAttention(payload) {
   // Advanced overrides win; no-intent path stays auto so launcher runtime
   // default_attention_backend can apply. Bare schema sdpa=true alone is not intent.
@@ -506,6 +521,7 @@ export function buildRunConfigFromSections(config, typeId, { getSectionsForType,
   normalizeAdapterEnabledFlags(payload);
   removeUiOnlyFields(payload);
   normalizeAttention(payload);
+  normalizeAnimaVramOptimizer(payload);
   normalizeLayeredAlpha(payload);
   normalizeUniversalDitRoute(payload);
   return payload;

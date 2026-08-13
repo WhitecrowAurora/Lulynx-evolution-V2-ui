@@ -23,7 +23,7 @@ import {
 import {
   FLUX_LORA_SECTIONS, LUMINA_LORA_SECTIONS, QWEN_IMAGE_LORA_SECTIONS, HUNYUAN_DIT_LORA_SECTIONS,
   HUNYUAN_IMAGE_COMPAT_SECTIONS, FLUX_FT_SECTIONS, LUMINA_FT_SECTIONS, FLUX_CN_SECTIONS, NEWBIE_LORA_SECTIONS,
-  KREA2_LORA_SECTIONS, FLUX2_LORA_SECTIONS, ZIMAGE_LORA_SECTIONS, WAN22_TI2V_LORA_SECTIONS, WAN22_T2V_A14B_LORA_SECTIONS, LTX23_LORA_SECTIONS, BOOGU_LORA_SECTIONS, BOOGU_EDIT_LORA_SECTIONS,
+  KREA2_LORA_SECTIONS, KREA2_FT_SECTIONS, FLUX2_LORA_SECTIONS, ZIMAGE_LORA_SECTIONS, WAN22_TI2V_LORA_SECTIONS, WAN22_T2V_A14B_LORA_SECTIONS, LTX23_LORA_SECTIONS, BOOGU_LORA_SECTIONS, BOOGU_EDIT_LORA_SECTIONS,
 } from './otherDitSchemas.js';
 import {
   LAB_DISTILLER_SECTIONS, SDXL_TURBO_LORA_SECTIONS, ANIMA_FEW_STEP_LORA_SECTIONS, NEWBIE_FEW_STEP_LORA_SECTIONS,
@@ -32,6 +32,7 @@ import { CONCEPT_EDIT_UNIFIED_SECTIONS } from './conceptEditUnifiedSchema.js';
 import { S_TRAINING_INTENT_PROFILE } from './schemaFrontierGroups.js';
 import { applyAdapterFamilyCapabilities } from './schemaCommon.js';
 import { S_UNIVERSAL_DIT } from './universalDitFields.js';
+import { MINIMAX_H3_LORA_SECTIONS, MINIMAX_H3_FT_SECTIONS } from './minimaxH3Schema.js';
 
 export { ALL_TRAINING_TYPES, UI_TABS };
 export const TRAINING_TYPES = VISIBLE_TRAINING_TYPES;
@@ -79,6 +80,9 @@ const SECTIONS_MAP = {
   'flux-finetune':          FLUX_FT_SECTIONS,
   'lumina-finetune':        LUMINA_FT_SECTIONS,
   'anima-finetune':         ANIMA_FT_SECTIONS,
+  'krea2-finetune':         KREA2_FT_SECTIONS,
+  'minimax-h3-lora':        MINIMAX_H3_LORA_SECTIONS,
+  'minimax-h3-finetune':    MINIMAX_H3_FT_SECTIONS,
   'sd-controlnet':          SD_CN_SECTIONS,
   'sdxl-controlnet':        SDXL_CN_SECTIONS,
   'anima-controlnet':       ANIMA_CN_SECTIONS,
@@ -258,6 +262,14 @@ export function getAvailableTabs(typeId, config) {
 }
 
 export function isFieldVisible(field, config) {
+  if (field?.requiresAttentionBackend) {
+    const backend = String(config?.attention_backend || config?.attn_mode || config?.anima_attn_mode || '').trim().toLowerCase();
+    if (field.requiresAttentionBackend === 'flash2') {
+      if (backend !== 'flash2') return false;
+    } else if (backend !== field.requiresAttentionBackend) {
+      return false;
+    }
+  }
   if (!field?.visibleWhen) return true;
   return field.visibleWhen(config);
 }
