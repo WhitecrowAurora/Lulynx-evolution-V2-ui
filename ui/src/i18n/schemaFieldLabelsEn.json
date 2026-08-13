@@ -791,7 +791,7 @@
   "ltx23_block_offload_pin_memory": "Block Offload Pin Memory",
   "ltx23_block_offload_prefetch_depth": "Block Offload prefetchdepth",
   "ltx23_block_offload_ratio": "Block Offload Ratio %",
-  "ltx23_block_residency": "LTX-2.3 Block",
+  "ltx23_block_residency": "LTX-2.x Block Residency",
   "ltx23_isolate_modalities": "(ltx23_isolate_modalities)",
   "ltx23_max_text_length": "Max (ltx23_max_text_length)",
   "ltx23_timestep_sampling": "(ltx23_timestep_sampling)",

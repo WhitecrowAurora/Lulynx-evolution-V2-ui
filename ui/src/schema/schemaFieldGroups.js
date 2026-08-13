@@ -367,7 +367,7 @@ export const WAN22_OFFLOAD_FIELDS = [
 ];
 
 export const LTX23_OFFLOAD_FIELDS = [
-  { key: 'ltx23_block_residency', type: 'select', label: 'LTX-2.3 Block 驻留', title: 'ltx23_block_residency', desc: '22B 建议 block_offload', defaultValue: 'block_offload', options: [
+  { key: 'ltx23_block_residency', type: 'select', label: 'LTX-2.x Block 驻留', title: 'ltx23_block_residency', desc: '22B 建议 block_offload', defaultValue: 'block_offload', options: [
     { value: 'resident', label: 'resident' },
     { value: 'block_offload', label: 'block_offload' }
   ]},

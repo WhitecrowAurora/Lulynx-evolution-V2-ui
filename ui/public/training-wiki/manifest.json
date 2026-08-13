@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-13",
+  "updatedAt": "2026-08-14",
   "title": "Lulynx Training Wiki",
   "description": "Shared help entries for WebUI option hints and the launcher learning center.",
   "entries": [
@@ -3394,6 +3394,13 @@
       "category": "LoRA / LyCORIS",
       "summary": "LyCORIS 提供多种替代 LoRA 的低秩适配器算法：LoHa（Hadamard 积）、LoKr（Kronecker 积）、IA³（特征调制）、Diag-OFT（正交微调）、LoCon（卷积扩展 LoRA）。",
       "entry": "entries/lycoris_algo.json"
+    },
+    {
+      "key": "lycoris_loha_implementation",
+      "title": "LoHa 实现方案",
+      "category": "LoRA / LyCORIS",
+      "summary": "选择 LoHa 的数学实现。默认标准 LyCORIS LoHa；Lulynx 简化 LoHa 用于兼容旧训练和旧权重。",
+      "entry": "entries/lycoris_loha_implementation.json"
     },
     {
       "key": "lycoris_preset",
