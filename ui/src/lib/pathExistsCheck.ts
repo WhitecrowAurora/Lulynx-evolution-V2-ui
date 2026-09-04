@@ -52,10 +52,15 @@ function toFieldLike(
 
 export async function checkPathStatus(
   path: string,
-  field: { type?: string; key?: string; defaultValue?: unknown } | null,
+  field: { type?: string; key?: string; defaultValue?: unknown; allowModelDirectory?: boolean } | null,
 ): Promise<PathCheckResult> {
   const text = String(path ?? '').trim()
-  const expect = field?.type === 'folder' ? 'dir' : 'file'
+  // A field that accepts either a checkpoint file or an archive directory -- the
+  // resume picker, which renders both buttons -- cannot assert a path type.
+  // Asserting 'file' flagged every directory that picker itself offers as a
+  // type_mismatch. See BUG #86.
+  const expect =
+    field?.allowModelDirectory === true ? 'any' : field?.type === 'folder' ? 'dir' : 'file'
   const like = toFieldLike(field)
   if (!shouldCheckPath(text, like)) {
     return { status: 'idle', message: '' }

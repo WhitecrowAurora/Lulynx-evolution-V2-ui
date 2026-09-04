@@ -5,9 +5,6 @@
   "appliesTo": [
     "anima-lora"
   ],
-  "aliases": [
-    "ant_blend"
-  ],
   "standard": {
     "summary": "（实验性）ANT（Adaptive Noise Training）：在训练噪声中加入来自数据集的可学习对抗噪声，使模型更鲁棒。",
     "effect": "开启后，训练噪声不再是纯高斯，而是混合了少量从数据集统计量派生的\"对抗方向\"噪声，提升模型对相关分布的鲁棒性。",

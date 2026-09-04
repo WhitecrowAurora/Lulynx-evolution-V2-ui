@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
-/* HTTP 传输层:同源相对路径,信封 {status,data,message} 由调用方拆(与旧 UI 契约一致);
+/* HTTP 传输层:同源相对路径,统一拒绝 HTTP/业务错误信封;
    错误统一格式化并上报 /api/system/webui_error(sendBeacon 优先,30s 去重) */
 import { translate } from '@/i18n/useI18n'
 
@@ -100,6 +100,24 @@ export class ApiError extends Error {
   }
 }
 
+function apiBusinessError(payload: unknown, status?: number): ApiError | null {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return null
+  const obj = payload as Record<string, unknown>
+  if (typeof obj.status !== 'string' || obj.status.trim().toLowerCase() !== 'error') return null
+  return new ApiError(
+    formatApiMessage(obj.message ?? obj.detail ?? obj.error ?? payload) || translate('api.request_fail', { status: status ?? 200 }),
+    status,
+    payload,
+  )
+}
+
+/** 兼容 API 会以 HTTP 200 返回 {status:'error'}；该信封必须与 HTTP 失败同样 fail-closed。 */
+export function assertApiSuccess<T = unknown>(payload: T, status?: number): T {
+  const error = apiBusinessError(payload, status)
+  if (error) throw error
+  return payload
+}
+
 export async function request<T = unknown>(path: string, options: RequestInit = {}): Promise<T> {
   let response: Response
   try {
@@ -141,16 +159,22 @@ export async function request<T = unknown>(path: string, options: RequestInit = 
     reportWebuiError('api_response_error', error, { path, status: response.status })
     throw error
   }
-  return payload as T
+  try {
+    return assertApiSuccess(payload as T, response.status)
+  } catch (error) {
+    reportWebuiError('api_business_error', error, { path, status: response.status })
+    throw error
+  }
 }
 
 export function postJson<T = unknown>(path: string, data: unknown): Promise<T> {
   return request<T>(path, { method: 'POST', body: JSON.stringify(data) })
 }
 
-/** 拆信封:{status:'success', data} → data;非信封原样返回 */
+/** 拆成功信封:{status:'success', data} → data;业务错误信封抛 ApiError。 */
 export function unwrap<T = unknown>(payload: unknown): T {
-  const obj = payload as Record<string, unknown> | null
+  const checked = assertApiSuccess(payload)
+  const obj = checked as Record<string, unknown> | null
   if (obj && typeof obj === 'object' && 'status' in obj && 'data' in obj) return obj.data as T
-  return payload as T
+  return checked as T
 }

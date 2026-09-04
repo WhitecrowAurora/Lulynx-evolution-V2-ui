@@ -1,0 +1,246 @@
+{
+  "ae": {
+    "lumina-finetune": "AE Path (ae)"
+  },
+  "anima_auto_scan_folder": {
+    "concept-edit": "🔍 Auto-detect Anima folder"
+  },
+  "base_model_path": {
+    "newbie-few-step-lora": "Newbie base model",
+    "sdxl-turbo-lora": "SDXL base model"
+  },
+  "blocks_to_swap": {
+    "newbie-lora": "Blocks to swap to CPU"
+  },
+  "cache_latents": {
+    "anima-edit-model": "Enable latent cache in RAM",
+    "anima-lora": "Enable latent cache in RAM"
+  },
+  "cache_latents_to_disk": {
+    "anima-edit-model": "Cache latents to disk",
+    "anima-lora": "Cache latents to disk"
+  },
+  "cache_text_encoder_outputs": {
+    "anima-edit-model": "Enable text encoder output cache",
+    "anima-lora": "Enable text encoder output cache"
+  },
+  "cache_text_encoder_outputs_to_disk": {
+    "anima-edit-model": "Cache text encoder outputs to disk",
+    "anima-lora": "Cache text encoder outputs to disk"
+  },
+  "caption_extension": {
+    "anima-controlnet": "Tag file extension",
+    "anima-edit-model": "Tag file extension",
+    "anima-finetune": "Tag file extension",
+    "anima-lora": "Tag file extension",
+    "flux-lora": "Tag file extension",
+    "hunyuan-dit-lora": "Tag file extension",
+    "lumina-finetune": "Tag file extension",
+    "lumina-lora": "Tag file extension",
+    "qwen-image-lora": "Tag file extension",
+    "sd-controlnet": "Tag file extension",
+    "sd-dreambooth": "Tag file extension",
+    "sd-lora": "Tag file extension",
+    "sd-textual-inversion": "Tag file extension",
+    "sdxl-controlnet": "Tag file extension",
+    "sdxl-controlnet-lllite": "Tag file extension",
+    "sdxl-finetune": "Tag file extension",
+    "sdxl-lora": "Tag file extension",
+    "sdxl-textual-inversion": "Tag file extension"
+  },
+  "experimental_attention_profile_window": {
+    "anima-edit-model": "Window size",
+    "anima-lora": "Window size",
+    "newbie-lora": "Window size"
+  },
+  "flow_logit_mean": {
+    "sd-lora": "RF Logit Mean",
+    "sdxl-finetune": "RF Logit Mean",
+    "sdxl-lora": "RF Logit Mean"
+  },
+  "flow_logit_std": {
+    "sd-lora": "RF Logit Std",
+    "sdxl-finetune": "RF Logit Std",
+    "sdxl-lora": "RF Logit Std"
+  },
+  "gemma2": {
+    "lumina-finetune": "Gemma2 Path"
+  },
+  "gradient_accumulation_steps": {
+    "newbie-lora": "Gradient accumulation"
+  },
+  "gradient_checkpointing": {
+    "anima-addift": "Anima gradient checkpointing",
+    "anima-edit-model": "Anima gradient checkpointing",
+    "anima-ileco": "Anima gradient checkpointing",
+    "anima-lora": "Anima gradient checkpointing",
+    "anima-multi-addift": "Anima gradient checkpointing",
+    "concept-edit": "DiT gradient checkpointing",
+    "newbie-lora": "Newbie gradient checkpointing"
+  },
+  "guidance_scale": {
+    "anima-few-step-lora": "Guidance",
+    "newbie-few-step-lora": "Guidance"
+  },
+  "latent_cache_disk_dtype": {
+    "anima-edit-model": "Latent disk precision",
+    "anima-lora": "Latent disk precision"
+  },
+  "latent_cache_disk_format": {
+    "anima-edit-model": "Latent disk format",
+    "anima-lora": "Latent disk format"
+  },
+  "lora_meta_reader": {
+    "concept-edit": "📖 Read LoRA weight metadata"
+  },
+  "ltx23_text_encoder_path": {
+    "ltx25-finetune": "LTX-2.5 Gemma4 Text Encoder",
+    "ltx25-lora": "LTX-2.5 Gemma4 Text Encoder"
+  },
+  "ltx23_video_vae_path": {
+    "ltx25-finetune": "LTX-2.5 Video VAE",
+    "ltx25-lora": "LTX-2.5 Video VAE"
+  },
+  "mixed_precision": {
+    "newbie-lora": "Training precision"
+  },
+  "network_alpha": {
+    "anima-few-step-lora": "Alpha",
+    "boogu-edit-lora": "Alpha",
+    "boogu-lora": "Alpha",
+    "flux2-lora": "Alpha",
+    "krea2-lora": "Alpha",
+    "ltx23-lora": "Alpha",
+    "ltx25-lora": "Alpha",
+    "minimax-h3-lora": "Alpha",
+    "newbie-few-step-lora": "Alpha",
+    "newbie-lora": "Alpha",
+    "sdxl-turbo-lora": "Alpha",
+    "wan22-t2v-a14b-lora": "Alpha",
+    "wan22-ti2v-lora": "Alpha",
+    "zimage-lora": "Alpha"
+  },
+  "network_dim": {
+    "anima-few-step-lora": "Rank",
+    "boogu-edit-lora": "Rank (Dim)",
+    "boogu-lora": "Rank (Dim)",
+    "flux2-lora": "Rank (Dim)",
+    "krea2-lora": "Rank (Dim)",
+    "ltx23-lora": "Rank (Dim)",
+    "ltx25-lora": "Rank (Dim)",
+    "minimax-h3-lora": "Rank (Dim)",
+    "newbie-few-step-lora": "Rank",
+    "newbie-lora": "Rank (Dim)",
+    "sdxl-turbo-lora": "Rank",
+    "wan22-t2v-a14b-lora": "Rank (Dim)",
+    "wan22-ti2v-lora": "Rank (Dim)",
+    "zimage-lora": "Rank (Dim)"
+  },
+  "network_train_unet_only": {
+    "anima-addift": "Train DiT only",
+    "anima-ileco": "Train DiT only",
+    "anima-multi-addift": "Train DiT only"
+  },
+  "optimizer_backend": {
+    "newbie-lora": "AdamW backend"
+  },
+  "output_name": {
+    "boogu-finetune": "Base model output name",
+    "flux2-finetune": "Base model output name",
+    "krea2-finetune": "Base model output name",
+    "ltx23-finetune": "Base model output name",
+    "ltx25-finetune": "Base model output name",
+    "wan22-finetune": "Base model output name",
+    "zimage-finetune": "Base model output name"
+  },
+  "output_path": {
+    "lab-distiller": "Output sidecar"
+  },
+  "pretrained_model_name_or_path": {
+    "anima-addift": "Anima DiT weights path",
+    "anima-controlnet": "Anima DiT weights path",
+    "anima-edit-model": "Anima DiT weights path",
+    "anima-finetune": "Anima DiT path",
+    "anima-ileco": "Anima DiT weights path",
+    "anima-lora": "Anima DiT weights path",
+    "anima-multi-addift": "Anima DiT weights path",
+    "boogu-edit-lora": "Boogu Edit model folder",
+    "boogu-finetune": "Boogu model folder",
+    "boogu-lora": "Boogu model folder",
+    "concept-edit": "Base model path",
+    "flux-lora": "FLUX model path",
+    "flux2-finetune": "FLUX.2 model folder",
+    "flux2-lora": "FLUX.2 model folder",
+    "hunyuan-dit-lora": "HunyuanDiT model path",
+    "krea2-finetune": "Krea-2 model path",
+    "krea2-lora": "Krea-2 model path",
+    "ltx23-finetune": "LTX-2.3 model path",
+    "ltx23-lora": "LTX-2.3 model path",
+    "ltx25-finetune": "LTX-2.5 model folder",
+    "ltx25-lora": "LTX-2.5 model folder",
+    "lumina-finetune": "Lumina model path",
+    "lumina-lora": "Lumina model path",
+    "newbie-lora": "Newbie base model folder",
+    "qwen-image-lora": "Qwen Image DiT path",
+    "sd-addift": "SD 1.5 base model path",
+    "sd-controlnet": "SD1.5 base model path",
+    "sd-dreambooth": "SD1.5 base model path",
+    "sd-ileco": "SD 1.5 base model path",
+    "sd-lora": "SD1.5 base model path",
+    "sd-multi-addift": "SD 1.5 base model path",
+    "sd-textual-inversion": "SD1.5 base model path",
+    "wan22-finetune": "Wan2.2 model folder",
+    "wan22-t2v-a14b-lora": "Wan2.2 A14B model folder",
+    "wan22-ti2v-lora": "Wan2.2 model folder",
+    "yolo": "YOLO model weights",
+    "zimage-finetune": "Z-Image model folder",
+    "zimage-lora": "Z-Image model folder"
+  },
+  "resolution": {
+    "sdxl-turbo-lora": "Smoke-test resolution"
+  },
+  "resume": {
+    "yolo": "Resume checkpoint"
+  },
+  "text_encoder_outputs_cache_disk_format": {
+    "anima-edit-model": "Text encoder output disk format",
+    "anima-lora": "Text encoder output disk format"
+  },
+  "train_data_dir": {
+    "boogu-edit-lora": "Training image folder",
+    "boogu-finetune": "Training image folder",
+    "boogu-lora": "Training image folder",
+    "flux2-finetune": "Training image folder",
+    "flux2-lora": "Training image folder",
+    "krea2-finetune": "Training image folder",
+    "krea2-lora": "Training image folder",
+    "ltx23-finetune": "Training image folder",
+    "ltx23-lora": "Training image folder",
+    "ltx25-finetune": "Training image folder",
+    "ltx25-lora": "Training image folder",
+    "minimax-h3-finetune": "Source footage / H3 data directory",
+    "minimax-h3-lora": "Source footage / H3 data directory",
+    "newbie-lora": "Training image folder",
+    "sdxl-turbo-lora": "Training data folder",
+    "wan22-finetune": "Training image folder",
+    "wan22-t2v-a14b-lora": "Training image folder",
+    "wan22-ti2v-lora": "Training image folder",
+    "yolo": "Training image directory",
+    "zimage-finetune": "Training image folder",
+    "zimage-lora": "Training image folder"
+  },
+  "use_cache": {
+    "wan22-finetune": "Use Wan2.2 cache-first",
+    "wan22-t2v-a14b-lora": "Use Wan2.2 cache-first",
+    "wan22-ti2v-lora": "Use Wan2.2 cache-first"
+  },
+  "vae_chunk_size": {
+    "hunyuan-dit-lora": "VAE decode chunk"
+  },
+  "vae_path": {
+    "newbie-lora": "VAE folder"
+  },
+  "weight_compression_preset": {
+    "krea2-lora": "Frozen backbone quantization"
+  }
+}

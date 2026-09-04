@@ -11,8 +11,7 @@
     "sample_steps",
     "sample_height",
     "sample_width",
-    "sample_seed",
-    "sample_smoothcache_error_threshold"
+    "sample_seed"
   ],
   "standard": {
     "summary": "控制训练过程中生成预览图使用的采样器（如 euler / euler_a / dpm++ 等）和生成参数（步数、分辨率、种子）。",
@@ -33,7 +32,7 @@
     }
   },
   "advanced": {
-    "principle": "预览生成使用与推理相同的采样器逻辑，但步数更少。sample_smoothcache_error_threshold 控制 SmoothCache 的误差容忍度（用于加速预览生成）。sample_seed 固定后每次预览使用相同种子，方便对比不同步数的变化。",
+    "principle": "预览生成使用与推理相同的采样器逻辑，但步数更少。sample_smoothcache_error_threshold 控制本仓 lulynx 误差缓存的复用阈值；它不是 SmoothCache 论文的 calibration schedule。sample_seed 固定后每次预览使用相同种子，方便对比不同步数的变化。",
     "tradeoffs": "sample_width/height 应与 resolution 匹配，分辨率不匹配时预览效果可能误导（预览清晰但实际生成不同分辨率时效果可能不同）。"
   },
   "relatedConfigs": [

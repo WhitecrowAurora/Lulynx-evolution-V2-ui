@@ -3,7 +3,9 @@
 // 做成可证明的行为保功能:改动前 --capture 固化全部训练类型的 schema 行为,之后每阶段
 // --check 与 baseline 逐字节比对,任何漂移(漏字段/错序/默认值变/payload 变)即 fail。
 //
-// 覆盖每个 TRAINING_TYPES.id:
+// 覆盖每个 ALL_TRAINING_TYPES.id(**全部注册类型**,含 hidden —— schemaIndex 导出的
+// TRAINING_TYPES 是 VISIBLE_TRAINING_TYPES,按它取样等于让 14/15 个 hidden 训练类型
+// 的 sections/defaults/runConfigs 从来不进基线,2026-09-04 前就是这样)。覆盖每个 id:
 //   - getSectionsForType  结构序列化(函数 visibleWhen → 稳定 token 'ƒ',保 section/field 全形)
 //   - createDefaultConfig 默认值
 //   - getAvailableTabs    页签集
@@ -16,7 +18,7 @@
 // 重构 Stage 3 把公共 API 迁到 schemaIndex.js 时,把下面这行 import 一并改到 ../src/schemaIndex.js。
 // baseline 是路径无关的纯数据,迁移 import 不影响比对有效性。
 import {
-  TRAINING_TYPES,
+  ALL_TRAINING_TYPES,
   getSectionsForType,
   createDefaultConfig,
   getAvailableTabs,
@@ -86,7 +88,7 @@ function sha256Json(value) {
 
 function buildSnapshot() {
   const snap = {};
-  for (const t of TRAINING_TYPES) {
+  for (const t of ALL_TRAINING_TYPES) {
     const typeId = t.id;
     const runConfigs = {};
     for (const [label, cfg] of permutations(typeId)) {

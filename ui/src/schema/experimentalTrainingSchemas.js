@@ -3,6 +3,9 @@ import {
   S_QUALITY_OPTIMIZATION_PACK,
   S_DIAGNOSTICS_MONITORING,
 } from './schemaFrontierGroups.js';
+// few-step 两族都是 rectified-flow DiT，预览要走 FLOW 变体：它带着 cfg 出厂 4
+// （≥5 会把这些族的预览解码成近黑帧）和只有这两族有的 ER-SDE 求解器旋钮。
+import { S_PREVIEW_FLOW, S_SYSTEM_ENV } from './schemaFieldGroups.js';
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
 const sec = (id, tab, title, desc, fields) => ({ id, tab, title, description: desc, fields });
 const when = (key, expected) => (config) => config[key] === expected;
@@ -28,6 +31,10 @@ export const LAB_DISTILLER_SECTIONS = [
   sec('lab-output-settings', 'model', '输出', '输出 sidecar 会写入 output/lab_distiller。', [
     { key: 'output_path', type: 'file', pickerType: 'output-model-file', label: '输出 sidecar', title: 'output_path', desc: '建议使用 output/lab_distiller', defaultValue: './output/lab_distiller/sidecar.safetensors' },
   ]),
+  // 这四个实验型 schema 不在 launcher 的训练注册表里：`build_training_config_from_schema` 对它们直接抛
+  // `Unknown training schema`，而通用启动路（`/api/run` → `training_run_adapter`）是无条件调它的，
+  // 所以这三个键当前在启动路上一个也到不了（已单独立项）。段落形状与其余 34 个类型一致，那条缺陷修好这里就生效。
+  sec('system-settings', 'advanced', '系统设置', '执行环境 Profile、指定显卡与自定义 TOML 覆盖。', [...S_SYSTEM_ENV]),
   sec('quality-pack-settings', 'frontier', '画质优化包', '', [...S_QUALITY_OPTIMIZATION_PACK], { expert: true }),
   sec('diagnostics-settings', 'frontier', '诊断监控', '', [...S_DIAGNOSTICS_MONITORING], { expert: true }),
 
@@ -73,6 +80,10 @@ export const SDXL_TURBO_LORA_SECTIONS = [
     { key: 'metadata_note', type: 'textarea', label: '元数据备注', title: 'metadata_note', desc: '写入输出 sidecar 的备注。', defaultValue: 'Experimental SDXL LCM-LoRA output.' },
     { key: 'samples_dir', type: 'folder', pickerType: 'folder', label: '样张目录', title: 'samples_dir', desc: '可选，用于生成基础样张文件报告', defaultValue: '' },
   ]),
+  // 这四个实验型 schema 不在 launcher 的训练注册表里：`build_training_config_from_schema` 对它们直接抛
+  // `Unknown training schema`，而通用启动路（`/api/run` → `training_run_adapter`）是无条件调它的，
+  // 所以这三个键当前在启动路上一个也到不了（已单独立项）。段落形状与其余 34 个类型一致，那条缺陷修好这里就生效。
+  sec('system-settings', 'advanced', '系统设置', '执行环境 Profile、指定显卡与自定义 TOML 覆盖。', [...S_SYSTEM_ENV]),
   sec('quality-pack-settings', 'frontier', '画质优化包', '', [...S_QUALITY_OPTIMIZATION_PACK], { expert: true }),
   sec('diagnostics-settings', 'frontier', '诊断监控', '', [...S_DIAGNOSTICS_MONITORING], { expert: true }),
 
@@ -87,7 +98,7 @@ const ditFewStepSections = (family, label) => [
     { key: 'teacher_adapter_path', type: 'file', pickerType: 'model-file', label: 'Teacher Adapter', title: 'teacher_adapter_path', desc: '可选，用已有 adapter 作为 teacher。', defaultValue: '' },
   ]),
   sec(`${family}-few-step-distill-settings`, 'training', 'Few-step 目标', '真实质量训练放在后续阶段；这里先生成可识别的 acceleration LoRA 契约产物。', [
-    { key: 'dry_run', type: 'boolean', label: '仅验证契约', title: 'dry_run', desc: '当前固定为契约 dry-run', defaultValue: true },
+    { key: 'dry_run', type: 'boolean', label: '仅验证契约', title: 'dry_run', desc: '关掉会被后端拒绝（400）：本家族的少步加速 LoRA 目前只提供契约 dry-run。', defaultValue: true, disabled: true, disabledReason: '当前只提供契约 dry-run' },
     { key: 'distill_method', type: 'string', label: '蒸馏方法', title: 'distill_method', desc: '记录到 metadata', defaultValue: 'family_flow_consistency' },
     { key: 'few_step_objective', type: 'string', label: 'Few-step 目标', title: 'few_step_objective', desc: '记录到 metadata', defaultValue: 'contract_probe' },
     { key: 'sigma_schedule', type: 'string', label: 'Sigma Schedule', title: 'sigma_schedule', desc: '记录到 metadata', defaultValue: 'family_default' },
@@ -105,6 +116,11 @@ const ditFewStepSections = (family, label) => [
   sec(`${family}-few-step-output-settings`, 'model', '输出', '输出 metadata-only safetensors，用于资源中心识别与后续真实训练替换。', [
     { key: 'output_path', type: 'file', pickerType: 'output-model-file', label: '输出 LoRA', title: 'output_path', desc: '建议使用 output/dit_few_step_lora', defaultValue: `./output/dit_few_step_lora/${family}_few_step_lora.safetensors` },
   ]),
+  sec(`${family}-few-step-preview-settings`, 'preview', '预览图设置', '契约 dry-run 不出图；关掉「仅验证契约」跑真实训练时这里才生效。', [...S_PREVIEW_FLOW]),
+  // 这四个实验型 schema 不在 launcher 的训练注册表里：`build_training_config_from_schema` 对它们直接抛
+  // `Unknown training schema`，而通用启动路（`/api/run` → `training_run_adapter`）是无条件调它的，
+  // 所以这三个键当前在启动路上一个也到不了（已单独立项）。段落形状与其余 34 个类型一致，那条缺陷修好这里就生效。
+  sec('system-settings', 'advanced', '系统设置', '执行环境 Profile、指定显卡与自定义 TOML 覆盖。', [...S_SYSTEM_ENV]),
   sec('quality-pack-settings', 'frontier', '画质优化包', '', [...S_QUALITY_OPTIMIZATION_PACK], { expert: true }),
   sec('diagnostics-settings', 'frontier', '诊断监控', '', [...S_DIAGNOSTICS_MONITORING], { expert: true }),
 

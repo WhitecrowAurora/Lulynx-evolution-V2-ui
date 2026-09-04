@@ -11,9 +11,6 @@
     "log_prefix",
     "log_tracker_name",
     "log_tracker_config",
-    "pytorch_cuda_expandable_segments",
-    "cuda_cache_release_interval",
-    "cuda_cache_release_strategy",
     "gloo_socket_ifname",
     "nccl_socket_ifname",
     "machine_rank"

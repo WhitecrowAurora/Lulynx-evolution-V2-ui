@@ -6,9 +6,7 @@
     "anima-lora"
   ],
   "aliases": [
-    "anima_self_attn_lr",
-    "anima_mlp_lr",
-    "anima_mod_lr"
+    "anima_mlp_lr"
   ],
   "standard": {
     "summary": "分别设置 Anima 各注意力类型（cross-attn / self-attn / mlp / modulation）的独立学习率，实现细粒度的学习率差异化控制。",

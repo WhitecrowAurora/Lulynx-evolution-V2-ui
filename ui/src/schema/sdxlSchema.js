@@ -6,17 +6,7 @@
 //  otherDitSchemas、SECTIONS_MAP 与公共 API→schemaIndex。增删 SDXL 字段只改本文件。)
 // 依赖方向(单向无环):schemaCommon → schemaFieldGroups → 本文件 → schemaIndex。
 // ================================================================
-import {
-  when,
-  all,
-  LOW_VRAM_PROFILE_OPTIONS,
-  pissaInitSelected,
-  vParameterizationFields,
-  ds,
-  netLora,
-  rectifiedFlowParams,
-  sec,
-} from './schemaCommon.js';
+import { when, all, LOW_VRAM_PROFILE_OPTIONS, pissaInitSelected, vParameterizationFields, ds, netLora, rectifiedFlowParams, sec } from './schemaCommon.js';
 import {
   S_SAVE,
   S_CAPTION,
@@ -65,7 +55,7 @@ export const SDXL_LORA_SECTIONS = [
   sec('model-settings', 'model', '训练用模型', 'SDXL 底模、VAE 与恢复训练。', [
     { key: 'model_train_type', type: 'hidden', defaultValue: 'sdxl-lora' },
     { key: 'pretrained_model_name_or_path', type: 'file', pickerType: 'model-file', label: 'SDXL 底模路径', title: 'pretrained_model_name_or_path', desc: '底模文件路径', defaultValue: '' },
-    { key: 'resume', type: 'folder', pickerType: 'output-folder', label: '继续训练路径', title: 'resume', desc: '从某个 save_state 保存的中断状态继续训练，选择 save-state 目录', defaultValue: '' },
+    { key: 'resume', type: 'file', pickerType: 'output-model-file', allowModelDirectory: true, label: '继续训练路径', title: 'resume', desc: '从某个 save_state / 检查点继续训练：可选择检查点文件，或选择存档目录自动取最新', defaultValue: '' },
     { key: 'vae', type: 'file', pickerType: 'model-file', label: 'VAE 路径', title: 'vae', desc: 'VAE 路径', defaultValue: '' },
     { key: 'network_weights', type: 'file', pickerType: 'output-model-file', label: '继续训练 LoRA', title: 'network_weights', desc: '从已有的 LoRA 模型上继续训练，填写路径', defaultValue: '' },
     ...S_PREFUSE,
@@ -76,18 +66,18 @@ export const SDXL_LORA_SECTIONS = [
   sec('data-aug-settings', 'dataset', '数据增强', '颜色、翻转与裁剪增强。', [...S_DATA_AUG]),
   sec('network-settings', 'network', '网络设置', 'LoRA / LyCORIS 参数。', [...netLora('networks.lora', 32, 32, 512, [
     { key: 'tlora_min_rank', type: 'number', label: 'T-LoRA 最小 Rank', title: 'tlora_min_rank', desc: 'T-LoRA 最小动态 rank。', defaultValue: 1, min: 1, visibleWhen: when('network_module', 'networks.tlora') },
-    { key: 'tlora_rank_schedule', type: 'select', label: 'T-LoRA Rank 调度', title: 'tlora_rank_schedule', desc: 'T-LoRA 动态 rank 调度策略', defaultValue: 'cosine', options: ['cosine', 'linear'], visibleWhen: when('network_module', 'networks.tlora') },
+    { key: 'tlora_rank_schedule', type: 'select', label: 'T-LoRA Rank 调度', title: 'tlora_rank_schedule', desc: 'T-LoRA 动态 rank 调度策略', defaultValue: 'cosine', options: ['cosine', 'linear', 'constant', 'geometric'], visibleWhen: when('network_module', 'networks.tlora') },
     { key: 'tlora_orthogonal_init', type: 'boolean', label: 'T-LoRA 正交初始化', title: 'tlora_orthogonal_init', desc: 'T-LoRA 对 lora_down 使用正交初始化（）', defaultValue: false, visibleWhen: when('network_module', 'networks.tlora') },
     { key: 'pissa_init', type: 'boolean', label: '启用 PiSSA 初始化', title: 'pissa_init', desc: '启用 PiSSA 初始化', defaultValue: false, visibleWhen: when('network_module', 'networks.lora') },
     { key: 'pissa_method', type: 'select', label: 'PiSSA 分解方式', title: 'pissa_method', desc: '推荐保持 rSVD 默认值', defaultValue: 'rsvd', options: ['rsvd', 'svd'], visibleWhen: all(when('network_module', 'networks.lora'), pissaInitSelected) },
     { key: 'pissa_niter', type: 'number', label: 'PiSSA 幂迭代次数', title: 'pissa_niter', desc: 'PiSSA rSVD 幂迭代次数（高级参数）', defaultValue: 2, min: 0, step: 1, visibleWhen: all(when('network_module', 'networks.lora'), pissaInitSelected) },
     { key: 'pissa_oversample', type: 'number', label: 'PiSSA 过采样维度', title: 'pissa_oversample', desc: 'PiSSA rSVD 过采样维度（高级参数）', defaultValue: 8, min: 0, step: 1, visibleWhen: all(when('network_module', 'networks.lora'), pissaInitSelected) },
     { key: 'pissa_apply_conv2d', type: 'boolean', label: 'PiSSA 作用于 Conv', title: 'pissa_apply_conv2d', desc: 'PiSSA 额外作用于 1x1 Conv', defaultValue: false, visibleWhen: all(when('network_module', 'networks.lora'), pissaInitSelected) },
-    { key: 'pissa_export_mode', type: 'select', label: 'PiSSA 导出模式', title: 'pissa_export_mode', desc: 'PiSSA 模型保存为标准 LoRA 时的导出方式', defaultValue: 'LoRA无损兼容导出', options: ['LoRA无损兼容导出', 'LoRA快速近似导出'], visibleWhen: all(when('network_module', 'networks.lora'), pissaInitSelected) },
+    { key: 'pissa_export_mode', type: 'select', label: 'PiSSA 导出模式', title: 'pissa_export_mode', desc: 'PiSSA 模型保存为标准 LoRA 时的导出方式', defaultValue: 'lora_compatible', options: [{ value: 'lora_compatible', label: 'LoRA无损兼容导出' }, { value: 'approximate', label: 'LoRA快速近似导出' }], visibleWhen: all(when('network_module', 'networks.lora'), pissaInitSelected) },
   ], ['networks.lora_fa', 'networks.vera', 'networks.tlora', 'networks.flexrank_lora', 'networks.oft']), ...S_LYCORIS_EXPORT]),
   sec('optimizer-settings', 'optimizer', '学习率与优化器', '学习率、调度器与优化器。', [...S_LR_TARGET]),
   sec('training-settings', 'training', '训练参数', '训练轮数、批量与梯度。', [...S_TRAIN(10), ...S_SDXL_LOSS,
-    { key: 'enable_block_weights', type: 'boolean', label: '启用分层学习率', title: 'enable_block_weights', desc: '启用分层学习率训练（只支持网络模块 networks.', defaultValue: false },
+    { key: 'enable_block_weights', type: 'boolean', label: '启用分层学习率', title: 'enable_block_weights', desc: '启用分层学习率训练（只支持 networks.* 系列网络模块）。', defaultValue: false },
     { key: 'down_lr_weight', type: 'string', label: 'Encoder 分层权重 (12层)', title: 'down_lr_weight', desc: 'U-Net Encoder 各层的学习率权重，逗号分隔共 12', defaultValue: '1,1,1,1,1,1,1,1,1,1,1,1', visibleWhen: when('enable_block_weights', true) },
     { key: 'mid_lr_weight', type: 'string', label: 'Mid 分层权重 (1层)', title: 'mid_lr_weight', desc: 'U-Net Mid 层的学习率权重，共 1 个值', defaultValue: '1', visibleWhen: when('enable_block_weights', true) },
     { key: 'up_lr_weight', type: 'string', label: 'Decoder 分层权重 (12层)', title: 'up_lr_weight', desc: 'U-Net Decoder 各层的学习率权重，逗号分隔共 12', defaultValue: '1,1,1,1,1,1,1,1,1,1,1,1', visibleWhen: when('enable_block_weights', true) },
@@ -231,7 +221,6 @@ export const SDXL_CN_SECTIONS = [
   sec('caption-settings', 'dataset', 'Caption 选项', '', [...S_CAPTION]),
   sec('data-aug-settings', 'dataset', '数据增强', '颜色、翻转与裁剪增强。', [...S_DATA_AUG]),
   sec('optimizer-settings', 'optimizer', '学习率与优化器', '', [...cnLR]),
-  sec('lllite-settings', 'network', 'LLLite 条件适配器', 'UNet 侧 LLLite adapter 结构参数（SDXL ControlNet）。', [...S_LLLITE]),
   sec('training-settings', 'training', '训练参数', '', [...cnTrainFields]),
   sec('v-parameterization-settings', 'training', 'V 参数化', 'v-pred 训练目标开关。', vParameterizationFields()),
   sec('preview-settings', 'preview', '预览图设置', '', [...S_PREVIEW, ...S_QUALITY_EVAL]),
@@ -255,6 +244,19 @@ export const SDXL_CN_SECTIONS = [
   sec('diagnostics-settings', 'frontier', '诊断与监控', '高级监控、统计、深度诊断与逐层监测。', [...S_DIAGNOSTICS_MONITORING]),
   sec('autocontroller-settings', 'optimizer', 'AutoController', '根据训练状态自动调整学习率、早停等。', [...S_AUTO_CONTROLLER], { expert: true }),
   sec('turbocore-settings', 'speed', 'TurboCore 内核优化', 'CUDA/Triton 内核自动调优与加速。', [...S_TURBOCORE], { expert: true }),
+];
+
+// ---- SDXL ControlNet-LLLite ----
+// 后端一直是完整闭环：contracts/training.py 的 "sdxl-controlnet-lllite" → ("sdxl", "lllite")
+// → entry_train.py 的 LLLiteTrainer；五个 lllite_* 键在 lllite_trainer.py:110-114 直接决定
+// adapter 注入结构，而 config_adapter_conversion_core.py:374-379 的 setdefault **只在
+// training_type == "lllite" 时**生效。这一页只是把那条已有路由暴露出来，不新增后端入口。
+// section 组成复用 SDXL ControlNet 那一套（只换 model_train_type 与页面说明），
+// 用 filter 而不是复制 26 个 section：两页永远同步，不会一边加了新 section 另一边漏掉。
+export const SDXL_CN_LLLITE_SECTIONS = [
+  sec('model-settings', 'model', '训练用模型', 'SDXL ControlNet-LLLite。', cnModel('sdxl-controlnet-lllite', 'SDXL')),
+  sec('lllite-settings', 'network', 'LLLite 条件适配器', 'UNet 侧 LLLite adapter 结构参数；仅这一个训练类型读它们。', [...S_LLLITE]),
+  ...SDXL_CN_SECTIONS.filter((s) => s.id !== 'model-settings'),
 ];
 
 // ---- SDXL Textual Inversion ----

@@ -9,10 +9,8 @@
     "newbie-lora"
   ],
   "aliases": [
-    "sample_every_n_epochs",
     "sample_at_first",
-    "sample_cfg",
-    "sample_cache_seam_window_size"
+    "sample_cfg"
   ],
   "standard": {
     "summary": "每隔 N 步使用当前 LoRA 权重生成预览图，用于监控训练进度。0 = 不生成预览。",

@@ -8,14 +8,14 @@
     "sd-lora"
   ],
   "standard": {
-    "summary": "指定自定义学习率调度器的完整类路径，如 torch.optim.lr_scheduler.CosineAnnealingLR。填写后优先于上方调度器选择。",
-    "effect": "后端会按类路径动态导入并实例化该调度器，配合 lr_scheduler_args 传递参数。",
-    "whenToUse": "需要使用内置列表外的特殊调度器时填写。",
-    "avoidWhen": "有内置选项满足需求时无需使用，内置选项有更好的集成和参数验证。"
+    "summary": "填第三方调度器的完整类路径。出厂下拉里的每一项都由训练器自己实现，不需要动这个字段；它是给下拉之外的调度器留的通道。",
+    "effect": "填了之后由后端按类路径动态导入并实例化，参数走 lr_scheduler_args。如果填的名字正好对应下拉里的某一项，后端会直接用那一项，不会去导入第三方包。",
+    "whenToUse": "确实要用下拉以外的调度器，且运行环境里装了对应的包时。",
+    "avoidWhen": "下拉里有能满足需求的项时。内置项有参数校验、断点续训和多参数组保护；动态导入这条路只做最基本的检查，类路径写错或包没装会在训练开始时才失败。"
   },
   "advanced": {
-    "principle": "使用 importlib 动态导入，允许使用 torch.optim.lr_scheduler.* 或 pytorch_optimizer.* 下的任意调度器。",
-    "tradeoffs": "需要确保类路径在运行环境中可访问，且参数与调度器构造函数匹配（通过 lr_scheduler_args 传 key=value）。"
+    "principle": "使用 importlib 动态导入类路径。导入前会先问一次重定向表：出厂支持的调度器都能在表里查到对应实现，只有查不到的名字才真的走动态导入。",
+    "tradeoffs": "需要保证类路径在运行环境里可访问，构造参数与该类的签名匹配（用 lr_scheduler_args 传 key=value）。动态导入的调度器按绝对学习率赋值时，会把不同参数组的学习率压成同一个值——训练器给 loss 加权、flow 不确定性等辅助参数配的是另一档学习率，那些组会一起被改掉。"
   },
   "relatedConfigs": [
     "lr_scheduler",

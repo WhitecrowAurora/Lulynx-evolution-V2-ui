@@ -10,7 +10,7 @@ import { TARGET_LORA_OPTIMIZERS, schedulerOptions } from './features/settingsOpt
 import { buildRunConfigFromSections } from './runConfigBuilder.js';
 import {
   SDXL_LORA_SECTIONS, SDXL_ILECO_SECTIONS, SDXL_ADDIFT_SECTIONS, SDXL_MULTI_ADDIFT_SECTIONS,
-  SDXL_FT_SECTIONS, SDXL_CN_SECTIONS, SDXL_TI_SECTIONS,
+  SDXL_FT_SECTIONS, SDXL_CN_SECTIONS, SDXL_CN_LLLITE_SECTIONS, SDXL_TI_SECTIONS,
 } from './sdxlSchema.js';
 import {
   ANIMA_LORA_SECTIONS, ANIMA_EDIT_MODEL_SECTIONS, ANIMA_ILECO_SECTIONS, ANIMA_ADDIFT_SECTIONS,
@@ -92,6 +92,7 @@ const SECTIONS_MAP = {
   'minimax-h3-finetune':    MINIMAX_H3_FT_SECTIONS,
   'sd-controlnet':          SD_CN_SECTIONS,
   'sdxl-controlnet':        SDXL_CN_SECTIONS,
+  'sdxl-controlnet-lllite': SDXL_CN_LLLITE_SECTIONS,
   'anima-controlnet':       ANIMA_CN_SECTIONS,
   'flux-controlnet':        FLUX_CN_SECTIONS,
   'sd-textual-inversion':   SD_TI_SECTIONS,

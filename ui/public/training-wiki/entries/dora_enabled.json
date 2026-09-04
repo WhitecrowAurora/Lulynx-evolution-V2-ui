@@ -6,10 +6,6 @@
     "anima-lora",
     "sdxl-lora"
   ],
-  "aliases": [
-    "dora_mode",
-    "dora_wd"
-  ],
   "standard": {
     "summary": "DoRA（Weight-Decomposed Low-Rank Adaptation）：将权重更新分解为方向变化（LoRA 负责）和幅度变化（可学习缩放负责），更精确地模拟全量微调的行为。",
     "effect": "相比标准 LoRA，DoRA 在相同 rank 下通常能达到更高的质量，因为分离方向和幅度变化允许更灵活的学习。",

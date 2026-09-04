@@ -7,9 +7,6 @@
     "sdxl-lora"
   ],
   "aliases": [
-    "lulynx_precision_swap_strategy",
-    "lulynx_weight_residency",
-    "lulynx_weight_residency_min_params",
     "lulynx_resource_manager_enabled",
     "lulynx_resource_log_interval"
   ],

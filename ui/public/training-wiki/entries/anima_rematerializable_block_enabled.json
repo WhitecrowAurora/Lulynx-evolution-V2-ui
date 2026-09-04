@@ -5,9 +5,6 @@
   "appliesTo": [
     "anima-lora"
   ],
-  "aliases": [
-    "anima_rematerializable_block_mode"
-  ],
   "standard": {
     "summary": "将特定 DiT block 标记为\"可重物化\"（rematerializable），允许在显存压力下按需放弃这些 block 的激活并在需要时重新计算，比 gradient checkpointing 更灵活。",
     "effect": "在显存充足时缓存激活（快速 backward）；显存紧张时丢弃激活并重算（节省显存），实现自适应显存管理。",

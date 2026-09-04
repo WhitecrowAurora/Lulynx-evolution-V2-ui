@@ -6,8 +6,6 @@
     "anima-lora"
   ],
   "aliases": [
-    "module_offload_prefetch_mode",
-    "module_offload_profile",
     "module_offload_profile_enabled",
     "module_offload_ratio",
     "module_offload_text_encoder_ratio",

@@ -7,9 +7,6 @@
     "sdxl-lora",
     "sd-lora"
   ],
-  "aliases": [
-    "lulynx_safeguard_enabled"
-  ],
   "standard": {
     "summary": "轻量训练安全防护层，实时监控 loss 是否出现 NaN/Inf 或异常 spike，并可自动降低学习率或中止训练，防止训练崩溃。",
     "effect": "开启后每 N 步检查一次 loss，发现 NaN/Inf 或大幅跳升时触发干预策略（降 LR 或提前停止）。不影响正常训练速度，检查开销极低。",

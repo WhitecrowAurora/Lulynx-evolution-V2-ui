@@ -8,7 +8,6 @@
   ],
   "aliases": [
     "caption_tag_dropout_target_count",
-    "caption_tag_dropout_target_mode",
     "anima_caption_variant_cache",
     "dual_caption_long_key",
     "dual_caption_short_key"

@@ -5,7 +5,7 @@
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "sidecar 压缩编码。（详见 ?）",
+    "summary": "sidecar 压缩编码。lz4fast=速度优先（默认），zstd1=压缩率优先，raw=不压缩，fast-cache=组合。",
     "effect": "",
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。",

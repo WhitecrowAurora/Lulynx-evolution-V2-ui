@@ -7,11 +7,6 @@
     "sdxl-lora"
   ],
   "aliases": [
-    "cross_attn_fused_kv",
-    "fused_projection_memory_mode",
-    "experimental_attention_profile_enabled",
-    "experimental_attention_profile_backend",
-    "experimental_attention_profile_torch_max_tokens",
     "experimental_attention_profile_window"
   ],
   "standard": {

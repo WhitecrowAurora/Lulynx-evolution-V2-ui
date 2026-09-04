@@ -11,11 +11,7 @@
     "full_bf16",
     "full_fp16",
     "no_half_vae",
-    "loss_precision",
-    "flashattn",
     "sageattn",
-    "sdpa",
-    "mem_eff_attn",
     "split_attn"
   ],
   "standard": {

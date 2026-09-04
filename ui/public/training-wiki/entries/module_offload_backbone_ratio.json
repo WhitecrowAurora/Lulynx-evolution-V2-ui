@@ -7,8 +7,6 @@
   ],
   "aliases": [
     "module_offload_enhanced",
-    "module_offload_exclude_patterns",
-    "module_offload_include_patterns",
     "module_offload_min_param_mb",
     "module_offload_optimizer_enabled",
     "module_offload_optimizer_device",

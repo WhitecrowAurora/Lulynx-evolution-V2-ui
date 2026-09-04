@@ -1,6 +1,6 @@
 {
   "key": "sample_cache_seam_backend",
-  "title": "Preview Cache Seam (预览缓存接缝)",
+  "title": "lulynx Preview Cache Seam（预览缓存接缝）",
   "category": "推理 / DiT 加速",
   "appliesTo": [
     "anima-lora",
@@ -11,19 +11,19 @@
     "DiT Block"
   ],
   "standard": {
-    "summary": "在训练时预览采样中，使用缓存接缝技术加速 DiT 推理——跳过部分 step 的完整计算，用缓存的特征代替。支持 spectrum/smoothcache/deepcache/teacache 多种后端。",
-    "effect": "sample_cache_seam_backend='none'（默认，不加速）。'spectrum' 使用 Spectrum 探针判断哪些步可以跳过。'smoothcache' 用误差阈值判断缓存可复用性。'deepcache' 使用 DeepCache 层级缓存策略。'teacache' 使用 TeaCache 策略。",
+    "summary": "在训练时预览采样中使用 lulynx 缓存接缝工程路径跳过部分 DiT 完整计算。各后端仅是受相关研究启发的本地近似，不承诺对应论文的速度或质量结果。",
+    "effect": "sample_cache_seam_backend='none'（默认，不加速）。'spectrum' 使用本地线性外推探针；'smoothcache' 使用相邻 step 误差阈值；'deepcache' 与 'teacache' 使用本地层级缓存策略。",
     "whenToUse": "训练时预览采样太慢时。可以接受预览图轻微质量差异换取速度。",
     "avoidWhen": "需要精确预览时。这些是 opt-in 探针，默认关闭不影响训练。",
     "optionDescriptions": {
-      "spectrum": "Spectrum：窗口里猜能不能跳步，窗口大跳得多也更容易糊。",
-      "smoothcache": "误差小于阈值才跳，阈值松就快也糙。"
+      "spectrum": "lulynx 线性外推缓存：窗口越大，可能跳过越多但漂移风险越高。",
+      "smoothcache": "lulynx 误差引导缓存：相邻 step 误差低于阈值才复用。"
     }
   },
   "advanced": {
-    "principle": "DiT 推理中，相邻 step 的输出特征高度相似。Cache Seam 在满足条件时跳过完整 forward，直接使用上一步缓存的特征。Spectrum: 基于特征预测判断可跳过性（sample_spectrum_window_size 控制窗口）。SmoothCache: 当预测误差 < error_threshold 时复用缓存（sample_smoothcache_error_threshold 控制阈值）。DeepCache/TeaCache: 层级缓存策略，不同层用不同的缓存粒度。所有后端都有 warmup_steps 控制预热。",
+    "principle": "DiT 推理中相邻 step 的输出特征可能相似；本地 Cache Seam 在满足条件时跳过完整 forward 并复用缓存。lulynx 线性外推使用 sample_spectrum_window_size，lulynx 误差缓存使用相邻 step relative-L1 与 sample_smoothcache_error_threshold。它们不是论文算法的逐项复现。",
     "intervention": "采样循环中根据 backend 策略决定是否跳过当前 step 的完整计算。",
-    "expectedImpact": "预览采样提速约 2-4 倍。对预览图质量影响很小（<2% 感知差异）。",
+    "expectedImpact": "可能减少预览采样计算，但收益和漂移取决于模型与阈值；不使用未经本地 A/B 证实的论文速度/质量数字。",
     "tradeoffs": "sample_cache_seam_window_size 控制缓存窗口大小。smoothcache 和 spectrum 有各自的 warmup 控制。",
     "codePath": "backend/core/lulynx_trainer/sampler.py → cache seam backend dispatch → spectrum/smoothcache/deepcache/teacache"
   },

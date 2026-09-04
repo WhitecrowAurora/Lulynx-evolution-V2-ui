@@ -9,11 +9,11 @@
   "aliases": [
     "krona_factor_in",
     "krona_factor_out",
-    "krona_allora"
+    "krona_lulynx_gradient_norm_rescale_enabled"
   ],
   "standard": {
     "summary": "（实验性）KronA（Kronecker Adaptation）：通过两个小矩阵的 Kronecker 积来表示权重更新，在保持低参数量的同时比标准 LoRA 有更好的参数效率。",
-    "effect": "ΔW = scale × kron(A, B)，A 和 B 的维度由 factor_in/factor_out 控制。krona_allora = True 时启用 ALLoRA（自适应幅度归一化），限制各通道的更新幅度。",
+    "effect": "ΔW = scale × kron(A, B)，A 和 B 的维度由 factor_in/factor_out 控制。krona_lulynx_gradient_norm_rescale_enabled = True 时启用 lulynx 工程梯度范数重缩放（不宣称论文 ALLoRA 等价），限制各通道的更新幅度。",
     "whenToUse": "实验性功能，追求参数效率的场景。KronA 通常在相同参数量下比标准 LoRA 有更强的表达力。",
     "avoidWhen": "KronA 展开后的 ΔW 是完整大矩阵（out × in），与 LoRA 低秩矩阵不同，实际 VRAM 消耗更高（CDKA 和 KronA 的共同问题）。"
   },

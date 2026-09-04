@@ -8,9 +8,7 @@
   ],
   "aliases": [
     "fg_lora_rank_min",
-    "fg_lora_rank_max",
-    "fg_lora_rank_conserve_budget",
-    "fg_lora_rank_map_json"
+    "fg_lora_rank_max"
   ],
   "standard": {
     "summary": "细粒度 LoRA rank 策略：对不同层分配不同的 rank，而非全局使用同一 rank，可在相同参数预算下提升学习效率。",

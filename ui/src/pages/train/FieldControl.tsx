@@ -18,6 +18,17 @@ import {
   isDatasetFolderField,
 } from '@/lib/recentDatasetPaths'
 import { useTrainConfigStore, useDraft } from '@/stores/configStore'
+import {
+  attentionBackendBlockReason,
+  makeAttentionOptions,
+} from '@/schema/features/attentionCapabilities.js'
+import { deviceOptions } from '@/schema/features/deviceOptions.js'
+import {
+  optionConstraints,
+  runtimeAdvisoryNote,
+  runtimeForcedReason,
+} from '@/schema/features/runtimeFieldConstraints.js'
+import { useRuntimeStore, type RuntimeCapabilitySnapshot } from '@/stores/runtimeStore'
 import { toast } from '@/stores/toastStore'
 import {
   useI18n,
@@ -33,12 +44,15 @@ function optionsOf(
   field: SchemaField,
   language: string,
   config: Record<string, unknown>,
+  runtime?: RuntimeCapabilitySnapshot,
 ): { value: string; label: string; disabled?: boolean; title?: string }[] {
-  const source = typeof field.options === 'function' ? field.options(config) : field.options
+  const source = field.deviceListOptions
+    ? deviceOptions(runtime?.cards ?? [])
+    : typeof field.options === 'function' ? field.options(config) : field.options
   const rows = source && typeof source !== 'string' && Symbol.iterator in Object(source)
     ? Array.from(source)
     : []
-  return rows.map((o) => {
+  const resolved = rows.map((o) => {
     if (o && typeof o === 'object') {
       const opt = o as SchemaFieldOption
       const value = String(opt.value)
@@ -55,6 +69,38 @@ function optionsOf(
       label: resolveOptionLabel(field.key, { value, label: value }, language),
     }
   })
+  // 可用性叠在标签本地化「之后」:makeAttentionOptions 会往 label 上追加「当前运行时
+  // 不可用」这类后缀,若放在 resolveOptionLabel 之前,英文档会从 i18n 表取回一份没有
+  // 后缀的标签,把后缀吃掉。
+  // 逐选项的运行时约束(如 rocm-amd 上那几个 8bit / paged 优化器):合并进同一对
+  // disabled / title,已有的静态理由优先 —— 那是字段自己的规则,比运行时的更具体。
+  const blocked = optionConstraints(field, runtime?.profiles ?? null, {
+    ...config,
+    runtime_id: runtime?.runtimeId || '',
+    language,
+  }) as Record<string, string>
+  const withRuntimeBlocks = (
+    rows: { value: string; label: string; disabled?: boolean; title?: string }[],
+  ) => rows.map((opt) => (blocked[opt.value]
+    ? { ...opt, disabled: true, title: opt.title || blocked[opt.value] }
+    : opt))
+  if (!field.attentionBackendOptions) return withRuntimeBlocks(resolved)
+  const capable = makeAttentionOptions(resolved, runtime?.profiles ?? null, {
+    ...config,
+    runtime_id: runtime?.runtimeId || '',
+    language,
+  }) as unknown as {
+    value?: unknown
+    label?: unknown
+    disabled?: boolean
+    disabledReason?: unknown
+  }[]
+  return withRuntimeBlocks(capable.map((opt) => ({
+    value: String(opt.value ?? ''),
+    label: String(opt.label ?? ''),
+    disabled: opt.disabled === true || undefined,
+    title: opt.disabledReason ? String(opt.disabledReason) : undefined,
+  })))
 }
 
 async function browsePath(field: SchemaField, onChange: (v: unknown) => void) {
@@ -87,10 +133,12 @@ function PathFieldRow({
   field,
   value,
   onChange,
+  disabled = false,
 }: {
   field: SchemaField
   value: string
   onChange: (raw: unknown) => void
+  disabled?: boolean
 }) {
   const { t } = useI18n()
   const typeId = useTrainConfigStore((s) => s.typeId)
@@ -145,6 +193,7 @@ function PathFieldRow({
         type: field.type,
         key: field.key,
         defaultValue: field.defaultValue,
+        allowModelDirectory: field.allowModelDirectory,
       }).then((r) => {
         if (checkGen.current !== gen) return
         setPathStatus(r.status)
@@ -152,7 +201,7 @@ function PathFieldRow({
       })
     }, 520)
     return () => window.clearTimeout(t)
-  }, [value, field.key, field.type, field.defaultValue])
+  }, [value, field.key, field.type, field.defaultValue, field.allowModelDirectory])
 
   /* 空/占位 + 可扫描: 多候选灰字提示(复用 inventory 缓存) */
   useEffect(() => {
@@ -214,23 +263,24 @@ function PathFieldRow({
       <div className={rowClass}>
         <Input
           value={value}
+          disabled={disabled}
           placeholder={field.placeholder || (field.type === 'folder' ? t('common.path_dir') : t('common.path_file'))}
           onChange={(e) => onChange(e.target.value)}
           aria-invalid={bad || undefined}
         />
-        <Button size="sm" onClick={() => void browsePath(field, onChange)}>
+        <Button size="sm" disabled={disabled} onClick={() => void browsePath(field, onChange)}>
           {allowModelDirectory ? '选择文件' : t('field.browse')}
         </Button>
         {allowModelDirectory ? (
-          <Button size="sm" variant="ghost" onClick={() => void browsePathAs(field, 'folder', onChange)}>
+          <Button size="sm" variant="ghost" disabled={disabled} onClick={() => void browsePathAs(field, 'folder', onChange)}>
             选择目录
           </Button>
         ) : null}
         {showScan ? (
-          <Button size="sm" variant="ghost" onClick={() => void openScan(false)} title={t('field.scan_title')}>{t('field.scan')}</Button>
+          <Button size="sm" variant="ghost" disabled={disabled} onClick={() => void openScan(false)} title={t('field.scan_title')}>{t('field.scan')}</Button>
         ) : null}
         {showRecent ? (
-          <Button size="sm" variant="ghost" onClick={openRecent} title={t('field.recent_title')}>{t('field.recent')}</Button>
+          <Button size="sm" variant="ghost" disabled={disabled} onClick={openRecent} title={t('field.recent_title')}>{t('field.recent')}</Button>
         ) : null}
       </div>
       {pathHint ? (
@@ -317,35 +367,39 @@ function OutputNameField({
   field,
   value,
   onChange,
+  disabled = false,
 }: {
   field: SchemaField
   value: string
   onChange: (raw: unknown) => void
+  disabled?: boolean
 }) {
   const { t } = useI18n()
   const draft = useDraft()
   const outputDir = String(draft.output_dir ?? '')
+  const saveTo = String(draft.save_to ?? '')
+  const resumePath = String(draft.resume_path ?? '')
   const [hint, setHint] = useState('')
   const gen = useRef(0)
 
   useEffect(() => {
     const id = ++gen.current
-    if (!shouldCheckOutputConflict(outputDir, value)) {
+    if (!shouldCheckOutputConflict(saveTo || outputDir, value)) {
       setHint('')
       return
     }
     const t = window.setTimeout(() => {
-      void checkOutputConflictStatus(outputDir, String(value ?? '')).then((r) => {
+      void checkOutputConflictStatus(outputDir, String(value ?? ''), { saveTo, resumePath }).then((r) => {
         if (gen.current !== id) return
         setHint(r.conflict ? r.message : '')
       })
     }, 500)
     return () => window.clearTimeout(t)
-  }, [outputDir, value])
+  }, [outputDir, saveTo, resumePath, value])
 
   return (
     <div className="lx-output-name-field">
-      <Input value={value} placeholder={field.placeholder || t('common.output_name_ph')} onChange={(e) => onChange(e.target.value)} />
+      <Input disabled={disabled} value={value} placeholder={field.placeholder || t('common.output_name_ph')} onChange={(e) => onChange(e.target.value)} />
       {hint ? <div className="lx-path-hint is-warn">{hint}</div> : null}
     </div>
   )
@@ -356,18 +410,41 @@ export function FieldControl({
   value,
   onChange,
   onHelp,
+  disabled: disabledProp = false,
+  disabledReason: disabledReasonProp = '',
 }: {
   field: SchemaField
   value: unknown
   onChange: (raw: unknown) => void
   onHelp: (field: SchemaField) => void
+  disabled?: boolean
+  disabledReason?: string
 }) {
   const { t, language } = useI18n()
   const draft = useDraft()
+  const runtime = useRuntimeStore()
+  const activeTrainingType = useTrainConfigStore((s) => s.typeId)
   if (field.type === 'hidden') return null
 
-  const label = resolveFieldLabel(field, language)
-  const rawDesc = resolveFieldDesc(field, language)
+  // 上游 enable 门(disabledProp)、「该后端在当前运行时不可用」、「当前运行时会强制覆盖
+  // 这个字段」合并成一个封锁。已经打开的开关即使被封锁也保持可点,否则用户没法把它关掉。
+  const runtimeCtx = {
+    ...draft,
+    activeTrainingType,
+    runtime_id: runtime.runtimeId,
+    language,
+  }
+  const attentionBlocker = attentionBackendBlockReason(field, runtime.profiles, runtimeCtx)
+  // forced 才夺走控制权;advisory(如 rocm-amd 的 mixed_precision)只出提示 —— 置灰它
+  // 等于把 A 卡用户锁在选不了 fp16 的状态,而 fp16 恰好是那条路线想要的档。
+  const blocker = attentionBlocker || runtimeForcedReason(field, runtime.profiles, runtimeCtx)
+  const advisory = runtimeAdvisoryNote(field, runtime.profiles, runtimeCtx)
+  const keepEditable = field.type === 'boolean' && Boolean(blocker) && Boolean(value)
+  const disabled = disabledProp || (Boolean(blocker) && !keepEditable)
+  const disabledReason = [blocker || disabledReasonProp, advisory].filter(Boolean).join(' · ')
+
+  const label = resolveFieldLabel(field, language, activeTrainingType)
+  const rawDesc = resolveFieldDesc(field, language, activeTrainingType)
   const desc = rawDesc && rawDesc !== label ? rawDesc : ''
   const helpBtn = (
     <span
@@ -385,7 +462,7 @@ export function FieldControl({
 
   if (field.type === 'boolean') {
     return (
-      <div className="lx-field lx-field-bool" title={rawDesc || field.key}>
+      <div className={['lx-field', 'lx-field-bool', disabled ? 'is-profile-managed' : ''].filter(Boolean).join(' ')} title={rawDesc || field.key}>
         <span className="lx-field-main">
           <span className="lx-field-label">
             <span>{label}</span>
@@ -393,7 +470,8 @@ export function FieldControl({
           </span>
           {desc ? <span className="lx-field-desc">{desc}</span> : null}
         </span>
-        <Switch checked={Boolean(value)} onChange={(v) => onChange(v)} ariaLabel={label} />
+        <Switch checked={Boolean(value)} disabled={disabled} onChange={(v) => onChange(v)} ariaLabel={label} />
+        {disabledReason ? <span className="lx-profile-managed-note">{disabledReason}</span> : null}
       </div>
     )
   }
@@ -417,7 +495,7 @@ export function FieldControl({
           <span>{label}</span>
           {helpBtn}
         </span>
-        <Button size="sm" onClick={onAction}>
+        <Button size="sm" disabled={disabled} onClick={onAction}>
           {buttonText}
         </Button>
       </div>
@@ -429,12 +507,12 @@ export function FieldControl({
 
   switch (field.type) {
     case 'select': {
-      const opts = optionsOf(field, language, draft)
-      control = <Select value={str} options={opts} onChange={(e) => onChange(e.target.value)} />
+      const opts = optionsOf(field, language, draft, runtime)
+      control = <Select disabled={disabled} value={str} options={opts} onChange={(e) => onChange(e.target.value)} />
       break
     }
     case 'multiSelect': {
-      const opts = optionsOf(field, language, draft)
+      const opts = optionsOf(field, language, draft, runtime)
       const selected = new Set(Array.isArray(value) ? value.map(String) : [])
       control = (
         <div className="lx-multi-select" role="group" aria-label={label}>
@@ -442,6 +520,7 @@ export function FieldControl({
             <label key={option.value} className="lx-multi-select-option">
               <input
                 type="checkbox"
+                disabled={disabled}
                 checked={selected.has(option.value)}
                 onChange={(event) => {
                   const next = new Set(selected)
@@ -457,10 +536,87 @@ export function FieldControl({
       )
       break
     }
+    case 'csvMultiSelect': {
+      // 值存逗号串而不是数组:gpu_ids 在权威声明里是 str(configs_base.py),后端两处也按
+      // 逗号串解析,写数组会在 pydantic 那一关被拒。
+      const opts = optionsOf(field, language, draft, runtime)
+      const tokens = str.split(',').map((token) => token.trim()).filter(Boolean)
+      if (!opts.length) {
+        // 候选表还没到位(或机器上一张卡都读不到)时退回文本框,让用户仍能手填,而不是
+        // 留一个点不动的空控件。
+        control = (
+          <Input
+            disabled={disabled}
+            value={str}
+            placeholder={field.placeholder}
+            onChange={(e) => onChange(e.target.value)}
+          />
+        )
+        break
+      }
+      const known = new Set(opts.map((o) => o.value))
+      // 认不出来的取值(手改的配置 / 旧版本别名)原样留着并说明,不静默丢掉
+      const unknown = tokens.filter((token) => !known.has(token))
+      const picked = tokens.filter((token) => known.has(token))
+      const selected = new Set(picked)
+      const write = (next: string[]) => onChange([...next, ...unknown].join(','))
+      const toggle = (optionValue: string, on: boolean) => {
+        if (field.preserveSelectionOrder) {
+          // 顺序有语义的字段(来源优先级)按勾选顺序追加,不重排
+          write(on ? [...picked, optionValue] : picked.filter((token) => token !== optionValue))
+          return
+        }
+        const next = new Set(selected)
+        if (on) next.add(optionValue)
+        else next.delete(optionValue)
+        write(opts.filter((o) => next.has(o.value)).map((o) => o.value))
+      }
+      const en = language === 'en'
+      const inheritHint = !field.deviceListOptions
+        ? ''
+        : runtime.launcherSelection
+          ? en
+            ? `Empty = inherit the cards the launcher started with: ${runtime.launcherSelection}`
+            : `留空 = 继承 launcher 启动时选择的显卡：${runtime.launcherSelection}`
+          : en
+            ? 'The launcher named no card; empty means every visible GPU'
+            : 'launcher 启动时未指定显卡，留空将使用全部可见显卡'
+      control = (
+        <>
+          <div className="lx-multi-select" role="group" aria-label={label}>
+            {opts.map((option) => (
+              <label key={option.value} className="lx-multi-select-option" title={option.title}>
+                <input
+                  type="checkbox"
+                  disabled={disabled || option.disabled}
+                  checked={selected.has(option.value)}
+                  onChange={(event) => toggle(option.value, event.target.checked)}
+                />
+                <span>{option.label}</span>
+              </label>
+            ))}
+          </div>
+          {field.preserveSelectionOrder && picked.length > 1 ? (
+            <div className="lx-path-hint">
+              {(en ? 'Order: ' : '当前顺序：') + picked.join(' → ')}
+            </div>
+          ) : null}
+          {unknown.length ? (
+            <div className="lx-path-hint is-warn">
+              {(en ? `Kept ${unknown.length} unrecognized value(s): ` : `保留了 ${unknown.length} 个未识别取值：`)
+                + unknown.join(', ')}
+            </div>
+          ) : null}
+          {inheritHint && !picked.length ? <div className="lx-path-hint">{inheritHint}</div> : null}
+        </>
+      )
+      break
+    }
     case 'number':
       control = (
         <Input
           inputMode="decimal"
+          disabled={disabled}
           value={str}
           placeholder={field.placeholder}
           onChange={(e) => onChange(e.target.value)}
@@ -476,26 +632,27 @@ export function FieldControl({
             max={Number(field.max ?? 100)}
             step={Number(field.step ?? 1)}
             value={num}
+            disabled={disabled}
             onChange={(v) => onChange(v)}
           />
-          <Input className="lx-slider-num" inputMode="decimal" value={str} onChange={(e) => onChange(e.target.value)} />
+          <Input className="lx-slider-num" inputMode="decimal" disabled={disabled} value={str} onChange={(e) => onChange(e.target.value)} />
         </div>
       )
       break
     }
     case 'textarea':
-      control = <Textarea rows={3} value={str} placeholder={field.placeholder} onChange={(e) => onChange(e.target.value)} />
+      control = <Textarea rows={3} disabled={disabled} value={str} placeholder={field.placeholder} onChange={(e) => onChange(e.target.value)} />
       break
     case 'file':
     case 'folder':
-      control = <PathFieldRow field={field} value={str} onChange={onChange} />
+      control = <PathFieldRow field={field} value={str} onChange={onChange} disabled={disabled} />
       break
     default:
       if (field.key === 'output_name') {
-        control = <OutputNameField field={field} value={str} onChange={onChange} />
+        control = <OutputNameField field={field} value={str} onChange={onChange} disabled={disabled} />
       } else {
         // string / text / 未知类型兜底
-        control = <Input value={str} placeholder={field.placeholder} onChange={(e) => onChange(e.target.value)} />
+        control = <Input disabled={disabled} value={str} placeholder={field.placeholder} onChange={(e) => onChange(e.target.value)} />
       }
   }
 
@@ -504,9 +661,13 @@ export function FieldControl({
       label={label}
       desc={desc || undefined}
       right={helpBtn}
-      className={field.type === 'textarea' ? 'lx-span-full' : field.type === 'file' || field.type === 'folder' ? 'lx-span-2' : undefined}
+      className={[
+        field.type === 'textarea' ? 'lx-span-full' : field.type === 'file' || field.type === 'folder' ? 'lx-span-2' : '',
+        disabled ? 'is-profile-managed' : '',
+      ].filter(Boolean).join(' ') || undefined}
     >
       <div title={rawDesc || ''}>{control}</div>
+      {disabledReason ? <span className="lx-profile-managed-note">{disabledReason}</span> : null}
     </FieldShell>
   )
 }

@@ -1,0 +1,44 @@
+{
+  "key": "tp_nccl_overlap_matrix",
+  "title": "TP NCCL 协议与反向重叠实测矩阵 (V100/PCIe)",
+  "category": "性能 / 分布式",
+  "appliesTo": [
+    "sdxl-lora",
+    "sd-lora",
+    "anima-lora",
+    "newbie-lora",
+    "finetune",
+    "flux-lora"
+  ],
+  "layers": [
+    "训练控制层"
+  ],
+  "standard": {
+    "summary": "在真实 TP2 环境上单变量切换 NCCL_PROTO 与 overlap_backward，用数据决定是否启用，不在本机伪造结论。",
+    "effect": "定位 TP 每步大量小 all-reduce 的延迟瓶颈；量化协议与异步重叠的真实收益。",
+    "whenToUse": "多卡 TP 训练 step time 明显慢于同卡数 PP/DP 时。",
+    "avoidWhen": "单卡或 gloo/CPU 环境（无 NCCL，无法产生真实重叠）。"
+  },
+  "advanced": {
+    "principle": "TP 每层前向+反向各一次 all-reduce，同步次数 = 层数×4，PCIe 上单次 0.5-1.5ms。NCCL_PROTO 影响每次集合通信的协议：LL/LL128 小消息低延迟，Simple 大消息高带宽。overlap_backward 把 Column 层本地 dX 梯度的 all-reduce 提前发起，让 dW/dBias 计算与通信并发。",
+    "intervention": "矩阵：NCCL_PROTO ∈ {unset, LL, LL128, Simple} × backward ∈ {sync, overlap}，每次只改一个变量，各跑固定步数（≥50 步，去掉前 10 步预热）。",
+    "expectedImpact": "协议切换可能 0-20%；异步重叠取决于 dW 计算窗口能否盖住 all-reduce，V100 PCIe 上需实测，无保证。",
+    "tradeoffs": "NCCL_PROTO 影响进程内所有 NCCL 通信（不只 TP）。已设置的环境变量优先于 WebUI 配置。异步路径默认关闭，TP1 数值逐位一致已验证，TP2 parity 与真实重叠必须用 CUDA profiler/event 证据确认。",
+    "codePath": "core/lulynx_trainer/parallel/collectives.py:launch_all_reduce/wait_collective → layers.py:_ColumnParallelOverlapFn"
+  },
+  "relatedConfigs": [
+    "nccl_proto",
+    "nccl_socket_ifname",
+    "parallel_backend"
+  ],
+  "verification": {
+    "record": [
+      "NCCL_DEBUG=INFO 输出的实际 transport/protocol/P2P/SHM 使用",
+      "collective 次数与类型（应 ≈ 层数×4/步）",
+      "comm_total_ms / comm_wait_ms / total_step_ms（scorecard 字段）",
+      "peak VRAM、TP2 数值 parity（与 sync 路径 loss 对比）",
+      "是否 hang、watchdog 超时或异常退出"
+    ],
+    "rule": "只有 CUDA profiler/event 证明通信与计算重叠、且总 step time 可重复下降，才能称为 overlap 生效；若只有 async 发起成功而总耗时不降，结论是“异步原语正确，但当前拓扑/算子规模下无性能收益”，不得接入默认路径。"
+  }
+}

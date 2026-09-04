@@ -8,9 +8,7 @@
   ],
   "aliases": [
     "pissa_niter",
-    "pissa_method",
-    "pissa_apply_conv2d",
-    "pissa_export_mode"
+    "pissa_apply_conv2d"
   ],
   "standard": {
     "summary": "PiSSA（Principal Singular values and Singular vectors Adaptation）：通过 SVD 初始化 LoRA 的 A/B 矩阵，使初始 LoRA 对齐预训练权重的主要奇异方向，实现更快的收敛。",

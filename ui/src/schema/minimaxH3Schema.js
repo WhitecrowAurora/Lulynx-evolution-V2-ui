@@ -1,10 +1,21 @@
 // MiniMax H3 keeps its audio/video and guidance-preserving contract separate
 // from the image-only DiT schemas so unsupported distillation fields cannot leak in.
 import { sec, when } from './schemaCommon.js';
-import { S_LR_DIT, S_LR_FT_DIT, S_SAVE, S_TRAIN } from './schemaFieldGroups.js';
+import {
+  S_LR_DIT,
+  S_LR_FT_DIT,
+  S_SAVE,
+  S_TRAIN,
+  SEED_FIELD,
+  TRAINING_VRAM_PROFILE_FIELD,
+  TRAINING_VRAM_PROFILE_HIDDEN_FIELDS,
+  ATTENTION_BACKEND_FIELD,
+  S_SYSTEM_ENV,
+} from './schemaFieldGroups.js';
 
 const H3_CHECKPOINT_OPTIONS = [
   { value: 'unsloth', label: 'Unsloth（推荐）' },
+  { value: 'ffn', label: 'FFN-only（仅重算前馈层）' },
   { value: 'selective', label: 'Selective' },
   { value: 'full', label: 'Full recompute' },
 ];
@@ -26,7 +37,11 @@ const H3_SAVE_FIELDS = S_SAVE
     return field;
   });
 
-const H3_TRAIN_FIELDS = S_TRAIN(10).filter((field) => field.key !== 'gradient_checkpointing');
+// H3 没有高级页，种子输入接在训练参数里：缺了它这两个类型永远只能吃默认种子。
+const H3_TRAIN_FIELDS = [
+  ...S_TRAIN(10).filter((field) => field.key !== 'gradient_checkpointing'),
+  SEED_FIELD,
+];
 const H3_LR_FIELDS = S_LR_DIT.map((field) => (
   ['learning_rate', 'unet_lr'].includes(field.key)
     ? { ...field, defaultValue: '1e-5' }
@@ -92,6 +107,8 @@ const adapterFields = [
 ];
 
 const memoryFields = [
+  TRAINING_VRAM_PROFILE_FIELD,
+  ...TRAINING_VRAM_PROFILE_HIDDEN_FIELDS,
   { key: 'mixed_precision', type: 'select', label: '混合精度', title: 'mixed_precision', defaultValue: 'bf16', options: ['bf16', 'fp16', 'no'] },
   { key: 'h3_cache_latents', type: 'boolean', label: '缓存音视频 Latent', title: 'h3_cache_latents', desc: '预编码 Video/Audio VAE 输出，减少训练时显存与重复计算。', defaultValue: true },
   { key: 'h3_cache_text_encoder_outputs', type: 'boolean', label: '缓存文本编码器输出', title: 'h3_cache_text_encoder_outputs', desc: '预编码 conditional 与 unconditional 文本张量。', defaultValue: true },
@@ -109,7 +126,7 @@ const memoryFields = [
     { value: 'auto', label: 'Auto' },
   ] },
   { key: 'h3_preserve_lora_master_dtype', type: 'boolean', label: 'FP32 LoRA Master', title: 'h3_preserve_lora_master_dtype', desc: '保持 LoRA 参数为 FP32，避免 BF16 小更新被量化吞掉；主干仍为 BF16/INT8。', defaultValue: true },
-  { key: 'h3_checkpoint_mode', type: 'select', label: '激活检查点模式', title: 'h3_checkpoint_mode', desc: 'Block Swap 开启时必须使用 Unsloth；Full/Selective 仅适合所有 block 常驻 GPU 的诊断。', defaultValue: 'unsloth', options: getMiniMaxH3CheckpointOptions },
+  { key: 'h3_checkpoint_mode', type: 'select', label: '激活检查点模式', title: 'h3_checkpoint_mode', desc: 'Block Swap 开启时必须使用 Unsloth；FFN-only/Full/Selective 仅适合所有 block 常驻 GPU 的诊断。', defaultValue: 'unsloth', options: getMiniMaxH3CheckpointOptions },
   { key: 'h3_activation_offload_min_tensor_mb', type: 'number', label: '激活卸载阈值 (MB)', title: 'h3_activation_offload_min_tensor_mb', desc: '只卸载达到该大小的保存张量。', defaultValue: 10.0, min: 0, step: 1 },
 ];
 
@@ -126,6 +143,9 @@ const common = (typeId, finetune) => [
       : field
   ))),
   sec('h3-memory-settings', 'speed', 'H3 低显存运行时', '缓存、Block Swap 与激活检查点共用 H3 原生运行时。', memoryFields),
+  // H3 两个类型手写了全部段落,所以从来没拿到 S_ADV 那批系统字段:界面上既选不了执行环境 Profile
+  // 也选不了显卡,只能继承 launcher 启动时的选择。三个键默认都是空串,不填就不进 payload。
+  sec('system-settings', 'advanced', '系统设置', '执行环境 Profile、指定显卡、Attention 后端与自定义 TOML 覆盖。', [...S_SYSTEM_ENV, ATTENTION_BACKEND_FIELD]),
 ];
 
 export const MINIMAX_H3_LORA_SECTIONS = common('minimax-h3-lora', false);

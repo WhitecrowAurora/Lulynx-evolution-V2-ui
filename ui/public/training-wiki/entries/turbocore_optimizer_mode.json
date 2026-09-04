@@ -5,7 +5,7 @@
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "选项说明见 ?",
+    "summary": "让 PyTorch 优化器的 step 走 Triton 内核后端（非顶栏 TurboCore CUDA 路径）。off=原生 step；auto=支持则加速；force=强制（不支持则报错）。与顶栏 TurboCore CUDA 硬互斥：顶栏开时本项强制 off。",
     "effect": "",
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。",

@@ -8,7 +8,6 @@
   ],
   "aliases": [
     "validate_every_n_epochs",
-    "eval_data_dir",
     "eval_batch_size",
     "max_validation_steps"
   ],

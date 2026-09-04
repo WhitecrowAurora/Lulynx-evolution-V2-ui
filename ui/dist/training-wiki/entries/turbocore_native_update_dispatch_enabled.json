@@ -13,8 +13,7 @@
     "turbocore_fused_backward_enabled",
     "turbocore_fused_backward_mode",
     "turbocore_kernel_autotune_enabled",
-    "turbocore_kernel_autotune_target",
-    "automagic_fused_backward_enabled"
+    "turbocore_kernel_autotune_target"
   ],
   "standard": {
     "summary": "TurboCore 是 Lulynx 训练器的性能优化引擎，集成多种 CUDA kernel 级别的加速：fused backward、native update dispatch、kernel autotune 等。",

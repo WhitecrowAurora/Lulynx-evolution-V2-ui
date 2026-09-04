@@ -7,9 +7,7 @@
     "sdxl-lora"
   ],
   "aliases": [
-    "cpu_offload_checkpointing_mode",
-    "cpu_offload_checkpointing_pool_gb",
-    "te_vae_offload_strategy"
+    "cpu_offload_checkpointing_pool_gb"
   ],
   "standard": {
     "summary": "将 gradient checkpoint 的中间激活值卸载到 CPU，而非只是丢弃（标准 checkpointing 是丢弃后重算）。比标准 checkpointing 节省更多 VRAM，但增加 CPU-GPU 传输开销。",

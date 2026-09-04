@@ -37,7 +37,6 @@ import {
   S_COMPILE_EXPERT,
   S_MODULE_OFFLOAD_EXPERT,
   S_DREAMBOOTH,
-  S_LLLITE,
 } from './schemaFieldGroups.js';
 import {
   S_NEGATIVE_SEMANTIC_REGULARIZATION,
@@ -51,7 +50,7 @@ export const SD15_LORA_SECTIONS = [
   sec('model-settings', 'model', '训练用模型', 'SD1.5 底模与恢复训练。', [
     { key: 'model_train_type', type: 'hidden', defaultValue: 'sd-lora' },
     { key: 'pretrained_model_name_or_path', type: 'file', pickerType: 'model-file', label: 'SD1.5 底模路径', title: 'pretrained_model_name_or_path', desc: '底模文件路径', defaultValue: '' },
-    { key: 'resume', type: 'folder', pickerType: 'output-folder', label: '继续训练路径', title: 'resume', desc: '从某个 save_state 保存的中断状态继续训练，选择 save-state 目录', defaultValue: '' },
+    { key: 'resume', type: 'file', pickerType: 'output-model-file', allowModelDirectory: true, label: '继续训练路径', title: 'resume', desc: '从某个 save_state / 检查点继续训练：可选择检查点文件，或选择存档目录自动取最新', defaultValue: '' },
     { key: 'vae', type: 'file', pickerType: 'model-file', label: 'VAE 路径', title: 'vae', desc: 'VAE 路径', defaultValue: '' },
     { key: 'network_weights', type: 'file', pickerType: 'output-model-file', label: '继续训练 LoRA', title: 'network_weights', desc: '从已有的 LoRA 模型上继续训练，填写路径', defaultValue: '' },
     { key: 'v2', type: 'boolean', label: 'SD 2.x 模型', title: 'v2', desc: '使用 SD 2.x 模型', defaultValue: false },
@@ -147,13 +146,12 @@ export const DB_SECTIONS = [
 
 // ---- SD ControlNet ----
 export const SD_CN_SECTIONS = [
-  sec('model-settings', 'model', '训练用模型', 'SD1.5 ControlNet。', cnModel('sd-controlnet', 'SD1.5', [{ key: 'v2', type: 'boolean', label: 'SD 2.x', desc: 'SD 2.x', defaultValue: false }])),
+  sec('model-settings', 'model', '训练用模型', 'SD1.5 ControlNet。', cnModel('sd-controlnet', 'SD1.5', [{ key: 'v2', type: 'boolean', label: 'SD 2.x', desc: '勾选后按 SD 2.x 结构加载底模；v-prediction 另由 v_parameterization 控制。', defaultValue: false }])),
   sec('save-settings', 'model', '保存设置', '', [...S_SAVE]),
   sec('dataset-settings', 'dataset', '数据集设置', '', cnDataset('512,512', 1024, 64)),
   sec('caption-settings', 'dataset', 'Caption 选项', '', [...S_CAPTION]),
   sec('data-aug-settings', 'dataset', '数据增强', '颜色、翻转与裁剪增强。', [...S_DATA_AUG]),
   sec('optimizer-settings', 'optimizer', '学习率与优化器', '', [...cnLR]),
-  sec('lllite-settings', 'network', 'LLLite 条件适配器', 'UNet 侧 LLLite adapter 结构参数（SD 系 ControlNet）。', [...S_LLLITE]),
   sec('training-settings', 'training', '训练参数', '', [...cnTrainFields]),
   sec('preview-settings', 'preview', '预览图设置', '', [...S_PREVIEW, ...S_QUALITY_EVAL]),
   sec('validation-settings', 'preview', '验证设置', '验证集划分与验证频率。', [...S_VALIDATION]),
@@ -175,7 +173,7 @@ export const SD_CN_SECTIONS = [
 
 // ---- SD Textual Inversion ----
 export const SD_TI_SECTIONS = [
-  sec('model-settings', 'model', '训练用模型', 'SD1.5 Textual Inversion。', tiModel('sd-textual-inversion', 'SD1.5', [{ key: 'v2', type: 'boolean', label: 'SD 2.x', desc: 'SD 2.x', defaultValue: false }])),
+  sec('model-settings', 'model', '训练用模型', 'SD1.5 Textual Inversion。', tiModel('sd-textual-inversion', 'SD1.5', [{ key: 'v2', type: 'boolean', label: 'SD 2.x', desc: '勾选后按 SD 2.x 结构加载底模；v-prediction 另由 v_parameterization 控制。', defaultValue: false }])),
   sec('ti-params', 'model', 'Textual Inversion 专用', '', [...tiParams]),
   sec('save-settings', 'model', '保存设置', '', S_SAVE.map((f) => f.key === 'save_model_as' ? { ...f, defaultValue: 'pt' } : f.key === 'output_name' ? { ...f, defaultValue: 'embedding' } : f)),
   sec('dataset-settings', 'dataset', '数据集设置', '', ds('512,512', 1024, 64)),
@@ -225,7 +223,7 @@ export const YOLO_SECTIONS = [
     { key: 'imgsz', type: 'number', label: '输入分辨率', title: 'imgsz', desc: '训练输入分辨率', defaultValue: 640, min: 32 },
     { key: 'workers', type: 'number', label: '数据加载 Worker', title: 'workers', desc: '数据加载 worker 数量', defaultValue: 8, min: 0 },
     { key: 'device', type: 'string', label: '设备', title: 'device', desc: '手动指定设备，如 0、0,1、cpu。留空自动检测', defaultValue: '' },
-    { key: 'seed', type: 'number', label: '随机种子', title: 'seed', desc: '随机种子', defaultValue: 1337 },
+    { key: 'seed', type: 'number', label: '随机种子', title: 'seed', desc: '随机种子', defaultValue: 8888 },
   ]),
 ];
 

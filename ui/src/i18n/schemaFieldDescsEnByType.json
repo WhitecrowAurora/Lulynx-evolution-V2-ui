@@ -1,0 +1,777 @@
+{
+  "activation_cpu_offload_enabled": {
+    "anima-edit-model": "Move large activations into CPU RAM to cut VRAM. Can be combined with interval > 1.",
+    "anima-lora": "Move large activations into CPU RAM to cut VRAM. Can be combined with interval > 1."
+  },
+  "activation_cpu_offload_pool_gb": {
+    "anima-edit-model": "Size of the pinned CPU memory pool.",
+    "anima-lora": "Size of the pinned CPU memory pool."
+  },
+  "adapter_init_export_mode": {
+    "concept-edit": "auto exports a LoRA that can be loaded as-is; raw keeps the training state for resuming."
+  },
+  "adapter_init_strategy": {
+    "concept-edit": "Default LoRA / PiSSA / OLoRA."
+  },
+  "adapter_type": {
+    "newbie-lora": "Newbie adapter family; it maps onto the native LoRA implementation."
+  },
+  "ae": {
+    "lumina-finetune": "AE path."
+  },
+  "batch_size": {
+    "aesthetic-scorer": "Training batch size.",
+    "lab-distiller": "Distillation batch size."
+  },
+  "block_merge_size": {
+    "newbie-lora": "Number of blocks per group in merged_block mode."
+  },
+  "blocks_to_swap": {
+    "newbie-lora": "Number of blocks swapped out to CPU."
+  },
+  "boogu_model_version": {
+    "boogu-edit-lora": "The Edit profile can be picked as a placeholder before its weights are in place."
+  },
+  "boogu_task": {
+    "boogu-edit-lora": "Edit is pinned to edit: the TI2I system prompt."
+  },
+  "bp_low_factor": {
+    "anima-edit-model": "BP-low downsampling factor.",
+    "anima-lora": "BP-low downsampling factor."
+  },
+  "bp_low_noise_threshold": {
+    "anima-edit-model": "Sigma threshold above which the backward pass runs at low resolution.",
+    "anima-lora": "Sigma threshold above which the backward pass runs at low resolution."
+  },
+  "bp_low_schedule": {
+    "anima-edit-model": "BP-low schedule strategy.",
+    "anima-lora": "BP-low schedule strategy."
+  },
+  "cache_text_encoder_outputs": {
+    "anima-edit-model": "Cache the text encoder (Qwen3/T5) outputs.",
+    "anima-lora": "Cache the text encoder (Qwen3/T5) outputs."
+  },
+  "caption_extension": {
+    "newbie-lora": "Caption extension used for the fallback read."
+  },
+  "clip_skip": {
+    "sd-addift": "Concept-edit mode also reuses the CLIP of the current training route.",
+    "sd-ileco": "Concept-edit mode also reuses the CLIP of the current training route.",
+    "sd-multi-addift": "Concept-edit mode also reuses the CLIP of the current training route.",
+    "sdxl-addift": "Concept-edit mode also reuses the CLIP of the current training route.",
+    "sdxl-ileco": "Concept-edit mode also reuses the CLIP of the current training route.",
+    "sdxl-multi-addift": "Concept-edit mode also reuses the CLIP of the current training route."
+  },
+  "concept_edit_use_diff_mask": {
+    "anima-addift": "ADDifT / Multi-ADDifT can derive it from the source image.",
+    "anima-ileco": "ADDifT / Multi-ADDifT can derive it from the source image.",
+    "anima-multi-addift": "ADDifT / Multi-ADDifT can derive it from the source image.",
+    "concept-edit": "ADDifT can build the mask from the pixel difference between source and target, cutting interference from unrelated regions."
+  },
+  "cpu_offload_checkpointing": {
+    "newbie-lora": "During checkpointing, spill some tensors to CPU.",
+    "sd-addift": "During gradient checkpointing, spill some tensors to CPU to save VRAM.",
+    "sd-controlnet": "During gradient checkpointing, spill some tensors to CPU to save VRAM.",
+    "sd-dreambooth": "During gradient checkpointing, spill some tensors to CPU to save VRAM.",
+    "sd-ileco": "During gradient checkpointing, spill some tensors to CPU to save VRAM.",
+    "sd-lora": "During gradient checkpointing, spill some tensors to CPU to save VRAM.",
+    "sd-multi-addift": "During gradient checkpointing, spill some tensors to CPU to save VRAM.",
+    "sd-textual-inversion": "During gradient checkpointing, spill some tensors to CPU to save VRAM.",
+    "sdxl-addift": "During gradient checkpointing, spill some tensors to CPU to save VRAM.",
+    "sdxl-controlnet": "During gradient checkpointing, spill some tensors to CPU to save VRAM.",
+    "sdxl-controlnet-lllite": "During gradient checkpointing, spill some tensors to CPU to save VRAM.",
+    "sdxl-finetune": "During gradient checkpointing, spill some tensors to CPU to save VRAM.",
+    "sdxl-ileco": "During gradient checkpointing, spill some tensors to CPU to save VRAM.",
+    "sdxl-lora": "During gradient checkpointing, spill some tensors to CPU to save VRAM.",
+    "sdxl-multi-addift": "During gradient checkpointing, spill some tensors to CPU to save VRAM.",
+    "sdxl-textual-inversion": "During gradient checkpointing, spill some tensors to CPU to save VRAM."
+  },
+  "dataloader_num_workers": {
+    "newbie-lora": "Number of DataLoader worker threads."
+  },
+  "device": {
+    "aesthetic-scorer": "cuda, cuda:0 or cpu.",
+    "yolo": "Name the device explicitly, for example 0, 0,1 or cpu. Leave empty to detect it automatically."
+  },
+  "disable_mmap_load_safetensors": {
+    "anima-edit-model": "Disable mmap-based safetensors loading.",
+    "anima-lora": "Disable mmap-based safetensors loading."
+  },
+  "distill_method": {
+    "sdxl-turbo-lora": "LCM-LoRA is the recommended method at the moment."
+  },
+  "dora_wd": {
+    "anima-addift": "Only takes effect on the Anima native LoRA route.",
+    "anima-edit-model": "Only takes effect on the Anima native LoRA route.",
+    "anima-ileco": "Only takes effect on the Anima native LoRA route.",
+    "anima-lora": "Only takes effect on the Anima native LoRA route.",
+    "anima-multi-addift": "Only takes effect on the Anima native LoRA route.",
+    "concept-edit": "With DoRA on, the weights are trained as a direction part plus a magnitude part."
+  },
+  "dry_run": {
+    "lab-distiller": "When on, only the configuration chain is checked — no real distillation is started."
+  },
+  "enable_bucket": {
+    "anima-controlnet": "UNet routes such as SDXL/SD15: arb bucketing is fully supported. DiT cache-first (Anima/Newbie and friends) mostly does not change already-cached resolutions, so this mainly affects online/rebuild. Not guaranteed for the video families.",
+    "boogu-edit-lora": "DiT cache-first route: bucketing is mostly partial. Replaying cached latents/TE outputs usually does not change resolution, so this mainly affects online/rebuild. Do not read it as full UNet arb bucketing.",
+    "boogu-finetune": "DiT cache-first route: bucketing is mostly partial. Replaying cached latents/TE outputs usually does not change resolution, so this mainly affects online/rebuild. Do not read it as full UNet arb bucketing.",
+    "boogu-lora": "DiT cache-first route: bucketing is mostly partial. Replaying cached latents/TE outputs usually does not change resolution, so this mainly affects online/rebuild. Do not read it as full UNet arb bucketing.",
+    "flux2-finetune": "DiT cache-first route: bucketing is mostly partial. Replaying cached latents/TE outputs usually does not change resolution, so this mainly affects online/rebuild. Do not read it as full UNet arb bucketing.",
+    "flux2-lora": "DiT cache-first route: bucketing is mostly partial. Replaying cached latents/TE outputs usually does not change resolution, so this mainly affects online/rebuild. Do not read it as full UNet arb bucketing.",
+    "krea2-finetune": "DiT cache-first route: bucketing is mostly partial. Replaying cached latents/TE outputs usually does not change resolution, so this mainly affects online/rebuild. Do not read it as full UNet arb bucketing.",
+    "krea2-lora": "DiT cache-first route: bucketing is mostly partial. Replaying cached latents/TE outputs usually does not change resolution, so this mainly affects online/rebuild. Do not read it as full UNet arb bucketing.",
+    "newbie-lora": "DiT cache-first route: bucketing is mostly partial. Replaying cached latents/TE outputs usually does not change resolution, so this mainly affects online/rebuild. Do not read it as full UNet arb bucketing.",
+    "sd-controlnet": "UNet routes such as SDXL/SD15: arb bucketing is fully supported. DiT cache-first (Anima/Newbie and friends) mostly does not change already-cached resolutions, so this mainly affects online/rebuild. Not guaranteed for the video families.",
+    "sdxl-controlnet": "UNet routes such as SDXL/SD15: arb bucketing is fully supported. DiT cache-first (Anima/Newbie and friends) mostly does not change already-cached resolutions, so this mainly affects online/rebuild. Not guaranteed for the video families.",
+    "sdxl-controlnet-lllite": "UNet routes such as SDXL/SD15: arb bucketing is fully supported. DiT cache-first (Anima/Newbie and friends) mostly does not change already-cached resolutions, so this mainly affects online/rebuild. Not guaranteed for the video families.",
+    "wan22-finetune": "DiT cache-first route: bucketing is mostly partial. Replaying cached latents/TE outputs usually does not change resolution, so this mainly affects online/rebuild. Do not read it as full UNet arb bucketing.",
+    "wan22-t2v-a14b-lora": "DiT cache-first route: bucketing is mostly partial. Replaying cached latents/TE outputs usually does not change resolution, so this mainly affects online/rebuild. Do not read it as full UNet arb bucketing.",
+    "wan22-ti2v-lora": "DiT cache-first route: bucketing is mostly partial. Replaying cached latents/TE outputs usually does not change resolution, so this mainly affects online/rebuild. Do not read it as full UNet arb bucketing.",
+    "zimage-finetune": "DiT cache-first route: bucketing is mostly partial. Replaying cached latents/TE outputs usually does not change resolution, so this mainly affects online/rebuild. Do not read it as full UNet arb bucketing.",
+    "zimage-lora": "DiT cache-first route: bucketing is mostly partial. Replaying cached latents/TE outputs usually does not change resolution, so this mainly affects online/rebuild. Do not read it as full UNet arb bucketing."
+  },
+  "epochs": {
+    "aesthetic-scorer": "Number of training rounds."
+  },
+  "experimental_attention_profile_enabled": {
+    "anima-edit-model": "Windowed attention. auto prefers the attention backend resolved by the launcher/preflight.",
+    "anima-lora": "Windowed attention. auto prefers the attention backend resolved by the launcher/preflight.",
+    "newbie-lora": "Windowed attention. auto prefers the attention backend resolved by the launcher/preflight."
+  },
+  "experimental_attention_profile_window": {
+    "anima-edit-model": "Size of the history window each token may attend to.",
+    "anima-lora": "Size of the history window each token may attend to.",
+    "newbie-lora": "Size of the history window each token may attend to."
+  },
+  "flashattn": {
+    "sdxl-addift": "Advanced override: force FlashAttention 2.",
+    "sdxl-controlnet": "Advanced override: force FlashAttention 2.",
+    "sdxl-controlnet-lllite": "Advanced override: force FlashAttention 2.",
+    "sdxl-finetune": "Advanced override: force FlashAttention 2.",
+    "sdxl-ileco": "Advanced override: force FlashAttention 2.",
+    "sdxl-lora": "Advanced override: force FlashAttention 2.",
+    "sdxl-multi-addift": "Advanced override: force FlashAttention 2.",
+    "sdxl-textual-inversion": "Advanced override: force FlashAttention 2."
+  },
+  "flow_logit_mean": {
+    "sd-lora": "Mean of the logit-normal timestep sampling.",
+    "sdxl-finetune": "Mean of the logit-normal timestep sampling.",
+    "sdxl-lora": "Mean of the logit-normal timestep sampling."
+  },
+  "flow_logit_std": {
+    "sd-lora": "Standard deviation of the logit-normal timestep sampling; must be greater than 0.",
+    "sdxl-finetune": "Standard deviation of the logit-normal timestep sampling; must be greater than 0.",
+    "sdxl-lora": "Standard deviation of the logit-normal timestep sampling; must be greater than 0."
+  },
+  "gemma2": {
+    "lumina-finetune": "Gemma2 path."
+  },
+  "gemma2_max_token_length": {
+    "lumina-lora": "Max Gemma2 token length."
+  },
+  "gradient_accumulation_steps": {
+    "concept-edit": "Gradient accumulation steps."
+  },
+  "gradient_checkpointing": {
+    "anima-addift": "Anima generic checkpointing; for the main route see DiT Block Checkpointing on the speed page.",
+    "anima-edit-model": "Anima generic checkpointing; for the main route see DiT Block Checkpointing on the speed page.",
+    "anima-ileco": "Anima generic checkpointing; for the main route see DiT Block Checkpointing on the speed page.",
+    "anima-lora": "Anima generic checkpointing; for the main route see DiT Block Checkpointing on the speed page.",
+    "anima-multi-addift": "Anima generic checkpointing; for the main route see DiT Block Checkpointing on the speed page.",
+    "concept-edit": "DiT generic checkpointing; for the main route see DiT Block Checkpointing on the speed page.",
+    "newbie-lora": "Newbie generic checkpointing; for the main route see DiT Block Checkpointing on the speed page.",
+    "sd-addift": "Enable gradient checkpointing to save VRAM.",
+    "sd-ileco": "Enable gradient checkpointing to save VRAM.",
+    "sd-multi-addift": "Enable gradient checkpointing to save VRAM.",
+    "sdxl-addift": "Enable gradient checkpointing to save VRAM.",
+    "sdxl-ileco": "Enable gradient checkpointing to save VRAM.",
+    "sdxl-multi-addift": "Enable gradient checkpointing to save VRAM."
+  },
+  "guidance_scale": {
+    "anima-few-step-lora": "Target guidance.",
+    "newbie-few-step-lora": "Target guidance."
+  },
+  "image_decode_backend": {
+    "anima-controlnet": "pil is the most compatible; pil_lru caches the decoded RGB of both the main image and the conditioning image.",
+    "sd-controlnet": "pil is the most compatible; pil_lru caches the decoded RGB of both the main image and the conditioning image.",
+    "sdxl-controlnet": "pil is the most compatible; pil_lru caches the decoded RGB of both the main image and the conditioning image.",
+    "sdxl-controlnet-lllite": "pil is the most compatible; pil_lru caches the decoded RGB of both the main image and the conditioning image."
+  },
+  "latent_cache_disk_dtype": {
+    "anima-edit-model": "Precision of the latent cache.",
+    "anima-lora": "Precision of the latent cache."
+  },
+  "latent_cache_disk_format": {
+    "anima-edit-model": "File format of the latent cache.",
+    "anima-lora": "File format of the latent cache."
+  },
+  "learning_rate": {
+    "aesthetic-scorer": "Learning rate.",
+    "anima-controlnet": "Learning rate.",
+    "lab-distiller": "Distillation learning rate.",
+    "newbie-lora": "Learning rate.",
+    "sd-controlnet": "Learning rate.",
+    "sdxl-controlnet": "Learning rate.",
+    "sdxl-controlnet-lllite": "Learning rate.",
+    "sdxl-turbo-lora": "LoRA learning rate."
+  },
+  "llm_adapter_path": {
+    "anima-addift": "Path to a separate LLM adapter weight file (optional).",
+    "anima-ileco": "Path to a separate LLM adapter weight file (optional).",
+    "anima-multi-addift": "Path to a separate LLM adapter weight file (optional).",
+    "concept-edit": "Path to a separate LLM adapter weight file (optional on Anima)."
+  },
+  "loftq_bits": {
+    "concept-edit": "LoftQ quantization bit width."
+  },
+  "lokr_factor": {
+    "anima-addift": "LoKr decomposition factor.",
+    "anima-edit-model": "LoKr factor, commonly 4 up to infinity (-1 for infinity).",
+    "anima-ileco": "LoKr decomposition factor.",
+    "anima-lora": "LoKr factor, commonly 4 up to infinity (-1 for infinity).",
+    "anima-multi-addift": "LoKr decomposition factor.",
+    "concept-edit": "LoKr decomposition factor.",
+    "newbie-lora": "LoKr factor. -1 means infinity."
+  },
+  "lora_meta_reader": {
+    "concept-edit": "Read the training-parameter metadata of an existing LoRA file, for reference or to reproduce a training configuration."
+  },
+  "lora_type": {
+    "anima-edit-model": "LoRA is the baseline route.",
+    "anima-lora": "LoRA is the baseline route.",
+    "concept-edit": "For concept editing, start with plain LoRA."
+  },
+  "lr_scheduler": {
+    "newbie-lora": "Newbie learning-rate scheduler."
+  },
+  "lr_scheduler_args": {
+    "newbie-lora": "Custom learning-rate scheduler arguments, one key=value per line."
+  },
+  "lr_scheduler_num_cycles": {
+    "newbie-lora": "Number of restarts for cosine_with_restarts."
+  },
+  "lr_warmup_steps": {
+    "newbie-lora": "Warmup steps."
+  },
+  "ltx23_text_encoder_path": {
+    "ltx25-finetune": "Optional override; the official split-pack directory finds the gemma4-12b-with-proj file on its own.",
+    "ltx25-lora": "Optional override; the official split-pack directory finds the gemma4-12b-with-proj file on its own."
+  },
+  "ltx23_video_vae_path": {
+    "ltx25-finetune": "Optional override; video-vae-conv-bf16 is recommended for the training cache.",
+    "ltx25-lora": "Optional override; video-vae-conv-bf16 is recommended for the training cache."
+  },
+  "max_bucket_reso": {
+    "newbie-lora": "Longest bucket edge (cache-first replay usually keeps the cached resolution)."
+  },
+  "max_grad_norm": {
+    "newbie-lora": "Gradient clipping."
+  },
+  "max_timestep": {
+    "anima-addift": "Around 1000 is common for action/accessory diffs; around 400 for style diffs.",
+    "anima-edit-model": "Largest timestep sampled during training, exclusive.",
+    "anima-ileco": "Around 1000 is common for action/accessory diffs; around 400 for style diffs.",
+    "anima-lora": "Largest timestep sampled during training, exclusive.",
+    "anima-multi-addift": "Around 1000 is common for action/accessory diffs; around 400 for style diffs.",
+    "concept-edit": "Around 1000 is common for action/accessory diffs; around 400 for style diffs.",
+    "sd-addift": "Around 1000 is common for action/accessory diffs; around 400 for style diffs.",
+    "sd-ileco": "Around 1000 is common for action/accessory diffs; around 400 for style diffs.",
+    "sd-multi-addift": "Around 1000 is common for action/accessory diffs; around 400 for style diffs.",
+    "sdxl-addift": "Around 1000 is common for action/accessory diffs; around 400 for style diffs.",
+    "sdxl-ileco": "Around 1000 is common for action/accessory diffs; around 400 for style diffs.",
+    "sdxl-multi-addift": "Around 1000 is common for action/accessory diffs; around 400 for style diffs."
+  },
+  "max_train_epochs": {
+    "anima-controlnet": "Max training rounds.",
+    "newbie-lora": "Max training epochs.",
+    "sd-controlnet": "Max training rounds.",
+    "sdxl-controlnet": "Max training rounds.",
+    "sdxl-controlnet-lllite": "Max training rounds."
+  },
+  "max_train_steps": {
+    "anima-addift": "The first release of Anima concept editing drives training length by step.",
+    "anima-ileco": "The first release of Anima concept editing drives training length by step.",
+    "anima-multi-addift": "The first release of Anima concept editing drives training length by step.",
+    "boogu-edit-lora": "Default 2500, which is the RunComfy full baseline; 100 to 250 works for a quick probe.",
+    "boogu-finetune": "Default 2500, which is the RunComfy full baseline; 100 to 250 works for a quick probe.",
+    "boogu-lora": "Default 2500, which is the RunComfy full baseline; 100 to 250 works for a quick probe.",
+    "concept-edit": "iLECO is commonly 300 to 1000; ADDifT commonly 30 to 150.",
+    "newbie-lora": "Maximum training steps. 0 derives it from the epoch count.",
+    "sd-addift": "Concept-edit mode drives training length by step.",
+    "sd-ileco": "Concept-edit mode drives training length by step.",
+    "sd-multi-addift": "Concept-edit mode drives training length by step.",
+    "sdxl-addift": "Concept-edit mode drives training length by step.",
+    "sdxl-ileco": "Concept-edit mode drives training length by step.",
+    "sdxl-multi-addift": "Concept-edit mode drives training length by step.",
+    "sdxl-turbo-lora": "Real short tests currently allow at most 4 steps."
+  },
+  "min_bucket_reso": {
+    "newbie-lora": "Shortest bucket edge (cache-first replay usually keeps the cached resolution)."
+  },
+  "min_timestep": {
+    "anima-addift": "Around 500 is common for action/accessory diffs; around 200 for style diffs.",
+    "anima-edit-model": "Smallest timestep.",
+    "anima-ileco": "Around 500 is common for action/accessory diffs; around 200 for style diffs.",
+    "anima-lora": "Smallest timestep.",
+    "anima-multi-addift": "Around 500 is common for action/accessory diffs; around 200 for style diffs.",
+    "concept-edit": "Around 500 is common for action/accessory diffs; around 200 for style diffs.",
+    "sd-addift": "Around 500 is common for action/accessory diffs; around 200 for style diffs.",
+    "sd-ileco": "Around 500 is common for action/accessory diffs; around 200 for style diffs.",
+    "sd-multi-addift": "Around 500 is common for action/accessory diffs; around 200 for style diffs.",
+    "sdxl-addift": "Around 500 is common for action/accessory diffs; around 200 for style diffs.",
+    "sdxl-ileco": "Around 500 is common for action/accessory diffs; around 200 for style diffs.",
+    "sdxl-multi-addift": "Around 500 is common for action/accessory diffs; around 200 for style diffs."
+  },
+  "mixed_precision": {
+    "newbie-lora": "Training precision.",
+    "sdxl-turbo-lora": "Training precision."
+  },
+  "network_alpha": {
+    "anima-addift": "Common values: equal to network_dim or smaller.",
+    "anima-few-step-lora": "LoRA alpha.",
+    "anima-ileco": "Common values: equal to network_dim or smaller.",
+    "anima-multi-addift": "Common values: equal to network_dim or smaller.",
+    "boogu-edit-lora": "LoRA alpha.",
+    "boogu-lora": "LoRA alpha.",
+    "concept-edit": "Common values: equal to network_dim or smaller.",
+    "flux2-lora": "LoRA alpha.",
+    "krea2-lora": "LoRA alpha.",
+    "ltx23-lora": "LoRA alpha.",
+    "ltx25-lora": "LoRA alpha.",
+    "newbie-few-step-lora": "LoRA alpha.",
+    "newbie-lora": "LoRA / LoKr alpha.",
+    "sdxl-turbo-lora": "LoRA alpha.",
+    "wan22-t2v-a14b-lora": "LoRA alpha.",
+    "wan22-ti2v-lora": "LoRA alpha.",
+    "zimage-lora": "LoRA alpha."
+  },
+  "network_dim": {
+    "anima-addift": "Network dimension, commonly 4 to 64. Concept editing rarely needs a large rank.",
+    "anima-few-step-lora": "LoRA rank.",
+    "anima-ileco": "Network dimension, commonly 4 to 64. Concept editing rarely needs a large rank.",
+    "anima-multi-addift": "Network dimension, commonly 4 to 64. Concept editing rarely needs a large rank.",
+    "boogu-edit-lora": "LoRA rank.",
+    "boogu-lora": "LoRA rank.",
+    "concept-edit": "Network dimension; 4 to 64 is usually enough for concept editing.",
+    "flux2-lora": "LoRA rank.",
+    "krea2-lora": "LoRA rank.",
+    "ltx23-lora": "LoRA rank.",
+    "ltx25-lora": "LoRA rank.",
+    "newbie-few-step-lora": "LoRA rank.",
+    "newbie-lora": "LoRA / LoKr rank.",
+    "sdxl-turbo-lora": "LoRA rank.",
+    "wan22-t2v-a14b-lora": "LoRA rank.",
+    "wan22-ti2v-lora": "LoRA rank.",
+    "zimage-lora": "LoRA rank."
+  },
+  "network_dropout": {
+    "anima-addift": "Adapter dropout ratio, 0 to 1, where 0 disables it. Shared by the native LoRA family and the LyCORIS delta family; LyCORIS lokr_dropout is normalized onto this same key.",
+    "anima-edit-model": "Dropout probability.",
+    "anima-ileco": "Adapter dropout ratio, 0 to 1, where 0 disables it. Shared by the native LoRA family and the LyCORIS delta family; LyCORIS lokr_dropout is normalized onto this same key.",
+    "anima-lora": "Dropout probability.",
+    "anima-multi-addift": "Adapter dropout ratio, 0 to 1, where 0 disables it. Shared by the native LoRA family and the LyCORIS delta family; LyCORIS lokr_dropout is normalized onto this same key.",
+    "concept-edit": "Dropout probability.",
+    "newbie-lora": "LoRA dropout.",
+    "sdxl-turbo-lora": "LoRA dropout."
+  },
+  "network_module": {
+    "anima-few-step-lora": "Network module written into the metadata.",
+    "newbie-few-step-lora": "Network module written into the metadata."
+  },
+  "network_train_text_encoder_only": {
+    "anima-addift": "Anima concept editing cannot train the text encoder on its own yet. Keep this off.",
+    "anima-ileco": "Anima concept editing cannot train the text encoder on its own yet. Keep this off.",
+    "anima-multi-addift": "Anima concept editing cannot train the text encoder on its own yet. Keep this off.",
+    "concept-edit": "Concept editing cannot train the text encoder on its own; keep this off.",
+    "sd-addift": "Training the text encoder alone is not recommended in this first concept-edit release.",
+    "sd-ileco": "Training the text encoder alone is not recommended in this first concept-edit release.",
+    "sd-multi-addift": "Training the text encoder alone is not recommended in this first concept-edit release.",
+    "sdxl-addift": "Training the text encoder alone is not recommended in this first concept-edit release.",
+    "sdxl-ileco": "Training the text encoder alone is not recommended in this first concept-edit release.",
+    "sdxl-multi-addift": "Training the text encoder alone is not recommended in this first concept-edit release."
+  },
+  "network_train_unet_only": {
+    "anima-addift": "Anima concept editing currently supports the DiT-only route only.",
+    "anima-ileco": "Anima concept editing currently supports the DiT-only route only.",
+    "anima-multi-addift": "Anima concept editing currently supports the DiT-only route only.",
+    "concept-edit": "Concept editing currently supports the DiT/U-Net route only; leaving this on is recommended.",
+    "sd-addift": "The first concept-edit release trains only the U-Net / DiT by default.",
+    "sd-ileco": "The first concept-edit release trains only the U-Net / DiT by default.",
+    "sd-multi-addift": "The first concept-edit release trains only the U-Net / DiT by default.",
+    "sdxl-addift": "The first concept-edit release trains only the U-Net / DiT by default.",
+    "sdxl-ileco": "The first concept-edit release trains only the U-Net / DiT by default.",
+    "sdxl-multi-addift": "The first concept-edit release trains only the U-Net / DiT by default."
+  },
+  "network_weights": {
+    "anima-addift": "Continue training from an existing concept-edit LoRA / DoRA / T-LoRA model.",
+    "anima-ileco": "Continue training from an existing concept-edit LoRA / DoRA / T-LoRA model.",
+    "anima-multi-addift": "Continue training from an existing concept-edit LoRA / DoRA / T-LoRA model.",
+    "concept-edit": "Continue training from an existing concept-edit LoRA.",
+    "hunyuan-dit-lora": "Continue training from an existing LoRA. Placeholder field for now.",
+    "minimax-h3-lora": "Optional existing H3 LoRA weights.",
+    "qwen-image-lora": "Continue training from an existing LoRA. Placeholder field for now."
+  },
+  "optimizer_args_custom": {
+    "newbie-lora": "Custom optimizer arguments, one key=value per line."
+  },
+  "optimizer_type": {
+    "anima-edit-model": "Optimizer selection. pytorch_optimizer.<name> is turned into PytorchOptimizer with name= written into optimizer_args, which needs the pytorch-optimizer plugin. AdamW is recommended for Anima LoRA.",
+    "anima-lora": "Optimizer selection. pytorch_optimizer.<name> is turned into PytorchOptimizer with name= written into optimizer_args, which needs the pytorch-optimizer plugin. AdamW is recommended for Anima LoRA.",
+    "newbie-lora": "Newbie optimizer selection."
+  },
+  "output_dir": {
+    "aesthetic-scorer": "Model output directory.",
+    "boogu-edit-lora": "Training output directory.",
+    "boogu-finetune": "Training output directory.",
+    "boogu-lora": "Training output directory.",
+    "flux2-finetune": "Training output directory.",
+    "flux2-lora": "Training output directory.",
+    "krea2-finetune": "Training output directory.",
+    "krea2-lora": "Training output directory.",
+    "ltx23-finetune": "Training output directory.",
+    "ltx23-lora": "Training output directory.",
+    "ltx25-finetune": "Training output directory.",
+    "ltx25-lora": "Training output directory.",
+    "newbie-lora": "Output directory.",
+    "wan22-finetune": "Training output directory.",
+    "wan22-t2v-a14b-lora": "Training output directory.",
+    "wan22-ti2v-lora": "Training output directory.",
+    "yolo": "Training output directory.",
+    "zimage-finetune": "Training output directory.",
+    "zimage-lora": "Training output directory."
+  },
+  "output_name": {
+    "boogu-edit-lora": "File name of the LoRA output.",
+    "boogu-finetune": "File name of the full Boogu base-model output.",
+    "boogu-lora": "File name of the LoRA output.",
+    "flux2-finetune": "File name of the full FLUX.2 base-model output.",
+    "flux2-lora": "File name of the LoRA output.",
+    "krea2-finetune": "File name of the full Krea-2 base-model output.",
+    "krea2-lora": "File name of the LoRA output.",
+    "ltx23-finetune": "File name of the full LTX-2.3 base-model output.",
+    "ltx23-lora": "File name of the LoRA output.",
+    "ltx25-finetune": "File name of the full LTX-2.5 base-model output.",
+    "ltx25-lora": "File name of the LoRA output.",
+    "newbie-lora": "Output name.",
+    "wan22-finetune": "File name of the full Wan2.2 base-model output.",
+    "wan22-t2v-a14b-lora": "File name of the LoRA output.",
+    "wan22-ti2v-lora": "File name of the LoRA output.",
+    "yolo": "Output name of this training run.",
+    "zimage-finetune": "File name of the full Z-Image base-model output.",
+    "zimage-lora": "File name of the LoRA output."
+  },
+  "output_path": {
+    "lab-distiller": "output/lab_distiller is the recommended location."
+  },
+  "pissa_init": {
+    "anima-edit-model": "Enable PiSSA initialization (only applies to LoRA types).",
+    "anima-lora": "Enable PiSSA initialization (only applies to LoRA types).",
+    "sdxl-lora": "Enable PiSSA initialization."
+  },
+  "pretrained_model_name_or_path": {
+    "anima-addift": "The main Anima DiT weights; BF16 plus Bedovyy/Comfy INT8 (int8rowwise/int8convrot) are supported. An INT8 pack is dequantized to dense before training, so training VRAM is about the same as BF16 — it saves disk, and it is neither keep-I8 nor Comfy native acceleration.",
+    "anima-controlnet": "The main Anima DiT weights; BF16 plus Bedovyy/Comfy INT8 (int8rowwise/int8convrot) are supported. An INT8 pack is dequantized to dense before training, so training VRAM is about the same as BF16 — it saves disk, and it is neither keep-I8 nor Comfy native acceleration.",
+    "anima-edit-model": "The main Anima DiT weights; BF16 plus Bedovyy/Comfy INT8 (int8rowwise/int8convrot) are supported. An INT8 pack is dequantized to dense before training, so training VRAM is about the same as BF16 — it saves disk, and it is neither keep-I8 nor Comfy native acceleration.",
+    "anima-finetune": "The main Anima DiT weights; BF16 plus Bedovyy/Comfy INT8 (int8rowwise/int8convrot) are supported. An INT8 pack is dequantized to dense before training, so training VRAM is about the same as BF16 — it saves disk, and it is neither keep-I8 nor Comfy native acceleration.",
+    "anima-ileco": "The main Anima DiT weights; BF16 plus Bedovyy/Comfy INT8 (int8rowwise/int8convrot) are supported. An INT8 pack is dequantized to dense before training, so training VRAM is about the same as BF16 — it saves disk, and it is neither keep-I8 nor Comfy native acceleration.",
+    "anima-lora": "The main Anima DiT weights; BF16 plus Bedovyy/Comfy INT8 (int8rowwise/int8convrot) are supported. An INT8 pack is dequantized to dense before training, so training VRAM is about the same as BF16 — it saves disk, and it is neither keep-I8 nor Comfy native acceleration.",
+    "anima-multi-addift": "The main Anima DiT weights; BF16 plus Bedovyy/Comfy INT8 (int8rowwise/int8convrot) are supported. An INT8 pack is dequantized to dense before training, so training VRAM is about the same as BF16 — it saves disk, and it is neither keep-I8 nor Comfy native acceleration.",
+    "boogu-edit-lora": "Root directory of the Edit weights (same layout as Base: a local directory with transformer/, text_encoder/ and vae/ all present).",
+    "boogu-finetune": "A complete local directory: the transformer/, mllm/, processor/, vae/ and scheduler/ subdirectories.",
+    "boogu-lora": "A complete local directory: the transformer/, mllm/, processor/, vae/ and scheduler/ subdirectories.",
+    "flux2-finetune": "A complete local directory holding the transformer/, text_encoder/, tokenizer/, vae/ and scheduler/ subdirectories.",
+    "flux2-lora": "A complete local directory holding the transformer/, text_encoder/, tokenizer/, vae/ and scheduler/ subdirectories.",
+    "hunyuan-dit-lora": "Path to the base model or the DiT weights.",
+    "krea2-finetune": "Either a model directory or a single .safetensors file. With a single file, the TE/VAE are resolved from the sibling text_encoder/ and vae/ subdirectories or from a neighbouring Krea-2 tree; when neither is found it falls back to CLIP/sdxl-vae, which may affect training quality.",
+    "krea2-lora": "Either a model directory or a single .safetensors file. With a single file, the TE/VAE are resolved from the sibling text_encoder/ and vae/ subdirectories or from a neighbouring Krea-2 tree; when neither is found it falls back to CLIP/sdxl-vae, which may affect training quality.",
+    "ltx23-finetune": "An LTX-2.3 single file or model directory.",
+    "ltx23-lora": "An LTX-2.3 single file or model directory.",
+    "ltx25-finetune": "Pick the root of the official split pack, the one holding diffusion_models, text_encoders and vae.",
+    "ltx25-lora": "Pick the root of the official split pack, the one holding diffusion_models, text_encoders and vae.",
+    "lumina-finetune": "Lumina model path.",
+    "newbie-lora": "Required, and it must be a complete local directory.",
+    "qwen-image-lora": "Path to the Qwen Image base model or transformer weights.",
+    "wan22-finetune": "TI2V-5B directory.",
+    "wan22-t2v-a14b-lora": "Root directory of T2V-A14B.",
+    "wan22-ti2v-lora": "TI2V-5B directory.",
+    "yolo": "YOLO model weights, or a model yaml.",
+    "zimage-finetune": "A diffusers directory holding the transformer/, text_encoder/, tokenizer/, vae/ and scheduler/ subdirectories.",
+    "zimage-lora": "A diffusers directory holding the transformer/, text_encoder/, tokenizer/, vae/ and scheduler/ subdirectories."
+  },
+  "pytorch_cuda_expandable_segments": {
+    "newbie-lora": "Enable PyTorch CUDA."
+  },
+  "qwen3": {
+    "anima-controlnet": "Qwen3 path.",
+    "anima-finetune": "Path to the Qwen3 text model.",
+    "concept-edit": "Path to the Qwen3 text model (required for Anima)."
+  },
+  "resolution": {
+    "anima-addift": "The first release of Anima concept editing works at a fixed resolution; keeping this is recommended.",
+    "anima-controlnet": "Training resolution.",
+    "anima-ileco": "The first release of Anima concept editing works at a fixed resolution; keeping this is recommended.",
+    "anima-multi-addift": "The first release of Anima concept editing works at a fixed resolution; keeping this is recommended.",
+    "boogu-edit-lora": "1024,1024 is recommended.",
+    "boogu-finetune": "1024,1024 is recommended; bucketing then covers the 512/768/1024 steps.",
+    "boogu-lora": "1024,1024 is recommended; bucketing then covers the 512/768/1024 steps.",
+    "concept-edit": "1024,1024 is recommended for Anima.",
+    "flux2-finetune": "1024,1024 is recommended; use 512,512 when VRAM is tight.",
+    "flux2-lora": "1024,1024 is recommended; use 512,512 when VRAM is tight.",
+    "krea2-finetune": "512,512 (VRAM friendly) or 768,768 is recommended.",
+    "krea2-lora": "512,512 (VRAM friendly) or 768,768 is recommended.",
+    "ltx23-finetune": "For 22B, try a small resolution first.",
+    "ltx23-lora": "For 22B, try a small resolution first.",
+    "ltx25-finetune": "For 22B, try a small resolution first.",
+    "ltx25-lora": "For 22B, try a small resolution first.",
+    "minimax-h3-finetune": "Width,height. With 16GB of VRAM, validate at 512,512 first.",
+    "minimax-h3-lora": "Width,height. With 16GB of VRAM, validate at 512,512 first.",
+    "newbie-lora": "Training resolution, width x height. Starting at 1024 is currently recommended.",
+    "sd-addift": "The first release of concept editing works at a fixed resolution; keeping it close to the training target is recommended.",
+    "sd-controlnet": "Training resolution.",
+    "sd-ileco": "The first release of concept editing works at a fixed resolution; keeping it close to the training target is recommended.",
+    "sd-multi-addift": "The first release of concept editing works at a fixed resolution; keeping it close to the training target is recommended.",
+    "sdxl-addift": "The first release of concept editing works at a fixed resolution; keeping it close to the training target is recommended.",
+    "sdxl-controlnet": "Training resolution.",
+    "sdxl-controlnet-lllite": "Training resolution.",
+    "sdxl-ileco": "The first release of concept editing works at a fixed resolution; keeping it close to the training target is recommended.",
+    "sdxl-multi-addift": "The first release of concept editing works at a fixed resolution; keeping it close to the training target is recommended.",
+    "sdxl-turbo-lora": "Real short-run tests are limited to 256-512.",
+    "wan22-finetune": "704,704 or smaller is recommended for a trial run.",
+    "wan22-t2v-a14b-lora": "704,704 or smaller is recommended for a trial run.",
+    "wan22-ti2v-lora": "704,704 or smaller is recommended for a trial run.",
+    "zimage-finetune": "1024,1024 is recommended; 512,512 can be tried when VRAM is tight.",
+    "zimage-lora": "1024,1024 is recommended; 512,512 can be tried when VRAM is tight."
+  },
+  "resume": {
+    "yolo": "Continue training from an existing YOLO training checkpoint."
+  },
+  "route_status_note": {
+    "qwen-image-lora": "Lightweight entry point for Qwen-Image; direct training is not wired yet."
+  },
+  "sample_cfg": {
+    "anima-addift": "CFG scale. 3.5 to 4 is recommended for this family; at 5 and above previews grow darker until they go black.",
+    "anima-controlnet": "CFG scale. 3.5 to 4 is recommended for this family; at 5 and above previews grow darker until they go black.",
+    "anima-edit-model": "CFG scale. 3.5 to 4 is recommended for this family; at 5 and above previews grow darker until they go black.",
+    "anima-few-step-lora": "CFG scale. 3.5 to 4 is recommended for this family; at 5 and above previews grow darker until they go black.",
+    "anima-finetune": "CFG scale. 3.5 to 4 is recommended for this family; at 5 and above previews grow darker until they go black.",
+    "anima-ileco": "CFG scale. 3.5 to 4 is recommended for this family; at 5 and above previews grow darker until they go black.",
+    "anima-lora": "CFG scale. 3.5 to 4 is recommended for this family; at 5 and above previews grow darker until they go black.",
+    "anima-multi-addift": "CFG scale. 3.5 to 4 is recommended for this family; at 5 and above previews grow darker until they go black.",
+    "newbie-few-step-lora": "CFG scale. 3.5 to 4 is recommended for this family; at 5 and above previews grow darker until they go black.",
+    "newbie-lora": "CFG scale. 3.5 to 4 is recommended for this family; at 5 and above previews grow darker until they go black."
+  },
+  "save_every_n_epochs": {
+    "newbie-lora": "Save every N epochs. 0 turns epoch-based saving off, in which case the step interval must be greater than 0.",
+    "yolo": "Save a YOLO checkpoint every N epochs."
+  },
+  "save_every_n_steps": {
+    "newbie-lora": "Save every N steps. 0 saves only when training finishes."
+  },
+  "save_model_as": {
+    "aesthetic-scorer": "On-disk save format."
+  },
+  "scale_weight_norms": {
+    "anima-addift": "Maximum-norm regularization. Starting near 1 is recommended when used.",
+    "anima-ileco": "Maximum-norm regularization. Starting near 1 is recommended when used.",
+    "anima-multi-addift": "Maximum-norm regularization. Starting near 1 is recommended when used.",
+    "concept-edit": "Maximum-norm regularization. Starting near 1 is recommended when used."
+  },
+  "seed": {
+    "aesthetic-scorer": "Random seed.",
+    "anima-few-step-lora": "Seed recorded in metadata.",
+    "newbie-few-step-lora": "Seed recorded in metadata.",
+    "newbie-lora": "Random seed.",
+    "sdxl-turbo-lora": "0 uses the runtime random state.",
+    "yolo": "Random seed."
+  },
+  "split_attn": {
+    "anima-finetune": "Split attention."
+  },
+  "t5_tokenizer_path": {
+    "anima-controlnet": "Second prerequisite for a faithful native forward pass, the other being Qwen3. Select the directory that holds spiece.model or tokenizer.json, not a single file. When empty, tokenizer_t5 is searched next to the DiT and under the model root, including per-model vendor subdirectories.",
+    "anima-edit-model": "Second prerequisite for a faithful native forward pass, the other being Qwen3. When empty, tokenizer_t5 is searched next to the DiT and under the model root, including per-model vendor subdirectories, keyed on whether spiece.model or tokenizer.json is actually present. There is no built-in fallback: if nothing is found and the checkpoint carries an llm_adapter, the run stops before it starts and the path has to be filled in here.",
+    "anima-finetune": "Second prerequisite for a faithful native forward pass, the other being Qwen3. When empty, tokenizer_t5 is searched next to the DiT and under the model root, including per-model vendor subdirectories, keyed on whether spiece.model or tokenizer.json is actually present. There is no built-in fallback: if nothing is found and the checkpoint carries an llm_adapter, the run stops before it starts and the path has to be filled in here.",
+    "anima-lora": "Second prerequisite for a faithful native forward pass, the other being Qwen3. When empty, tokenizer_t5 is searched next to the DiT and under the model root, including per-model vendor subdirectories, keyed on whether spiece.model or tokenizer.json is actually present. There is no built-in fallback: if nothing is found and the checkpoint carries an llm_adapter, the run stops before it starts and the path has to be filled in here."
+  },
+  "teacher_steps": {
+    "sdxl-turbo-lora": "Number of teacher inference steps."
+  },
+  "text_encoder": {
+    "hunyuan-dit-lora": "Path to the text encoder. It can be left empty until support lands."
+  },
+  "text_encoder_lr": {
+    "concept-edit": "Text encoder learning rate.",
+    "sd-addift": "Text encoder learning rate.",
+    "sd-dreambooth": "Text encoder learning rate.",
+    "sd-ileco": "Text encoder learning rate.",
+    "sd-lora": "Text encoder learning rate.",
+    "sd-multi-addift": "Text encoder learning rate.",
+    "sd-textual-inversion": "Text encoder learning rate.",
+    "sdxl-addift": "Text encoder learning rate.",
+    "sdxl-finetune": "Text encoder learning rate.",
+    "sdxl-ileco": "Text encoder learning rate.",
+    "sdxl-lora": "Text encoder learning rate.",
+    "sdxl-multi-addift": "Text encoder learning rate.",
+    "sdxl-textual-inversion": "Text encoder learning rate."
+  },
+  "timestep_sampling": {
+    "sdxl-turbo-lora": "Timestep sampling strategy for short runs."
+  },
+  "tlora_orthogonal_init": {
+    "sdxl-lora": "T-LoRA: initialize lora_down with an orthogonal matrix so the rank channels start mutually independent instead of correlated."
+  },
+  "train_batch_size": {
+    "anima-addift": "For concept editing, starting with a small batch is recommended.",
+    "anima-controlnet": "Batch size.",
+    "anima-ileco": "For concept editing, starting with a small batch is recommended.",
+    "anima-multi-addift": "For concept editing, starting with a small batch is recommended.",
+    "concept-edit": "For concept editing, starting with a small batch is recommended. 1 to 2 is the usual choice for ADDifT.",
+    "newbie-lora": "Per-GPU batch size.",
+    "sd-addift": "For concept editing, starting with a small batch is recommended.",
+    "sd-controlnet": "Batch size.",
+    "sd-ileco": "For concept editing, starting with a small batch is recommended.",
+    "sd-multi-addift": "For concept editing, starting with a small batch is recommended.",
+    "sdxl-addift": "For concept editing, starting with a small batch is recommended.",
+    "sdxl-controlnet": "Batch size.",
+    "sdxl-controlnet-lllite": "Batch size.",
+    "sdxl-ileco": "For concept editing, starting with a small batch is recommended.",
+    "sdxl-multi-addift": "For concept editing, starting with a small batch is recommended."
+  },
+  "train_data_dir": {
+    "boogu-edit-lora": "Directory of target images. Keeping it separate from the base cache directory is recommended.",
+    "boogu-finetune": "Directory of training images.",
+    "boogu-lora": "Directory of training images.",
+    "flux2-finetune": "Directory of training images.",
+    "flux2-lora": "Directory of training images.",
+    "krea2-finetune": "Directory of training images.",
+    "krea2-lora": "Directory of training images.",
+    "ltx23-finetune": "Directory of training images (1-frame MVP).",
+    "ltx23-lora": "Directory of training images (1-frame MVP).",
+    "ltx25-finetune": "Directory of training images (1-frame MVP).",
+    "ltx25-lora": "Directory of training images (1-frame MVP).",
+    "minimax-h3-finetune": "The original directory of images or videos with same-named caption files. An existing cache can also be read directly.",
+    "minimax-h3-lora": "The original directory of images or videos with same-named caption files. An existing cache can also be read directly.",
+    "newbie-lora": "Directory of training images.",
+    "sdxl-turbo-lora": "Directory of images and captions for short runs and distillation.",
+    "wan22-finetune": "Directory of training images (1-frame MVP).",
+    "wan22-t2v-a14b-lora": "Directory of training images (1-frame MVP).",
+    "wan22-ti2v-lora": "Directory of training images (1-frame MVP).",
+    "yolo": "Directory of training images.",
+    "zimage-finetune": "Directory of training images.",
+    "zimage-lora": "Directory of training images."
+  },
+  "train_length_mode": {
+    "boogu-edit-lora": "The Boogu product defaults to steps.",
+    "boogu-finetune": "The Boogu product defaults to steps.",
+    "boogu-lora": "The Boogu product defaults to steps."
+  },
+  "train_norm": {
+    "anima-addift": "Additionally train normalization layers that have learnable parameters.",
+    "anima-edit-model": "Train the norm layers.",
+    "anima-ileco": "Additionally train normalization layers that have learnable parameters.",
+    "anima-lora": "Train the norm layers.",
+    "anima-multi-addift": "Additionally train normalization layers that have learnable parameters.",
+    "concept-edit": "Additionally train normalization layers. For concept editing it is usually left off at first."
+  },
+  "transformer_path": {
+    "newbie-lora": "Point at a separate transformer directory. Optional."
+  },
+  "unet_lr": {
+    "concept-edit": "U-Net learning rate.",
+    "sd-addift": "U-Net learning rate.",
+    "sd-dreambooth": "U-Net learning rate.",
+    "sd-ileco": "U-Net learning rate.",
+    "sd-lora": "U-Net learning rate.",
+    "sd-multi-addift": "U-Net learning rate.",
+    "sd-textual-inversion": "U-Net learning rate.",
+    "sdxl-addift": "U-Net learning rate.",
+    "sdxl-finetune": "U-Net learning rate.",
+    "sdxl-ileco": "U-Net learning rate.",
+    "sdxl-lora": "U-Net learning rate.",
+    "sdxl-multi-addift": "U-Net learning rate.",
+    "sdxl-textual-inversion": "U-Net learning rate."
+  },
+  "use_cache": {
+    "boogu-edit-lora": "The edit cache includes ref_latents.",
+    "boogu-finetune": "Recommended on: read the latent and instruction-TE caches.",
+    "boogu-lora": "Recommended on: read the latent and instruction-TE caches.",
+    "flux2-finetune": "When on, the latent/TE cache is read first (*_flux2.npz); on a hit that step skips live TE/VAE encoding.",
+    "flux2-lora": "When on, the latent/TE cache is read first (*_flux2.npz); on a hit that step skips live TE/VAE encoding.",
+    "krea2-finetune": "Reuse the Krea-2 latent and text-encoding caches first, so the VAE and text encoder need not stay resident during training.",
+    "krea2-lora": "Reuse the Krea-2 latent and text-encoding caches first, so the VAE and text encoder need not stay resident during training.",
+    "newbie-lora": "Enable the cache pipeline.",
+    "wan22-finetune": "By default a compatible *_wan22.npz latent/text-condition cache is read, so the VAE and text encoder need not stay resident during training.",
+    "wan22-t2v-a14b-lora": "By default a compatible *_wan22.npz latent/text-condition cache is read, so the VAE and text encoder need not stay resident during training.",
+    "wan22-ti2v-lora": "By default a compatible *_wan22.npz latent/text-condition cache is read, so the VAE and text encoder need not stay resident during training.",
+    "zimage-finetune": "Live encoding works in this first release; the cache contract for *_zimage.npz lands later.",
+    "zimage-lora": "Live encoding works in this first release; the cache contract for *_zimage.npz lands later."
+  },
+  "use_sage_attn": {
+    "lumina-lora": "Enable SageAttention acceleration."
+  },
+  "v2": {
+    "concept-edit": "Use an SD 2.x model (the SD1.5 route).",
+    "sd-controlnet": "When checked the base model is loaded with the SD 2.x structure; v-prediction is controlled separately by v_parameterization.",
+    "sd-textual-inversion": "When checked the base model is loaded with the SD 2.x structure; v-prediction is controlled separately by v_parameterization."
+  },
+  "vae": {
+    "anima-addift": "Path to the VAE required by Anima concept editing.",
+    "anima-edit-model": "Path to the Qwen-Image VAE.",
+    "anima-finetune": "Path to the Qwen-Image VAE.",
+    "anima-ileco": "Path to the VAE required by Anima concept editing.",
+    "anima-lora": "Path to the Qwen-Image VAE.",
+    "anima-multi-addift": "Path to the VAE required by Anima concept editing.",
+    "concept-edit": "Path to the VAE model. Anima concept editing requires it.",
+    "hunyuan-dit-lora": "Path to the VAE. It can be left empty until support lands.",
+    "qwen-image-lora": "Path to the VAE. It can be left empty until support lands."
+  },
+  "vae_chunk_size": {
+    "anima-edit-model": "Chunk size used when decoding with the VAE. Smaller values use less VRAM.",
+    "anima-lora": "Chunk size used when decoding with the VAE. Smaller values use less VRAM.",
+    "hunyuan-dit-lora": "Chunk size used when decoding with the VAE. Smaller values use less VRAM."
+  },
+  "vae_path": {
+    "sdxl-turbo-lora": "Optional: a custom SDXL VAE."
+  },
+  "vram_swap_to_ram": {
+    "sd-addift": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM.",
+    "sd-controlnet": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM.",
+    "sd-dreambooth": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM.",
+    "sd-ileco": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM.",
+    "sd-lora": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM.",
+    "sd-multi-addift": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM.",
+    "sd-textual-inversion": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM.",
+    "sdxl-addift": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM.",
+    "sdxl-controlnet": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM.",
+    "sdxl-controlnet-lllite": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM.",
+    "sdxl-finetune": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM.",
+    "sdxl-ileco": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM.",
+    "sdxl-lora": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM.",
+    "sdxl-multi-addift": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM.",
+    "sdxl-textual-inversion": "Keep the native LoRA, LoRA-FA, T-LoRA and VeRA family adapter weights resident in host RAM."
+  },
+  "wan22_block_offload_gpu_slots": {
+    "wan22-t2v-a14b-lora": "For A14B only the selected high or low tower is loaded at a time; the VRAM-safe baseline keeps 2 blocks resident."
+  },
+  "wan22_block_offload_prefetch_depth": {
+    "wan22-t2v-a14b-lora": "The A14B VRAM-safe baseline prefetches only 1 block ahead, asynchronously."
+  },
+  "wan22_model_variant": {
+    "wan22-t2v-a14b-lora": "The A14B directory holds both the high and low weight sets; only the selected tower is mounted during training."
+  },
+  "weight_compression_preset": {
+    "krea2-lora": "Compression preset for the frozen base weights."
+  },
+  "weight_compression_verify": {
+    "krea2-lora": "Probe before starting whether the current runtime really supports the selected compression backend."
+  },
+  "xformers": {
+    "sd-addift": "Advanced override: force xformers. By default it follows the launch environment.",
+    "sd-controlnet": "Advanced override: force xformers. By default it follows the launch environment.",
+    "sd-dreambooth": "Advanced override: force xformers. By default it follows the launch environment.",
+    "sd-ileco": "Advanced override: force xformers. By default it follows the launch environment.",
+    "sd-lora": "Advanced override: force xformers. By default it follows the launch environment.",
+    "sd-multi-addift": "Advanced override: force xformers. By default it follows the launch environment.",
+    "sd-textual-inversion": "Advanced override: force xformers. By default it follows the launch environment."
+  }
+}

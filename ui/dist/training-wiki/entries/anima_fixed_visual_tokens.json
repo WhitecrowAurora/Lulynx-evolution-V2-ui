@@ -5,9 +5,6 @@
   "appliesTo": [
     "anima-lora"
   ],
-  "aliases": [
-    "anima_fixed_text_tokens"
-  ],
   "standard": {
     "summary": "将训练的视觉 token（图像 patch 序列）长度固定为指定值，避免因批内图像尺寸不同导致的变长序列重编译开销。",
     "effect": "固定后所有 batch 使用相同序列长度（不足的填 padding），torch.compile 可以稳定工作而不频繁重编译。",

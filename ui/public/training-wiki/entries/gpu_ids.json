@@ -5,17 +5,21 @@
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "指定参与训练的 GPU 编号，多卡用逗号分隔（如 0,1）。",
-    "effect": "",
-    "whenToUse": "不确定时先保持默认，小步数短测后再调。",
-    "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
+    "summary": "指定参与训练的 GPU 编号，多卡用逗号分隔（如 0,1）；此处只接受数字编号。留空时继承 launcher 启动时选择的显卡。",
+    "effect": "填了就只在这些卡上排队与启动；留空则先看 launcher 设置里的 CUDA_VISIBLE_DEVICES，两者都空时由队列从全部可见卡里按显存容量挑。",
+    "whenToUse": "单机多卡、要把某张卡留给出图或别的训练时填。只想沿用启动时选的卡就留空。",
+    "avoidWhen": "编号在本机不存在时任务会被直接判为 unsatisfiable 并拒绝，不会静默回落到别的卡；换机器/插拔显卡后要复核这里。GPU-<uuid> 这类稳定选择器此处不接受，要用 launcher 的 CUDA_VISIBLE_DEVICES。"
   },
   "advanced": {
-    "principle": "指定参与训练的 GPU 编号，多卡用逗号分隔（如 0,1）。留空使用默认主显卡。可在启动日志中查看可用 GPU 编号",
-    "intervention": "",
-    "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "principle": "gpu_ids 与 cuda_visible_devices 是两级：前者是训练参数级的设备选择，后者是进程级的可见性。decide_queue_gpu_group 先读 gpu_ids，为空才读 cuda_visible_devices —— 所以两个都填时 gpu_ids 赢，继承逻辑也因此在任一字段非空时整体让位，避免一个决定被两个字段编码。",
+    "intervention": "留空 + launcher 里选好卡，是推荐的默认用法：一处选择同时管住 launcher 自己的训练页和 WebUI 提交的任务。要在单次任务里临时换卡再填这里。",
+    "expectedImpact": "只影响设备选择与排队可行性；world size 仍由已解析的分布式进程/机器配置决定（见 training_step_breakdown 的假设说明）。",
+    "tradeoffs": "填死编号可复现但不跟随硬件变化；留空跟随 launcher 但需要记得 launcher 当前选了什么。",
+    "codePath": "core/services/training_request_adapter.py:apply_launcher_gpu_default（留空时的继承）→ core/services/training_queue_gpu_group.py:_requested_indices（两级读取顺序、UUID 选择器容许范围）→ training_queue_control.py（把选中的编号写回 cuda_visible_devices）→ training_queue_support.py:build_worker_env（落成子进程的 CUDA_VISIBLE_DEVICES）"
   },
-  "relatedConfigs": []
+  "relatedConfigs": [
+    "multi_gpu",
+    "num_processes",
+    "gpu_duty_cycle"
+  ]
 }

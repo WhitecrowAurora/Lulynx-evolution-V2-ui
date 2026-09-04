@@ -9,8 +9,8 @@
     "newbie-lora"
   ],
   "standard": {
-    "summary": "每隔 N 个优化步保存一次 LoRA checkpoint。0 = 只在训练结束时保存。",
-    "effect": "设为 100 → 每 100 步保存一次，可以从中间步骤的 checkpoint 选择最佳版本。",
+    "summary": "每隔 N 个优化步保存一次 LoRA checkpoint。0 = 禁用按步保存，此时 save_every_n_epochs 必须大于 0。",
+    "effect": "设为 100 → 每 100 步保存一次，可以从中间步骤的 checkpoint 选择最佳版本。与 save_every_n_epochs 不能同时为 0：都为 0 时中途中断拿不到任何权重，配置校验会拒绝。",
     "whenToUse": "长训练（>300步）推荐每 50~100 步保存一次，方便对比不同步数的效果找到最优点。",
     "avoidWhen": "保存频率过高（如每 10 步）会占用大量磁盘空间，每个 LoRA 文件约 60~200MB。"
   },

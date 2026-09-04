@@ -7,8 +7,6 @@
   ],
   "aliases": [
     "flow_logit_std",
-    "flow_uncertainty_weighting_enabled",
-    "flow_uncertainty_weighting_channels",
     "flow_uncertainty_weighting_lr"
   ],
   "standard": {

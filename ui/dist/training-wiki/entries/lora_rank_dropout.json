@@ -7,9 +7,6 @@
     "sdxl-lora",
     "sd-lora"
   ],
-  "aliases": [
-    "network_dropout"
-  ],
   "standard": {
     "summary": "训练时随机丢弃 LoRA 的部分 rank 维度，类似于 Dropout 的正则化效果。默认 0（不丢弃）。",
     "effect": "设为 0.1 = 每步随机丢弃 10% 的 rank 维度。增加正则化，降低对特定 rank 方向的依赖，有助于泛化。",

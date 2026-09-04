@@ -8,13 +8,8 @@
   ],
   "aliases": [
     "layer_monitor_enabled",
-    "layer_monitor_mode",
     "step_phase_profile_enabled",
     "deep_diagnostics_enabled",
-    "fim_scan_enabled",
-    "fim_scan_tool",
-    "data_transfer_profile_enabled",
-    "data_transfer_profile_mode",
     "data_transfer_profile_window",
     "forgetting_probe_enabled",
     "bubble_controller_allow_optimizer_swap"

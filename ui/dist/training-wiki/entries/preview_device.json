@@ -12,7 +12,8 @@
     "optionDescriptions": {
       "gpu": "预览走 GPU，快，占显存。",
       "cpu": "预览走 CPU，慢，不抢显存。",
-      "off": "训练里不预览。"
+      "off": "训练里不预览。",
+      "hybrid": "默认档:按角色分开摆放(VAE 与文本塔留在 CPU,只让 DiT 常驻),避开预览解码那一下的显存尖峰;只有 anima 与 newbie 实现了这档,其他家族会落到自己做得到的档位。"
     }
   },
   "advanced": {

@@ -67,7 +67,7 @@ const MODEL_FIELDS = [
     key: 'anima_auto_scan_folder',
     type: 'action',
     label: '🔍 智能识别 Anima 文件夹',
-    desc: '选择 Anima 模型根目录，自动识别并填充 DiT / VAE /',
+    desc: '选择 Anima 模型根目录，自动识别并填充 DiT / VAE / Qwen3 / T5 Tokenizer / LLM Adapter 路径字段。',
     buttonLabel: '选择文件夹并识别',
     handler: 'openAnimaFolderScanner',
     visibleWhen: isAnima,
@@ -116,7 +116,7 @@ const MODEL_FIELDS = [
     pickerType: 'folder',
     label: 'T5 tokenizer 目录',
     title: 't5_tokenizer_path',
-    desc: '可选。留空时回退到项目内置 tokenizer',
+    desc: '可选。留空时自动在 DiT 同级与模型根目录下的 tokenizer_t5 中查找（含厂商的每模型子目录，按 spiece.model / tokenizer.json 实存判定）；没有内置兜底，找不到且该 checkpoint 带 llm_adapter 时会在开跑前判为硬冲突并停下，需要在此手填',
     defaultValue: '',
     visibleWhen: isAnima,
   },
@@ -140,11 +140,12 @@ const MODEL_FIELDS = [
   },
   {
     key: 'resume',
-    type: 'folder',
-    pickerType: 'output-folder',
+    type: 'file',
+    pickerType: 'output-model-file',
+    allowModelDirectory: true,
     label: '继续训练路径',
     title: 'resume',
-    desc: '从某个 save_state 保存的中断状态继续训练',
+    desc: '从某个 save_state / 检查点继续训练：可选择检查点文件，或选择存档目录自动取最新',
     defaultValue: '',
   },
   {
@@ -179,7 +180,7 @@ const DATASET_FIELDS = [
     pickerType: 'folder',
     label: '概念编辑数据集目录',
     title: 'concept_edit_data_dir',
-    desc: '放置成对图像的目录（target_*/original_*',
+    desc: '放置成对图像的目录（target_* / original_* 同名成对）。',
     defaultValue: './train/concept-edit',
     visibleWhen: (c) => isAdDifT(c) && isAnima(c),
   }
@@ -199,7 +200,7 @@ const NETWORK_FIELDS = [
   { key: 'loftq_bits', type: 'number', label: 'LoftQ 量化位宽', title: 'loftq_bits', desc: 'LoftQ 量化位宽', defaultValue: 4, min: 2, max: 8, step: 1, visibleWhen: all(when('lora_type', 'lora'), loftqInitSelected) },
   { key: 'loftq_quant_type', type: 'select', label: 'LoftQ 量化粒度', title: 'loftq_quant_type', desc: 'rowwise 按输出通道量化，tensorwise 按整层张量量化。', defaultValue: 'rowwise', options: LOFTQ_QUANT_TYPE_OPTIONS, visibleWhen: all(when('lora_type', 'lora'), loftqInitSelected) },
   { key: 'lokr_factor', type: 'number', label: 'LoKr 系数', title: 'lokr_factor', desc: 'LoKr 分解因子', defaultValue: 8, min: -1, visibleWhen: when('lora_type', 'lokr') },
-  { key: 'network_dropout', type: 'number', label: 'Dropout', title: 'network_dropout', desc: 'Dropout 概率', defaultValue: 0, min: 0, step: 0.01, visibleWhen: (c) => ['lora', 'dora', 'lora_plus', 'rs_lora', 'lora_fa', 'vera', 'tlora', 'flexrank', 'hydralora', 'fera', ...LYCORIS_DELTA_ALGOS].includes(c.lora_type) },
+  { key: 'network_dropout', type: 'number', label: 'Dropout', title: 'network_dropout', desc: 'Dropout 概率', defaultValue: 0, min: 0, max: 1, step: 0.01, visibleWhen: (c) => ['lora', 'dora', 'lora_plus', 'rs_lora', 'lora_fa', 'vera', 'tlora', 'flexrank', 'hydralora', 'fera', ...LYCORIS_DELTA_ALGOS].includes(c.lora_type) },
   { key: 'network_args_custom', type: 'textarea', label: '自定义 network_args', title: 'network_args_custom', desc: '自定义 network_args，每行一个参数。', defaultValue: '' }
 ];
 

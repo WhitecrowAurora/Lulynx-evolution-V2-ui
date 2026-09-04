@@ -5,7 +5,7 @@
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "学习率自动增长上界（D-Adapt",
+    "summary": "学习率自动增长上界（D-Adaptation 自动放大 lr 的速度上限；留空 = 不设上界）。",
     "effect": "",
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"

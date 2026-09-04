@@ -35,7 +35,7 @@
   "advanced": {
     "principle": "AMP 通过 torch.autocast 上下文管理器实现。在 autocast 区域内，矩阵乘法（matmul/conv）自动使用 FP16/BF16，而累加和归约操作保持 FP32。FP16 AMP 使用 GradScaler 对 loss 乘以放大因子（默认 65536），防止小梯度在 FP16 下变为 0（下溢），然后在 optimizer.step 前缩放回来。BF16 因为指数位足够多，不需要 GradScaler。",
     "intervention": "training_loop.py 在 forward 和 loss 计算外包一层 with torch.autocast(device_type='cuda', dtype=amp_dtype)。FP16 时额外创建 GradScaler 并在 scaler.scale(loss).backward 和 scaler.step(optimizer) / scaler.update 中管理缩放因子。主权重副本通过 optimizer 的 master_weights 机制维护。",
-    "expectedImpact": "SDXL LoRA 训练中，BF16 AMP 相比 FP32：activation 显存峰值降低约 45%（从 ~4.2GB 降到 ~2.3GB @ 1024px batch=1）；训练速度提升约 35%（RTX 4090 。最终 LoRA 质量差异 < 0.5%（通过 FID 对比）。",
+    "expectedImpact": "SDXL LoRA 训练中，BF16 AMP 相比 FP32：activation 显存峰值降低约 45%（从 ~4.2GB 降到 ~2.3GB @ 1024px batch=1）；训练速度提升约 35%（RTX 4090）。最终 LoRA 质量差异 < 0.5%（通过 FID 对比）。",
     "tradeoffs": "full_bf16 跳过 FP32 主权重，所有运算全程 BF16。好处是再省 ~30% 显存（不需要 FP32 副本），速度再快 ~10%。风险是 AdamW 的 m_t 和 v_t 也在 BF16 中累积，长训练可能精度漂移。loss_precision 参数控制 loss 计算本身的精度（fp32_loss 默认在 FP32 中算 loss 再 cast 回去）。",
     "codePath": "training_loop.py:training_step → torch.autocast(dtype=amp_dtype) → GradScaler (fp16 only) → optimizer.step"
   },

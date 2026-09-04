@@ -11,7 +11,7 @@
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
   "advanced": {
-    "principle": "源图 latent 对当前 noisy latent 的残差注入强度。建议从 0.20-0.",
+    "principle": "源图 latent 对当前 noisy latent 的残差注入强度。建议从 0.20-0.30 起试（默认 0.25，范围 0~1）。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

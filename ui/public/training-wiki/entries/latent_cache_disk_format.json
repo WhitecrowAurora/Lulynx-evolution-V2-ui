@@ -8,12 +8,7 @@
     "sd-lora"
   ],
   "aliases": [
-    "latent_cache_disk_dtype",
-    "text_encoder_outputs_cache_disk_format",
-    "text_encoder_outputs_cache_disk_dtype",
-    "cache_latents_to_disk",
-    "cache_text_encoder_outputs_to_disk",
-    "text_encoder_outputs_cache_dtype"
+    "cache_text_encoder_outputs_to_disk"
   ],
   "standard": {
     "summary": "原版缓存引擎（lossless_cache_replacement_mode=off）下，latent 缓存文件的存储格式和精度。",

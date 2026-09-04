@@ -10,7 +10,6 @@
     "lulynx_mid_lr_weight",
     "lulynx_up_lr_weight",
     "lulynx_block_lr_zero_threshold",
-    "lulynx_smart_rank_enabled",
     "lulynx_smart_rank_keep_ratio"
   ],
   "standard": {

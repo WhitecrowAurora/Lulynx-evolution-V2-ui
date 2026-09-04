@@ -7,12 +7,7 @@
     "sdxl-lora"
   ],
   "aliases": [
-    "timestep_sampling_mode",
-    "timestep_segments",
-    "min_timestep",
-    "max_timestep",
-    "mode_scale",
-    "bypass_mode"
+    "mode_scale"
   ],
   "standard": {
     "summary": "控制训练时如何采样噪声时间步（timestep）：uniform（均匀）/ logit_normal（对数正态，推荐）/ sigma_sqrt（平方根加权）/ mode（峰值采样）。",

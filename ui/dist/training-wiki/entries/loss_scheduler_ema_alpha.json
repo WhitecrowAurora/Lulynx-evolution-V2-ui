@@ -7,14 +7,9 @@
     "sdxl-lora"
   ],
   "aliases": [
-    "loss_scheduler_min_delta",
-    "loss_scheduler_relative_delta",
     "loss_scheduler_patience",
     "loss_scheduler_cooldown",
-    "loss_scheduler_max_hold_steps",
-    "loss_scheduler_late_gamma",
-    "loss_scheduler_lock_weight_threshold",
-    "loss_scheduler_min_advance_ratio"
+    "loss_scheduler_late_gamma"
   ],
   "standard": {
     "summary": "Loss 门控余弦（loss_gated_cosine）/ Loss 加权退火余弦（loss_weighted_annealed_cosine）调度器的 EMA 平滑系数，控制 loss 平滑度以过滤 batch 抖动。",

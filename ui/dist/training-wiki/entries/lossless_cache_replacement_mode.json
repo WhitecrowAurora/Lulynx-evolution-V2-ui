@@ -6,11 +6,7 @@
     "anima-lora"
   ],
   "aliases": [
-    "lossless_cache_replacement_codecs",
     "lossless_cache_replacement_prefetch_depth",
-    "lossless_cache_replacement_read_mode",
-    "lossless_cache_replacement_fallback_to_raw",
-    "lossless_cache_replacement_decoded_payload_cache",
     "lossless_cache_replacement_decoded_payload_cache_max_bytes"
   ],
   "standard": {

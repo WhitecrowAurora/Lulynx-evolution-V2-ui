@@ -61,6 +61,7 @@ export const TRAINING_TYPES = [
   { id: 'sd-dreambooth', group: 'Finetune', label: 'SD DreamBooth' },
   { id: 'sd-controlnet', group: 'ControlNet', label: 'SD 1.5' },
   { id: 'sdxl-controlnet', group: 'ControlNet', label: 'SDXL' },
+  { id: 'sdxl-controlnet-lllite', group: 'ControlNet', label: 'SDXL LLLite' },
   { id: 'anima-controlnet', group: 'ControlNet', label: 'Anima' },
   { id: 'sd-textual-inversion', group: 'Textual Inversion', label: 'SD 1.5 TI' },
   { id: 'sdxl-textual-inversion', group: 'Textual Inversion', label: 'SDXL TI' },

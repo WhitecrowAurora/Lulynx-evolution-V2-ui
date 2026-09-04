@@ -34,6 +34,7 @@ import { PageHead, Tabs } from '@/components/layout'
 import { Button } from '@/components/primitives'
 import { Input } from '@/components/form'
 import { SectionCard } from './SectionCard'
+import { useTrainingVramProfile } from './useTrainingVramProfile'
 import { typeIcon } from './typeIcons'
 import { ConfigPreview } from './ConfigPreview'
 import { HelpModal } from './HelpModal'
@@ -48,6 +49,7 @@ let optionsLoaded = false
 let draftsHydrateStarted = false
 /** 会话内只静默 seed 一次,避免与用户编辑抢写 */
 let lastSeedAttempted = false
+const VRAM_PROFILE_MANAGED_MESSAGE = '受训练显存档位影响，目前已调整为配置值'
 
 function useBackendOptions() {
   const bump = useTrainConfigStore((s) => s.bumpSchemaRev)
@@ -179,6 +181,7 @@ export default function TrainPage() {
   const replaceDraft = useTrainConfigStore((s) => s.replaceDraft)
   const resetDraft = useTrainConfigStore((s) => s.resetDraft)
   const draft = useDraft()
+  const { displayDraft, managedKeys } = useTrainingVramProfile(typeId, draft)
   const navigate = useRouteStore((s) => s.navigate)
 
   const [tab, setTab] = useState('model')
@@ -206,13 +209,16 @@ export default function TrainPage() {
   const [resumeBannerDismissed, setResumeBannerDismissed] = useState(false)
 
   // P2: 配置冲突检测 + 自动修正
-  const validation = useMemo(() => validateConfig(draft), [draft])
+  const validation = useMemo(() => validateConfig(displayDraft), [displayDraft])
 
   useEffect(() => {
     if (validation.autoFixes) {
-      applyValues(validation.autoFixes)
+      const allowed = Object.fromEntries(
+        Object.entries(validation.autoFixes).filter(([key]) => !managedKeys.has(key)),
+      )
+      if (Object.keys(allowed).length) applyValues(allowed)
     }
-  }, [validation.autoFixes, applyValues])
+  }, [validation.autoFixes, applyValues, managedKeys])
 
   useEffect(() => {
     let cancelled = false
@@ -246,16 +252,18 @@ export default function TrainPage() {
   }, [typeId])
 
   const updateExplicitValue = useCallback((key: string, raw: unknown) => {
+    if (managedKeys.has(key)) return
     markExplicit([key])
     setValue(key, raw)
-  }, [markExplicit, setValue])
+  }, [managedKeys, markExplicit, setValue])
 
   const applySuggestedValues = useCallback((values: Record<string, unknown>) => {
-    applyValues(values)
-  }, [applyValues])
-  const tabs = useMemo(() => getAvailableTabs(typeId, draft), [typeId, draft, schemaRev])
+    const allowed = Object.fromEntries(Object.entries(values).filter(([key]) => !managedKeys.has(key)))
+    if (Object.keys(allowed).length) applyValues(allowed)
+  }, [applyValues, managedKeys])
+  const tabs = useMemo(() => getAvailableTabs(typeId, displayDraft), [typeId, displayDraft, schemaRev])
   const activeTab = tabs.some((t) => t.key === tab) ? tab : (tabs[0]?.key ?? 'model')
-  const expertMode = !!draft.performance_expert_mode
+  const expertMode = !!displayDraft.performance_expert_mode
 
   // 切到标准后 advanced/frontier 被藏：把 state tab 同步回合法页签，避免残留
   useEffect(() => {
@@ -281,10 +289,10 @@ export default function TrainPage() {
   const visibleFieldCount = useMemo(
     () =>
       sections.reduce(
-        (acc, s) => acc + s.fields.filter((f) => f.type !== 'hidden' && isFieldVisible(f, draft)).length,
+        (acc, s) => acc + s.fields.filter((f) => f.type !== 'hidden' && isFieldVisible(f, displayDraft)).length,
         0,
       ),
-    [sections, draft],
+    [sections, displayDraft],
   )
 
   const typeMeta = TRAINING_TYPES.find((t) => t.id === typeId)
@@ -306,21 +314,33 @@ export default function TrainPage() {
         /* ignore */
       }
       // 输出目录同名产物冲突提示(检查失败不阻断提交)
+      // 用户点「继续」时必须把 output_collision_policy=overwrite 一起发出去:
+      // 后端的提交闸默认 abort,只看这个字段,不看前端弹过什么框。
+      let overwriteAcknowledged = false
       const dir = String(draft.output_dir ?? '')
+      const saveTo = String(draft.save_to ?? '')
       const name = String(draft.output_name ?? '')
-      if (dir && name) {
+      if ((dir || saveTo) && name) {
         try {
-          const c = unwrap<Record<string, unknown>>(await trainApi.checkOutputConflict(dir, name))
+          const c = unwrap<Record<string, unknown>>(
+            await trainApi.checkOutputConflict(dir, name, {
+              saveTo,
+              resumePath: String(draft.resume_path ?? ''),
+            }),
+          )
           const conflict = c?.conflict === true || c?.exists === true
-          if (conflict) {
+          // blocked=false 的冲突是后端已经放行的(配了续训路径),不该再问一遍。
+          if (conflict && c?.blocked !== false) {
             const msg = typeof c?.message === 'string' && c.message ? c.message : tt('train.outdir_exists', { name })
             if (!window.confirm(msg)) return
+            overwriteAcknowledged = true
           }
         } catch {
           /* ignore */
         }
       }
       const payload = buildPayload()
+      if (overwriteAcknowledged) payload.output_collision_policy = 'overwrite'
       const resp = unwrap(await trainApi.run(payload))
       addRunRecord(typeId, draftSnapshot(), resp)
       toast.ok(tt('train.submitted', { type: typeLabel }), 'IGNITED')
@@ -405,10 +425,28 @@ export default function TrainPage() {
           {resumeBanner && !resumeBannerDismissed ? (
             <div className="lx-resume-banner" role="status">
               <p>
-                {tt('train.resume_banner', {
-                  run: resumeBanner.run_id ? ` · ${resumeBanner.run_id}` : '',
-                  status: resumeBanner.run_status || resumeBanner.hint || 'incomplete',
-                })}
+                <span className="lx-resume-banner-heading">
+                  <span className={`lx-resume-level is-${resumeBanner.resume_level || 'unknown'}`}>
+                    {resumeBanner.resume_level === 'full'
+                      ? tt('train.resume_level_full')
+                      : resumeBanner.resume_level === 'weights_only'
+                        ? tt('train.resume_level_weights')
+                        : tt('train.resume_level_unknown')}
+                  </span>
+                  <span>
+                    {tt('train.resume_banner', {
+                      run: resumeBanner.run_id ? ` · ${resumeBanner.run_id}` : '',
+                      status: resumeBanner.run_status || resumeBanner.hint || 'incomplete',
+                    })}
+                  </span>
+                </span>
+                <span className="lx-resume-banner-detail">
+                  {resumeBanner.resume_level === 'full'
+                    ? tt('train.resume_level_full_detail')
+                    : resumeBanner.resume_level === 'weights_only'
+                      ? tt('train.resume_level_weights_detail')
+                      : tt('train.resume_level_unknown_detail')}
+                </span>
               </p>
               <div className="lx-resume-banner-actions">
                 <Button
@@ -490,15 +528,17 @@ export default function TrainPage() {
               key={s.id}
               section={s}
               idx={i}
-              config={draft}
+              config={displayDraft}
               search={search.trim()}
               onChange={updateExplicitValue}
               onHelp={setHelpField}
               explicitFields={[...explicitFields]}
               onApplySuggestions={applySuggestedValues}
+              managedKeys={managedKeys}
+              managedMessage={VRAM_PROFILE_MANAGED_MESSAGE}
             />
           ))}
-          {search.trim() && !sections.some((s) => s.fields.some((f) => isFieldVisible(f, draft))) ? (
+          {search.trim() && !sections.some((s) => s.fields.some((f) => isFieldVisible(f, displayDraft))) ? (
             <p className="lx-wiki-fallback" style={{ padding: '28px 0', textAlign: 'center' }}>
               {tt('train.no_match', { search })}
             </p>
@@ -563,7 +603,7 @@ export default function TrainPage() {
           </div>
         </div>
 
-        <ConfigPreview draft={draft} typeId={typeId} />
+        <ConfigPreview draft={displayDraft} typeId={typeId} />
       </div>
 
       <HelpModal field={helpField} onClose={() => setHelpField(null)} />

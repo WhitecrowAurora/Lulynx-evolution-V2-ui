@@ -9,10 +9,7 @@
   "aliases": [
     "min_bucket_reso",
     "num_vectors_per_token",
-    "training_comment",
-    "ephemeral_preview_pipeline",
-    "preview_device",
-    "preview_groups"
+    "training_comment"
   ],
   "standard": {
     "summary": "Bucket 训练的分辨率范围：max_bucket_reso 设置最大分辨率（超过的图像不会放入更大的桶而是缩小）；min_bucket_reso 设置最小分辨率（低于的图像按需放大或丢弃）。",

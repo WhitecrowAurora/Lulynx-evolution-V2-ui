@@ -25,6 +25,18 @@ export interface SchemaField {
   step?: number
   placeholder?: string
   visibleWhen?: (config: Record<string, unknown>) => boolean
+  /** select 的选项要按当前运行时实测可用性置灰 */
+  attentionBackendOptions?: boolean
+  /** 该字段只有在这个注意力后端下才有意义(值为后端归一 id) */
+  requiresAttentionBackend?: string
+  /** 选项来自机器上的显卡表,而不是 schema 自己写死的 options */
+  deviceListOptions?: boolean
+  /** csvMultiSelect:顺序有语义,按勾选顺序追加而不是按候选表顺序重排 */
+  preserveSelectionOrder?: boolean
+  /** schema 自己锁死这个控件（不是运行时 profile 接管），后端会拒绝非默认值 */
+  disabled?: boolean
+  /** 锁死的理由，渲染层拿它当提示文案 */
+  disabledReason?: string
   [extra: string]: unknown
 }
 

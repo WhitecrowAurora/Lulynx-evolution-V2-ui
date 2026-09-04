@@ -6,8 +6,6 @@
     "anima-lora"
   ],
   "aliases": [
-    "caption_variants",
-    "caption_variant_schedule",
     "caption_variant_loss_adaptive",
     "caption_variant_custom_sequence"
   ],

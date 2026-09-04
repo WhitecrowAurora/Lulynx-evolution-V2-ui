@@ -158,6 +158,7 @@ export const monitorApi = {
       signal ? { signal } : {},
     ),
   stop: () => postJson('/train/stop', {}),
-  gpuStatus: () => request('/api/gpu_status'),
+  // 没有 gpuStatus:/api/gpu_status 的 gpu 部分与 /api/system_monitor 逐字段相同,
+  // 留一个零调用的别名只会让人以为有第二条轮询面。显卡表走 /api/graphic_cards。
   systemMonitor: () => request('/api/system_monitor'),
 }

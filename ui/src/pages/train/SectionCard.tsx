@@ -30,6 +30,8 @@ export function SectionCard({
   onHelp,
   explicitFields,
   onApplySuggestions,
+  managedKeys,
+  managedMessage,
 }: {
   section: SchemaSection
   idx: number
@@ -39,6 +41,8 @@ export function SectionCard({
   onHelp: (field: SchemaField) => void
   explicitFields: string[]
   onApplySuggestions: (values: Record<string, unknown>) => void
+  managedKeys: ReadonlySet<string>
+  managedMessage: string
 }) {
   const visibleFields = useMemo(
     () =>
@@ -70,7 +74,15 @@ export function SectionCard({
       {section.description ? <p className="lx-cfg-desc">{section.description}</p> : null}
       <div className="lx-cfg-grid">
         {renderedFields.map((f) => (
-          <FieldControl key={f.key} field={f} value={config[f.key]} onChange={(raw) => onChange(f.key, raw)} onHelp={onHelp} />
+          <FieldControl
+            key={f.key}
+            field={f}
+            value={config[f.key]}
+            onChange={(raw) => onChange(f.key, raw)}
+            onHelp={onHelp}
+            disabled={Boolean(f.disabled) || managedKeys.has(f.key)}
+            disabledReason={f.disabled ? String(f.disabledReason || '') : managedKeys.has(f.key) ? managedMessage : ''}
+          />
         ))}
       </div>
       {progressiveScheduleField ? (

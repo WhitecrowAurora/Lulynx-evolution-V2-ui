@@ -12,8 +12,7 @@
     "main_process_port",
     "ddp_gradient_as_bucket_view",
     "ddp_static_graph",
-    "ddp_timeout",
-    "gpu_ids"
+    "ddp_timeout"
   ],
   "standard": {
     "summary": "分布式训练（DDP）的进程数（通常等于 GPU 数量）。num_processes=1 = 单卡训练（默认）；>1 = 多卡数据并行。",

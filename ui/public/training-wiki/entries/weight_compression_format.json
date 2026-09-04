@@ -5,12 +5,13 @@
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "底层压缩后端。fp8_e4m3 默认",
+    "summary": "底层压缩后端。fp8_e4m3 默认；fp8_scaled_e4m3 只在 krea2 / FLUX.2 / Z-Image / Wan2.2 上可用",
     "effect": "",
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。",
     "optionDescriptions": {
       "fp8_e4m3": "FP8 E4M3。",
+      "fp8_scaled_e4m3": "FP8 E4M3 + per-output-channel 缩放，导出带 scaled_fp8 标记。仅 krea2 / FLUX.2 / Z-Image / Wan2.2 支持，其余架构预检直接拒；压缩目标必须是 backbone，选 text_encoder 或 both 会被拒。",
       "torchao_int8": "torchao INT8。",
       "torchao_uint4": "torchao UINT4，压得更狠。",
       "torchao_float8": "torchao Float8。",
@@ -19,7 +20,7 @@
     }
   },
   "advanced": {
-    "principle": "底层压缩后端。fp8_e4m3 默认；torchao/quanto 系列需对应依赖可用，启动前建议开探测。",
+    "principle": "底层压缩后端。fp8_e4m3 默认；fp8_scaled_e4m3 逐输出通道存一个缩放系数，比裸 FP8 保住更多动态范围，但架构矩阵限定在 krea2 / FLUX.2 / Z-Image / Wan2.2 且只压 backbone；torchao/quanto 系列需对应依赖可用，启动前建议开探测。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

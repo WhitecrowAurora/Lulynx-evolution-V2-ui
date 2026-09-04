@@ -12,11 +12,12 @@
     "optionDescriptions": {
       "phase": "按训练阶段卸 TE/VAE。",
       "aggressive": "卸得更勤，冲低显存，等待会多。",
-      "resident": "TE/VAE 一直占着 GPU，最快也最占。"
+      "resident": "TE/VAE 一直占着 GPU，最快也最占。",
+      "grouped": "CLIP-L 与 VAE 常驻 GPU，9.2GB 的 T5 仍每步搬；少搬运但显存段更多，实测不一定更快。"
     }
   },
   "advanced": {
-    "principle": "phase 为默认训练生命周期策略；aggressive 面向 6GB 低显存目标；resident 保持兼容但显存占用更高",
+    "principle": "phase 为默认训练生命周期策略；aggressive 面向 6GB 低显存目标；resident 保持兼容但显存占用更高；grouped 只让 CLIP-L 与 VAE 常驻，T5 仍每步搬运",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

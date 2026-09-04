@@ -1,0 +1,34 @@
+{
+  "key": "newbie_sigma_schedule",
+  "title": "σ 分布（newbie_sigma_schedule）",
+  "category": "训练参数",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "layers": [
+    "噪声/时间步层"
+  ],
+  "standard": {
+    "summary": "训练时 σ（噪声档位）的抽样分布：两档都是 logit-normal(0,1) 再按分辨率向高噪声一侧弯折，差别在弯折的力度。标准 = 这个架构本身训练时用的力度；lulynx 优化 = 更缓的一条线。",
+    "effect": "标准：512px 中位数 0.65，1024px 0.76。lulynx 优化：512px 0.63，1024px 0.67。分辨率越大两档差得越开（1024px 的 shift 是 3.16 对 2.00）。预览采样表跟随此项，所以预览走的档位分布与训练分布对齐。",
+    "whenToUse": "默认用标准——它就是这批权重训练时的分布，也是复现别处 newbie 训练结果时该选的那档。想让采样预算更均匀地铺开、少压在高噪声段时选 lulynx 优化，小分辨率（≤512px）下两档差别不大。",
+    "avoidWhen": "要复现此前的 newbie 训练结果时——此前没有这个开关，实际走的是均匀分布兜底分支，两个档位都复现不了它（需要显式设 ddpm_timestep_sampling）。",
+    "optionDescriptions": {
+      "standard": "这个架构训练时用的弯折力度（512px shift 1.878 / 中位数 0.65，1024px shift 3.158 / 0.76）。",
+      "lulynx": "同一个式子、更缓的一条线（512px shift 1.714 / 0.63，1024px shift 2.001 / 0.67）。"
+    }
+  },
+  "advanced": {
+    "principle": "两档都走 sigmoid(N(0,1)) 这一次抽样，再以 σ' = s·σ / (1 + (s−1)·σ) 单调弯折——这个式子把 (0,1) 映回 (0,1) 且保序，所以只重分配密度、不改值域。shift s 由 token 数（2×2 patch 后的序列长度）线性插值出 μ 再取 e^μ，两档的区别只是那条线的端点：标准取 (256 token → 0.5, 4096 → 1.15)，lulynx 取 (256 → 0.5, 8192 → 0.9)。两条线在 256 token 处重合，之后标准那条更陡，所以真实分辨率下标准的弯折总是更强。关键是训练侧与预览侧施加同一个式子、同一个 shift，因此预览采样表的中点恰好落在训练分布的中位数上（两档实测相差 7.8e-05~8.1e-04，即判据自身的抽样噪声）。",
+    "intervention": "配置层把此项桥接到共享的 ddpm_timestep_sampling 接缝（standard→nextdit_shift，lulynx→qwen_shift）；显式写过 ddpm_timestep_sampling 或开了 FasterDiT 时，两者都保持权威，此项不覆盖。预览侧由采样器把同一分辨率下的 shift 传给 discrete_flow_shift。",
+    "expectedImpact": "此前 newbie 无开关、实际取均匀分布兜底分支，两档相对它都是收敛行为的变化而非微调。两档之间：1024px 下中位数 0.76 对 0.67，标准把更多步数预算放在构图成型的高噪声段。",
+    "tradeoffs": "shift 由分辨率决定而非固定常数，所以换分辨率训练时分布会跟着变；这是有意的（token 数变了，同一 σ 的实际难度也变了），但也意味着两次不同分辨率的运行不是同分布。此项只对 newbie 生效，其它族的时间步抽样不受影响。",
+    "codePath": "core/lulynx_trainer/newbie_sigma_schedule.py → configs.py::_apply_newbie_sigma_schedule → ddpm_timestep_sampling → flow_timestep_sampling.py::sample_transport_flow_t；预览侧 sampler_family_generation.py → newbie_sampler_schedule.py::build_sigma_schedule"
+  },
+  "relatedConfigs": [
+    "ddpm_timestep_sampling",
+    "discrete_flow_shift",
+    "faster_dit_snr_enabled",
+    "newbie_gemma3_prompt"
+  ]
+}

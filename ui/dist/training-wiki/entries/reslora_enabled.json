@@ -6,9 +6,6 @@
     "anima-lora",
     "sdxl-lora"
   ],
-  "aliases": [
-    "reslora_mode"
-  ],
   "standard": {
     "summary": "（实验性）ResLoRA：在 LoRA 层之间添加残差连接，缓解深层 LoRA 的梯度消失问题，提升学习稳定性。",
     "effect": "在多个 LoRA 层之间建立跳跃连接，允许梯度直接传播跳过中间 LoRA 层，解决深层 LoRA 收敛缓慢的问题。",

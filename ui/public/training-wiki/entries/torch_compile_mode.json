@@ -9,7 +9,6 @@
   "aliases": [
     "torch_compile_fullgraph",
     "torch_compile_dynamic",
-    "torch_compile_scope",
     "torch_compile_allow_full_with_per_block"
   ],
   "standard": {

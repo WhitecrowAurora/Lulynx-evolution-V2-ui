@@ -9,8 +9,6 @@
   "aliases": [
     "controlnet_model_name_or_path",
     "control_net_lr",
-    "model_to_condition_enabled",
-    "diff_target_name",
     "target_image_path",
     "target_prompt",
     "original_image_path",

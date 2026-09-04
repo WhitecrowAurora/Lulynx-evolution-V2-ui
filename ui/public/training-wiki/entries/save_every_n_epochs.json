@@ -15,7 +15,7 @@
   ],
   "standard": {
     "summary": "每隔多少个 epoch 保存一次 checkpoint。save_every_n_steps 是按步数保存的替代方案。",
-    "effect": "save_every_n_epochs=1 每 epoch 保存一次。=0 禁用按 epoch 保存。两者可以同时使用。",
+    "effect": "save_every_n_epochs=1 每 epoch 保存一次。=0 禁用按 epoch 保存，此时 save_every_n_steps 必须大于 0。两者可以同时使用，但不能同时为 0——都为 0 时整个训练只在正常结束时落盘一次，中途崩溃/OOM/手动停止将拿不到任何权重，因此配置校验会直接拒绝这种组合。",
     "whenToUse": "长训练时建议每 1-2 个 epoch 保存一次。配合 checkpoint_keep_last 控制磁盘占用。",
     "avoidWhen": "保存操作有 I/O 开销（大模型可能耗时数秒）。频繁保存在短训练中影响不大。"
   },

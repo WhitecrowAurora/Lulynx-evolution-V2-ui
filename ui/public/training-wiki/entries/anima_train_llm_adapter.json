@@ -6,7 +6,6 @@
     "anima-lora"
   ],
   "aliases": [
-    "anima_llm_adapter_lr",
     "anima_cache_llm_adapter_outputs"
   ],
   "standard": {

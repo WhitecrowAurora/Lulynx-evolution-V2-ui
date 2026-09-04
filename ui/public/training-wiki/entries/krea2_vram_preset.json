@@ -5,7 +5,7 @@
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "控制 Krea-2 block offload 的默认 GPU 常驻档位。（详见 ?）",
+    "summary": "控制 Krea-2 block offload 的默认 GPU 常驻档位。Standard = 4 个 GPU slots，作为默认平衡档；Aggressive = 3 个 GPU slots，进一步压低显存占用但步时会略慢一些。",
     "effect": "",
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。",

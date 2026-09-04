@@ -13,7 +13,8 @@
       "auto": "Thunder 后端自动。",
       "nvfuser": "走 nvFuser。",
       "torchcompile": "走 torch.compile。",
-      "sdpa": "偏 SDPA，查问题用。"
+      "sdpa": "偏 SDPA，查问题用。",
+      "nvfuser,sdpa": "推荐组合,也是这个选择器里唯一的取值:nvFuser 管融合、SDPA 管注意力。逐个分量的解释见下面「补充说明」。"
     }
   },
   "advanced": {

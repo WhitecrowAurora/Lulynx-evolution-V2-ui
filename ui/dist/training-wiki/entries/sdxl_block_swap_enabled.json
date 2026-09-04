@@ -6,9 +6,6 @@
     "sdxl-lora"
   ],
   "aliases": [
-    "sdxl_block_swap_input_blocks",
-    "sdxl_block_swap_middle_block",
-    "sdxl_block_swap_output_blocks",
     "sdxl_block_swap_offload_after_backward",
     "sdxl_block_swap_sequential_cpu_offload"
   ],

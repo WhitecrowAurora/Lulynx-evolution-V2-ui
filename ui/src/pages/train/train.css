@@ -235,6 +235,21 @@ html[data-theme='glass'] .lx-type-btn.on { box-shadow: 0 4px 18px var(--lx-accen
   letter-spacing: 0; text-transform: none; color: var(--lx-text);
 }
 
+.lx-field.is-profile-managed { opacity: 0.58; }
+.lx-field.is-profile-managed input,
+.lx-field.is-profile-managed textarea,
+.lx-field.is-profile-managed select,
+.lx-field.is-profile-managed button:not(.lx-help) { cursor: not-allowed; }
+.lx-field-bool.is-profile-managed { flex-wrap: wrap; }
+.lx-profile-managed-note {
+  display: block; width: 100%; flex-basis: 100%;
+  color: var(--lx-dim); font: 500 10px/1.45 var(--lx-font-mono);
+  letter-spacing: 0.02em;
+}
+.lx-cfg-grid > .lx-field:not(.lx-field-bool) > .lx-profile-managed-note { grid-column: 2; }
+.lx-cfg-grid > .lx-field.lx-span-full > .lx-profile-managed-note,
+.lx-cfg-grid > .lx-field.lx-span-2 > .lx-profile-managed-note { grid-column: 1; }
+
 .lx-slider-row { display: flex; align-items: center; gap: 10px; }
 .lx-slider-row .lx-range { flex: 1; }
 .lx-slider-num { width: 76px; flex: none; text-align: center; }
@@ -393,6 +408,32 @@ html[data-theme='glass'] .lx-type-btn.on { box-shadow: 0 4px 18px var(--lx-accen
   line-height: 1.5;
   color: var(--lx-text);
 }
+.lx-resume-banner-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.lx-resume-banner-detail {
+  display: block;
+  margin-top: 3px;
+  color: var(--lx-dim);
+  font-size: 11px;
+}
+.lx-resume-level {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 2px 7px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.lx-resume-level.is-full { color: var(--lx-ok, #4caf82); }
+.lx-resume-level.is-weights_only { color: var(--lx-warn, #c9a227); }
+.lx-resume-level.is-unknown { color: var(--lx-dim); }
 .lx-resume-banner-actions {
   display: flex;
   align-items: center;

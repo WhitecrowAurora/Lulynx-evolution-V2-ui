@@ -75,6 +75,7 @@ let logOffset = 0
 let finalLogDone = false
 let samples: { t: number; step: number }[] = []
 let wsKickAt = 0
+let requestGeneration = 0
 
 function isRunning(run: RunStatePayload | null): boolean {
   return !!run && !TERMINAL.has(String(run.status ?? '').toLowerCase())
@@ -90,6 +91,7 @@ function fmtEta(ms: number): string {
 }
 
 function resetRunData() {
+  requestGeneration += 1
   logOffset = 0
   finalLogDone = false
   samples = []
@@ -153,14 +155,17 @@ async function tickActive() {
 async function tickRun() {
   const runId = S.getState().runId
   if (!runId) return
+  const generation = requestGeneration
   try {
     const run = unwrap<RunStatePayload>(await monitorApi.status(runId))
+    if (generation !== requestGeneration || S.getState().runId !== runId) return
     const terminal = !isRunning(run)
     if (terminal && finalLogDone) {
       S.setState({ run })
       return
     }
     const logP = unwrap<LogPayload>(await monitorApi.log(runId, logOffset))
+    if (generation !== requestGeneration || S.getState().runId !== runId) return
     const incoming = logP?.lines ?? []
     if (typeof logP?.offset === 'number') logOffset = logP.offset
     if (incoming.length) {
@@ -194,12 +199,14 @@ async function tickRun() {
 async function tickChart() {
   const { runId, run } = S.getState()
   if (!runId) return
+  const generation = requestGeneration
   if (!isRunning(run) && S.getState().lossPoints.length > 0 && finalLogDone) return
   try {
     const [loss, lr] = await Promise.all([
       monitorApi.chartSeries(runId, 'loss'),
       monitorApi.chartSeries(runId, 'lr'),
     ])
+    if (generation !== requestGeneration || S.getState().runId !== runId) return
     S.setState({
       lossPoints: unwrap<ChartPayload>(loss)?.points ?? [],
       lrPoints: unwrap<ChartPayload>(lr)?.points ?? [],

@@ -11,7 +11,7 @@
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
   "advanced": {
-    "principle": "Shampoo 因子的指数平均系数。-1 = 使用 beta2。推荐 -1 或 0.",
+    "principle": "Shampoo 因子的指数平均系数。-1 = 使用 beta2（默认）；如需单独设定，取值范围 -1 ~ 1。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

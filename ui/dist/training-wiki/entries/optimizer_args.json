@@ -7,9 +7,6 @@
     "sdxl-lora",
     "sd-lora"
   ],
-  "aliases": [
-    "optimizer_args_custom"
-  ],
   "standard": {
     "summary": "以 key=value 格式（一行一个）向优化器传递额外参数，如 betas 或特定优化器的专有选项。",
     "effect": "每行解析为一个 kwargs 传入优化器构造函数。支持列表值：betas=[0.9,0.999]。",

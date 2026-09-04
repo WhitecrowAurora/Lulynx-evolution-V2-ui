@@ -5,6 +5,8 @@ import zh from './zh.json'
 import en from './en.json'
 import schemaFieldLabelsEn from './schemaFieldLabelsEn.json'
 import schemaFieldDescsEn from './schemaFieldDescsEn.json'
+import schemaFieldLabelsEnByType from './schemaFieldLabelsEnByType.json'
+import schemaFieldDescsEnByType from './schemaFieldDescsEnByType.json'
 import schemaFieldOptionsEn from './schemaFieldOptionsEn.json'
 import schemaTabsEn from './schemaTabsEn.json'
 import schemaGroupsEn from './schemaGroupsEn.json'
@@ -44,17 +46,36 @@ export function useI18n() {
   return { t, language }
 }
 
+type ByTypeTable = Record<string, Record<string, string> | undefined>
+
+// `key@typeId` 维度。同一个键在不同训练类型下常常声明了**不同**的中文(最坏的
+// pretrained_model_name_or_path:18 种 desc / 23 种 label,按模型族分别写的路径说明),
+// 平表一个键只装得下一条英文 ⇒ 其余类型换到英文模式后会显示别的类型那一句。
+// 嵌套表只收「与该键多数变体不同」的那些 `key@typeId`,平表继续承担多数变体。
+// 优先级在 field.desc_en/label_en(字段实例上的内联英文,本来就是按类型写的)之后、平表之前。
+function byTypeText(table: ByTypeTable, key?: string, typeId?: string): string | undefined {
+  if (!key || !typeId) return undefined
+  const bucket = table[key]
+  const text = bucket ? bucket[typeId] : undefined
+  return typeof text === 'string' && text.trim() ? text : undefined
+}
+
 /** Schema field label/desc resolver (label_zh/label_en with label fallback). */
 export function resolveFieldLabel(
   field: { key?: string; label?: string; label_zh?: string; label_en?: string; [k: string]: unknown },
   language: string,
+  typeId?: string,
 ): string {
   const preferEn = language === 'en'
   const primary = preferEn ? field.label_en : field.label_zh
   const secondary = preferEn ? field.label_zh : field.label_en
   if (typeof primary === 'string' && primary.trim()) return primary
-  if (preferEn && field.key && typeof (schemaFieldLabelsEn as Record<string, string>)[field.key] === 'string') {
-    return (schemaFieldLabelsEn as Record<string, string>)[field.key]
+  if (preferEn) {
+    const scoped = byTypeText(schemaFieldLabelsEnByType as ByTypeTable, field.key, typeId)
+    if (scoped) return scoped
+    if (field.key && typeof (schemaFieldLabelsEn as Record<string, string>)[field.key] === 'string') {
+      return (schemaFieldLabelsEn as Record<string, string>)[field.key]
+    }
   }
   if (typeof secondary === 'string' && secondary.trim()) return secondary
   if (typeof field.label === 'string' && field.label.trim()) return field.label
@@ -88,17 +109,18 @@ export function resolveFieldDesc(
     [k: string]: unknown
   },
   language: string,
+  typeId?: string,
 ): string {
   const preferEn = language === 'en'
   const primary = preferEn ? field.desc_en : field.desc_zh
   const secondary = preferEn ? field.desc_zh : field.desc_en
   if (typeof primary === 'string' && primary.trim()) return primary
-  if (
-    preferEn &&
-    field.key &&
-    typeof (schemaFieldDescsEn as Record<string, string>)[field.key] === 'string'
-  ) {
-    return (schemaFieldDescsEn as Record<string, string>)[field.key]
+  if (preferEn) {
+    const scoped = byTypeText(schemaFieldDescsEnByType as ByTypeTable, field.key, typeId)
+    if (scoped) return scoped
+    if (field.key && typeof (schemaFieldDescsEn as Record<string, string>)[field.key] === 'string') {
+      return (schemaFieldDescsEn as Record<string, string>)[field.key]
+    }
   }
   if (typeof secondary === 'string' && secondary.trim()) return secondary
   if (typeof field.desc === 'string' && field.desc.trim()) return field.desc

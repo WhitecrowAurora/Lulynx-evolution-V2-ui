@@ -7,9 +7,7 @@
     "sdxl-lora"
   ],
   "aliases": [
-    "gpu_ids",
-    "gpu_power_limit_w",
-    "gpu_target_temp_c"
+    "gpu_power_limit_w"
   ],
   "standard": {
     "summary": "GPU 性能管理：锁定 GPU 时钟频率（防止 boost 引起不稳定）、设置功耗上限、设置温度目标（超温自动降频）。",

@@ -89,20 +89,25 @@ export default function GeneratePage() {
   const [error, setError] = useState('')
   const [showTuning, setShowTuning] = useState(false)
   const lastLogId = useRef(0)
+  const pollGeneration = useRef(0)
 
   const running = task.status === 'running'
 
   const poll = useCallback(async () => {
+    const generation = pollGeneration.current
     try {
       const { task: current } = await generateApi.status()
+      if (generation !== pollGeneration.current) return
       setTask(current)
       const { items, last_id } = await generateApi.logs(lastLogId.current)
+      if (generation !== pollGeneration.current) return
       if (items.length) {
         lastLogId.current = last_id
         setLogs((prev) => [...prev, ...items].slice(-400))
       }
       if (current.status && current.status !== 'running' && current.output_dir) {
         const result = await generateApi.results(current.output_dir)
+        if (generation !== pollGeneration.current) return
         setImages(result.items)
       }
     } catch (e) {
@@ -128,6 +133,7 @@ export default function GeneratePage() {
   }
 
   const start = async () => {
+    pollGeneration.current += 1
     setError('')
     lastLogId.current = 0
     setLogs([])
@@ -152,6 +158,7 @@ export default function GeneratePage() {
   }
 
   const stop = async () => {
+    pollGeneration.current += 1
     try {
       const { task: stopped } = await generateApi.stop()
       setTask(stopped)

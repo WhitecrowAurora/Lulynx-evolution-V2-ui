@@ -10,8 +10,8 @@
     "适配器层"
   ],
   "standard": {
-    "summary": "选择 DiT 模型的原生训练方法：lora（标准 LoRA）、ortholora（正交 LoRA）、tlora（T-LoRA）。",
-    "effect": "lora 最常用。ortholora 对 LoRA 矩阵施加正交约束减少概念干扰。tlora 是 T-LoRA 变体。",
+    "summary": "选择 DiT 模型的原生训练方法：lora（标准 LoRA）、ortholora（正交 LoRA）、tlora（lulynx 渐进秩 LoRA，历史 key）。",
+    "effect": "lora 最常用。ortholora 对 LoRA 矩阵施加正交约束减少概念干扰。tlora 按全局训练进度调度 rank，不是论文 T-LoRA 的 timestep 条件化实现。",
     "whenToUse": "默认 lora 适合大多数场景。ortholora 在多概念训练中可能减少概念串扰。",
     "avoidWhen": "ortholora 和 tlora 仍是实验性功能，可能在某些配置下不稳定。"
   },

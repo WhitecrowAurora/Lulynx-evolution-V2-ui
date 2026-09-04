@@ -6,7 +6,6 @@
     "anima-lora"
   ],
   "aliases": [
-    "gradient_release_mode",
     "gradient_guard_agc_clip_factor",
     "gradient_guard_agc_eps"
   ],

@@ -1,17 +1,17 @@
 {
   "key": "sample_smoothcache_error_threshold",
-  "title": "SmoothCache 误差阈值",
+  "title": "lulynx 误差缓存阈值（历史 SmoothCache key）",
   "category": "训练参数",
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "块间误差低于该阈值才复用缓存。",
+    "summary": "本仓相邻 step 误差低于该阈值才复用预览缓存；这是 lulynx 工程近似，不是论文 SmoothCache 的 calibration schedule。",
     "effect": "",
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
   "advanced": {
-    "principle": "块间误差低于该阈值才复用缓存。阈值越松(越大)复用越多、越快，但漂移越大。默认 0.",
+    "principle": "块间误差低于该阈值才复用缓存。阈值越松（越大）复用越多、越快，但漂移越大。该实现使用本地 relative-L1 probe，不能外推 SmoothCache 论文结果。默认 0.08。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

@@ -6,8 +6,6 @@
     "anima-lora"
   ],
   "aliases": [
-    "compile_anima_full_core_enabled",
-    "compile_cache_enabled",
     "compile_cache_prewarm"
   ],
   "standard": {

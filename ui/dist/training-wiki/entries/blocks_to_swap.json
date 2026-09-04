@@ -6,9 +6,6 @@
     "sdxl-lora",
     "sd-lora"
   ],
-  "aliases": [
-    "block_swap_strategy"
-  ],
   "standard": {
     "summary": "将指定数量的 transformer block 权重换出到 CPU 内存，只在需要时换入 GPU，降低 VRAM 峰值。",
     "effect": "每个 block 约占 400MB~2GB VRAM（取决于模型），换出 N 个 block 可节省相应 VRAM。代价是训练速度下降（PCIe 传输开销）。",

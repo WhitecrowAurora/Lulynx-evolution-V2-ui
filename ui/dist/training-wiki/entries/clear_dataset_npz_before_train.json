@@ -7,11 +7,7 @@
     "sd-lora"
   ],
   "aliases": [
-    "persistent_data_loader_workers",
-    "cached_collate_mode",
-    "bucket_selection_mode",
-    "image_decode_backend",
-    "image_decode_cache_size"
+    "persistent_data_loader_workers"
   ],
   "standard": {
     "summary": "clear_dataset_npz_before_train = 开始训练前删除旧的 .npz 缓存文件，强制重新生成（当数据集图像已更新时使用）。",

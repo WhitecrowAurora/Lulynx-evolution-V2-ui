@@ -5,10 +5,6 @@
   "appliesTo": [
     "anima-lora"
   ],
-  "aliases": [
-    "anima_block_prefetch_depth",
-    "anima_block_prefetch_mode"
-  ],
   "standard": {
     "summary": "将 Anima DiT block 的权重在不使用时卸载到 CPU（offload），使用前预取回 GPU，显著降低 VRAM 峰值，代价是训练速度下降。",
     "effect": "开启后大基座（如 Anima 全尺寸）可在 <12GB 显卡上运行 LoRA 训练，但速度可能降低 30%~60%（取决于预取深度和 PCIe 带宽）。",

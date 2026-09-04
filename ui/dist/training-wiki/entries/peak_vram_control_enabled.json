@@ -6,11 +6,8 @@
     "anima-lora"
   ],
   "aliases": [
-    "peak_vram_auto_protection_enabled",
     "peak_vram_diagnostics_enabled",
     "peak_vram_diagnostics_interval",
-    "peak_vram_micro_batch_enabled",
-    "peak_vram_micro_batch_size",
     "peak_vram_reduce_enabled",
     "peak_vram_reserved_gb",
     "peak_vram_soft_limit_gb",

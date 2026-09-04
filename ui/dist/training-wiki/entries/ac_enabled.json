@@ -6,8 +6,7 @@
     "anima-lora"
   ],
   "aliases": [
-    "lulynx_auto_controller_enabled",
-    "auto_controller_enabled"
+    "lulynx_auto_controller_enabled"
   ],
   "standard": {
     "summary": "智能训练控制器，根据 loss、CLIP 漂移、梯度秩等指标自动调整学习率、触发早停或冻结文本编码器。适合长时间无人值守训练。",

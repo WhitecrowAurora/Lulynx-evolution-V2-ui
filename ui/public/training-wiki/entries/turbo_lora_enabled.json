@@ -1,7 +1,7 @@
 {
   "key": "turbo_lora_enabled",
   "title": "TurboLoRA 投机采样",
-  "category": "推理加速 /",
+  "category": "推理加速 / 蒸馏",
   "appliesTo": [
     "anima-lora"
   ],

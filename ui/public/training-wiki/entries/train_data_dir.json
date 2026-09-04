@@ -9,11 +9,6 @@
     "newbie-lora"
   ],
   "aliases": [
-    "train_length_mode",
-    "train_norm",
-    "data_backend",
-    "data_transfer_profile_enabled",
-    "data_transfer_profile_mode",
     "data_transfer_profile_window"
   ],
   "standard": {

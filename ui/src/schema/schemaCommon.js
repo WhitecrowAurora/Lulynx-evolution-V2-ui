@@ -102,6 +102,7 @@ export const lossWeightedScheduler = when('lr_scheduler', 'loss_weighted_anneale
 export const DIT_BLOCK_RESIDENCY_OPTIONS = [
   { value: 'resident', label: '常驻 GPU' },
   { value: 'block_cpu_pinned', label: 'Block CPU pinned（牺牲速度换更少显存使用量）' },
+  { value: 'streaming_offload', label: '流式 Offload（逐 block 串流，最省显存；可配稀疏交换）' },
 ];
 
 export const PCIE_TRANSFER_FORMAT_OPTIONS = [
@@ -139,9 +140,9 @@ export const PCIE_TRANSFER_FORMAT_FIELD = {
 };
 
 export const sparseSwapFields = (residencyKey) => [
-  { key: 'sparse_swap_enabled', type: 'boolean', label: '稀疏交换方案', title: 'sparse_swap_enabled', desc: '仅对 Streaming Offload 生效。', defaultValue: false, visibleWhen: streamingBlockMode(residencyKey) },
-  { key: 'sparse_swap_warm_fraction', type: 'number', label: '稀疏交换 Warm 比例', title: 'sparse_swap_warm_fraction', desc: '冷层中允许提前预取的比例', defaultValue: 0.35, min: 0, max: 1, step: 0.05, visibleWhen: all(streamingBlockMode(residencyKey), when('sparse_swap_enabled', true)) },
-  { key: 'sparse_swap_budget_mb', type: 'number', label: '稀疏交换 Warm 预算 MB', title: 'sparse_swap_budget_mb', desc: '限制 warm prefetch 的 FP16 等效预算。', defaultValue: 0, min: 0, step: 64, visibleWhen: all(streamingBlockMode(residencyKey), when('sparse_swap_enabled', true)) },
+  { key: 'sparse_swap_enabled', type: 'boolean', label: '稀疏交换方案', title: 'sparse_swap_enabled', desc: '仅在驻留模式 = 流式 Offload 时生效：冷层按需搬运、只给少数 warm 层预取。低显存守卫**自行**把驻留切成流式 Offload 时会连带打开本开关，要完全禁止请关掉智能感知里的稀疏交换开关。', defaultValue: false, visibleWhen: streamingBlockMode(residencyKey) },
+  { key: 'sparse_swap_warm_fraction', type: 'number', label: '稀疏交换 Warm 比例', title: 'sparse_swap_warm_fraction', desc: '冷层中允许提前预取的比例，0~1，默认 0.35；守卫自动开启时，若这里填 0 会按显存档位补成 0.25（极低显存目标）或 0.35，已填的非零值不动。', defaultValue: 0.35, min: 0, max: 1, step: 0.05, visibleWhen: all(streamingBlockMode(residencyKey), when('sparse_swap_enabled', true)) },
+  { key: 'sparse_swap_budget_mb', type: 'number', label: '稀疏交换 Warm 预算 MB', title: 'sparse_swap_budget_mb', desc: '限制 warm prefetch 的 FP16 等效预算，单位 MB；0 = 不额外限制，只受 warm 比例约束。', defaultValue: 0, min: 0, step: 64, visibleWhen: all(streamingBlockMode(residencyKey), when('sparse_swap_enabled', true)) },
 ];
 
 export const pcieDeltaCacheField = (residencyKey) => ({
@@ -574,6 +575,7 @@ export const ADVANCED_OPTIMIZER_STRATEGY_OPTIONS = [
   { value: 'profile_only', label: '仅记录 Profile' },
   { value: 'lora_plus', label: 'LoRA+（现有参数组）' },
   { value: 'rs_lora', label: 'RS-LoRA' },
+  { value: 'lulynx_svd_gradient_filter', label: 'lulynx SVD 梯度过滤（全形状，非 GaLore）' },
 ];
 
 export const DATA_TRANSFER_PROFILE_MODE_OPTIONS = [
@@ -635,12 +637,12 @@ export const ditTrainFields = (fields, family) => fields.map((field) => (
 // ---- V 参数化字段构造器(SDXL / SD1.5 共用) ----
 export const vParameterizationFields = (includeVPredOptions = false) => {
   const fields = [
-    { key: 'v_parameterization', type: 'boolean', label: 'V 参数化', title: 'v_parameterization', desc: 'v-parameterization 学习（训练', defaultValue: false },
+    { key: 'v_parameterization', type: 'boolean', label: 'V 参数化', title: 'v_parameterization', desc: 'v-parameterization 学习（训练 v-prediction 模型时开启）。', defaultValue: false },
   ];
   if (includeVPredOptions) {
     fields.push(
       { key: 'zero_terminal_snr', type: 'boolean', label: '零终端 SNR', title: 'zero_terminal_snr', desc: 'Zero Terminal SNR（v-pred 模型训练推荐开启）', defaultValue: true, visibleWhen: when('v_parameterization', true) },
-      { key: 'scale_v_pred_loss_like_noise_pred', type: 'boolean', label: '缩放 v-pred 损失', title: 'scale_v_pred_loss_like_noise_pred', desc: '缩放 v-prediction 损失（v-pred', defaultValue: true, visibleWhen: when('v_parameterization', true) },
+      { key: 'scale_v_pred_loss_like_noise_pred', type: 'boolean', label: '缩放 v-pred 损失', title: 'scale_v_pred_loss_like_noise_pred', desc: '缩放 v-prediction 损失（v-pred 模型专用，把损失缩放成与噪声预测同量级）。', defaultValue: true, visibleWhen: when('v_parameterization', true) },
     );
   }
   return fields;
@@ -682,12 +684,12 @@ export const netLora = (mod, dim = 32, alpha = 32, maxDim = 512, extra = [], ext
   { key: 'network_module', type: 'select', label: '训练网络模块', title: 'network_module', desc: '训练网络模块', defaultValue: mod, options: [mod, ...extraModules, ...(includeLycoris && !mod.includes('lycoris') ? ['lycoris.kohya'] : [])] },
   { key: 'network_dim', type: 'slider', label: '网络维度', title: 'network_dim', desc: '网络维度', defaultValue: dim, min: 1, max: maxDim, step: 1, visibleWhen: adapterFamilySupports('supports_rank') },
   { key: 'network_alpha', type: 'slider', label: '网络 Alpha', title: 'network_alpha', desc: '网络 Alpha', defaultValue: alpha, min: 1, max: maxDim, step: 1, visibleWhen: adapterFamilySupports('supports_alpha') },
-  { key: 'network_dropout', type: 'number', label: '网络 Dropout', title: 'network_dropout', desc: '网络 Dropout', defaultValue: 0, min: 0, step: 0.01, visibleWhen: all(nonLycorisNetworkSelected, adapterFamilySupports('supports_dropout')) },
+  { key: 'network_dropout', type: 'number', label: '网络 Dropout', title: 'network_dropout', desc: '网络 Dropout', defaultValue: 0, min: 0, max: 1, step: 0.01, visibleWhen: all(nonLycorisNetworkSelected, adapterFamilySupports('supports_dropout')) },
   { key: 'flexrank_lora_rank_range_min', type: 'number', label: 'FlexRank 最小 Rank', title: 'flexrank_lora_rank_range_min', desc: 'FlexRank 每步随机采样激活 rank 的下界', defaultValue: 1, min: 1, step: 1, visibleWhen: when('network_module', 'networks.flexrank_lora') },
   { key: 'dim_from_weights', type: 'boolean', label: '从权重推断 Dim', title: 'dim_from_weights', desc: '从已有 network_weights 自动推断 rank / dim', defaultValue: false, visibleWhen: adapterFamilySupports('supports_rank') },
   { key: 'scale_weight_norms', type: 'number', label: '最大范数正则化', title: 'scale_weight_norms', desc: '最大范数正则化。如果使用，推荐为 1', defaultValue: '', min: 0, step: 0.01 },
   uiGroup('LyCORIS 基础结构', '这里放算法类型、卷积维度、preset 这类决定网络骨架的参数。普通 LoRA 路线可直接忽略。', lycorisNetworkSelected),
-  { key: 'lycoris_algo', type: 'select', label: 'LyCORIS 算法', title: 'lycoris_algo', desc: '后端原生支持：LoCon / LoHa / LoKr / IA3 /', defaultValue: 'locon', options: SUPPORTED_LYCORIS_ALGOS, visibleWhen: lycorisNetworkSelected },
+  { key: 'lycoris_algo', type: 'select', label: 'LyCORIS 算法', title: 'lycoris_algo', desc: '后端原生支持：LoCon / LoHa / LoKr / GLoRA / GLoKr / IA3 / Full / Diag-OFT。', defaultValue: 'locon', options: SUPPORTED_LYCORIS_ALGOS, visibleWhen: lycorisNetworkSelected },
   { key: 'conv_dim', type: 'number', label: '卷积维度', title: 'conv_dim', desc: '卷积维度', defaultValue: 4, min: 1, visibleWhen: (c) => LYCORIS_NETWORK_MODULES.includes(c.network_module) && LYCORIS_CONV_ALGOS.includes(c.lycoris_algo) },
   { key: 'conv_alpha', type: 'number', label: '卷积 Alpha', title: 'conv_alpha', desc: '卷积 Alpha', defaultValue: 1, min: 1, visibleWhen: (c) => LYCORIS_NETWORK_MODULES.includes(c.network_module) && LYCORIS_CONV_ALGOS.includes(c.lycoris_algo) },
   { key: 'lycoris_preset', type: 'string', label: 'LyCORIS Preset', title: 'lycoris_preset', desc: '传给 LyCORIS 库的 preset。', defaultValue: '', visibleWhen: lycorisNetworkSelected },
@@ -698,7 +700,7 @@ export const netLora = (mod, dim = 32, alpha = 32, maxDim = 512, extra = [], ext
   { key: 'train_norm', type: 'boolean', label: '训练 Norm 层', title: 'train_norm', desc: '额外训练归一化层（LayerNorm/RMSNorm 等）的可学习缩放/偏置', defaultValue: false, visibleWhen: (c) => LYCORIS_NETWORK_MODULES.includes(c.network_module) && c.lycoris_algo !== 'ia3' },
   uiGroup('DoRA 与兼容选项', 'DoRA 当前接在原生 LoRA 路线；LyCORIS 结构请直接选择上方算法。', when('network_module', 'networks.lora')),
   { key: 'dora_wd', type: 'boolean', label: '启用 DoRA', title: 'dora_wd', desc: '在原生 LoRA 路线下启用 DoRA。', defaultValue: false, visibleWhen: when('network_module', 'networks.lora') },
-  { key: 'adapter_init_strategy', type: 'select', label: 'LoRA 初始化策略', title: 'adapter_init_strategy', desc: '统一初始化入口：默认 LoRA / PiSSA /', defaultValue: 'default', options: ADAPTER_INIT_STRATEGY_OPTIONS, visibleWhen: all(when('network_module', 'networks.lora'), when('dora_wd', false)) },
+  { key: 'adapter_init_strategy', type: 'select', label: 'LoRA 初始化策略', title: 'adapter_init_strategy', desc: '统一初始化入口：默认 LoRA / PiSSA / OLoRA / LoftQ。', defaultValue: 'default', options: ADAPTER_INIT_STRATEGY_OPTIONS, visibleWhen: all(when('network_module', 'networks.lora'), when('dora_wd', false)) },
   { key: 'adapter_init_export_mode', type: 'select', label: '初始化导出模式', title: 'adapter_init_export_mode', desc: 'auto 会在最终保存时导出成可加载到原始底模的 LoRA', defaultValue: 'auto', options: ADAPTER_INIT_EXPORT_MODE_OPTIONS, visibleWhen: all(when('network_module', 'networks.lora'), nativeLoraInitSelected) },
   { key: 'loftq_bits', type: 'number', label: 'LoftQ 量化位宽', title: 'loftq_bits', desc: 'LoftQ 首版使用 fake-quant/dequant 权重残差初始化', defaultValue: 4, min: 2, max: 8, step: 1, visibleWhen: all(when('network_module', 'networks.lora'), loftqInitSelected) },
   { key: 'loftq_quant_type', type: 'select', label: 'LoftQ 量化粒度', title: 'loftq_quant_type', desc: 'rowwise 按输出通道量化，tensorwise 按整层张量量化。', defaultValue: 'rowwise', options: LOFTQ_QUANT_TYPE_OPTIONS, visibleWhen: all(when('network_module', 'networks.lora'), loftqInitSelected) },
@@ -733,7 +735,7 @@ export const flowParams = (defaults = {}) => [
   { key: 'guidance_scale', type: 'number', label: 'CFG 引导缩放', title: 'guidance_scale', desc: 'CFG 引导缩放', defaultValue: defaults.gs || 1.0, step: 0.01 },
   { key: 'weighting_scheme', type: 'select', label: '权重策略', title: 'weighting_scheme', desc: '损失加权策略', defaultValue: defaults.ws || 'none', options: ['sigma_sqrt', 'logit_normal', 'mode', 'cosmap', 'none'] },
   { key: 'mode_scale', type: 'number', label: 'mode 权重缩放', title: 'mode_scale', desc: 'mode 权重策略的缩放系数', defaultValue: '', step: 0.01 },
-  { key: 'loss_type', type: 'select', label: '损失函数类型', title: 'loss_type', desc: '损失函数类型', defaultValue: defaults.lt || 'l2', options: ['l1', 'l2', 'huber', 'smooth_l1'] },
+  { key: 'loss_type', type: 'select', label: '损失函数类型', title: 'loss_type', desc: '损失函数类型', defaultValue: defaults.lt || 'l2', options: ['l1', 'l2', 'huber', 'smooth_l1', 'pseudo_huber'] },
 ];
 
 export const rectifiedFlowParams = () => [

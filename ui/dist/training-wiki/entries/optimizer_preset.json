@@ -8,8 +8,7 @@
   ],
   "aliases": [
     "optimizer_state_paging_min_tensor_mb",
-    "optimizer_state_paging_pin_memory",
-    "newbie_auto_swap_release"
+    "optimizer_state_paging_pin_memory"
   ],
   "standard": {
     "summary": "优化器快速预设方案：选择已调优的优化器 + 学习率 + beta 参数组合，无需手动配置每个参数。",

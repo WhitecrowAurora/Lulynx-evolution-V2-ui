@@ -8,15 +8,8 @@
   ],
   "aliases": [
     "hydralora_balance_loss_weight",
-    "tensorring_lora_enabled",
-    "flexrank_lora_rank_range_min",
     "fractional_grad_damping_enabled",
-    "grad_cosine_enabled",
-    "lora_type",
-    "lora_activation_recompute_mode",
-    "lokr_factor",
-    "loftq_bits",
-    "loftq_quant_type"
+    "grad_cosine_enabled"
   ],
   "standard": {
     "summary": "多种 LoRA 变体汇总：Delta-LoRA（更新差分优化）/ HydraLoRA（多头 LoRA，平衡不同特征）/ TensorRing（张量环 LoRA）/ FlexRank（弹性秩）/ LoftQ（量化初始化）/ LoKr（Kronecker 分解）。",

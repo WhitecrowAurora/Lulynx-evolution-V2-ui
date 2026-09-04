@@ -39,7 +39,7 @@
   "advanced": {
     "principle": "Self-attention 计算 softmax(Q·K^T/√d)·V。标准实现需要保存完整的 attention matrix（n×n 元素），显存 O(n²)。Flash Attention 的 online softmax 算法将 Q/K/V 分成 tile（通常 128×128），逐 tile 计算并累积 softmax 归一化常数，不需要保存完整 attention matrix。SageAttn 将 Q 和 K 量化到 INT8 做矩阵乘法，然后反量化到 FP16 做 softmax，利用 INT8 Tensor Core 加速。SageAttn 的量化误差可能导致 attention 权重轻微偏移——sageattn_drift_check_interval 可以每 N 步与 SDPA 对比检测漂移。",
     "intervention": "diffusers 路径：替换 UNet 的 attention processor（AttnProcessor2_0 / FlashAttnProcessor / SageAttnProcessor）。native DiT 路径（Anima/Newbie）：替换 attention function 调用。Lulynx 在 execution_manifest.py 中定义了每个 execution profile 支持哪些 attention backend，TrainingExecutionResolver 在训练前验证所选 backend 是否可用。",
-    "expectedImpact": "SDXL 1024px batch=1 训练（RTX 4090 ；Flash2 ≈ 4.1 it/s（+46%）；SageAttn ≈ 5.0 it/s（+79%）。对 LoRA 质量影响：Flash2 vs SDPA < 0.1% FID 差异（数学等价）；SageAttn vs Flash2 约 0.3-0.5% FID 差异（量化误差）。",
+    "expectedImpact": "SDXL 1024px batch=1 训练（RTX 4090）：Flash2 ≈ 4.1 it/s（相对 SDPA +46%）；SageAttn ≈ 5.0 it/s（+79%）。对 LoRA 质量影响：Flash2 vs SDPA < 0.1% FID 差异（数学等价）；SageAttn vs Flash2 约 0.3-0.5% FID 差异（量化误差）。",
     "tradeoffs": "spargeattn2 在支持的硬件上最快但只支持特定分辨率和 head_dim。flexattn 使用 PyTorch 的 FlexAttention API 支持自定义 mask（如 sliding window），是 Blackwell 架构的实验性选项。execution_profile_id 决定了可用的 attention backend 范围——flash2 profile 预装了 flash-attn 包。",
     "codePath": "trainer.py:apply_attention_to_unet → diffusers AttnProcessor or native attention function; execution_resolver.py:validate attention backend availability"
   },

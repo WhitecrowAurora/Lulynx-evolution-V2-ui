@@ -54,8 +54,8 @@
       "pytorch_optimizer.CAME": "CAME。",
       "pytorch_optimizer.StableAdamW": "偏数值稳定的 AdamW。",
       "pytorch_optimizer.SCION": "pytorch_optimizer 里的 SCION，研究/备选居多。",
-      "KL-Shampoo": "KL-Shampoo。",
-      "Gluon": "Gluon。",
+      "KL-Shampoo": "lulynx KL-Shampoo 变体（实验；保留历史 optimizer identifier）。",
+      "lulynx_orthogonal_momentum": "lulynx Orthogonal Momentum：Gluon-inspired 的工程近似；不是论文层自适应 LMO Gluon。",
       "ADOPT": "ADOPT。",
       "KahanAdamW": "带 Kahan 补偿的 AdamW。",
       "Muon": "Muon，矩阵正交化那套。",
@@ -116,7 +116,7 @@
       "pytorch_optimizer.Fira": "pytorch_optimizer 里的 Fira，研究/备选居多。",
       "pytorch_optimizer.FlashAdamW": "pytorch_optimizer 里的 FlashAdamW，研究/备选居多。",
       "pytorch_optimizer.Fromage": "pytorch_optimizer 里的 Fromage，研究/备选居多。",
-      "pytorch_optimizer.GaLore": "GaLore，低秩投影梯度。",
+      "pytorch_optimizer.GaLore": "第三方标准 GaLore，低秩坐标 optimizer-state 路径。",
       "pytorch_optimizer.Grams": "pytorch_optimizer 里的 Grams，研究/备选居多。",
       "pytorch_optimizer.Gravity": "pytorch_optimizer 里的 Gravity，研究/备选居多。",
       "pytorch_optimizer.GrokFastAdamW": "GrokFast 滤波 AdamW。",
@@ -174,11 +174,14 @@
       "AdamWBF16": "bf16 权重 + fp32 一二阶矩，残差用补偿求和回填；只接受 bf16 参数，非 bf16 会直接报错。",
       "KahanAdamW8bit": "KahanAdamW 的 8bit 矩版本，补偿量仍留 fp32；需要 bitsandbytes，缺库报错不静默回落。",
       "AdaMuon": "Muon 的自适应步长变体；学习率按 Adam 档给（1e-4 量级），套 Muon 的 1e-2 会发散。",
-      "Riemannion": "在固定秩流形上做更新，配 Newton-Schulz 正交化稳定步长。",
+      "Riemannion": "lulynx Riemannion 扩展（实验；默认动量/白化参数不承诺论文严格等价）。",
       "Rose": "梯度中心化 + 随机取整的 AdamW 变体，低精度权重下舍入偏置更小。",
       "Aurora": "正交化 + 行范数均衡（leverage 校正）的动量优化器。",
       "SOAP": "Shampoo 与 Adam 的合流，周期性更新预条件矩阵；单步开销约 AdamW 的 1.7 倍。",
-      "MARS": "用上一步梯度做方差缩减校正，单次 backward；1D 参数默认走内置 AdamW。"
+      "MARS": "用上一步梯度做方差缩减校正，单次 backward；1D 参数默认走内置 AdamW。",
+      "LulynxEmoSensOptimizer": "本地实现的 loss 感应 AdamW:按三条 loss EMA 的分歧算出一个有界缩放,统一乘到所有参数组,LoRA+ 那种组间学习率比例不会被打乱。",
+      "EmoSens": "上游同名优化器,经 GenericOptimizer 转发,需要外部包可用;想和本地实现对照时选它。",
+      "Gluon": "混合优化器:2D 参数走 Gluon(LMO 正交化动量),其余参数走解耦 AdamW。"
     }
   },
   "advanced": {

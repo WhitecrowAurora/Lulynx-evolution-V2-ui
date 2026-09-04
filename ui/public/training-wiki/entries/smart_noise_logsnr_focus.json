@@ -5,13 +5,13 @@
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "选项说明见 ?",
+    "summary": "焦点在 logSNR 空间的位置（σ = sigmoid(-0.5·logSNR)，故 0.0 对应 σ=0.5）。正值偏向低噪声端，负值偏向高噪声端；默认 0.0，范围 -3~3。",
     "effect": "",
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
   "advanced": {
-    "principle": "焦点在 logSNR 空间的位置。0.0 = σ=0.",
+    "principle": "焦点在 logSNR 空间的位置（σ = sigmoid(-0.5·logSNR)，故 0.0 对应 σ=0.5）。正值偏向低噪声端，负值偏向高噪声端；默认 0.0，范围 -3~3。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

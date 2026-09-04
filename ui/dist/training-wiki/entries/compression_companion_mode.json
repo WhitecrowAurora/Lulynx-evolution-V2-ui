@@ -11,7 +11,8 @@
     "whenToUse": "先默认，再按显存/质量/兼容目标换档。",
     "avoidWhen": "未做短测对照前不要同时叠多个激进实验档。",
     "optionDescriptions": {
-      "merge_into_base": "伴生适配器并进 base。"
+      "merge_into_base": "伴生适配器并进 base。",
+      "sidepath_frozen": "冻结旁路:补偿量单独走一路前向叠加,不占训练槽位,也不改基座权重。"
     }
   },
   "advanced": {},

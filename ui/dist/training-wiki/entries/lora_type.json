@@ -15,7 +15,7 @@
       "rs_lora": "rsLoRA。",
       "lora_fa": "LoRA-FA。",
       "vera": "VeRA。",
-      "tlora": "T-LoRA。",
+      "tlora": "lulynx 渐进秩 LoRA（历史 T-LoRA key）。",
       "flexrank": "FlexRank。",
       "fera": "FeRA。",
       "gdlokr": "GDLoKr。",
@@ -29,11 +29,13 @@
       "oft": "OFT。",
       "diag-oft": "Diag-OFT。",
       "full": "最重那档。",
-      "hydralora": "HydraLoRA。（本选择器里没有：HydraLoRA 由独立开关 hydralora_enabled 驱动，配套 hydralora_num_experts / hydralora_top_k 等字段。）"
+      "hydralora": "HydraLoRA。（本选择器里没有：HydraLoRA 由独立开关 hydralora_enabled 驱动，配套 hydralora_num_experts / hydralora_top_k 等字段。）",
+      "lulynx_frozen_a_lora": "冻结 A 侧的 LoRA(LoRA-FA):A 侧固定不训,只训 B 侧,优化器状态更省。后端归一成 lora_fa。",
+      "lulynx_progressive_rank_lora": "渐进秩 LoRA:有效秩随训练进度按调度变化,早期低秩更稳;后端走 tlora 那条实现,不是论文 T-LoRA 的 timestep 调度。"
     }
   },
   "advanced": {
-    "principle": "Anima 概念编辑当前支持原生 LoRA / DoRA / LoRA+ / rsLoRA / LoRA-FA / VeRA / T-LoRA / FlexRank / HydraLoRA / FeRA / LyCORIS。概念编辑首版建议优先从普通 LoRA 开始。",
+    "principle": "Anima 概念编辑当前支持原生 LoRA / DoRA / LoRA+ / rsLoRA / LoRA-FA / VeRA / lulynx 渐进秩 LoRA / FlexRank / HydraLoRA / FeRA / LyCORIS。渐进秩实现按全局训练进度调度，不承诺论文 T-LoRA 等价。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

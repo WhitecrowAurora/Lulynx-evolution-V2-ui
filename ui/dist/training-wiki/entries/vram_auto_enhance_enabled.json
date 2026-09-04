@@ -10,12 +10,8 @@
     "vram_smart_sensing_baseline_steps",
     "vram_smart_sensing_delta_cache_enabled",
     "vram_smart_sensing_slowdown_ratio",
-    "vram_swap_to_ram",
     "anima_block_residency_min_params",
-    "peak_vram_startup_guard_enabled",
-    "peak_vram_startup_guard_mode",
-    "peak_vram_startup_guard_steps",
-    "peak_vram_target_effective_batch"
+    "peak_vram_startup_guard_enabled"
   ],
   "standard": {
     "summary": "VRAM 自动增强套件：智能感知（smart_sensing）在训练前几步测量实际 VRAM 使用量，并自动推荐优化措施；vram_swap_to_ram 允许将不活跃权重换到 CPU RAM；startup_guard 在训练启动时预防 OOM。",

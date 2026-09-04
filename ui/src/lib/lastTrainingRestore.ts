@@ -16,6 +16,9 @@ export interface ResumeOffer {
   checkpoint_count: number
   run_id: string | null
   schema_id: string | null
+  resume_capability: 'full' | 'partial' | 'weights_only' | null
+  resume_level: 'full' | 'weights_only' | null
+  resume_warning: string | null
 }
 
 export interface RestorableLastTraining {
@@ -58,6 +61,13 @@ function extractResumeOffer(data: Record<string, unknown>): ResumeOffer | null {
     checkpoint_count: Number(offer.checkpoint_count || 0) || 0,
     run_id: strOrNull(offer.run_id),
     schema_id: strOrNull(offer.schema_id),
+    resume_capability: ['full', 'partial', 'weights_only'].includes(String(offer.resume_capability))
+      ? (String(offer.resume_capability) as ResumeOffer['resume_capability'])
+      : null,
+    resume_level: offer.resume_level === 'full' || offer.resume_level === 'weights_only'
+      ? offer.resume_level
+      : null,
+    resume_warning: strOrNull(offer.resume_warning),
   }
 }
 
