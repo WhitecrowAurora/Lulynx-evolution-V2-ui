@@ -1,7 +1,9 @@
 {
   "key": "experimental_attention_profile_enabled",
   "title": "Sliding Window Attention",
+  "title_en": "Sliding Window Attention",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Experimental windowed attention. auto defers to the attention resolved by the launcher or preflight",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "实验性窗口注意力。auto 会优先尊重启动器/预检解析后的 attention backend；不支持窗口实现时再 fallback。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Experimental window attention. auto first respects the attention backend resolved by the launcher/preflight, then falls back when a windowed implementation is unavailable.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

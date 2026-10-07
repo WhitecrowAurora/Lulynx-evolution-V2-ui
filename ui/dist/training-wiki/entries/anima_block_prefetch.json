@@ -1,7 +1,9 @@
 {
   "key": "anima_block_prefetch",
   "title": "Anima Block 预取（CPU Offload）",
+  "title_en": "Anima Block prefetch",
   "category": "速度 / 显存",
+  "category_en": "Speed / VRAM",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,10 +13,21 @@
     "whenToUse": "大模型（>12GB VRAM）在低显存 GPU（<16GB）上训练时的保命选项。",
     "avoidWhen": "显存充足时（>24GB for anima full）不需要，开启会降低速度。PCIe 带宽低（如 PCIe 3.0 ×8 以下）的机器速度下降更明显。"
   },
+  "standard_en": {
+    "summary": "Offloads the weights of Anima DiT blocks to the CPU while they are unused and prefetches them back to the GPU before use, which lowers peak VRAM substantially at the cost of training speed.",
+    "effect": "Once on, a large base such as full-size Anima can run LoRA training on a card under 12GB, but speed may drop by 30% to 60% depending on prefetch depth and PCIe bandwidth.",
+    "whenToUse": "The survival option for training a large model (over 12GB of weights) on a low-VRAM GPU (under 16GB).",
+    "avoidWhen": "Not needed when VRAM is sufficient -- over 24GB for anima full -- since it only costs speed. The slowdown is more pronounced on machines with weak PCIe, below PCIe 3.0 x8 say."
+  },
   "advanced": {
     "principle": "在 DiT block 的 forward/backward 前，将下 prefetch_depth 个 block 的权重异步从 CPU 传输到 GPU；当前 block 计算完成后将其权重异步卸载回 CPU。形成流水线：CPU→GPU 传输与 GPU 计算重叠。",
     "intervention": "prefetch_mode=adaptive：基于 blockskip 感知，不跳过的 block 才预取（减少不必要的数据传输）；prefetch_mode=original：均匀预取（parity 基准）。",
     "tradeoffs": "prefetch_depth 越大 = 提前传输的 block 越多 = 传输与计算重叠越充分 = 速度越快，但峰值 VRAM 增加；深度过大反而没有显存节省效果。"
+  },
+  "advanced_en": {
+    "principle": "Before a DiT block's forward/backward, the weights of the next prefetch_depth blocks are asynchronously transferred from CPU to GPU; once the current block finishes computing, its weights are asynchronously offloaded back to CPU. This forms a pipeline where CPU→GPU transfers overlap GPU compute.",
+    "intervention": "prefetch_mode=adaptive: blockskip-aware, prefetching only blocks that will not be skipped (avoiding needless transfers); prefetch_mode=original: uniform prefetch (the parity baseline).",
+    "tradeoffs": "Larger prefetch_depth = more blocks transferred ahead = fuller transfer/compute overlap = faster, but peak VRAM grows; an excessive depth actually loses the VRAM-saving effect."
   },
   "relatedConfigs": [
     "gradient_checkpointing",

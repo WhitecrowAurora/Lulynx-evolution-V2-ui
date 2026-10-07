@@ -1,0 +1,16 @@
+{
+  "key": "lokr_dropout",
+  "title": "LoKr Dropout",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "LoKr Dropout。",
+    "effect": "LoKr 输出的 dropout 比例。",
+    "whenToUse": "过拟合时加正则。",
+    "avoidWhen": "默认 0.05。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

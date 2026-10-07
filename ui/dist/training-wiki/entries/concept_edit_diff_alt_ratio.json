@@ -1,7 +1,9 @@
 {
   "key": "concept_edit_diff_alt_ratio",
   "title": "差分交替倍率",
+  "title_en": "Alternating differential ratio",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,12 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "The ADDifT alternating-difference multiplier.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "ADDifT 交替差分倍率。保持 1 最稳；更激进的实验可调成负值，但不建议默认这么做。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "ADDifT alternating-difference ratio. Keep 1 for stability; more aggressive experiments can push it negative, but that is not recommended as a default."
   },
   "relatedConfigs": []
 }

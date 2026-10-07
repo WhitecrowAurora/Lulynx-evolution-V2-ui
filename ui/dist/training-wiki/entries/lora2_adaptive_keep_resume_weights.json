@@ -1,0 +1,20 @@
+{
+  "key": "lora2_adaptive_keep_resume_weights",
+  "title": "保留 LoRA2 续练权重",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "静态导出时额外保存 native-resume 伴生文件。",
+    "effect": "写入训练配置 lora2_adaptive_keep_resume_weights，由训练后端在相应阶段消费。",
+    "whenToUse": "默认开启，适合大多数场景。",
+    "avoidWhen": "排查问题想回到原始行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

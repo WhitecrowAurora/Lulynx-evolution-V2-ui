@@ -1,0 +1,37 @@
+{
+  "key": "sample_difficulty_metadata_path",
+  "title": "样本难度元数据",
+  "category": "统一权重组合",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "可选 JSON 文件。",
+    "effect": "留空时自动读取 <train_data_dir>/sample_difficulty.json；显式路径会覆盖自动路径。",
+    "whenToUse": "路径留空时走默认解析/该功能不启用。",
+    "avoidWhen": "填错路径会在预检或启动时报错，注意路径有效性。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "anima_rematerializable_block_mode",
   "title": "可重物化模式",
+  "title_en": "Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -12,6 +14,15 @@
     "avoidWhen": "未理解影响前不要叠多个激进档。",
     "optionDescriptions": {
       "profile_only": "只做相关 profiling。"
+    }
+  },
+  "standard_en": {
+    "summary": "Rematerializable mode; the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "profile_only": "Only run the related profiling."
     }
   },
   "advanced": {},

@@ -1,0 +1,17 @@
+{
+  "key": "easycontrol_v2_control_suffix",
+  "title": "控制图后缀",
+  "category": "EasyControl",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "EasyControl 控制图后缀。",
+    "effect": "控制图文件名后缀（如 _depth），用于自动配对原图/控制图。",
+    "whenToUse": "成对数据按后缀命名时配置。",
+    "avoidWhen": "目录组织方式下不需要。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

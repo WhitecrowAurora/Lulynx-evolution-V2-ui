@@ -1,0 +1,24 @@
+{
+  "key": "sfad_frequency_csv",
+  "title": "SFAD 频率 CSV",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "标签频率表路径；留空用内置 danbooru_tags。",
+    "effect": "写入训练配置 sfad_frequency_csv，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

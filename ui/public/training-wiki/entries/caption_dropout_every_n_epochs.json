@@ -1,7 +1,9 @@
 {
   "key": "caption_dropout_every_n_epochs",
   "title": "无条件训练间隔",
+  "title_en": "Caption Dropout Every N Epochs",
   "category": "数据集 / 图说",
+  "category_en": "Dataset / Captions",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -12,9 +14,19 @@
     "whenToUse": "希望提高推理时 CFG guidance 效果时开启（设为 1~5）。对 CFG 要求高的概念 LoRA 有帮助。",
     "avoidWhen": "数据集极小时，无条件训练会占用一部分训练资源学习\"无条件\"分布，可能影响概念学习效率。"
   },
+  "standard_en": {
+    "summary": "Drops the caption entirely once every N epochs (it becomes an empty string), which amounts to training the CFG (unconditional) capability.",
+    "effect": "With unconditional training on, the model still produces sensible images at CFG=0, which improves how CFG guidance behaves at inference.",
+    "whenToUse": "Turn it on (1-5) when you want better CFG guidance at inference. It helps concept LoRAs that lean on CFG.",
+    "avoidWhen": "On a very small dataset, unconditional training spends part of the budget learning the unconditional distribution, which can slow concept learning."
+  },
   "advanced": {
     "principle": "无条件训练是 CFG（Classifier-Free Guidance）的基础：模型同时学习条件生成（有 caption）和无条件生成（caption=空），推理时用两者差值作为引导方向。",
     "tradeoffs": "过少的无条件训练（>5 epoch 才一次）导致 CFG 引导能力弱；过多（每 epoch 一次）占用太多资源。通常设为 1~3 即可。"
+  },
+  "advanced_en": {
+    "principle": "Unconditional training underpins CFG (Classifier-Free Guidance): the model learns both conditional generation (with caption) and unconditional generation (empty caption), and inference uses the difference between them as the guidance direction.",
+    "tradeoffs": "Too little unconditional training (once per >5 epochs) weakens CFG guidance; too much (every epoch) wastes capacity. Usually 1~3 is right."
   },
   "relatedConfigs": [
     "caption_tag_dropout_rate",

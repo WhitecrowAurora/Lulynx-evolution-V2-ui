@@ -1,7 +1,9 @@
 {
   "key": "fg_lora_rank_conserve_budget",
   "title": "保持总 Rank 预算",
+  "title_en": "Keep total Rank Budget",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "During orthogonal redistribution, keeps the total rank from exceeding the conventional",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "orthogonal 重分配时，确保总 rank 数不超过传统 LoRA（所有层 × network_dim）。关闭则允许重点层获得更多 rank。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "During orthogonal reallocation, keeps total rank within the traditional LoRA budget (all layers × network_dim). Turning this off lets key layers receive more rank.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

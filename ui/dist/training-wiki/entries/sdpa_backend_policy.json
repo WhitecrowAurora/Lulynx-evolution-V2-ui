@@ -1,7 +1,9 @@
 {
   "key": "sdpa_backend_policy",
   "title": "SDPA 后端策略",
+  "title_en": "SDPA Backend Policy",
   "category": "性能 / 内核",
+  "category_en": "Performance / Kernels",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,11 +13,20 @@
   "layers": [
     "前向层"
   ],
+  "layers_en": [
+    "Forward layer"
+  ],
   "standard": {
     "summary": "当 attention 后端解析为 PyTorch SDPA 时，指定优先使用的 kernel：auto（PyTorch 默认调度）、cutlass（efficient attention，默认）、flash、cudnn、math（纯参考实现）。",
     "effect": "训练前向的 SDPA 调用被限定在所选 kernel 上执行；auto 则交给 PyTorch 自行调度。仅在 attention_backend 最终解析为 sdpa 时生效。",
     "whenToUse": "排查数值差异时用 math 做参考基线；特定硬件上 flash 或 cudnn 明显更快时手动固定；默认 cutlass 在多数消费级卡上是稳妥选择。",
     "avoidWhen": "attention_backend 是 xformers/sageattn 等非 SDPA 后端时本项不参与；math 后端极慢且费显存，只用于诊断不要用于正式训练。"
+  },
+  "standard_en": {
+    "summary": "When the attention backend resolves to PyTorch SDPA, this names the kernel to prefer: auto (PyTorch's own dispatch), cutlass (efficient attention, the default), flash, cudnn, or math (the pure reference implementation).",
+    "effect": "The SDPA calls in the training forward pass are confined to the chosen kernel; auto leaves the dispatch to PyTorch. It only takes effect when attention_backend finally resolves to sdpa.",
+    "whenToUse": "Use math as a reference baseline when chasing a numerical difference; pin flash or cudnn by hand when one of them is clearly faster on your hardware; the default cutlass is a safe choice on most consumer cards.",
+    "avoidWhen": "This setting takes no part when attention_backend is a non-SDPA backend such as xformers or sageattn; the math backend is extremely slow and memory-hungry, so use it for diagnosis only, never for real training."
   },
   "advanced": {
     "principle": "PyTorch scaled_dot_product_attention 内部有多个实现（FlashAttention-2、memory-efficient/cutlass、cuDNN、math），默认按启发式挑选。固定 kernel 可换取可复现的性能与数值特征——不同 kernel 的浮点归约顺序不同，位级结果不同。",
@@ -23,6 +34,13 @@
     "expectedImpact": "kernel 之间吞吐差异可达 10%~30%（依 shape 与硬件）；对训练质量无影响，只有位级数值差异。",
     "tradeoffs": "固定 kernel 后若该 kernel 不支持当前 shape/dtype 会报错而不是静默回退；auto 最稳但性能不保证最优。",
     "codePath": "runtime_optimizations_attention_plan.py:_normalize_sdpa_backend_policy；runtime_optimizations_attention_apply.py 应用 sdpa kernel 上下文；configs_performance.py 定义"
+  },
+  "advanced_en": {
+    "principle": "PyTorch's scaled_dot_product_attention has multiple internal implementations (FlashAttention-2, memory-efficient/cutlass, cuDNN, math), selected by heuristics by default. Pinning a kernel buys reproducible performance and numerics — different kernels use different floating-point reduction orders, so bitwise results differ.",
+    "intervention": "runtime_optimizations_attention_plan.py normalizes the value into RuntimeOptimizationPlan; runtime_optimizations_attention_apply.py restricts the backend with the matching sdpa_kernel context inside the forward scope; the Apple MPS runtime is forced to math.",
+    "expectedImpact": "Throughput differences between kernels can reach 10%~30% (depending on shape and hardware); no effect on training quality, only bitwise numeric differences.",
+    "tradeoffs": "With a pinned kernel, if that kernel does not support the current shape/dtype it errors rather than silently falling back; auto is the safest but does not guarantee best performance.",
+    "codePath": "runtime_optimizations_attention_plan.py:_normalize_sdpa_backend_policy; runtime_optimizations_attention_apply.py applies the sdpa kernel context; defined in configs_performance.py"
   },
   "relatedConfigs": [
     "attention_backend",

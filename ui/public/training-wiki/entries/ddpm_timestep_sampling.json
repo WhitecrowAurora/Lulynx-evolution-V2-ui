@@ -1,0 +1,16 @@
+{
+  "key": "ddpm_timestep_sampling",
+  "title": "DDPM 时间步采样",
+  "category": "训练参数",
+  "appliesTo": [
+    "flux-lora"
+  ],
+  "standard": {
+    "summary": "留空=均匀采样；logit_normal=对数正态分布（FLUX 实验项）。",
+    "effect": "写入训练配置 ddpm_timestep_sampling，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

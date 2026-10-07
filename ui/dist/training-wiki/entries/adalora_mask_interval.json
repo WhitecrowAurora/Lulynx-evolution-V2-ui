@@ -1,0 +1,20 @@
+{
+  "key": "adalora_mask_interval",
+  "title": "AdaLoRA mask 更新间隔",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "AdaLoRA 的 AdaLoRA mask 更新间隔，默认 100。",
+    "effect": "AdaLoRA 按重要性分数自适应分配各矩阵的 rank 预算，AdaLoRA mask 更新间隔 控制更新节奏与平滑系数。",
+    "whenToUse": "rank 预算紧张想让预算自动流向重要层时使用。",
+    "avoidWhen": "rank 富余时收益有限。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

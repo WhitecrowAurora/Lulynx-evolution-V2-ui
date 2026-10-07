@@ -7,6 +7,7 @@ import { FieldControl } from './FieldControl'
 import { WeightComposerPreview } from './WeightComposerPreview'
 import { TrainingIntentProfilePreview } from './TrainingIntentProfilePreview'
 import { ProgressivePhaseEditor } from './ProgressivePhaseEditor'
+import { MaterialDecouplingEditor } from './MaterialDecouplingEditor'
 
 /* 一个 schema section → 一张面板卡;字段可见性(visibleWhen)+ 搜索过滤,全部不可见则整卡隐藏 */
 
@@ -54,8 +55,15 @@ export function SectionCard({
   const progressiveScheduleField = section.id === 'progressive-training'
     ? visibleFields.find((field) => field.key === 'progressive_phase_schedule')
     : undefined
-  const renderedFields = progressiveScheduleField
-    ? visibleFields.filter((field) => field.key !== progressiveScheduleField.key)
+  const materialDecouplingField = section.id === 'material-decoupling'
+    ? visibleFields.find((field) => field.key === 'subset_content_roles')
+    : undefined
+  // 被自定义编辑器接管的字段不再交给 FieldControl 渲染(仿 progressive)
+  const interceptedKeys = new Set(
+    [progressiveScheduleField?.key, materialDecouplingField?.key].filter(Boolean) as string[],
+  )
+  const renderedFields = interceptedKeys.size
+    ? visibleFields.filter((field) => !interceptedKeys.has(field.key))
     : visibleFields
 
   if (!visibleFields.length) return null
@@ -89,6 +97,12 @@ export function SectionCard({
         <ProgressivePhaseEditor
           value={config.progressive_phase_schedule}
           onChange={(raw) => onChange('progressive_phase_schedule', raw)}
+        />
+      ) : null}
+      {materialDecouplingField ? (
+        <MaterialDecouplingEditor
+          value={config.subset_content_roles}
+          onChange={(raw) => onChange('subset_content_roles', raw)}
         />
       ) : null}
       {section.id === 'weight-composer' ? <WeightComposerPreview config={config} onChange={onChange} /> : null}

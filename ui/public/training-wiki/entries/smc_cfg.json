@@ -1,7 +1,9 @@
 {
   "key": "smc_cfg",
   "title": "SMC-CFG",
+  "title_en": "SMC-CFG",
   "category": "推理 / Guidance",
+  "category_en": "Inference / Guidance",
   "appliesTo": [
     "anima-lora",
     "newbie-lora"
@@ -9,17 +11,33 @@
   "layers": [
     "采样器"
   ],
+  "layers_en": [
+    "Sampler"
+  ],
   "standard": {
     "summary": "SMC-CFG 是滑动模态 CFG 校正，用于减轻高 CFG 带来的副作用。它是推理功能，不是训练适配器。",
     "effect": "smc_cfg_lambda 与 smc_cfg_alpha 控制校正强度和滑动状态更新速度。",
     "whenToUse": "使用较高 guidance 或出现过饱和、细节漂移时进行推理 。",
     "avoidWhen": "需要完全保持旧 CFG 输出，或当前模型族没有 velocity-space 兼容证明时。"
   },
+  "standard_en": {
+    "summary": "SMC-CFG is a sliding-modality CFG correction that mitigates the side effects of a high CFG. It is an inference feature, not a training adapter.",
+    "effect": "smc_cfg_lambda and smc_cfg_alpha control the correction strength and how fast the sliding state updates.",
+    "whenToUse": "For inference when using a higher guidance, or when you see oversaturation or drifting detail.",
+    "avoidWhen": "When you need to keep the old CFG output exactly, or when the current model family has no proof of velocity-space compatibility."
+  },
   "advanced": {
     "principle": "在 conditional/unconditional velocity 合成处加入滑动模态校正。",
     "intervention": "GenerationRequest → Anima/Newbie sampler CFG combine。",
     "expectedImpact": "训练时间无变化；推理质量取决于 guidance 区间和模型族。",
     "tradeoffs": "SDXL/SD1.5 输出空间兼容性未证明前不应宣称全路线支持。",
+    "codePath": "backend/core/lulynx_trainer/smc_cfg.py"
+  },
+  "advanced_en": {
+    "principle": "Adds sliding-mode correction where conditional/unconditional velocities are combined.",
+    "intervention": "GenerationRequest → Anima/Newbie sampler CFG combine.",
+    "expectedImpact": "No change to training time; inference quality depends on the guidance range and model family.",
+    "tradeoffs": "Do not claim full-route support until SDXL/SD1.5 output-space compatibility is proven.",
     "codePath": "backend/core/lulynx_trainer/smc_cfg.py"
   },
   "relatedConfigs": [

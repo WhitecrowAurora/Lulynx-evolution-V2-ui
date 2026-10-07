@@ -1,0 +1,24 @@
+{
+  "key": "reft_init_scale",
+  "title": "ReFT 初始化缩放",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "ReFT 初始化缩放。",
+    "effect": "干预向量初始幅值；0 = 零初始化（从无干预开始学）。",
+    "whenToUse": "默认零初始化最稳。",
+    "avoidWhen": "非零初始化仅用于热启动实验。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

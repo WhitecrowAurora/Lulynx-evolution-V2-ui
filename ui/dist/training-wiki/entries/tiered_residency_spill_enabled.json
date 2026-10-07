@@ -1,0 +1,17 @@
+{
+  "key": "tiered_residency_spill_enabled",
+  "title": "极端内存模式",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "把冻结底座权重的权威副本放到磁盘，用 IO 换 RAM。",
+    "effect": "给加不起内存条的小内存机器用；步时会变慢（实测 anima 约 1.9 倍）。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "caption_protect_prefix_from_dropout",
   "title": "前缀防丢弃",
+  "title_en": "Protect Prefix from Dropout",
   "category": "Caption / 丢弃",
+  "category_en": "Caption / Dropout",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,17 +14,34 @@
     "数据层",
     "Caption 层"
   ],
+  "layers_en": [
+    "Data layer",
+    "Caption layer"
+  ],
   "standard": {
     "summary": "开启后，uniform / targeted tag dropout 不会丢弃 keep_tokens 前缀。default-off，与旧 parity 兼容。",
     "effect": "scope=all 时保护前 keep_tokens 个 tag；scope=after_separator 时 head 本就保护，此开关再保护 tail 的 keep_tokens 前缀。",
     "whenToUse": "触发词/主体必须出现、但仍要对后续 tag 做 dropout 时。",
     "avoidWhen": "keep_tokens=0 或完全不需要保护前缀时保持关闭。"
   },
+  "standard_en": {
+    "summary": "Once on, uniform and targeted tag dropout never drop the keep_tokens prefix. Off by default, compatible with the old parity behaviour.",
+    "effect": "With scope=all it protects the first keep_tokens tags; with scope=after_separator the head is protected anyway, and this switch additionally protects the tail's keep_tokens prefix.",
+    "whenToUse": "When the trigger word or subject must always appear but you still want dropout on the tags that follow.",
+    "avoidWhen": "Leave it off when keep_tokens=0 or the prefix needs no protection at all."
+  },
   "advanced": {
     "principle": "keep_tokens 默认只影响 shuffle 前缀固定，不阻止 drop。本开关把 keep_tokens 前缀也排除在 dropout 之外。",
     "intervention": "dataset_loader 在 drop_tags / targeted / sFAD 路径传入 protect_prefix。",
     "expectedImpact": "触发词更稳定，避免全丢导致空 caption。",
     "tradeoffs": "降低 dropout 强度；需与 keep_tokens 配合。",
+    "codePath": "dataset_loader.CaptionDataset._process_caption + caption_augment.mutate_scoped_tags(protect_prefix_from_dropout)"
+  },
+  "advanced_en": {
+    "principle": "keep_tokens by default only pins the prefix against shuffle, not against drop. This switch also excludes the keep_tokens prefix from dropout.",
+    "intervention": "dataset_loader passes protect_prefix on the drop_tags / targeted / sFAD paths.",
+    "expectedImpact": "Trigger words stay stable, avoiding empty captions from full drops.",
+    "tradeoffs": "Lowers dropout strength; needs to pair with keep_tokens.",
     "codePath": "dataset_loader.CaptionDataset._process_caption + caption_augment.mutate_scoped_tags(protect_prefix_from_dropout)"
   },
   "relatedConfigs": [

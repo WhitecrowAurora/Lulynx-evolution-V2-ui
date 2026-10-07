@@ -1,7 +1,9 @@
 {
   "key": "attention_slicing",
   "title": "Attention 分片",
+  "title_en": "Attention Slicing",
   "category": "显存优化 / 激活",
+  "category_en": "VRAM Optimization / Activations",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -10,11 +12,20 @@
   "layers": [
     "内存层"
   ],
+  "layers_en": [
+    "Memory layer"
+  ],
   "standard": {
     "summary": "把 UNet attention 计算按 head/batch 切成小片顺序执行，降低注意力矩阵的峰值显存。默认开启。",
     "effect": "模型准备阶段对 UNet 调用 enable_attention_slicing('auto')；每次只算一部分 attention head，峰值激活显存下降，速度略微变慢。",
     "whenToUse": "显存吃紧的 SD/SDXL 训练（低显存 profile 会强制开启）；高分辨率或大 batch 下 attention 矩阵成为显存峰值来源时。",
     "avoidWhen": "已使用 xformers/FlashAttention/SDPA 等内存高效 attention 后端时收益重复且可能互斥——现代后端本身就不物化完整注意力矩阵；追求极限吞吐且显存富余时可关闭。"
+  },
+  "standard_en": {
+    "summary": "Slices UNet attention by head/batch and runs the pieces in sequence, lowering the peak memory of the attention matrix. On by default.",
+    "effect": "During model preparation the UNet gets enable_attention_slicing('auto'); each pass computes only some of the attention heads, so peak activation memory drops and speed falls slightly.",
+    "whenToUse": "SD/SDXL runs where VRAM is tight (the low-VRAM profile forces it on), and any case where the attention matrix at high resolution or large batch is what sets the memory peak.",
+    "avoidWhen": "When a memory-efficient attention backend such as xformers, FlashAttention or SDPA is already in use, the benefit is redundant and may conflict -- modern backends never materialise the full attention matrix. Turn it off when chasing maximum throughput with VRAM to spare."
   },
   "advanced": {
     "principle": "朴素 attention 需要物化 [batch×heads, seq, seq] 的注意力得分矩阵；按 head 维切片后每次只保留 1/N 的矩阵，峰值显存近似降为 1/N，代价是 kernel 串行化带来的时间开销。",
@@ -22,6 +33,13 @@
     "expectedImpact": "峰值显存降低约 5%~15%（取决于分辨率与 batch），吞吐轻微下降。",
     "tradeoffs": "对 DiT 族（Anima 等）此路径不适用（原生 UNet stub 为 no-op）；与 attention 后端选择（attention_backend）解耦，两者的显存收益不叠加。",
     "codePath": "trainer_prepare_mixin.py:slicer 构造；memory_optimization_formats.py:enable_attention_slicing('auto')；training_advisor_vram.py 显存折算"
+  },
+  "advanced_en": {
+    "principle": "Naive attention must materialize the [batch×heads, seq, seq] score matrix; slicing along the head dimension keeps only 1/N of the matrix at a time, dropping peak VRAM roughly to 1/N at the cost of kernel serialization overhead.",
+    "intervention": "trainer_prepare_mixin.py reads it when constructing the VRAM slicer (alongside vae_slicing/vae_tiling); memory_optimization_formats.py calls enable_attention_slicing('auto') on the pipeline or bare UNet; low-VRAM profiles (sdxl_lora_low_vram_profile.py, trainer_model_prep_runtime_profiles.py) force it True; the VRAM estimator (training_advisor_vram.py) scales activation VRAM by ×0.92 when it is on.",
+    "expectedImpact": "Peak VRAM drops roughly 5%~15% (resolution- and batch-dependent) with a slight throughput decrease.",
+    "tradeoffs": "Not applicable to the DiT family (Anima etc.) — the native UNet stub is a no-op there; decoupled from attention-backend choice (attention_backend), and their VRAM savings do not stack.",
+    "codePath": "trainer_prepare_mixin.py:slicer construction; memory_optimization_formats.py:enable_attention_slicing('auto'); training_advisor_vram.py VRAM adjustment"
   },
   "relatedConfigs": [
     "vae_slicing",

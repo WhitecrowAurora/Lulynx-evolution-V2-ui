@@ -1,7 +1,9 @@
 {
   "key": "ac_gradient_rank_plateau_window",
   "title": "梯度秩平台检测窗口",
+  "title_en": "Gradient-Rank Plateau Window",
   "category": "训练 / 自动化",
+  "category_en": "Training / Automation",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "开启 CLIP 漂移 / Stable Rank 监控时使用。默认值适合大多数场景。",
     "avoidWhen": "未开启 gradient rank 相关监控时此参数无意义。"
   },
+  "standard_en": {
+    "summary": "Sliding-window size used to decide whether the gradient matrix stable rank has plateaued. Default 30.",
+    "effect": "Gradient stable rank reflects how much of the LoRA weights' effective rank is actually in use; a plateau can mean wasted rank or convergence.",
+    "whenToUse": "When CLIP-drift / stable-rank monitoring is on. The default fits most cases.",
+    "avoidWhen": "Meaningless while no gradient-rank monitoring is enabled."
+  },
   "advanced": {
     "principle": "stable rank = (‖W‖_F / ‖W‖_2)²，反映权重矩阵的有效秩。rank 平台可能是收敛信号或 rank 利用率低的信号。",
     "tradeoffs": "计算 stable rank 需要 SVD，额外开销较大，仅在需要精细监控时开启。"
+  },
+  "advanced_en": {
+    "principle": "stable rank = (‖W‖_F / ‖W‖_2)², reflecting the effective rank of the weight matrix. A rank plateau can signal convergence or low rank utilization.",
+    "tradeoffs": "Computing stable rank requires SVD with considerable overhead; enable only when fine-grained monitoring is needed."
   },
   "relatedConfigs": [
     "ac_enabled",

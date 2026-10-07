@@ -1,7 +1,9 @@
 {
   "key": "safeguard_loss_spike_threshold",
   "title": "Loss Spike 阈值",
+  "title_en": "Loss Spike threshold",
   "category": "训练 / 稳定性",
+  "category_en": "Training / Stability",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -16,9 +18,19 @@
     "whenToUse": "初训新素材时 loss 变化较大，建议调高到 8~10。稳定收敛阶段可降至 3~5 以更敏锐捕捉异常。",
     "avoidWhen": "不建议设为 1~2（对正常 loss 波动过于敏感，会频繁触发降 LR 影响收敛）。"
   },
+  "standard_en": {
+    "summary": "How many times the sliding-window mean the current loss has to exceed to count as a spike (an abnormal jump). Default 5.0.",
+    "effect": "A smaller threshold is more sensitive and misfires more easily; a larger one tolerates more loss fluctuation. Once triggered it lowers the LR automatically or is counted in the statistics.",
+    "whenToUse": "The loss moves around a lot when you first train on new material, so 8~10 is advisable then. In a steady convergence phase you can drop to 3~5 to catch anomalies more keenly.",
+    "avoidWhen": "1~2 is not advisable (too sensitive to normal loss fluctuation, it keeps lowering the LR and hurts convergence)."
+  },
   "advanced": {
     "principle": "spike_score = current_loss / (window_mean + 1e-8)，超过阈值触发。配合 loss_window_size 控制均值基准稳定性。",
     "tradeoffs": "训练早期 loss 尚未稳定时窗口均值本身波动大，阈值设低容易误触发。"
+  },
+  "advanced_en": {
+    "principle": "spike_score = current_loss / (window_mean + 1e-8); exceeding the threshold triggers. Pair with loss_window_size to control the stability of the mean baseline.",
+    "tradeoffs": "Early in training the loss is not yet stable, so the window mean itself fluctuates a lot and a low threshold easily misfires."
   },
   "relatedConfigs": [
     "safeguard_enabled",

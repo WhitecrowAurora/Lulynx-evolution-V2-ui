@@ -1,0 +1,25 @@
+{
+  "key": "sample_sde_eta",
+  "title": "ER-SDE 随机强度 eta",
+  "category": "预览 / 采样",
+  "appliesTo": [
+    "anima-addift",
+    "anima-controlnet",
+    "anima-edit-model",
+    "anima-few-step-lora",
+    "anima-finetune",
+    "anima-ileco",
+    "anima-lora",
+    "anima-multi-addift",
+    "newbie-few-step-lora",
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "随机项强度，出厂 1.0 就是预期档。",
+    "effect": "0 会转去确定性 Euler（与 ode 逐字节相同）；0~1 之间能出图，但会按比例欠注入，背景容易塌成平涂。",
+    "whenToUse": "默认 1，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

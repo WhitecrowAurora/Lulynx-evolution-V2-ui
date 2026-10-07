@@ -1,7 +1,9 @@
 {
   "key": "lossless_cache_replacement_read_mode",
   "title": "读取模式",
+  "title_en": "Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "prefetch_thread": "后台线程先读先解压，和计算叠一叠。",
       "sync": "读一块算一块，简单，容易空等。"
+    }
+  },
+  "standard_en": {
+    "summary": "The read mode; the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "prefetch_thread": "A background thread reads and decompresses ahead so it overlaps with compute.",
+      "sync": "Read a block, compute a block: simple, and prone to idle waiting."
     }
   },
   "advanced": {},

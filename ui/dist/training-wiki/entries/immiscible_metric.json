@@ -1,7 +1,9 @@
 {
   "key": "immiscible_metric",
   "title": "Immiscible 度量",
+  "title_en": "Immiscible",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "l2": "L2 距离。",
       "cosine": "余弦。"
+    }
+  },
+  "standard_en": {
+    "summary": "The values available for the immiscible metric.",
+    "effect": "Switching the enum changes the corresponding subsystem's behaviour.",
+    "whenToUse": "Choose according to the task.",
+    "avoidWhen": "Keep the default when unsure.",
+    "optionDescriptions": {
+      "l2": "L2 distance.",
+      "cosine": "Cosine."
     }
   },
   "advanced": {},

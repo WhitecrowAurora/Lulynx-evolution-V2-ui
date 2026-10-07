@@ -1,7 +1,9 @@
 {
   "key": "attention_backend",
   "title": "注意力后端",
+  "title_en": "Attention Backend (advanced)",
   "category": "性能 / 注意力",
+  "category_en": "Performance / Attention",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,6 +15,10 @@
   "layers": [
     "计算层",
     "注意力层"
+  ],
+  "layers_en": [
+    "Compute layer",
+    "Attention layer"
   ],
   "standard": {
     "summary": "选择 UNet/DiT 中 self-attention 的计算后端。self-attention 是扩散模型中最昂贵的操作之一（O(n²) 复杂度），不同后端在速度和显存上差异可达 2-3 倍。",
@@ -36,11 +42,40 @@
       "torch": "最朴素的 torch attention，慢，好对比。"
     }
   },
+  "standard_en": {
+    "summary": "Picks the backend that computes self-attention in the UNet/DiT. Self-attention is one of the costliest operations in a diffusion model (O(n^2) complexity), and backends can differ by 2-3x in both speed and memory.",
+    "effect": "SDPA (Scaled Dot-Product Attention) is the fused entry point built into PyTorch 2.0+, which picks a cutlass/flash/math sub-backend automatically. Flash Attention 2 tiles the computation to bring attention memory from O(n^2) down to O(n), a huge advantage at high resolution. SageAttn quantises Q/K to INT8 for extra speed. SpargeAttn2 exploits attention sparsity to skip weights that are near zero.",
+    "whenToUse": "auto is usually enough. If you have a Flash2 environment, setting flash2 explicitly gives the most consistent speed-up. The gap between backends shows most at high resolution (>=1536px), where Flash2 runs 2-3x faster than SDPA.",
+    "avoidWhen": "Do not force an advanced backend on hardware that cannot run it (you get an error or a silent fallback). sdpa_backend_policy governs SDPA's internal sub-backend choice (cutlass/flash/cudnn/math) and rarely needs tuning. attention_early_deletion frees the Q/K/V tensors immediately after attention to save memory.",
+    "optionDescriptions": {
+      "auto": "Uses whatever the launch environment has.",
+      "sdpa": "PyTorch's own SDPA.",
+      "xformers": "xFormers; the matching version has to be installed.",
+      "sageattn": "SageAttention, often faster, with a small possible trade in precision.",
+      "flash2": "FlashAttention 2.",
+      "flexattn": "FlexAttention, subject to kernel support.",
+      "torch": "The plainest torch attention: slow, good for comparison."
+    },
+    "recommendedValues": {
+      "auto": "The recommended default. The system picks the best available backend.",
+      "flash2": "The best choice where Flash2 is available (RTX 30xx/40xx, Ampere or newer).",
+      "sageattn": "20-30% faster than Flash2, with a slight quantisation precision loss.",
+      "sdpa": "The most compatible option, nothing extra to install. Middling speed.",
+      "spargeattn2": "Fastest but still experimental, and only for particular hardware and shapes. (Not in this selector: it is bound to the separate python-spargeattn2 runtime and only works when training is launched in that environment, so the general list does not offer it.)"
+    }
+  },
   "advanced": {
     "principle": "Self-attention 计算 softmax(Q·K^T/√d)·V。标准实现需要保存完整的 attention matrix（n×n 元素），显存 O(n²)。Flash Attention 的 online softmax 算法将 Q/K/V 分成 tile（通常 128×128），逐 tile 计算并累积 softmax 归一化常数，不需要保存完整 attention matrix。SageAttn 将 Q 和 K 量化到 INT8 做矩阵乘法，然后反量化到 FP16 做 softmax，利用 INT8 Tensor Core 加速。SageAttn 的量化误差可能导致 attention 权重轻微偏移——sageattn_drift_check_interval 可以每 N 步与 SDPA 对比检测漂移。",
     "intervention": "diffusers 路径：替换 UNet 的 attention processor（AttnProcessor2_0 / FlashAttnProcessor / SageAttnProcessor）。native DiT 路径（Anima/Newbie）：替换 attention function 调用。Lulynx 在 execution_manifest.py 中定义了每个 execution profile 支持哪些 attention backend，TrainingExecutionResolver 在训练前验证所选 backend 是否可用。",
     "expectedImpact": "SDXL 1024px batch=1 训练（RTX 4090）：Flash2 ≈ 4.1 it/s（相对 SDPA +46%）；SageAttn ≈ 5.0 it/s（+79%）。对 LoRA 质量影响：Flash2 vs SDPA < 0.1% FID 差异（数学等价）；SageAttn vs Flash2 约 0.3-0.5% FID 差异（量化误差）。",
     "tradeoffs": "spargeattn2 在支持的硬件上最快但只支持特定分辨率和 head_dim。flexattn 使用 PyTorch 的 FlexAttention API 支持自定义 mask（如 sliding window），是 Blackwell 架构的实验性选项。execution_profile_id 决定了可用的 attention backend 范围——flash2 profile 预装了 flash-attn 包。",
+    "codePath": "trainer.py:apply_attention_to_unet → diffusers AttnProcessor or native attention function; execution_resolver.py:validate attention backend availability"
+  },
+  "advanced_en": {
+    "principle": "Self-attention computes softmax(Q·K^T/√d)·V. The standard implementation must save the full attention matrix (n×n elements) — O(n²) memory. Flash Attention's online-softmax algorithm tiles Q/K/V (typically 128×128), computing tile by tile while accumulating the softmax normalization constants, needing no full attention matrix. SageAttn quantizes Q and K to INT8 for the matmul, then dequantizes to FP16 for softmax, exploiting INT8 Tensor Cores. SageAttn's quantization error can slightly shift attention weights — sageattn_drift_check_interval can compare against SDPA every N steps to detect drift.",
+    "intervention": "diffusers path: replaces the UNet's attention processor (AttnProcessor2_0 / FlashAttnProcessor / SageAttnProcessor). Native DiT path (Anima/Newbie): replaces the attention function call. Lulynx defines in execution_manifest.py which attention backends each execution profile supports, and TrainingExecutionResolver validates the chosen backend's availability before training.",
+    "expectedImpact": "SDXL 1024px batch=1 training (RTX 4090): Flash2 ≈ 4.1 it/s (+46% over SDPA); SageAttn ≈ 5.0 it/s (+79%). LoRA quality impact: Flash2 vs SDPA < 0.1% FID difference (mathematically equivalent); SageAttn vs Flash2 about 0.3-0.5% FID (quantization error).",
+    "tradeoffs": "spargeattn2 is fastest on supporting hardware but only supports specific resolutions and head_dim. flexattn uses PyTorch's FlexAttention API supporting custom masks (e.g. sliding window) — an experimental option for Blackwell. execution_profile_id bounds the available attention backends — the flash2 profile preinstalls flash-attn.",
     "codePath": "trainer.py:apply_attention_to_unet → diffusers AttnProcessor or native attention function; execution_resolver.py:validate attention backend availability"
   },
   "relatedConfigs": [

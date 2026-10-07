@@ -1,0 +1,19 @@
+{
+  "key": "ltx23_max_text_length",
+  "title": "最大文本长度",
+  "category": "训练用模型",
+  "appliesTo": [
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora"
+  ],
+  "standard": {
+    "summary": "Gemma3/Gemma4 缓存编码的最大 token 长度。",
+    "effect": "写入训练配置 ltx23_max_text_length，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 256，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,24 @@
+{
+  "key": "compression_companion_bootstrap_rank",
+  "title": "自举 SVD rank",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "Residual LoRA 的自举 rank。",
+    "effect": "写入训练配置 compression_companion_bootstrap_rank，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 4，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

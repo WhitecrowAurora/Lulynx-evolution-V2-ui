@@ -1,7 +1,9 @@
 {
   "key": "wan22_timestep_sampling",
   "title": "时间步采样（wan22_timestep_sampling）",
+  "title_en": "Timestep sampling",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "shift": "带 shift 的采法。",
       "uniform": "均匀。",
       "sigmoid": "sigmoid 拧一下，中间更密。"
+    }
+  },
+  "standard_en": {
+    "summary": "Timestep sampling (wan22_timestep_sampling): the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "shift": "Sampling with a shift.",
+      "uniform": "Uniform.",
+      "sigmoid": "Twisted a little with a sigmoid, so the middle is denser."
     }
   },
   "advanced": {},

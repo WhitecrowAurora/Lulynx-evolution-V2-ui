@@ -1,7 +1,9 @@
 {
   "key": "compression_companion_type",
   "title": "伴生适配器类型",
+  "title_en": "Compression Companion Type",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -12,6 +14,15 @@
     "avoidWhen": "未做短测对照前不要同时叠多个激进实验档。",
     "optionDescriptions": {
       "lora": "伴生类型是 LoRA。"
+    }
+  },
+  "standard_en": {
+    "summary": "Companion adapter type: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "lora": "The companion type is LoRA."
     }
   },
   "advanced": {},

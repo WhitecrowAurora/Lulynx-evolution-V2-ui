@@ -1,0 +1,16 @@
+{
+  "key": "lokr_rank",
+  "title": "LoKr Rank",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "LoKr Rank。",
+    "effect": "LoKr 适配器的 rank 预算（作用在分解后的因子上）。",
+    "whenToUse": "按容量需求调整。",
+    "avoidWhen": "默认 32。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

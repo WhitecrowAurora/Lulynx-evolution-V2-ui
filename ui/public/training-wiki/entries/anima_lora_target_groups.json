@@ -1,0 +1,17 @@
+{
+  "key": "anima_lora_target_groups",
+  "title": "LoRA 目标模块族",
+  "category": "Anima 高级配置",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "可选：逗号分隔覆盖勾选，如 self_attn,cross_attn,mlp,adaln_modulation。",
+    "effect": "留空则用上方勾选；全默认 = 历史全集。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

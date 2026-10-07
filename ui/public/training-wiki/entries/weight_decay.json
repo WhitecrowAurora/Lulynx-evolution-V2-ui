@@ -1,7 +1,9 @@
 {
   "key": "weight_decay",
   "title": "权重衰减",
+  "title_en": "Weight decay",
   "category": "优化器 / 正则",
+  "category_en": "Optimizer / Regularization",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,17 +15,33 @@
   "layers": [
     "优化器层"
   ],
+  "layers_en": [
+    "Optimizer layer"
+  ],
   "standard": {
     "summary": "AdamW 的 L2 正则化强度。每步对参数施加 weight_decay × param 的衰减，防止参数无限增长和过拟合。",
     "effect": "默认 0.01（AdamW 论文推荐值）。增大到 0.1 可以更强地正则化，减小到 0.001 减少约束。",
     "whenToUse": "大多数训练保持默认 0.01。数据极少且过拟合明显时可适当增大。",
     "avoidWhen": "设太大（>0.5）会严重限制学习能力。设 0 关闭正则化——LoRA 训练中不推荐。"
   },
+  "standard_en": {
+    "summary": "AdamW's L2 regularisation strength. Each step applies a decay of weight_decay * param to the parameters, which stops them growing without bound and guards against overfitting.",
+    "effect": "Defaults to 0.01 (the value recommended in the AdamW paper). Raising it to 0.1 regularises more strongly; lowering it to 0.001 loosens the constraint.",
+    "whenToUse": "Most training keeps the default 0.01. Raising it somewhat can help when data is very scarce and overfitting is obvious.",
+    "avoidWhen": "Set too high (>0.5) it seriously limits the capacity to learn. Setting 0 turns regularisation off -- inadvisable for LoRA training."
+  },
   "advanced": {
     "principle": "AdamW 的 weight decay 与 L2 正则化不同：L2 在 loss 上加 λ/2·||θ||²（梯度中多出 λ·θ），而 AdamW 直接在参数更新中减去 λ·θ·lr。AdamW 的方式不会干扰动量估计，效果更稳定。",
     "intervention": "optimizer = AdamW(params, lr=lr, weight_decay=weight_decay)。",
     "expectedImpact": "合适的 weight decay 可减少过拟合 5-10%。过大则欠拟合。",
     "tradeoffs": "LoRA 的可训练参数少，weight decay 的影响比全参 finetune 更温和。",
+    "codePath": "training_loop.py:_build_optimizer() → AdamW(weight_decay=...)"
+  },
+  "advanced_en": {
+    "principle": "AdamW's weight decay differs from L2 regularization: L2 adds λ/2·||θ||² to the loss (so the gradient gains λ·θ), while AdamW subtracts λ·θ·lr directly in the parameter update. AdamW's way does not disturb the momentum estimates and is more stable.",
+    "intervention": "optimizer = AdamW(params, lr=lr, weight_decay=weight_decay).",
+    "expectedImpact": "Appropriate weight decay reduces overfitting by 5-10%; too much causes underfitting.",
+    "tradeoffs": "LoRA's trainable parameter count is small, so weight decay's effect is milder than in full-parameter finetune.",
     "codePath": "training_loop.py:_build_optimizer() → AdamW(weight_decay=...)"
   },
   "relatedConfigs": [

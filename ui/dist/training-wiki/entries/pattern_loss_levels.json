@@ -1,0 +1,17 @@
+{
+  "key": "pattern_loss_levels",
+  "title": "Pattern Loss 分解层数",
+  "category": "正则 / Loss",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "Pattern Loss 分解层数。",
+    "effect": "小波分解的层级数，每层一个频段。",
+    "whenToUse": "想更细分频段时加大。",
+    "avoidWhen": "默认 1 层。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

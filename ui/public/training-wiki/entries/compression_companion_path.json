@@ -1,0 +1,24 @@
+{
+  "key": "compression_companion_path",
+  "title": "伴生适配器路径",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "recovery adapter 文件路径。",
+    "effect": "写入训练配置 compression_companion_path，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

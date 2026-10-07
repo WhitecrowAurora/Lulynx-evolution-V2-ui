@@ -1,7 +1,9 @@
 {
   "key": "distributed_strategy",
   "title": "分布式策略",
+  "title_en": "Distributed Strategy",
   "category": "训练 / 分布式",
+  "category_en": "Training / Distributed",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,23 +14,56 @@
   "layers": [
     "并行层"
   ],
+  "layers_en": [
+    "Parallelism layer"
+  ],
   "standard": {
     "summary": "选择多卡/多机并行算法：auto（按 GPU 数推断，多卡→ddp、单卡→none）、none（单进程）、ddp（数据并行）、fsdp2（参数分片）、deepspeed（需额外安装）。",
-    "effect": "决定进程组初始化与模型包装方式。fsdp2 用 fully_shard 做 leaf-first 参数分片，省单卡显存；fully_shard API 不可用或包装失败（未开始分片前）会自动回退 DDP 并记录 notes；deepspeed 未安装时预检会拦截。",
+    "effect": "决定进程组初始化与模型包装方式。fsdp2 用 fully_shard 做 leaf-first 参数分片，省单卡显存；deepspeed 未安装时进程组初始化会直接报错。fsdp2 路径不做 DDP 回退 —— 没有进程组、fully_shard API 不可用、或包装过程失败，全部直接报错并说明原因，理由是「悄悄换成 DDP」与「按 fsdp2 跑了」在日志上分不出来。",
     "whenToUse": "多卡训练默认 auto/ddp 即可；模型参数量大到单卡放不下 optimizer state + 参数副本时选 fsdp2；已有 DeepSpeed 配置经验且需要其特性时选 deepspeed。",
-    "avoidWhen": "单卡训练不要手动选 ddp/fsdp2（徒增开销）；fsdp2 分片已开始后失败会直接报错拒绝不安全的 DDP 回退，遇到需排查而非重试。"
+    "avoidWhen": "单卡训练不要手动选 ddp/fsdp2（徒增开销）；deepspeed 只在环境确实装了 deepspeed 包时才选。fsdp2 报错时要排查而不是重试 —— 这条路径任何一步失败都是拒绝，不存在「重试一次就退化成 DDP 跑起来了」。",
+    "optionDescriptions": {
+      "auto": "按可见 GPU 数推断：多卡走 ddp，单卡走 none。不确定就用它。",
+      "none": "单进程，不建进程组。调试时想排除多卡因素就选这个。",
+      "ddp": "数据并行：每张卡各放一份完整模型，梯度 all-reduce。显存不省，扩得最稳。",
+      "fsdp2": "torch 的 fully_shard 分片：参数/梯度/优化器状态按卡切开，省显存但通信更多。",
+      "deepspeed": "需要环境里已装 deepspeed 包；没装会在建进程组那一步直接报错，不会静默退回 ddp。"
+    }
+  },
+  "standard_en": {
+    "summary": "Picks the multi-GPU / multi-node parallel algorithm: auto (inferred from the GPU count, multi-GPU to ddp and single-GPU to none), none (a single process), ddp (data parallel), fsdp2 (parameter sharding), deepspeed (needs a separate install).",
+    "effect": "It decides how the process group is initialised and how the model is wrapped. fsdp2 shards parameters leaf-first through fully_shard, saving VRAM per card; with deepspeed missing, process-group initialisation errors out directly. The fsdp2 path never falls back to DDP -- no process group, an unavailable fully_shard API, or a failure while wrapping all raise an error explaining why, because \"quietly switched to DDP\" and \"ran as fsdp2\" look the same in the log.",
+    "whenToUse": "For multi-GPU training auto/ddp is fine; choose fsdp2 once the parameter count makes optimizer state plus a parameter copy too large for one card; choose deepspeed when you already know its configuration and need its features.",
+    "avoidWhen": "Do not pick ddp/fsdp2 by hand for single-GPU training (pure overhead), and pick deepspeed only when the deepspeed package really is installed. When fsdp2 errors, investigate rather than retry -- any failure on that path is a refusal, and there is no \"retry once and it degrades to DDP\".",
+    "optionDescriptions": {
+      "auto": "Inferred from the visible GPU count: multiple cards go to ddp, one card to none. Use it when unsure.",
+      "none": "A single process with no process group. Pick it to rule out multi-GPU factors while debugging.",
+      "ddp": "Data parallel: a full copy of the model on each card, gradients all-reduced. Saves no VRAM, scales most reliably.",
+      "fsdp2": "torch's fully_shard sharding: parameters, gradients and optimizer state split across cards -- saves VRAM at the cost of more communication.",
+      "deepspeed": "Requires the deepspeed package in the environment; without it the process-group step errors out rather than silently falling back to ddp."
+    }
   },
   "advanced": {
-    "principle": "DDP 每卡保留完整模型副本、只同步梯度；FSDP2（PyTorch fully_shard）把参数/梯度/优化器状态按 leaf module 分片到各卡，显存占用近似除以卡数，通信量增加。本实现 leaf 选择为「直接持有参数的子模块、深度优先、冻结优先」，包装前后校验参数可训练性不变、优化器参数集合一致。",
+    "principle": "DDP 每卡保留完整模型副本、只同步梯度；FSDP2（PyTorch fully_shard）把参数/梯度/优化器状态按 leaf module 分片到各卡，显存占用近似除以卡数，通信量增加。本实现 leaf 选择为「直接持有参数的子模块、深度优先、冻结优先」，包装前后校验参数可训练性不变、优化器参数集合一致。 fsdp2 的三个细项旋钮（fsdp_cpu_offload / fsdp_auto_wrap_policy / fsdp_state_dict_type）在 2026-09-05 之前声明了但零读点，现已各自接线；fsdp_version 只支持 2，填 1 会被拒绝而不是静默按 FSDP2 跑。",
     "intervention": "distributed_strategy.py:resolve_distributed_strategy 统一解析（queue 调度、资源预算、launch 决策共用）；distributed_runtime.py:build_distributed_runtime → _wrap_fsdp2/_wrap_ddp 在模型准备后包装；多进程策略仍由 torchrun 启动。",
     "expectedImpact": "ddp：吞吐近似线性扩展；fsdp2：单卡显存大幅下降、吞吐低于 DDP（通信换显存）。",
     "tradeoffs": "fsdp2 与部分显存优化（block swap、模块 offload）机制重叠，不建议叠加；checkpoint 保存/恢复语义随策略变化，队列侧会把 strategy 元数据写入训练记录。",
-    "codePath": "distributed_strategy.py:resolve_distributed_strategy；distributed_runtime.py:_wrap_fsdp2（leaf-first fully_shard、失败回退 DDP）；configs_base.py 定义"
+    "codePath": "distributed_strategy.py:resolve_distributed_strategy；distributed_runtime.py:_wrap_fsdp2（leaf-first fully_shard，任何失败都拒绝而不回退 DDP）；distributed_fsdp_policy.py（四个 fsdp_* 键的归一化）；configs_base.py 定义"
+  },
+  "advanced_en": {
+    "principle": "DDP keeps a full model replica per card and only syncs gradients; FSDP2 (PyTorch fully_shard) shards parameters/gradients/optimizer state across cards by leaf module, cutting VRAM roughly by the card count at the cost of more communication. This implementation's leaf selection is \"submodules that directly hold parameters, depth-first, frozen-first\", with pre/post-wrap validation that trainability and the optimizer parameter set are unchanged. FSDP2's three detail knobs (fsdp_cpu_offload / fsdp_auto_wrap_policy / fsdp_state_dict_type) were declared but had zero read points before 2026-09-05 — all now wired; fsdp_version only supports 2, and 1 is rejected rather than silently running as FSDP2.",
+    "intervention": "distributed_strategy.py:resolve_distributed_strategy resolves uniformly (shared by queue scheduling, resource budgeting, and launch decisions); distributed_runtime.py:build_distributed_runtime → _wrap_fsdp2/_wrap_ddp wraps after model preparation; multi-process strategy is still launched by torchrun.",
+    "expectedImpact": "ddp: throughput scales near-linearly; fsdp2: single-card VRAM drops substantially, throughput below DDP (communication for memory).",
+    "tradeoffs": "fsdp2 overlaps with some VRAM-optimization mechanisms (block swap, module offload) — avoid stacking; checkpoint save/restore semantics change with the strategy, and the queue side writes strategy metadata into the training record.",
+    "codePath": "distributed_strategy.py:resolve_distributed_strategy; distributed_runtime.py:_wrap_fsdp2 (leaf-first fully_shard, any failure rejects rather than falling back to DDP); distributed_fsdp_policy.py (normalization of the four fsdp_* keys); defined in configs_base.py"
   },
   "relatedConfigs": [
     "enable_distributed_training",
     "num_processes",
     "num_machines",
-    "ddp_timeout"
+    "ddp_timeout",
+    "fsdp_cpu_offload",
+    "fsdp_auto_wrap_policy",
+    "fsdp_state_dict_type"
   ]
 }

@@ -1,0 +1,17 @@
+{
+  "key": "anima_faithful_degrade_policy",
+  "title": "忠实前向降档策略",
+  "category": "训练参数",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "fail=缺 T5 tokenizer 等资产时直接停下并说明缺什么；warn=只打一行警告然后按旧路径继续训。",
+    "effect": "选 warn 时训出来的东西和你以为在训的不是一回事，而且只有日志里那一行能看出来",
+    "whenToUse": "默认 fail，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

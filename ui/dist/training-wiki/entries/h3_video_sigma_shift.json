@@ -1,0 +1,17 @@
+{
+  "key": "h3_video_sigma_shift",
+  "title": "模型视频 Sigma 映射",
+  "category": "H3 CFG 保真目标",
+  "appliesTo": [
+    "minimax-h3-finetune",
+    "minimax-h3-lora"
+  ],
+  "standard": {
+    "summary": "MiniMax H3 的 模型视频 Sigma 映射，默认 12。",
+    "effect": "H3 音视频训练管线的 模型视频 Sigma 映射，覆盖 VAE 路径、帧率、缓存与低显存运行时。",
+    "whenToUse": "训练 H3 音视频 LoRA 时按素材规格配置。",
+    "avoidWhen": "图像训练路线不涉及。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,18 @@
+{
+  "key": "device",
+  "title": "设备",
+  "category": "蒸馏参数",
+  "appliesTo": [
+    "aesthetic-scorer",
+    "lab-distiller",
+    "yolo"
+  ],
+  "standard": {
+    "summary": "蒸馏设备。",
+    "effect": "蒸馏执行的设备（cuda/cpu）。",
+    "whenToUse": "多卡指定卡号时用 cuda:N。",
+    "avoidWhen": "默认 cuda。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

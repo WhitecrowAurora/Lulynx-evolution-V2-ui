@@ -1,0 +1,20 @@
+{
+  "key": "tensorring_factor",
+  "title": "Tensor-Ring 因子",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "Tensor-Ring LoRA 的 Tensor-Ring 因子，默认 0。",
+    "effect": "Tensor-Ring 分解用环形张量链表达权重更新，Tensor-Ring 因子 控制 TR/TRM rank 与分解因子。",
+    "whenToUse": "极致压缩 rank 预算时使用。",
+    "avoidWhen": "常规 rank 需求下标准 LoRA 更稳。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

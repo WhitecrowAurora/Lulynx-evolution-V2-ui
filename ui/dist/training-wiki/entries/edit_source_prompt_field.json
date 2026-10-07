@@ -1,0 +1,16 @@
+{
+  "key": "edit_source_prompt_field",
+  "title": "原图 Prompt 字段",
+  "category": "Edit 训练",
+  "appliesTo": [
+    "anima-edit-model"
+  ],
+  "standard": {
+    "summary": "原图 Prompt 字段。",
+    "effect": "Edit 训练侧车 JSON 里读取原图描述的字段名。",
+    "whenToUse": "侧车 schema 与默认不同时改。",
+    "avoidWhen": "默认 source_prompt。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

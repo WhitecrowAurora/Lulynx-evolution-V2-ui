@@ -1,0 +1,16 @@
+{
+  "key": "ed_lora_decomp_dim",
+  "title": "ED-LoRA 分解维度",
+  "category": "LoRA 结构变体",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "Embedding 分解维度 (推荐 64)。",
+    "effect": "写入训练配置 ed_lora_decomp_dim，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 64，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

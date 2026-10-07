@@ -1,0 +1,24 @@
+{
+  "key": "repa_gram_weight",
+  "title": "REPA Gram 权重",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "relational 臂权重；0=回落 repa_loss_weight。",
+    "effect": "写入训练配置 repa_gram_weight，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

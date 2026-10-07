@@ -1,7 +1,9 @@
 {
   "key": "lr_finder_enabled",
   "title": "LR Finder（学习率探索器）",
+  "title_en": "LR Finder",
   "category": "训练 / 学习率",
+  "category_en": "Training / Learning Rate",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -17,9 +19,19 @@
     "whenToUse": "不确定目标模型的最优 LR 时，先运行 LR Finder 再正式训练。特别适合新架构（Anima）或新优化器组合。",
     "avoidWhen": "LR Finder 只是参考，不保证精确找到最优 LR；小数据集下 loss 曲线噪声大，参考价值有限。运行 Finder 后会重置模型到初始状态（浪费这些步骤的学习）。"
   },
+  "standard_en": {
+    "summary": "(Experimental) LR Finder: runs a stretch of test training before the real run, sweeping the learning rate from low to high and recording the loss curve, to help find the best learning-rate range.",
+    "effect": "It runs lr_finder_num_steps steps with the LR growing exponentially from start_lr to end_lr and records the loss at each LR. The LR range just before the loss starts to rise is the recommended maximum LR.",
+    "whenToUse": "When you are unsure of the best LR for the target model, run the LR Finder before the real training. Especially useful for a new architecture (Anima) or a new optimizer combination.",
+    "avoidWhen": "The LR Finder is only a reference and does not promise to find the exact best LR; on a small dataset the loss curve is noisy and its reference value is limited. After the Finder runs the model is reset to its initial state (so the learning from those steps is thrown away)."
+  },
   "advanced": {
     "principle": "基于 fastai LR Range Test：从 start_lr 开始，每步按指数增长 LR（LR_t = start_lr × (end_lr/start_lr)^(t/num_steps)），记录 loss 曲线。最优 LR ≈ loss 开始快速下降的 LR 的 1/3（steepest descent 点再降一个数量级）。",
     "tradeoffs": "LR Finder 运行期间消耗实际 GPU 时间但不保留权重更新（Finder 完成后重置）；在小数据集上 loss 曲线噪声大，最优点不易判断。"
+  },
+  "advanced_en": {
+    "principle": "Based on fastai's LR Range Test: starting from start_lr, LR grows exponentially each step (LR_t = start_lr × (end_lr/start_lr)^(t/num_steps)) while the loss curve is recorded. Optimal LR ≈ 1/3 of the LR where loss starts dropping fast (one order of magnitude below the steepest-descent point).",
+    "tradeoffs": "The LR Finder consumes real GPU time but keeps no weight updates (weights reset after the Finder finishes); on small datasets the loss curve is noisy and the optimum hard to judge."
   },
   "relatedConfigs": [
     "learning_rate",

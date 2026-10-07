@@ -1,0 +1,24 @@
+{
+  "key": "svd_log_full",
+  "title": "SVD 全权重扫描",
+  "title_en": "SVD Full Weight Sweep",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "除了适配器增量外，把所有可训练的基础权重矩阵也纳入 SVD 扫描。",
+    "effect": "默认关 = 只扫适配器增量（便宜）。打开后大模型上开销明显增大——这正是它默认关的原因。",
+    "whenToUse": "全量微调（没有适配器层）想看权重健康度时打开。",
+    "avoidWhen": "大模型 + 小检查间隔时别开，会明显拖慢训练。"
+  },
+  "standard_en": {
+    "summary": "Besides adapter deltas, include every trainable base weight matrix in the SVD sweep.",
+    "effect": "Default off = adapter deltas only (cheap). On, the cost grows noticeably on large models — that is why it is opt-in.",
+    "whenToUse": "Enable for full finetunes (no adapter layers) to watch weight health.",
+    "avoidWhen": "Do not enable on large models with a small check interval."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

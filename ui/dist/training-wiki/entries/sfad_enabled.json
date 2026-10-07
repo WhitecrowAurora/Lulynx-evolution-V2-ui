@@ -1,7 +1,9 @@
 {
   "key": "sfad_enabled",
   "title": "SFAD 频率感知 dropout",
+  "title_en": "SFAD dropout",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Adjusts caption tag dropout by tag frequency",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "按标签频率调节 caption tag dropout；关闭时保持均匀随机。默认关闭。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Adjusts caption tag dropout by tag frequency; when off, dropout stays uniformly random. Off by default.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

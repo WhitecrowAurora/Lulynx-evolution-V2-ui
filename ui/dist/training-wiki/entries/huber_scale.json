@@ -1,7 +1,9 @@
 {
   "key": "huber_scale",
   "title": "Huber 阈值缩放系数",
+  "title_en": "Huber scale",
   "category": "正则 / Loss",
+  "category_en": "Regularization / Loss",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,11 +14,20 @@
   "layers": [
     "Loss 层"
   ],
+  "layers_en": [
+    "Loss layer"
+  ],
   "standard": {
     "summary": "对 Huber 损失阈值做整体缩放的系数，实际生效阈值 = huber_c × huber_scale。",
     "effect": "在不改动 huber_c 基准值的情况下整体收紧或放宽 L2→L1 的切换点；huber_schedule=auto 时还作为分位数估计结果的乘子和下限约束参与计算。默认 1.0（不缩放）。",
     "whenToUse": "想在保留 huber_c 语义的前提下快速试验「更鲁棒 / 更接近 MSE」两个方向时：调小更鲁棒，调大更像 MSE。",
     "avoidWhen": "loss_type 不是 Huber 家族时无效；同时大幅改 huber_c 和 huber_scale 会让阈值语义难以追踪，建议只动其中一个。"
+  },
+  "standard_en": {
+    "summary": "A coefficient that scales the Huber threshold as a whole: the effective threshold = huber_c x huber_scale.",
+    "effect": "Tightens or loosens the L2-to-L1 switch point without touching huber_c's base value; with huber_schedule=auto it also multiplies the percentile estimate and constrains its floor. Default 1.0 (no scaling).",
+    "whenToUse": "When you want to try the two directions -- more robust or closer to MSE -- quickly while keeping huber_c's meaning: lower is more robust, higher is more like MSE.",
+    "avoidWhen": "It has no effect outside the Huber family, and changing huber_c and huber_scale a great deal at once makes the threshold's meaning hard to follow -- move one, not both."
   },
   "advanced": {
     "principle": "分离「基准阈值」与「全局缩放」两个自由度：schedule 模式（exponential/snr/auto）会在 huber_c 基础上做逐 timestep 或逐样本调制，huber_scale 则在最外层统一乘上去，便于跨 schedule 比较实验。",
@@ -24,6 +35,13 @@
     "expectedImpact": "与直接改 huber_c 等效的鲁棒性调节，但在 auto 模式下额外影响分位数下限，防止阈值塌缩到 0。",
     "tradeoffs": "auto 模式中缩放被应用两次（下限与乘子），调得过大时阈值增长比直觉快，建议 0.5~2.0 区间内微调。",
     "codePath": "training_loop_loss_mixin.py:_huber 阈值解析——scale=max(float(huber_scale),1e-6)，auto 分支 clamp(min=base*scale)*scale"
+  },
+  "advanced_en": {
+    "principle": "Separates two degrees of freedom — \"base threshold\" and \"global scaling\": schedule modes (exponential/snr/auto) modulate per-timestep or per-sample on top of huber_c, and huber_scale multiplies uniformly at the outermost level, easing cross-schedule experiment comparison.",
+    "intervention": "training_loop_loss_mixin.py threshold resolution: scale = max(huber_scale, 1e-6); in auto mode delta = clamp(quantile, min=huber_c×huber_scale) × huber_scale.",
+    "expectedImpact": "Equivalent robustness tuning to changing huber_c directly, but in auto mode it additionally raises the quantile floor, keeping the threshold from collapsing to 0.",
+    "tradeoffs": "In auto mode the scale is applied twice (floor and multiplier), so the threshold grows faster than intuition suggests when set large — fine-tune within 0.5~2.0.",
+    "codePath": "training_loop_loss_mixin.py:_huber threshold resolution — scale=max(float(huber_scale),1e-6), auto branch clamp(min=base*scale)*scale"
   },
   "relatedConfigs": [
     "huber_c",

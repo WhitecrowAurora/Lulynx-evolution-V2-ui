@@ -1,0 +1,17 @@
+{
+  "key": "ip_image_encoder_path",
+  "title": "图像编码器路径",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "sd-ip-adapter",
+    "sdxl-ip-adapter"
+  ],
+  "standard": {
+    "summary": "IP-Adapter 图像编码器路径。",
+    "effect": "IP-Adapter 使用的 CLIP 图像编码器。",
+    "whenToUse": "换编码器时同步改 cond 维。",
+    "avoidWhen": "默认 openai/clip-vit-large-patch14。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

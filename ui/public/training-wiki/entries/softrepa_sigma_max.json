@@ -1,0 +1,24 @@
+{
+  "key": "softrepa_sigma_max",
+  "title": "SoftREPA sigma 上界",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "SoftREPA sigma 上界。",
+    "effect": "SoftREPA 加权只在 sigma 低于上界的区间生效。",
+    "whenToUse": "想聚焦低噪声阶段时调整。",
+    "avoidWhen": "默认 1 全区间。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

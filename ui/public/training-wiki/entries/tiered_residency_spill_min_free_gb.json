@@ -1,0 +1,17 @@
+{
+  "key": "tiered_residency_spill_min_free_gb",
+  "title": "磁盘保留空间",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "落盘后至少要留这么多空闲空间，不够就回落到内存而不是把盘写满。",
+    "effect": "写入训练配置 tiered_residency_spill_min_free_gb，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 4，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

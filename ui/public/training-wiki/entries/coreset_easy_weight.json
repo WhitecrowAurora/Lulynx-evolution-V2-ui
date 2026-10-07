@@ -1,7 +1,9 @@
 {
   "key": "coreset_easy_weight",
   "title": "Coreset 数据重要性采样",
+  "title_en": "Coreset easy weights",
   "category": "数据集 / 采样",
+  "category_en": "Dataset / Sampling",
   "appliesTo": [
     "anima-lora"
   ],
@@ -14,9 +16,19 @@
     "whenToUse": "实验性功能。数据集质量参差不齐（部分样本 loss 持续高）时可以用 coreset 提高对困难样本的关注度。",
     "avoidWhen": "数据集很小（<30张）时 loss 统计不稳定，coreset 权重误差大。loss 高的样本不一定是\"重要\"样本，可能是标注质量差的样本（此时增加采样反而有害）。"
   },
+  "standard_en": {
+    "summary": "(Experimental) Coreset sampling: samples data points differently according to how hard they are (their loss). Hard samples (high loss) are drawn more often, easy ones (low loss) less often.",
+    "effect": "coreset_hard_weight sets the relative sampling weight of high-loss (hard) samples; easy_weight sets it for low-loss (easy) ones. It helps point training at samples the model has not yet learned well.",
+    "whenToUse": "An experimental feature. Where dataset quality is uneven (some samples keep a high loss), coreset raises attention on the difficult ones.",
+    "avoidWhen": "On a small dataset (<30 images) the loss statistics are unstable and the coreset weights are noisy. And a high-loss sample is not necessarily an important one -- it may just be badly labelled, in which case sampling it more does harm."
+  },
   "advanced": {
     "principle": "Coreset 维护每个样本的历史 loss EMA，在 DataLoader 采样时按 loss 加权（高 loss → 高权重 → 更频繁采样）。hard_weight/easy_weight 控制高/低 loss 样本的相对采样倍率比。",
     "tradeoffs": "Coreset 改变了数据集的采样分布（不再是均匀 i.i.d.），与标准 ERM（经验风险最小化）有理论偏差。对于小数据集 LoRA，数据多样性比重要性采样更重要。"
+  },
+  "advanced_en": {
+    "principle": "Coreset keeps a per-sample historical loss EMA and weights DataLoader sampling by loss (high loss → high weight → sampled more often). hard_weight/easy_weight control the relative sampling-rate ratio of high/low-loss samples.",
+    "tradeoffs": "Coreset changes the dataset's sampling distribution (no longer uniform i.i.d.), a theoretical deviation from standard ERM (empirical risk minimization). For small-dataset LoRA, data diversity matters more than importance sampling."
   },
   "relatedConfigs": [
     "train_data_dir",

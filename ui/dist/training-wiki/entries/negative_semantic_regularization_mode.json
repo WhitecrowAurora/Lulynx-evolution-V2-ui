@@ -1,7 +1,9 @@
 {
   "key": "negative_semantic_regularization_mode",
   "title": "负面语义正则模式",
+  "title_en": "Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -13,8 +15,23 @@
       "lora_delta": "压一压负面提示下的 LoRA 增量，少把不该出现的负面语义学进去。"
     }
   },
+  "standard_en": {
+    "summary": "The backend currently implements lora_delta: it constrains what happens under the negative prompt",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "lora_delta": "Holds down the LoRA increment under a negative prompt, so less of the semantics you do not want gets learned."
+    }
+  },
   "advanced": {
     "principle": "当前后端实现为 lora_delta：约束负面提示词下 LoRA 开启与关闭的预测差异。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "The current backend implements lora_delta: constraining the prediction difference between LoRA on and off under the negative prompt.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

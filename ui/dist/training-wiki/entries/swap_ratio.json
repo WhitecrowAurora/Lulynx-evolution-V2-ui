@@ -1,7 +1,9 @@
 {
   "key": "swap_ratio",
   "title": "显存交换比例（swap_ratio）",
+  "title_en": "VRAM swap ratio",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "The swap proportion, computed against the original total number of blocks/layers.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "按原始 block/layer 总数计算交换比例。0 表示只在 auto 或 swap_count 下生效。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Swap ratio computed against the original block/layer total. 0 = only takes effect under auto or swap_count.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

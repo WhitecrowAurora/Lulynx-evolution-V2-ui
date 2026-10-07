@@ -1,0 +1,16 @@
+{
+  "key": "class_names",
+  "title": "类别名称",
+  "category": "数据集 / 图说",
+  "appliesTo": [
+    "yolo"
+  ],
+  "standard": {
+    "summary": "评分类别名称。",
+    "effect": "aesthetic-scorer 训练的评分维度列表（逗号分隔）。",
+    "whenToUse": "按想要的多维评分配置。",
+    "avoidWhen": "默认四维。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

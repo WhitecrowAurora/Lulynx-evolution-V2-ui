@@ -1,7 +1,9 @@
 {
   "key": "ip_adapter_cond_mode",
   "title": "条件模式",
+  "title_en": "Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -12,6 +14,15 @@
     "avoidWhen": "未理解影响前不要叠多个激进档。",
     "optionDescriptions": {
       "concat": "条件 concat 进去。"
+    }
+  },
+  "standard_en": {
+    "summary": "Condition mode; the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "concat": "Concatenates the condition in."
     }
   },
   "advanced": {},

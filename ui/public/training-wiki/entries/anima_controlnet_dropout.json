@@ -1,0 +1,16 @@
+{
+  "key": "anima_controlnet_dropout",
+  "title": "适配器 Dropout",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "anima-controlnet"
+  ],
+  "standard": {
+    "summary": "Anima ControlNet Dropout。",
+    "effect": "适配器输出的 dropout。",
+    "whenToUse": "过拟合正则。",
+    "avoidWhen": "默认 0。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

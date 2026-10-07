@@ -1,0 +1,16 @@
+{
+  "key": "lpips_latent_feature_weight",
+  "title": "各层权重",
+  "category": "图像质量增强",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "各层权重，逗号分隔 (如 \"1.0,1.0,1.0\")。",
+    "effect": "写入训练配置 lpips_latent_feature_weight，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 1.0,1.0,1.0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

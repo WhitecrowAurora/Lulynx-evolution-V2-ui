@@ -1,0 +1,41 @@
+{
+  "key": "progressive_phase_schedule",
+  "title": "Phase Editor",
+  "category": "渐进式 / 分阶段训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "hunyuan-dit-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "lumina-finetune",
+    "lumina-lora",
+    "newbie-lora",
+    "qwen-image-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "按 optimizer progress 配置阶段。",
+    "effect": "结构化编辑器与折叠 JSON 导入/导出共用同一个 progressive_phase_schedule 字段。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

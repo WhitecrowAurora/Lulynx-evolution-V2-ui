@@ -1,0 +1,16 @@
+{
+  "key": "yolo_data_config_path",
+  "title": "自定义数据集 yaml",
+  "category": "数据集 / 图说",
+  "appliesTo": [
+    "yolo"
+  ],
+  "standard": {
+    "summary": "可选。",
+    "effect": "自定义 YOLO 数据集 yaml。",
+    "whenToUse": "路径留空时走默认解析/该功能不启用。",
+    "avoidWhen": "填错路径会在预检或启动时报错，注意路径有效性。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

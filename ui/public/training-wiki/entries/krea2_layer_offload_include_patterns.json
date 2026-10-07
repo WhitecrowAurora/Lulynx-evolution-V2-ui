@@ -1,0 +1,17 @@
+{
+  "key": "krea2_layer_offload_include_patterns",
+  "title": "Layer Offload 包含模式",
+  "category": "Krea2 Block/Layer Offload",
+  "appliesTo": [
+    "krea2-finetune",
+    "krea2-lora"
+  ],
+  "standard": {
+    "summary": "逗号分隔模块名模式，默认 blocks.*。",
+    "effect": "写入训练配置 krea2_layer_offload_include_patterns，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 blocks.*，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "lulynx_weight_noise_enabled",
   "title": "LoRA 权重噪声",
+  "title_en": "LoRA weight noise",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Adds zero-mean Gaussian perturbation to the trainable LoRA/adapter parameters after every optimizer.step (the base model is left alone).",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "每个 optimizer.step 后对可训练 LoRA/适配器参数加零均值高斯扰动（不碰底模）。默认关闭；小数据集抗过拟合/促 flat-minima 可试。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Adds zero-mean Gaussian perturbations to trainable LoRA/adapter parameters after each optimizer.step (the base model is untouched). Off by default; worth trying on small datasets for anti-overfitting / flat-minima encouragement.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

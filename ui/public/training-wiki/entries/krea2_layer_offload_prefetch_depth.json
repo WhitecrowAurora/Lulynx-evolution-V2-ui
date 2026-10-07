@@ -1,0 +1,17 @@
+{
+  "key": "krea2_layer_offload_prefetch_depth",
+  "title": "Layer Offload 预取深度",
+  "category": "Krea2 Block/Layer Offload",
+  "appliesTo": [
+    "krea2-finetune",
+    "krea2-lora"
+  ],
+  "standard": {
+    "summary": "Krea2 Layer Offload 预取深度。",
+    "effect": "层粒度卸载的预取深度。",
+    "whenToUse": "同 block 预取逻辑。",
+    "avoidWhen": "默认 1。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

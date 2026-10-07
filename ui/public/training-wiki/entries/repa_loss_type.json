@@ -1,7 +1,9 @@
 {
   "key": "repa_loss_type",
   "title": "REPA 损失类型",
+  "title_en": "REPA",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "cosine": "只对齐方向。",
       "mse": "MSE，方向幅度一起管。"
+    }
+  },
+  "standard_en": {
+    "summary": "The REPA loss type: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "cosine": "Aligns direction only.",
+      "mse": "MSE, which handles direction and magnitude together."
     }
   },
   "advanced": {},

@@ -1,7 +1,9 @@
 {
   "key": "lulynx_ema_cosine_self_distill_enabled",
   "title": "lulynx EMA 余弦特征自蒸馏",
+  "title_en": "lulynx EMA Cosine Feature Self-Distillation",
   "category": "前沿储备 / Anima",
+  "category_en": "Frontier Reserve / Anima",
   "appliesTo": [
     "anima-lora"
   ],
@@ -15,9 +17,19 @@
     "whenToUse": "实验性功能，适合研究探索。对特别长步数训练（>1000步）的稳定性有潜在收益。",
     "avoidWhen": "默认关闭。普通 LoRA 训练无需开启，增加的辅助 loss 会改变训练动力学。"
   },
+  "standard_en": {
+    "summary": "(Experimental) Uses features produced by the EMA shadow model as a teacher signal and constrains the main model's training with a feature-alignment loss, in the manner of knowledge distillation.",
+    "effect": "With this on there is an extra auxiliary loss: an MSE alignment between the main model's features and the EMA shadow model's features. It helps steady training and keeps the model from drifting too far from the EMA.",
+    "whenToUse": "An experimental feature suited to research exploration. It may benefit the stability of especially long runs (>1000 steps).",
+    "avoidWhen": "Off by default. Ordinary LoRA training does not need it, and the extra auxiliary loss changes the training dynamics."
+  },
   "advanced": {
     "principle": "维护一个 EMA 影子副本（decay=0.999），每步计算主模型和 EMA 模型在相同输入上的特征差（L2）作为 alignment_loss，权重 ema_feat_align_weight 控制其对总 loss 的影响。EMA 影子是一个\"滑动平均的稳定版本\"，作为教师引导主模型不要偏离太远。",
     "tradeoffs": "额外的 EMA forward pass 增加约 50% 显存（EMA 副本需要存储所有参数）和约 20% 计算量。权重设置不当（过大）会过度约束主模型的学习速度。"
+  },
+  "advanced_en": {
+    "principle": "Maintains an EMA shadow copy (decay=0.999); each step computes the feature difference (L2) between the main model and EMA model on the same input as alignment_loss, with ema_feat_align_weight controlling its share of total loss. The EMA shadow is a \"moving-averaged stable version\" acting as teacher, keeping the main model from drifting too far.",
+    "tradeoffs": "The extra EMA forward pass adds roughly 50% VRAM (the EMA copy stores all parameters) and about 20% compute. A mis-set (too large) weight over-constrains the main model's learning speed."
   },
   "relatedConfigs": [
     "ema_enabled",

@@ -1,0 +1,17 @@
+{
+  "key": "pixel_space_augmentation_enabled",
+  "title": "像素空间增强",
+  "category": "像素空间训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "像素空间增强。",
+    "effect": "像素域专属增强管线。",
+    "whenToUse": "像素空间训练时按需开启。",
+    "avoidWhen": "latent 路线不涉及。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

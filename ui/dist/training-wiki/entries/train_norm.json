@@ -1,17 +1,31 @@
 {
   "key": "train_norm",
   "title": "训练 Norm 层",
+  "title_en": "Training Norm layer",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "额外训练带可学习参数的归一化层（如 RMSNorm/LayerNorm 的",
+    "summary": "额外训练带可学习参数的归一化层（如 RMSNorm/LayerNorm 的缩放与偏置）。",
     "effect": "",
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Additionally trains normalisation layers that carry learnable parameters (the scale and bias of RMSNorm/LayerNorm, say).",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "额外训练带可学习参数的归一化层（如 RMSNorm/LayerNorm 的 weight/bias），让 LoRA/lulynx 渐进秩 LoRA/LoKr 之外还能调整特征尺度与分布；可能提升风格/域适配，但会小幅增加显存占用和 LoRA 文件大小，也更容易过拟合，默认建议关闭。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Additionally trains normalization layers with learnable parameters (e.g. RMSNorm/LayerNorm weight/bias), letting LoRA / lulynx progressive-rank LoRA / LoKr also adjust feature scale and distribution; may improve style/domain adaptation, but slightly increases VRAM usage and LoRA file size and is more prone to overfitting — recommended off by default.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

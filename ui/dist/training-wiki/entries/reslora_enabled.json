@@ -1,20 +1,32 @@
 {
   "key": "reslora_enabled",
-  "title": "ResLoRA（残差 LoRA）",
+  "title": "lulynx 跨层残差 LoRA",
+  "title_en": "lulynx Cross-Layer Residual LoRA",
   "category": "LoRA 变体 / 残差",
+  "category_en": "LoRA Variants / Residual",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
   ],
   "standard": {
-    "summary": "（实验性）ResLoRA：在 LoRA 层之间添加残差连接，缓解深层 LoRA 的梯度消失问题，提升学习稳定性。",
+    "summary": "（实验性）在多个 LoRA 适配器之间建立残差 shortcut，让梯度可以跳过中间适配器直达浅层，缓解深层 LoRA 收敛缓慢。基于 ResLoRA (arXiv:2402.18039)，本仓另加：按运行时 adapter 调用顺序解析 shortcut 图（上游要显式 Transformer block 契约），并按 (in,out) 形状分残差链。",
     "effect": "在多个 LoRA 层之间建立跳跃连接，允许梯度直接传播跳过中间 LoRA 层，解决深层 LoRA 收敛缓慢的问题。",
     "whenToUse": "实验性功能。注入层数较多（如全层 LoRA，注入 60+ 层）时可以尝试缓解深层梯度消失。",
     "avoidWhen": "低 rank 或注入层数少时不需要。block_shortcut 实现需要相邻层的形状匹配，形状不一致时有自动 skip 保护（shape guard）。"
   },
+  "standard_en": {
+    "summary": "(Experimental) Establishes residual shortcuts between several LoRA adapters so gradients can skip the intermediate adapters and reach the shallow layers directly, easing the slow convergence of deep LoRAs. Based on ResLoRA (arXiv:2402.18039), with this repository adding: the shortcut graph is resolved from the runtime adapter call order (upstream requires an explicit Transformer block contract), and the residual chains are split by (in,out) shape.",
+    "effect": "It builds skip connections between LoRA layers, letting gradients propagate straight past the intermediate LoRA layers and solving the slow convergence of deep LoRAs.",
+    "whenToUse": "An experimental feature. Worth trying to ease deep-layer gradient vanishing when many layers are injected (all-layer LoRA with 60+ injections, say).",
+    "avoidWhen": "Not needed at a low rank or with few injected layers. The block_shortcut implementation needs adjacent layers' shapes to match, and there is an automatic skip protection (a shape guard) when they do not."
+  },
   "advanced": {
     "principle": "ResLoRA 在每 N 个 LoRA block 之间添加旁路连接（类似 ResNet 的 shortcut），前一 block 的输出直接加到后 N 个 block 后，绕过 N 个 LoRA 层的潜在梯度瓶颈。reslora_mode 控制残差连接的粒度（block/layer 级别）。",
     "tradeoffs": "残差连接改变了 LoRA 的前向计算结构，与标准 LoRA 不完全兼容（推理时需要 ResLoRA-aware 的加载器）。跨层 shortcut 要求前后层形状匹配，不匹配时会自动跳过（但跳过意味着该位置没有残差保护）。"
+  },
+  "advanced_en": {
+    "principle": "ResLoRA adds bypass connections between every N LoRA blocks (like ResNet shortcuts): the previous block's output is added directly after the next N blocks, bypassing a potential gradient bottleneck of N LoRA layers. reslora_mode controls the granularity of the residual connections (block/layer level).",
+    "tradeoffs": "The residual connections change the LoRA forward structure and are not fully compatible with standard LoRA (inference needs a ResLoRA-aware loader). Cross-layer shortcuts require matching shapes between layers; mismatches are skipped automatically (but a skip means no residual protection at that position)."
   },
   "relatedConfigs": [
     "network_dim",

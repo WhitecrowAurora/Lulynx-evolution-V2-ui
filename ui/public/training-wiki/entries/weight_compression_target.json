@@ -1,7 +1,9 @@
 {
   "key": "weight_compression_target",
   "title": "压缩目标",
+  "title_en": "Target",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -16,8 +18,26 @@
       "both": "主干和文本塔都压。"
     }
   },
+  "standard_en": {
+    "summary": "none/backbone/text_encoder",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "none": "Compresses nothing.",
+      "backbone": "Compresses the backbone only.",
+      "text_encoder": "Compresses the text tower only.",
+      "both": "Compresses both the backbone and the text tower."
+    }
+  },
   "advanced": {
     "principle": "none/backbone/text_encoder/both。预设会覆盖此值；手动启用时有效。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "none/backbone/text_encoder/both. Presets override this value; effective when enabled manually.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

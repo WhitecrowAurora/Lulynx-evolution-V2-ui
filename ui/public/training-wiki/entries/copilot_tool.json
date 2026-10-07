@@ -1,7 +1,9 @@
 {
   "key": "copilot_tool",
   "title": "训练 Copilot 工具",
+  "title_en": "Training Copilot (Fully Automatic Orchestration)",
   "category": "训练 / 辅助工具",
+  "category_en": "Training / Auxiliary Tools",
   "appliesTo": [
     "anima-lora"
   ],
@@ -14,11 +16,20 @@
     "whenToUse": "实验性功能，适合希望获得训练过程智能建议的场景。",
     "avoidWhen": "这些工具增加监控开销，追求纯粹训练速度时关闭。"
   },
+  "standard_en": {
+    "summary": "Training assistance tools: copilot offers live suggestions during the run (LR adjustments, overfitting warnings); goal_forecast predicts how many more steps a target loss needs; ui_custom_params lets custom UI parameters through.",
+    "effect": "With copilot_tool on, the training log carries diagnostic advice on the health of the run, based on the current loss trend and gradient statistics.",
+    "whenToUse": "An experimental feature for anyone who wants intelligent suggestions as the run proceeds.",
+    "avoidWhen": "These tools add monitoring overhead; turn them off when chasing raw training speed."
+  },
   "relatedConfigs": [
     "advanced_stats_enabled",
     "wandb_api_key"
   ],
   "advanced": {
     "principle": "一次授权无人值守：设定目标阈值（loss / 验证 loss / L2）+ 预算护栏 + 超参搜索空间，Copilot 自动发射训练试验、用只读预测器评估趋势、爬山调参（带回退护栏：变差则回滚到历史最优再换方向），直到达标即停或预算触顶兜底停。每个试验走既有训练队列通道，不新增训练入口。"
+  },
+  "advanced_en": {
+    "principle": "One-authorization unattended operation: set a target threshold (loss / validation loss / L2) + budget guardrails + a hyperparameter search space, and Copilot automatically launches training trials, evaluates trends with the read-only predictor, and hill-climbs parameters (with a rollback guardrail: on regression, roll back to the historical best and switch direction) until the goal is met or the budget cap stops it as a fallback. Every trial goes through the existing training-queue channel; no new training entry point is added."
   }
 }

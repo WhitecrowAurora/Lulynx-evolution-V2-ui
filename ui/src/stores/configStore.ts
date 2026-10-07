@@ -1,15 +1,25 @@
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
 import { create } from 'zustand'
-import { createDefaultConfig, getFieldDefinition, normalizeDraftValue } from '@/schema/schemaIndex.js'
 import { trainApi, type TrainDraftsPayload } from '@/api/trainApi'
 import { unwrap } from '@/api/transport'
 import { translate } from '@/i18n/useI18n'
+import { toast } from '@/stores/toastStore'
+import { isModelCodePermissionKey, stripModelCodePermission } from '@/lib/modelCodePermission'
+import { getPerfModeConfig } from '@/stores/perfModeStore'
 
 /* 训练配置草稿:按训练类型分 draft; localStorage + 磁盘双写 */
 
 const LS_KEY = 'lx-train-drafts-v1'
 const DISK_DEBOUNCE_MS = 900
 const LS_DEBOUNCE_MS = 400
+
+type TrainSchemaRuntime = {
+  createDefaultConfig(typeId: string): Record<string, unknown>
+  getFieldDefinition(key: string, typeId: string): { type?: string; [key: string]: unknown } | undefined
+  normalizeDraftValue(field: { type?: string; [key: string]: unknown } | undefined, raw: unknown): unknown
+}
+
+let schemaRuntime: TrainSchemaRuntime | null = null
 
 interface Persisted {
   typeId?: string
@@ -19,7 +29,7 @@ interface Persisted {
 
 function loadPersisted(): Persisted {
   try {
-    return JSON.parse(localStorage.getItem(LS_KEY) ?? '{}') as Persisted
+    return stripModelCodePermission(JSON.parse(localStorage.getItem(LS_KEY) ?? '{}')) as Persisted
   } catch {
     return {}
   }
@@ -33,7 +43,7 @@ function writeLocal(state: { typeId: string; drafts: Record<string, Record<strin
       JSON.stringify({
         typeId: state.typeId,
         updated_at: Date.now(),
-        drafts: { ...prev.drafts, ...state.drafts },
+        drafts: stripModelCodePermission({ ...prev.drafts, ...state.drafts }),
       }),
     )
   } catch {
@@ -43,7 +53,7 @@ function writeLocal(state: { typeId: string; drafts: Record<string, Record<strin
 
 function makeDraft(typeId: string, saved?: Record<string, unknown>): Record<string, unknown> {
   // 新 schema 字段拿默认值,已保存字段覆盖
-  const draft = { ...createDefaultConfig(typeId), ...(saved ?? {}) }
+  const draft = stripModelCodePermission({ ...(schemaRuntime?.createDefaultConfig(typeId) ?? {}), ...(saved ?? {}) })
   // quant_train_mode 已从下拉(dequant/keep_w8 字符串)改为布尔开关。
   // 老草稿存的是字符串,直接沿用会被 Boolean() 判成 truthy(连 'dequant' 也是),
   // 导致开关误显示为开。这里把 legacy 字符串归一成布尔:仅 keep_w8 系为 true。
@@ -52,6 +62,16 @@ function makeDraft(typeId: string, saved?: Record<string, unknown>): Record<stri
     draft.quant_train_mode = qtm.trim().toLowerCase() === 'keep_w8'
   }
   return draft
+}
+
+/** TrainPage loads the full schema lazily and registers its synchronous helpers here. */
+export function configureTrainSchema(runtime: TrainSchemaRuntime): void {
+  schemaRuntime = runtime
+  const state = useTrainConfigStore.getState()
+  const drafts = Object.fromEntries(
+    Object.entries(state.drafts).map(([typeId, draft]) => [typeId, makeDraft(typeId, draft)]),
+  )
+  useTrainConfigStore.setState({ drafts })
 }
 
 interface TrainConfigState {
@@ -67,13 +87,15 @@ interface TrainConfigState {
   replaceDraft(config: Record<string, unknown>): void
   resetDraft(): void
   bumpSchemaRev(): void
-  /** 磁盘草稿 merge(较新则覆盖 per-type) */
-  mergeDiskDrafts(payload: TrainDraftsPayload): void
+  /** 磁盘草稿 merge(较新则覆盖 per-type，但保留请求期间修改的草稿) */
+  mergeDiskDrafts(payload: TrainDraftsPayload, requestDrafts?: TrainConfigState['drafts']): void
   markDiskHydrated(): void
 }
 
 const persisted = loadPersisted()
 const initialType = persisted.typeId || 'anima-lora'
+// 默认占位类型不算本地选择；LS 和用户显式选择均优先于共享磁盘的 typeId。
+let hasLocalTypeSelection = Boolean(persisted.typeId)
 
 export const useTrainConfigStore = create<TrainConfigState>((set, get) => ({
   typeId: initialType,
@@ -81,6 +103,7 @@ export const useTrainConfigStore = create<TrainConfigState>((set, get) => ({
   schemaRev: 0,
   diskHydrated: false,
   setType(typeId) {
+    hasLocalTypeSelection = true
     const { drafts } = get()
     if (!drafts[typeId]) {
       set({ typeId, drafts: { ...drafts, [typeId]: makeDraft(typeId, loadPersisted().drafts?.[typeId]) } })
@@ -89,16 +112,18 @@ export const useTrainConfigStore = create<TrainConfigState>((set, get) => ({
     }
   },
   setValue(key, raw) {
+    if (isModelCodePermissionKey(key)) return
     const { typeId, drafts } = get()
-    const field = getFieldDefinition(key, typeId)
-    const value = normalizeDraftValue(field, raw)
+    const field = schemaRuntime?.getFieldDefinition(key, typeId)
+    const value = stripModelCodePermission(schemaRuntime?.normalizeDraftValue(field, raw) ?? raw)
     set({ drafts: { ...drafts, [typeId]: { ...drafts[typeId], [key]: value } } })
   },
   applyValues(values) {
     const { typeId, drafts } = get()
     const nextDraft = { ...drafts[typeId] }
-    for (const [key, raw] of Object.entries(values || {})) {
-      nextDraft[key] = normalizeDraftValue(getFieldDefinition(key, typeId), raw)
+    for (const [key, raw] of Object.entries(stripModelCodePermission(values || {}))) {
+      const field = schemaRuntime?.getFieldDefinition(key, typeId)
+      nextDraft[key] = schemaRuntime?.normalizeDraftValue(field, raw) ?? raw
     }
     set({ drafts: { ...drafts, [typeId]: nextDraft } })
   },
@@ -108,16 +133,17 @@ export const useTrainConfigStore = create<TrainConfigState>((set, get) => ({
   },
   resetDraft() {
     const { typeId, drafts } = get()
-    set({ drafts: { ...drafts, [typeId]: createDefaultConfig(typeId) } })
+    set({ drafts: { ...drafts, [typeId]: { ...makeDraft(typeId), ...getPerfModeConfig() } } })
   },
   bumpSchemaRev() {
     set({ schemaRev: get().schemaRev + 1 })
   },
-  mergeDiskDrafts(payload) {
+  mergeDiskDrafts(payload, requestDrafts) {
     const diskDrafts = payload?.drafts
     if (!diskDrafts || typeof diskDrafts !== 'object') return
     const diskUpdated = Number(payload.updated_at) || 0
-    const lsUpdated = Number(loadPersisted().updated_at) || 0
+    const local = loadPersisted()
+    const lsUpdated = Number(local.updated_at) || 0
     // 磁盘较新或 LS 无时间戳时,用磁盘覆盖已加载 type 的 bag
     if (diskUpdated < lsUpdated && lsUpdated > 0) {
       // 仍吸收 LS 没有的 type
@@ -125,7 +151,7 @@ export const useTrainConfigStore = create<TrainConfigState>((set, get) => ({
       const next = { ...drafts }
       let changed = false
       for (const [tid, bag] of Object.entries(diskDrafts)) {
-        if (!next[tid] && bag && typeof bag === 'object') {
+        if (!next[tid] && !Object.hasOwn(local.drafts ?? {}, tid) && bag && typeof bag === 'object') {
           next[tid] = makeDraft(tid, bag as Record<string, unknown>)
           changed = true
         }
@@ -136,14 +162,17 @@ export const useTrainConfigStore = create<TrainConfigState>((set, get) => ({
     const { drafts, typeId } = get()
     const next = { ...drafts }
     for (const [tid, bag] of Object.entries(diskDrafts)) {
+      if (requestDrafts && drafts[tid] !== requestDrafts[tid]) continue
       if (bag && typeof bag === 'object') {
         next[tid] = makeDraft(tid, bag as Record<string, unknown>)
       }
     }
+    if (requestDrafts && drafts[typeId] !== requestDrafts[typeId]) hasLocalTypeSelection = true
     const nextType =
-      payload.typeId && typeof payload.typeId === 'string' && (next[payload.typeId] || diskDrafts[payload.typeId])
+      !hasLocalTypeSelection && payload.typeId && typeof payload.typeId === 'string' && next[payload.typeId]
         ? payload.typeId
         : typeId
+    if (nextType === payload.typeId) hasLocalTypeSelection = true
     if (!next[nextType]) {
       next[nextType] = makeDraft(nextType, diskDrafts[nextType] as Record<string, unknown> | undefined)
     }
@@ -160,12 +189,18 @@ export function useDraft(): Record<string, unknown> {
   return useTrainConfigStore((s) => s.drafts[s.typeId]) ?? {}
 }
 
+/** 读取目标类型草稿而不切换当前类型；未访问类型仍优先使用本地保存值。 */
+export function getTrainDraft(typeId: string): Record<string, unknown> {
+  return useTrainConfigStore.getState().drafts[typeId] ?? makeDraft(typeId, loadPersisted().drafts?.[typeId])
+}
+
 let lsTimer: number | undefined
 let diskTimer: number | undefined
 let diskWriteFailedNotified = false
 let suppressDiskWrite = false
 
-useTrainConfigStore.subscribe((state) => {
+useTrainConfigStore.subscribe((state, previous) => {
+  if (state.drafts === previous.drafts && state.typeId === previous.typeId) return
   window.clearTimeout(lsTimer)
   lsTimer = window.setTimeout(() => {
     writeLocal(state)
@@ -186,10 +221,7 @@ useTrainConfigStore.subscribe((state) => {
       .catch(() => {
         if (!diskWriteFailedNotified) {
           diskWriteFailedNotified = true
-          // 动态 import 避免 store↔toast 循环;失败静默也可
-          import('@/stores/toastStore')
-            .then(({ toast }) => toast.warn(translate('draft.flush_fail'), 'DRAFT'))
-            .catch(() => {})
+          toast.warn(translate('draft.flush_fail'), 'DRAFT')
         }
       })
   }, DISK_DEBOUNCE_MS)
@@ -197,17 +229,23 @@ useTrainConfigStore.subscribe((state) => {
 
 /** 启动时从磁盘 hydrate; 可在 TrainPage mount 调用一次 */
 export async function hydrateTrainDraftsFromDisk(): Promise<void> {
+  const requestDrafts = useTrainConfigStore.getState().drafts
   try {
-    suppressDiskWrite = true
     const resp = await trainApi.loadTrainDrafts()
     const data = unwrap<TrainDraftsPayload>(resp)
     if (data && typeof data === 'object') {
-      useTrainConfigStore.getState().mergeDiskDrafts(data)
+      // 只抑制 hydrate 本身的回写；等待网络期间的用户编辑仍需正常持久化。
+      const previousSuppression = suppressDiskWrite
+      suppressDiskWrite = true
+      try {
+        useTrainConfigStore.getState().mergeDiskDrafts(data, requestDrafts)
+      } finally {
+        suppressDiskWrite = previousSuppression
+      }
     }
   } catch {
     /* 后端未起:仅 LS */
   } finally {
-    suppressDiskWrite = false
     useTrainConfigStore.getState().markDiskHydrated()
   }
 }
@@ -248,7 +286,7 @@ export async function clearCurrentTypeDraftOnDisk(): Promise<void> {
       const drafts = { ...(prev.drafts || {}) }
       delete drafts[typeId]
       const nextType = useTrainConfigStore.getState().typeId
-      drafts[nextType] = useTrainConfigStore.getState().drafts[nextType] || createDefaultConfig(nextType)
+      drafts[nextType] = useTrainConfigStore.getState().drafts[nextType] || makeDraft(nextType)
       localStorage.setItem(
         LS_KEY,
         JSON.stringify({ typeId: nextType, updated_at: Date.now(), drafts }),

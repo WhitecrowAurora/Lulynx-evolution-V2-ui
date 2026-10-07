@@ -1,0 +1,17 @@
+{
+  "key": "concept_geometry_embedding_api_key",
+  "title": "Embedding API Key",
+  "category": "Concept Geometry",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "Embedding API Key。",
+    "effect": "用云端 API 计算 embedding 时的密钥。",
+    "whenToUse": "本地跑不动 embedding 模型时走 API。",
+    "avoidWhen": "本地模型足够时不配，密钥注意保密。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

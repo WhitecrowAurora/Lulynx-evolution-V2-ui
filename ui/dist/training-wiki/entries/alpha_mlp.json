@@ -1,0 +1,17 @@
+{
+  "key": "alpha_mlp",
+  "title": "MLP Alpha",
+  "category": "LoRA / 分层",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "MLP 层 Alpha。",
+    "effect": "分层权重中 FFN/MLP 层的缩放系数。",
+    "whenToUse": "MLP 侧学习过多易过拟合，可单独压低。",
+    "avoidWhen": "留空=用全局 alpha。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

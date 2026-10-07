@@ -1,0 +1,24 @@
+{
+  "key": "lisa_active_ratio",
+  "title": "LISA 激活比例",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "LISA 激活比例。",
+    "effect": "LISA 每步只激活一小部分适配器层参与训练，该值是激活比例。",
+    "whenToUse": "多适配器/大 rank 下想省显存时使用。",
+    "avoidWhen": "单个小适配器不值得。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

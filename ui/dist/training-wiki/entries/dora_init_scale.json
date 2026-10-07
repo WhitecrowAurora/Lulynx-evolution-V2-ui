@@ -1,0 +1,24 @@
+{
+  "key": "dora_init_scale",
+  "title": "DoRA 初始幅度缩放",
+  "title_en": "DoRA Initial Magnitude Scale",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "DoRA 开训时给每行权重记一个“幅度”，默认就是这个权重本来的行范数。这个参数把初始幅度整体乘一个倍数。",
+    "effect": "1.0（默认）= 和经典 DoRA 一模一样。设 2.0 = 初始幅度翻倍，模型一开始“动”得更明显，但偏离了 DoRA 论文的恒等初始化。",
+    "whenToUse": "一般保持 1.0。想故意让适配层一开始就对输出有更强影响时才调大。",
+    "avoidWhen": "不要设 0 或负数（直接报错拒绝启动）。没有对照实验前不要偏离 1.0。"
+  },
+  "standard_en": {
+    "summary": "DoRA records a per-row magnitude at the start of training, defaulting to the base weight's own row norms. This parameter multiplies that initial magnitude by a factor.",
+    "effect": "1.0 (default) = exactly classic DoRA. 2.0 = doubled initial magnitude, so the adapter pulls harder from step 0 but departs from DoRA's identity initialisation.",
+    "whenToUse": "Keep 1.0. Raise it only when you deliberately want the adapter to influence outputs more strongly at the start.",
+    "avoidWhen": "Never set 0 or negative (startup fails closed with an error). Do not leave 1.0 without a controlled comparison."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

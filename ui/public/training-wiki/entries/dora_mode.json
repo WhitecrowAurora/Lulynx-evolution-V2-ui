@@ -1,7 +1,9 @@
 {
   "key": "dora_mode",
   "title": "DoRA 模式",
+  "title_en": "DoRA Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -16,6 +18,19 @@
       "merged": "合并成更像普通权重的样子，导出好说话。",
       "structure": "只训方向(结构),幅度保持不动。",
       "style": "只训幅度(强度),方向保持不动。"
+    }
+  },
+  "standard_en": {
+    "summary": "DoRA mode: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "full": "Trains both direction and magnitude.",
+      "split": "Stores and updates direction and magnitude apart, which is easier to inspect separately.",
+      "merged": "Merges them into something closer to an ordinary weight, which exports more easily.",
+      "structure": "Trains direction (structure) only, leaving magnitude fixed.",
+      "style": "Trains magnitude (strength) only, leaving direction fixed."
     }
   },
   "advanced": {},

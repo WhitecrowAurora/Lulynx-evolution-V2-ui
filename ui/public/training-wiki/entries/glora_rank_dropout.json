@@ -1,7 +1,9 @@
 {
   "key": "glora_rank_dropout",
   "title": "GLoRA / GLoKr (广义 LoRA)",
+  "title_en": "GLoRA / GLoKr (Generalized LoRA)",
   "category": "LoRA / LyCORIS",
+  "category_en": "LoRA / LyCORIS",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,17 +13,33 @@
   "layers": [
     "适配器层"
   ],
+  "layers_en": [
+    "Adapter layer"
+  ],
   "standard": {
     "summary": "GLoRA（Generalized LoRA）使用 ΔW = W·A + B 的更新形式（而非标准 LoRA 的 A·B）。GLoKr 是 Kronecker 参数化的广义适配器。两者都通过 LyCORIS 框架使用。",
     "effect": "GLoRA 的 ΔW = W·A + B 比标准 LoRA 的 A·B 表达力更强——它不仅修改低秩方向，还通过 W·A 项对原始权重做线性变换。GLoKr 用 Kronecker 积参数化广义更新。",
     "whenToUse": "追求比标准 LoRA 更强表达力时。lycoris_algo='glora' 或 'glokr'。",
     "avoidWhen": "推理兼容性不确定时。文件大小可能比标准 LoRA 大。"
   },
+  "standard_en": {
+    "summary": "GLoRA (Generalized LoRA) uses the update form dW = W.A + B rather than standard LoRA's A.B. GLoKr is the Kronecker-parameterised generalised adapter. Both are used through the LyCORIS framework.",
+    "effect": "GLoRA's dW = W.A + B is more expressive than standard LoRA's A.B -- besides modifying low-rank directions, the W.A term applies a linear transform to the original weights. GLoKr parameterises the generalised update with a Kronecker product.",
+    "whenToUse": "When you want more expressiveness than standard LoRA. Set lycoris_algo='glora' or 'glokr'.",
+    "avoidWhen": "When inference compatibility is uncertain. The files can be larger than a standard LoRA."
+  },
   "advanced": {
     "principle": "GLoRA: ΔW = W_base·A + B，其中 A 是与 base 权重交互的变换矩阵，B 是标准低秩偏移。glora_rank_dropout 对 ΔW 每行做 dropout。glora_module_dropout 整层跳过。glora_no_materialize_forward 快速路径——链式矩阵乘法不显式构造 A,B。glora_use_tucker 对 Conv2d 使用 Tucker B 路径。GLoKr: Kronecker 参数化的广义适配器。glokr_factor 控制 Kronecker 因子。glokr_no_materialize_forward 实验性不具化前向路径。",
     "intervention": "LyCORIS 框架中作为 glora/glokr 算法分支注入。",
     "expectedImpact": "表达力比标准 LoRA 更强。质量提升因任务而异。",
     "tradeoffs": "glora_export_mode/glokr_export_mode 控制导出格式（native/lora_compatible）。",
+    "codePath": "lycoris/ → GLoRA/GLoKr algorithm → ΔW = W·A + B / Kronecker parameterization"
+  },
+  "advanced_en": {
+    "principle": "GLoRA: ΔW = W_base·A + B, where A is a transform matrix interacting with the base weights and B a standard low-rank offset. glora_rank_dropout applies dropout per row of ΔW. glora_module_dropout skips whole layers. glora_no_materialize_forward is a fast path — chained matmuls without explicitly constructing A,B. glora_use_tucker uses the Tucker B path for Conv2d. GLoKr: a Kronecker-parameterized generalized adapter. glokr_factor controls the Kronecker factor. glokr_no_materialize_forward is an experimental non-materialized forward path.",
+    "intervention": "Injected as the glora/glokr algorithm branches in the LyCORIS framework.",
+    "expectedImpact": "More expressive than standard LoRA. Quality gains vary by task.",
+    "tradeoffs": "glora_export_mode/glokr_export_mode control the export format (native/lora_compatible).",
     "codePath": "lycoris/ → GLoRA/GLoKr algorithm → ΔW = W·A + B / Kronecker parameterization"
   },
   "relatedConfigs": [

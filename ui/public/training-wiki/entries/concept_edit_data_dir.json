@@ -1,7 +1,9 @@
 {
   "key": "concept_edit_data_dir",
   "title": "概念编辑数据集目录",
+  "title_en": "Datadirectory",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,12 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "The dataset directory holding the paired images.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "放置成对图像的数据集目录。当前版本先按固定分辨率读入，不走普通 LoRA 的子文件夹 repeat 语义。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Dataset directory holding paired images. The current version reads them at a fixed resolution and does not use the subfolder-repeat semantics of ordinary LoRA training."
   },
   "relatedConfigs": []
 }

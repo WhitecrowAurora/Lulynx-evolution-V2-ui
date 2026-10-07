@@ -1,0 +1,30 @@
+{
+  "key": "sdxl_flow_shift",
+  "title": "Flow 离散偏移",
+  "category": "Anima 专用参数",
+  "appliesTo": [
+    "anima-addift",
+    "anima-controlnet",
+    "anima-edit-model",
+    "anima-finetune",
+    "anima-ileco",
+    "anima-lora",
+    "anima-multi-addift",
+    "concept-edit",
+    "flux-finetune",
+    "flux-lora",
+    "hunyuan-dit-lora",
+    "lumina-finetune",
+    "lumina-lora",
+    "qwen-image-lora",
+    "sd3-lora"
+  ],
+  "standard": {
+    "summary": "离散 flow shift，1.0 表示不偏移。",
+    "effect": "写入训练配置 sdxl_flow_shift，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 1，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

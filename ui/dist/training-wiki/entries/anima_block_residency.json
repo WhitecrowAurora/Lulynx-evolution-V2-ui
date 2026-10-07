@@ -1,7 +1,9 @@
 {
   "key": "anima_block_residency",
   "title": "Anima / Newbie Streaming Offload",
+  "title_en": "Anima Block Offload",
   "category": "DiT / 显存驻留",
+  "category_en": "DiT / VRAM Residency",
   "appliesTo": [
     "anima-lora",
     "newbie-lora",
@@ -12,6 +14,11 @@
     "显存驻留层",
     "PCIe 传输层"
   ],
+  "layers_en": [
+    "DiT backbone layer",
+    "VRAM residency layer",
+    "PCIe transfer layer"
+  ],
   "standard": {
     "summary": "控制冻结 DiT block 权重放在 GPU、流式交换，或固定在 CPU pinned 内存。",
     "effect": "越偏 CPU 越省显存，但越依赖 PCIe 和预取策略。",
@@ -19,7 +26,19 @@
     "avoidWhen": "高端卡显存足够时 resident 通常更快；低端卡 PCIe 很弱时 block_cpu_pinned 可能产生训练空泡。",
     "optionDescriptions": {
       "resident": "block 权重常驻 GPU。",
-      "block_cpu_pinned": "按 block 从 CPU pinned 流，显存省，总线弱会空等。"
+      "block_cpu_pinned": "按 block 从 CPU pinned 流，显存省，总线弱会空等。",
+      "streaming_offload": "逐 block 串流:冻结 block 常驻 CPU,forward 时按需把当前 block 搬上卡,最省显存也最吃 PCIe;「稀疏交换」那三个旋钮只在这一档下生效(低显存守卫自行把驻留切成这一档时,会连带打开稀疏交换)。"
+    }
+  },
+  "standard_en": {
+    "summary": "Controls whether frozen DiT block weights sit on the GPU, are streamed in and out, or stay pinned in CPU memory.",
+    "effect": "The more it leans towards the CPU the more VRAM it saves, and the more it depends on PCIe and the prefetch strategy.",
+    "whenToUse": "Use streaming_offload for Anima / Newbie at high resolution, long token counts, or when 16GB of VRAM has to be brought under the peak.",
+    "avoidWhen": "resident is usually faster when a high-end card has the VRAM to spare; on a low-end card with very weak PCIe, block_cpu_pinned can produce training bubbles.",
+    "optionDescriptions": {
+      "resident": "Block weights stay on the GPU.",
+      "block_cpu_pinned": "Streamed per block from CPU pinned memory: saves VRAM, and a weak bus means idle waiting.",
+      "streaming_offload": "Block-by-block streaming: frozen blocks live on the CPU and the current block is brought onto the card on demand during the forward pass. The largest VRAM saving and the heaviest PCIe load. The three sparse-swap knobs only take effect at this level, and when the low-VRAM guard switches residency here itself it turns sparse swap on with it."
     }
   },
   "advanced": {
@@ -27,6 +46,12 @@
     "intervention": "介入冻结主干权重的设备放置和前向前搬运，不改变 LoRA 可训练参数。",
     "expectedImpact": "显著降低 base 权重 VRAM 占用；真实吞吐由 PCIe、prefetch depth、checkpointing 和 batch 共同决定。",
     "tradeoffs": "需要和 DiT block checkpointing、sparse swap、PCIe transfer format 一起短测，不同机器差异很大。"
+  },
+  "advanced_en": {
+    "principle": "Frozen DiT weights are never updated, so their residency location can change. Streaming Offload keeps the hot path resident and prefetches the cold path per block.",
+    "intervention": "Intervenes in the device placement of frozen backbone weights and their pre-forward moves; does not touch LoRA trainable parameters.",
+    "expectedImpact": "Significantly lowers base-weight VRAM; real throughput is decided jointly by PCIe, prefetch depth, checkpointing, and batch.",
+    "tradeoffs": "Short-test it together with DiT block checkpointing, sparse swap, and PCIe transfer format — results vary a lot across machines."
   },
   "relatedConfigs": [
     "newbie_block_residency",

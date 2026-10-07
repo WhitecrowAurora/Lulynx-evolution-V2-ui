@@ -1,7 +1,9 @@
 {
   "key": "lora_fa_enabled",
-  "title": "LoRA-FA (因子化注意力)",
+  "title": "Frozen-A LoRA（LoRA-FA 系）",
+  "title_en": "Frozen-A LoRA",
   "category": "LoRA / 变体",
+  "category_en": "LoRA / Variants",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,17 +13,33 @@
   "layers": [
     "适配器层"
   ],
+  "layers_en": [
+    "Adapter layer"
+  ],
   "standard": {
-    "summary": "LoRA-FA 只在 attention 层（Q/K/V/Out projection）注入 LoRA 适配器，跳过 FFN（前馈网络）层。减少可训练参数量的同时保持大部分学习效果。",
-    "effect": "可训练参数减少约 40-50%，训练速度提升，显存降低。对大多数角色/风格学习质量影响很小。",
-    "whenToUse": "显存紧张但想保持较高 rank 时。快速实验和调参阶段。",
-    "avoidWhen": "需要全模型微调效果时。复杂的多概念训练可能需要 FFN 层也参与学习。"
+    "summary": "冻结随机初始化的 A（lora_down），只训练零初始化的 B（lora_up）；注入的模块集合与普通 LoRA 完全一样，不改靶子。同族上游 LoRA-FA (arXiv:2308.03303) 还给 B 的更新做闭式梯度校正，本仓没有 ⇒ 不等价。",
+    "effect": "适配器可训练参数从 r×(in+out) 降到 r×out（约一半），优化器状态随之减半；B 零初始化 ⇒ 起步 delta 恰为 0，与不开启位级一致。",
+    "whenToUse": "想在同一 rank 下压低优化器状态与显存，且接受「A 不参与学习」这个约束时。",
+    "avoidWhen": "需要 A/B 都学的表达力时；需要论文 LoRA-FA 闭式梯度校正语义时。它不改变注入的模块集合，所以不要用它来「只训 attention 跳过 FFN」。"
+  },
+  "standard_en": {
+    "summary": "Freezes the randomly initialised A (lora_down) and trains only the zero-initialised B (lora_up); the set of injected modules is exactly the same as ordinary LoRA, so the targets do not change. The upstream sibling LoRA-FA (arXiv:2308.03303) also applies a closed-form gradient correction to B's update, which this repository does not, so the two are not equivalent.",
+    "effect": "The adapter's trainable parameters drop from r x (in+out) to r x out (about half), and the optimizer state halves with them; because B starts at zero the initial delta is exactly 0, bit-identical to leaving it off.",
+    "whenToUse": "When you want lower optimizer state and VRAM at the same rank and accept that A does not learn.",
+    "avoidWhen": "When you need the expressiveness of both A and B learning, or the paper's closed-form gradient correction semantics. It does not change the set of injected modules, so do not reach for it to train attention only and skip the FFN."
   },
   "advanced": {
     "principle": "标准 LoRA 注入所有 Linear 层（attention + FFN）。LoRA-FA 只对 attention 的 Q/K/V/O 投影注入，FFN 的 up/down/gate 投影保持冻结。attention 层通常占模型参数的 30-40%，所以参数减少比例显著。",
     "intervention": "修改 LoRA 注入的目标模块列表，排除 FFN 相关 Linear。",
     "expectedImpact": "质量损失通常 < 2%（attention 层承载了大部分跨模态信息），但训练速度和显存改善明显。",
     "tradeoffs": "可与 network_train_unet_only 组合进一步减少训练范围。",
+    "codePath": "trainer.py: LoRA injection filter → attention-only target modules"
+  },
+  "advanced_en": {
+    "principle": "Standard LoRA injects all Linear layers (attention + FFN). LoRA-FA injects only attention's Q/K/V/O projections, keeping the FFN's up/down/gate projections frozen. Attention layers usually hold 30-40% of model parameters, so the parameter reduction is significant.",
+    "intervention": "Modifies the LoRA injection target-module list, excluding FFN-related Linears.",
+    "expectedImpact": "Quality loss usually < 2% (attention layers carry most cross-modal information), with clear training-speed and VRAM gains.",
+    "tradeoffs": "Can combine with network_train_unet_only to shrink the training scope further.",
     "codePath": "trainer.py: LoRA injection filter → attention-only target modules"
   },
   "relatedConfigs": [

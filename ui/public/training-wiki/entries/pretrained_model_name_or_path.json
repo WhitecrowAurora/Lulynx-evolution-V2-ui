@@ -1,7 +1,9 @@
 {
   "key": "pretrained_model_name_or_path",
   "title": "基础模型路径",
+  "title_en": "SDXL base model path",
   "category": "模型 / 基础",
+  "category_en": "Model / Basics",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -23,9 +25,19 @@
     "whenToUse": "每次训练必须设置。路径支持本地绝对路径和 HuggingFace Hub 的模型 ID。",
     "avoidWhen": "基础模型路径错误会导致训练立即失败（文件不存在或格式不匹配）。确保模型格式与 model_train_type 匹配。"
   },
+  "standard_en": {
+    "summary": "The path to the base model file used for training (.safetensors / .ckpt) or a HuggingFace model ID. Every LoRA weight adapts on top of this model.",
+    "effect": "The base model decides the LoRA's underlying character and its stylistic foundation. Different architectures -- SD1.5 / SDXL / Anima / Flux -- need the training configuration for their own route.",
+    "whenToUse": "It has to be set for every run. The path accepts a local absolute path or a model ID on the HuggingFace Hub.",
+    "avoidWhen": "A wrong base-model path makes training fail immediately (the file does not exist, or the format does not match). Make sure the model format matches model_train_type."
+  },
   "advanced": {
     "principle": "v2 = 是否是 SD 2.x 系列（影响 CLIP tokenizer 和 UNet 架构的选择）；base_weights/multiplier 允许在基础模型上叠加额外的初始权重（如先加载一个已训练的 LoRA 作为起点）；dim_from_weights 从预加载权重文件推断 network_dim；num_vectors_per_token 是 textual inversion 专用（每个 token 的嵌入向量数）。",
     "tradeoffs": "从 HuggingFace Hub 加载需要网络连接（或预先下载缓存）；本地路径更可靠但需要手动管理文件。"
+  },
+  "advanced_en": {
+    "principle": "v2 = whether it is an SD 2.x-family model (affects the CLIP tokenizer and UNet architecture choice); base_weights/multiplier allow stacking extra initial weights on the base model (e.g. loading an already-trained LoRA as the starting point); dim_from_weights infers network_dim from the preloaded weight file; num_vectors_per_token is textual-inversion-specific (embedding vector count per token).",
+    "tradeoffs": "Loading from the HuggingFace Hub requires network access (or a pre-downloaded cache); local paths are more reliable but require manual file management."
   },
   "relatedConfigs": [
     "network_dim",

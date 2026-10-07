@@ -1,0 +1,16 @@
+{
+  "key": "schema_id",
+  "title": "schema_id",
+  "category": "Edit 训练",
+  "appliesTo": [
+    "anima-edit-model"
+  ],
+  "standard": {
+    "summary": "schema_id。默认 anima-lora",
+    "effect": "写入训练配置 schema_id，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 anima-lora，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

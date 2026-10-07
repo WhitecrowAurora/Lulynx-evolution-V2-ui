@@ -1,0 +1,16 @@
+{
+  "key": "flux_transformer_offload",
+  "title": "FLUX Transformer Offload",
+  "category": "速度优化",
+  "appliesTo": [
+    "flux-lora"
+  ],
+  "standard": {
+    "summary": "FLUX 预览/训练时 transformer 块 offload 策略。",
+    "effect": "auto=按显存自动。",
+    "whenToUse": "默认 auto，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

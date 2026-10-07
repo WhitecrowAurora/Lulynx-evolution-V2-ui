@@ -1,0 +1,16 @@
+{
+  "key": "newbie_merge_export",
+  "title": "保存后导出合并 Newbie 整模",
+  "category": "训练与保存",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "训练完成后将 LoRA 合并进 Newbie 整模并额外保存 dense 包。",
+    "effect": "写入训练配置 newbie_merge_export，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

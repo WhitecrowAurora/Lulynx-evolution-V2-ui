@@ -1,0 +1,20 @@
+{
+  "key": "dokr_factor_out",
+  "title": "DoKr out 因子",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "LoKr out 侧分解因子偏好 (0=默认 8)。",
+    "effect": "写入训练配置 dokr_factor_out，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

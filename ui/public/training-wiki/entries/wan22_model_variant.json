@@ -1,7 +1,9 @@
 {
   "key": "wan22_model_variant",
   "title": "变体（wan22_model_variant）",
+  "title_en": "Variant",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -14,8 +16,24 @@
       "t2v-a14b": "T2V A14B 双塔。"
     }
   },
+  "standard_en": {
+    "summary": "ti2v-5b single tower / t2v-a14b dual tower",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "ti2v-5b": "The TI2V 5B single tower.",
+      "t2v-a14b": "The T2V A14B dual tower."
+    }
+  },
   "advanced": {
     "principle": "ti2v-5b 单塔 / t2v-a14b 双塔（high|low|both）。VAE 与 latent C 按变体 fail-closed。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "ti2v-5b single-tower / t2v-a14b dual-tower (high|low|both). VAE and latent C are fail-closed per variant.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

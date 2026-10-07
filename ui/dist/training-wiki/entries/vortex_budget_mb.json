@@ -1,7 +1,9 @@
 {
   "key": "vortex_budget_mb",
   "title": "Vortex Cache 预算 MB（vortex_budget_mb）",
+  "title_en": "Vortex cache budget in MB",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "For manual cache_v0 experiments only",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "仅 cache_v0 手动实验使用；会映射到底层 PCIe Delta/Cache 预算。0 表示不分配真实缓存。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Only for cache_v0 manual experiments; maps onto the underlying PCIe Delta/Cache budget. 0 = no real cache allocated.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

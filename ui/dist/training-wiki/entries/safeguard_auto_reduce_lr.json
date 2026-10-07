@@ -1,7 +1,9 @@
 {
   "key": "safeguard_auto_reduce_lr",
   "title": "自动降低学习率",
+  "title_en": "Learning Rate",
   "category": "训练 / 稳定性",
+  "category_en": "Training / Stability",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -16,9 +18,19 @@
     "whenToUse": "希望训练全程无人值守且不因一次 spike 中断时开启。结合 lr_reduction_factor=0.5 调整降幅。",
     "avoidWhen": "若 loss 爆炸是真实崩溃（如数据错误），自动降 LR 也救不了，建议关闭让训练直接停止排查。"
   },
+  "standard_en": {
+    "summary": "When SafeGuard detects a loss spike, it multiplies the learning rate by lr_reduction_factor to lower it rather than stopping training outright.",
+    "effect": "With this on, a spike does not stop the run; it tries to continue at a lower learning rate. Suited to unattended training, where slowing down beats being interrupted.",
+    "whenToUse": "Turn it on when you want training to run unattended throughout and not be interrupted by a single spike. Tune the size of the reduction with lr_reduction_factor=0.5.",
+    "avoidWhen": "If the loss explosion is a real collapse (bad data, say), lowering the LR automatically will not save it -- turn this off and let training stop so you can investigate."
+  },
   "advanced": {
     "principle": "触发 spike 后调用 optimizer.param_groups 遍历，将所有参数组 lr *= lr_reduction_factor。不影响优化器动量等状态。",
     "tradeoffs": "多次触发导致 LR 呈指数衰减（连续 3 次 0.5 倍 → 降至原 LR × 0.125），可能影响后续收敛速度。"
+  },
+  "advanced_en": {
+    "principle": "After a spike triggers, it iterates optimizer.param_groups and multiplies every param group's lr by lr_reduction_factor. Optimizer momentum and other state are untouched.",
+    "tradeoffs": "Multiple triggers make LR decay exponentially (three consecutive 0.5x → LR × 0.125), which can slow later convergence."
   },
   "relatedConfigs": [
     "safeguard_enabled",

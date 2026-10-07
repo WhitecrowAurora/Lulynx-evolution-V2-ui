@@ -1,7 +1,9 @@
 {
   "key": "sample_every_n_steps",
   "title": "每 N 步生成预览图",
+  "title_en": "N Preview",
   "category": "训练 / 预览",
+  "category_en": "Training / Preview",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -18,9 +20,19 @@
     "whenToUse": "长训练（>200步）推荐开启，帮助判断最佳停止点（防止过拟合后才发现）。",
     "avoidWhen": "生成预览会暂停训练约 5~30 秒（取决于生成步数和分辨率），频率过高会浪费训练时间。建议不超过每 50 步一次。"
   },
+  "standard_en": {
+    "summary": "Generates a preview image with the current LoRA weights every N steps, to monitor progress. 0 = no previews.",
+    "effect": "Set to 50 = a set of previews saved to the output directory every 50 steps. It shows directly what the LoRA has learned at different step counts.",
+    "whenToUse": "Recommended on a long run (>200 steps), as it helps judge the best stopping point (rather than noticing overfitting only afterwards).",
+    "avoidWhen": "Generating a preview pauses training for roughly 5~30 seconds (depending on the step count and resolution), so too high a frequency wastes training time. No more often than every 50 steps is advisable."
+  },
   "advanced": {
     "principle": "每 N 步后暂停优化器，使用 eval 模式运行 DDIM/DPM 等采样器生成固定 prompt 的图像，然后恢复训练。sample_at_first = 是否在第 0 步（训练前）也生成一张作为基准对比。sample_cfg 控制生成时的 CFG 强度。",
     "tradeoffs": "生成预览使用训练器的 GPU，会短暂打断 GPU 的训练计算流。batch 越大、采样步数越多，预览越耗时。建议 sample_num_steps 设为 20~25（快速采样）。"
+  },
+  "advanced_en": {
+    "principle": "Every N steps it pauses the optimizer, runs a DDIM/DPM-class sampler in eval mode to generate fixed-prompt images, then resumes training. sample_at_first = whether to also generate one at step 0 (before training) as a baseline comparison. sample_cfg controls the CFG strength at generation time.",
+    "tradeoffs": "Preview generation uses the trainer's GPU and briefly interrupts the GPU's training compute stream. The larger the batch and the more sampling steps, the longer the preview takes. Recommend sample_num_steps of 20~25 (fast sampling)."
   },
   "relatedConfigs": [
     "save_every_n_steps",

@@ -1,0 +1,17 @@
+{
+  "key": "pixel_space_enabled",
+  "title": "像素空间训练",
+  "category": "像素空间训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "像素空间训练。",
+    "effect": "跳过 VAE 直接在像素域训练（配合 pixel decoder）。",
+    "whenToUse": "VAE 是瓶颈/做像素级控制实验时使用。",
+    "avoidWhen": "计算量大，默认关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

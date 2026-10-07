@@ -1,0 +1,17 @@
+{
+  "key": "init_word",
+  "title": "初始化词",
+  "category": "训练 / Textual Inversion",
+  "appliesTo": [
+    "sd-textual-inversion",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "TI 初始化词。",
+    "effect": "Textual Inversion 新 token 的 embedding 用哪个已有词初始化。",
+    "whenToUse": "选语义接近的词能显著加速收敛。",
+    "avoidWhen": "留空=随机初始化。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

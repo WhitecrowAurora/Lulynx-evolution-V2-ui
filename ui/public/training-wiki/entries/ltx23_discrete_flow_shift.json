@@ -1,0 +1,19 @@
+{
+  "key": "ltx23_discrete_flow_shift",
+  "title": "Flow shift",
+  "category": "训练用模型",
+  "appliesTo": [
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora"
+  ],
+  "standard": {
+    "summary": "LTX Flow shift。",
+    "effect": "LTX 2.3 的 discrete flow shift，控制 timestep 采样偏移。",
+    "whenToUse": "视频 RF 训练常用 3-7 之间。",
+    "avoidWhen": "默认 1 即均匀采样。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

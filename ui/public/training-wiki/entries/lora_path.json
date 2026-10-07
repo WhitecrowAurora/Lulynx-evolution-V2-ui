@@ -1,0 +1,16 @@
+{
+  "key": "lora_path",
+  "title": "Teacher LoRA",
+  "category": "蒸馏输入",
+  "appliesTo": [
+    "lab-distiller"
+  ],
+  "standard": {
+    "summary": "传统 LoRA teacher，通常对应 LoRA 架构模型。",
+    "effect": "写入训练配置 lora_path，由训练后端在相应阶段消费。",
+    "whenToUse": "路径留空时走默认解析/该功能不启用。",
+    "avoidWhen": "填错路径会在预检或启动时报错，注意路径有效性。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

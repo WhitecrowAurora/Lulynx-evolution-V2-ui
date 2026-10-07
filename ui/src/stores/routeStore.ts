@@ -12,7 +12,13 @@ export const ROUTES: { id: RouteId; zh: string; en: string; idx: string; dev?: b
   { id: 'gallery', zh: '画廊', en: 'Gallery', idx: 'DEV', dev: true },
 ]
 
-const VALID = new Set(ROUTES.map((r) => r.id))
+/** Routes intentionally exposed by this build. DEV-only pages stay reachable in Vite dev. */
+export const AVAILABLE_ROUTES = ROUTES.filter((route) => !route.dev || import.meta.env.DEV)
+const VALID = new Set(AVAILABLE_ROUTES.map((r) => r.id))
+
+function isAvailableRoute(route: RouteId): boolean {
+  return VALID.has(route)
+}
 
 function parseHash(): RouteId {
   const h = window.location.hash.replace(/^#\/?/, '').split(/[/?]/)[0]
@@ -29,8 +35,9 @@ interface RouteState {
 export const useRouteStore = create<RouteState>((set) => ({
   route: parseHash(),
   navigate(route) {
-    if (window.location.hash !== `#/${route}`) window.location.hash = `/${route}`
-    set({ route })
+    const nextRoute = isAvailableRoute(route) ? route : 'train'
+    if (window.location.hash !== `#/${nextRoute}`) window.location.hash = `/${nextRoute}`
+    set({ route: nextRoute })
   },
   syncFromHash() {
     set({ route: parseHash() })

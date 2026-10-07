@@ -1,0 +1,17 @@
+{
+  "key": "concept_direction_neutral_reg",
+  "title": "中性正则强度",
+  "category": "概念方向训练 · Concept Direction",
+  "appliesTo": [
+    "sd-lora",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "让负向提示词下的预测保持接近底模，减少对照概念偏移；0 表示关闭。",
+    "effect": "写入训练配置 concept_direction_neutral_reg，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

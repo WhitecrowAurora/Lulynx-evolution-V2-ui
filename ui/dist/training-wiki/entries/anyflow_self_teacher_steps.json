@@ -1,0 +1,24 @@
+{
+  "key": "anyflow_self_teacher_steps",
+  "title": "自蒸馏教师步数",
+  "category": "采样与优化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "教师从当前噪声点走到终点的步数；越大越准也越慢（每步一次额外前向）。",
+    "effect": "写入训练配置 anyflow_self_teacher_steps，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 8，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

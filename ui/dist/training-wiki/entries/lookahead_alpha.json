@@ -1,0 +1,24 @@
+{
+  "key": "lookahead_alpha",
+  "title": "Lookahead 慢权重比例 a",
+  "title_en": "Lookahead Alpha",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "每次同步时慢权重向快权重移动的比例。",
+    "effect": "默认 0.5（论文推荐）。必须落在 (0, 1] 区间，越界直接报错。",
+    "whenToUse": "保持 0.5。想让慢权重更保守可以调小。",
+    "avoidWhen": "设 0 或大于 1 会直接报错拒绝启动。"
+  },
+  "standard_en": {
+    "summary": "The fraction of the way the slow weights move toward the fast weights at each sync.",
+    "effect": "Default 0.5 (paper recommendation). Must be in (0, 1] or startup fails.",
+    "whenToUse": "Keep 0.5. Lower values make the slow weights lazier.",
+    "avoidWhen": "0 or above 1 fails closed with an error at startup."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

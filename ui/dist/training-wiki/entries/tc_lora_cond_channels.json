@@ -1,0 +1,20 @@
+{
+  "key": "tc_lora_cond_channels",
+  "title": "TC-LoRA 条件通道",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "条件 latent/control 通道数。",
+    "effect": "写入训练配置 tc_lora_cond_channels，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 16，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

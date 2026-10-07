@@ -1,0 +1,24 @@
+{
+  "key": "reft_rank",
+  "title": "ReFT Rank",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "ReFT Rank。",
+    "effect": "每个干预的秩（干预子空间维度）。",
+    "whenToUse": "干预容量不足/过拟合时调整。",
+    "avoidWhen": "默认 8 起步。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

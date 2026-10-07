@@ -1,0 +1,24 @@
+{
+  "key": "pilot_threshold_high_grad",
+  "title": "Pilot 高梯度阈值",
+  "title_en": "Pilot High-Grad Threshold",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "平滑后的全局梯度范数超过它时，Pilot 认为出现尖峰，往下压学习率（cool 档）。",
+    "effect": "默认 1.0。必须大于低梯度阈值，否则启动报错。",
+    "whenToUse": "loss 偶发爆炸、梯度尖峰多的训练用。",
+    "avoidWhen": "阈值太低会一直压着学习率，训练变慢。"
+  },
+  "standard_en": {
+    "summary": "When the smoothed global gradient norm exceeds this, the Pilot sees a spike and lowers the learning rate (cool gear).",
+    "effect": "Default 1.0. Must exceed the low-grad threshold or startup fails.",
+    "whenToUse": "Use for runs with occasional loss explosions / gradient spikes.",
+    "avoidWhen": "Too low a threshold keeps the lr pinned down."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

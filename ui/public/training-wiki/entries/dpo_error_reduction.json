@@ -1,0 +1,17 @@
+{
+  "key": "dpo_error_reduction",
+  "title": "误差归约",
+  "category": "DPO 偏好对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "Flow-DPO 预测误差 sum 或 mean。",
+    "effect": "写入训练配置 dpo_error_reduction，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 sum，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

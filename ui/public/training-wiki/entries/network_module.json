@@ -1,7 +1,9 @@
 {
   "key": "network_module",
   "title": "LoRA 网络模块",
+  "title_en": "Network module",
   "category": "LoRA / 网络结构",
+  "category_en": "LoRA / Network Structure",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -27,12 +29,39 @@
       "networks.lulynx_progressive_rank_lora": "渐进秩 LoRA 模块,后端归一到 networks.tlora。"
     }
   },
+  "standard_en": {
+    "summary": "Chooses the LoRA implementation module. networks.lora is the standard linear LoRA; networks.lora_fa is the Frozen-A variant; lora_flux / lora_sd3 are dedicated implementations for particular architectures.",
+    "effect": "The module decides how the LoRA is injected into the target layers and whether special variants (DoRA, LyCORIS and so on) are supported.",
+    "whenToUse": "The default is fine in most cases -- the trainer picks a suitable module automatically from the model type.",
+    "avoidWhen": "Editing the module path by hand takes an understanding of the internals; a wrong path makes training fail.",
+    "optionDescriptions": {
+      "networks.lora": "The standard LoRA module.",
+      "networks.lora_fa": "LoRA-FA.",
+      "networks.vera": "VeRA.",
+      "networks.tlora": "The lulynx progressive-rank LoRA (the historical T-LoRA key).",
+      "networks.flexrank_lora": "FlexRank LoRA.",
+      "networks.oft": "OFT.",
+      "lycoris.kohya": "LyCORIS (the Kohya entry point).",
+      "networks.lora_flux": "The LoRA for FLUX.",
+      "networks.tlora_flux": "The lulynx progressive-rank LoRA on FLUX (the historical T-LoRA key).",
+      "networks.oft_flux": "OFT on FLUX.",
+      "networks.lulynx_frozen_a_lora": "The local name for the LoRA-FA module; the backend normalises it to networks.lora_fa.",
+      "networks.lulynx_progressive_rank_lora": "The progressive-rank LoRA module; the backend normalises it to networks.tlora."
+    }
+  },
   "advanced": {
     "principle": "模块以类路径形式指定（如 networks.lora），训练器通过 importlib 动态加载并初始化 LoRA 结构。",
     "tradeoffs": "自定义模块允许接入第三方 LoRA 实现，但需要与训练器接口兼容。"
   },
+  "advanced_en": {
+    "principle": "Modules are specified as class paths (e.g. networks.lora); the trainer loads them dynamically via importlib and initializes the LoRA structure.",
+    "tradeoffs": "Custom modules allow third-party LoRA implementations, but they must be compatible with the trainer's interface."
+  },
   "relatedConfigs": [
     "network_dim",
     "network_alpha"
+  ],
+  "aliases": [
+    "native_training_method"
   ]
 }

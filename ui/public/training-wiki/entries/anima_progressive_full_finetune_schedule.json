@@ -1,7 +1,9 @@
 {
   "key": "anima_progressive_full_finetune_schedule",
   "title": "渐进解冻 schedule",
+  "title_en": "Schedule",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,12 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "For example: 0:24-27,100:16-27,200:all",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "例：0:24-27,100:16-27,200:all。步号:block 范围。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Example: 0:24-27,100:16-27,200:all. Format is step:block-range."
   },
   "relatedConfigs": []
 }

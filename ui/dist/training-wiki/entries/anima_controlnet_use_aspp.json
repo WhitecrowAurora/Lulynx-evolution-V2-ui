@@ -1,0 +1,16 @@
+{
+  "key": "anima_controlnet_use_aspp",
+  "title": "启用多尺度 ASPP",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "anima-controlnet"
+  ],
+  "standard": {
+    "summary": "对 depth/分割等全局结构更有帮助；线稿可关。",
+    "effect": "写入训练配置 anima_controlnet_use_aspp，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,17 @@
+{
+  "key": "flux2_block_offload_prefetch_depth",
+  "title": "Block Offload 预取深度",
+  "category": "FLUX.2 Block Offload",
+  "appliesTo": [
+    "flux2-finetune",
+    "flux2-lora"
+  ],
+  "standard": {
+    "summary": "异步预取后续 block 数。",
+    "effect": "默认 3（与 slots=4 配对）。",
+    "whenToUse": "默认 3，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

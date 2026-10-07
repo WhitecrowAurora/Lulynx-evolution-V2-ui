@@ -1,7 +1,9 @@
 {
   "key": "anima_sigmoid_scale",
   "title": "Anima Sigmoid 时间步缩放",
+  "title_en": "Sigmoid Scale",
   "category": "训练 / Anima 专用",
+  "category_en": "Training / Anima-specific",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "配合 anima_weighting_scheme=logit_normal 使用，通过调整此值控制训练的\"频率偏好\"。",
     "avoidWhen": "不使用 logit_normal 权重方案时此参数无效。"
   },
+  "standard_en": {
+    "summary": "The sigmoid scale used by logit_normal timestep sampling; it decides how tightly the sampling distribution concentrates (wide or narrow).",
+    "effect": "Larger values concentrate sampling on mid-noise steps (mid-frequency features); smaller values widen the distribution to cover more extreme timesteps.",
+    "whenToUse": "Together with anima_weighting_scheme=logit_normal, use this value to steer the run's frequency preference.",
+    "avoidWhen": "It has no effect when the logit_normal weighting scheme is not in use."
+  },
   "advanced": {
     "principle": "时间步采样：t ~ sigmoid(σ × N(0,1))，σ 即 sigmoid_scale。σ 越大，采样越集中于 t=0.5（中等噪声）；σ=1 时接近均匀分布。",
     "tradeoffs": "集中采样中等噪声步有助于学习语义级特征，但可能欠拟合极端（纯噪声 / 纯干净）时间步的分布，影响全局结构或细节极端情况。"
+  },
+  "advanced_en": {
+    "principle": "Timestep sampling: t ~ sigmoid(σ × N(0,1)), where σ is sigmoid_scale. Larger σ concentrates sampling around t=0.5 (medium noise); σ=1 approaches uniform.",
+    "tradeoffs": "Concentrating on medium-noise steps helps learn semantic-level features but may underfit the extremes (pure noise / pure clean), affecting global structure or extreme detail cases."
   },
   "relatedConfigs": [
     "anima_weighting_scheme",

@@ -1,0 +1,17 @@
+{
+  "key": "t5xxl",
+  "title": "T5-XXL 路径",
+  "category": "训练用模型",
+  "appliesTo": [
+    "flux-finetune",
+    "flux-lora"
+  ],
+  "standard": {
+    "summary": "T5-XXL 路径。",
+    "effect": "FLUX 的 T5-XXL 文本编码器路径。",
+    "whenToUse": "同上。",
+    "avoidWhen": "留空用默认解析。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

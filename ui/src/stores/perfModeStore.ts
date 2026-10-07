@@ -50,3 +50,9 @@ export const usePerfModeStore = create<PerfModeState>((set) => ({
     set({ turbocore: on })
   },
 }))
+
+/** 两个顶栏开关跨训练类型共享；草稿重置仍沿用用户当前选择。 */
+export function getPerfModeConfig(): Record<string, boolean> {
+  const { lulynxOptimization, turbocore } = usePerfModeStore.getState()
+  return { lulynx_optimization_enabled: lulynxOptimization, turbocore_enabled: turbocore }
+}

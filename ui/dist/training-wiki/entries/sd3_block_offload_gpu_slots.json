@@ -1,0 +1,16 @@
+{
+  "key": "sd3_block_offload_gpu_slots",
+  "title": "Block Offload GPU 槽位",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "sd3-lora"
+  ],
+  "standard": {
+    "summary": "同时保留在 GPU 的 SD3 block 数。",
+    "effect": "写入训练配置 sd3_block_offload_gpu_slots，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 2，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

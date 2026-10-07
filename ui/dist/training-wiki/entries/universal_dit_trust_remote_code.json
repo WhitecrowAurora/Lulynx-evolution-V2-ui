@@ -1,0 +1,16 @@
+{
+  "key": "universal_dit_trust_remote_code",
+  "title": "信任模型自定义代码",
+  "category": "高级自定义 DiT（实验）",
+  "appliesTo": [
+    "universal-dit-lora"
+  ],
+  "standard": {
+    "summary": "信任模型自定义代码。",
+    "effect": "允许执行模型仓库自带的自定义建模代码。",
+    "whenToUse": "用非标准 DiT 架构且信任来源时开启。",
+    "avoidWhen": "安全敏感环境保持关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

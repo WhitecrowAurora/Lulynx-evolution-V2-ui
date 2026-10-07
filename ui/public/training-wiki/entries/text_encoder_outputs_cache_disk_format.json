@@ -1,7 +1,9 @@
 {
   "key": "text_encoder_outputs_cache_disk_format",
   "title": "文本缓存格式",
+  "title_en": "Output",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -15,8 +17,25 @@
       "pt": "pt。"
     }
   },
+  "standard_en": {
+    "summary": "The on-disk cache format for the text encoder outputs.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "safetensors": "safetensors.",
+      "npz": "npy.",
+      "pt": "pt."
+    }
+  },
   "advanced": {
     "principle": "文本编码器输出磁盘缓存格式。默认 safetensors；若已有旧缓存会自动兼容读取 npz",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Disk format for the text-encoder output cache. Default safetensors; existing legacy npz caches are still read automatically.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

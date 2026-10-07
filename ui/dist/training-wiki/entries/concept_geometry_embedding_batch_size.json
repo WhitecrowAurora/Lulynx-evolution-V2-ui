@@ -1,0 +1,17 @@
+{
+  "key": "concept_geometry_embedding_batch_size",
+  "title": "Embedding 批量",
+  "category": "Concept Geometry",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "Embedding 批量。",
+    "effect": "批量计算 embedding 的 batch 大小。",
+    "whenToUse": "按显存调整。",
+    "avoidWhen": "默认 8。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

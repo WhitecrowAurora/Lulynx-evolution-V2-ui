@@ -1,7 +1,9 @@
 {
   "key": "keep_tokens",
   "title": "保留前 N 个 Token",
+  "title_en": "N token",
   "category": "Caption / 正则",
+  "category_en": "Caption / Regularization",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -14,17 +16,34 @@
     "数据层",
     "Caption 层"
   ],
+  "layers_en": [
+    "Data layer",
+    "Caption layer"
+  ],
   "standard": {
     "summary": "shuffle_caption 打乱标签时，保持前 N 个 token 不动。通常用于固定触发词的位置。",
     "effect": "keep_tokens=1 时第一个 tag（通常是触发词）始终在最前面；keep_tokens=0 时全部打乱。注意：tag dropout 发生在 keep 之前，keep_tokens 本身不防 drop。",
     "whenToUse": "有固定触发词（如 'lulu, red dress, ...'）时设为 1。多触发词时设为对应数量。若标注用 ||| 分隔「结构前缀 / 特征后缀」且希望整段前缀都保护，优先用 caption_tag_mutate_scope=after_separator。",
     "avoidWhen": "没有触发词或所有 tag 地位平等时设为 0。设太大等于关闭了 shuffle。"
   },
+  "standard_en": {
+    "summary": "When shuffle_caption shuffles the tags, keeps the first N tokens in place. Usually used to pin a trigger word's position.",
+    "effect": "With keep_tokens=1 the first tag (usually the trigger) always stays at the front; with keep_tokens=0 everything shuffles. Note that tag dropout happens before the keep, so keep_tokens does not itself protect against dropping.",
+    "whenToUse": "Set 1 when you have a fixed trigger word ('lulu, red dress, ...'), or the matching count with several triggers. If the caption uses ||| to divide a structural prefix from a feature suffix and you want the whole prefix protected, prefer caption_tag_mutate_scope=after_separator.",
+    "avoidWhen": "Set 0 when there is no trigger word or all tags are equal. Setting it too high amounts to disabling shuffling."
+  },
   "advanced": {
     "principle": "tokenize 后取前 keep_tokens 个 token 作为固定前缀，剩余 token shuffle 后拼接。keep_tokens_separator 只是输出时插入的标记，不是解析边界。caption_tag_mutate_scope=after_separator 时，head 已整段保护，keep_tokens 只作用于 tail 内部。",
     "intervention": "DataLoader __getitem__ → _process_caption：drop → (可选 scope 切分) → keep 前缀 + shuffle 后缀 → join。",
     "expectedImpact": "确保触发词始终在最显著的位置，增强触发词的绑定强度。",
     "tradeoffs": "与 caption_source_mix_enabled 组合时，trigger-only 模式只保留触发词。",
+    "codePath": "dataset_loader.CaptionDataset._process_caption / _process_caption_scoped"
+  },
+  "advanced_en": {
+    "principle": "After tokenization, the first keep_tokens tokens become the fixed prefix and the rest are shuffled and appended. keep_tokens_separator is only a marker inserted at output, not a parsing boundary. With caption_tag_mutate_scope=after_separator, the head is already protected wholesale and keep_tokens acts only within the tail.",
+    "intervention": "DataLoader __getitem__ → _process_caption: drop → (optional scope split) → keep prefix + shuffle suffix → join.",
+    "expectedImpact": "Keeps the trigger word in the most salient position, strengthening its binding.",
+    "tradeoffs": "Combined with caption_source_mix_enabled, trigger-only mode keeps only the trigger word.",
     "codePath": "dataset_loader.CaptionDataset._process_caption / _process_caption_scoped"
   },
   "relatedConfigs": [

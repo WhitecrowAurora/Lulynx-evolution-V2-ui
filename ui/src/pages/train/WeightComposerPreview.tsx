@@ -4,6 +4,7 @@ import { trainApi } from '@/api/trainApi'
 import { unwrap } from '@/api/transport'
 import { Button } from '@/components/primitives'
 import { toast } from '@/stores/toastStore'
+import { useDraftRequestScope } from './useDraftRequestScope'
 
 type PreviewPayload = {
   x?: number[]
@@ -27,6 +28,8 @@ type ScoreStatus = {
     score_max?: number
   } | null
 }
+
+type ScoreRequest = { previewOnly: boolean; isCurrent: () => boolean }
 
 const COLORS: Record<string, string> = {
   timestep: '#38bdf8',
@@ -76,6 +79,12 @@ export function WeightComposerPreview({
   const [overwrite, setOverwrite] = useState(false)
   const [previewOnly, setPreviewOnly] = useState(false)
   const [job, setJob] = useState<ScoreStatus | null>(null)
+  const [submitting, setSubmitting] = useState(false)
+  const [applySkipped, setApplySkipped] = useState(false)
+  const captureScope = useDraftRequestScope(config)
+  const scoreRequest = useRef<ScoreRequest | null>(null)
+  const mounted = useRef(true)
+  const busy = useRef(false)
   const generation = useRef(0)
   const onChangeRef = useRef(onChange)
   onChangeRef.current = onChange
@@ -83,6 +92,15 @@ export function WeightComposerPreview({
     () => JSON.stringify(Object.fromEntries(RELEVANT_KEYS.map((key) => [key, config[key]]))),
     [config],
   )
+
+  useEffect(() => {
+    mounted.current = true
+    return () => {
+      mounted.current = false
+      scoreRequest.current = null
+      busy.current = false
+    }
+  }, [])
 
   useEffect(() => {
     const id = ++generation.current
@@ -96,29 +114,46 @@ export function WeightComposerPreview({
         setPreviewError(error.message)
       })
     }, 180)
-    return () => window.clearTimeout(timer)
+    return () => { window.clearTimeout(timer); generation.current += 1 }
     // config is represented by the stable relevant-key snapshot above.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [relevant])
 
+  function receiveStatus(next: ScoreStatus, request: ScoreRequest) {
+    if (!mounted.current || scoreRequest.current !== request) return
+    setJob(next)
+    if (!['completed', 'failed', 'cancelled'].includes(String(next.status))) return
+    busy.current = false
+    scoreRequest.current = null
+    if (next.status === 'completed') {
+      const generated = !request.previewOnly && next.result?.sidecar_generated === true
+      if (generated && next.result?.sidecar_path) {
+        if (request.isCurrent()) onChangeRef.current('sample_difficulty_metadata_path', next.result.sidecar_path)
+        else setApplySkipped(true)
+      }
+      toast.ok(request.previewOnly ? '评分预览完成，未写入文件' : generated ? '评分与难度权重文件已生成' : '质量评分报告已生成', 'DATASET')
+    } else if (next.status === 'failed') {
+      toast.warn(next.error || '离线评分失败', 'DATASET')
+    }
+  }
+
   useEffect(() => {
     const jobId = job?.job_id
-    if (!jobId || !['pending', 'running'].includes(String(job.status))) return
+    const request = scoreRequest.current
+    if (!jobId || !request || !['pending', 'running', 'queued'].includes(String(job.status))) return
+    let disposed = false
+    let polling = false
     const timer = window.setInterval(() => {
+      if (disposed || polling || scoreRequest.current !== request) return
+      polling = true
       void trainApi.sampleDifficultyScoringStatus(jobId).then((response) => {
+        if (disposed || scoreRequest.current !== request) return
         const next = unwrap<ScoreStatus>(response)
-        setJob(next)
-        if (next.status === 'completed') {
-          window.clearInterval(timer)
-          if (next.result?.sidecar_path) onChangeRef.current('sample_difficulty_metadata_path', next.result.sidecar_path)
-          toast.ok(next.result?.sidecar_generated ? '评分与难度权重文件已生成' : '质量评分报告已生成', 'DATASET')
-        } else if (next.status === 'failed') {
-          window.clearInterval(timer)
-          toast.warn(next.error || '离线评分失败', 'DATASET')
-        }
-      }).catch(() => {})
+        receiveStatus(next, request)
+        if (scoreRequest.current !== request) window.clearInterval(timer)
+      }).catch(() => {}).finally(() => { polling = false })
     }, 800)
-    return () => window.clearInterval(timer)
+    return () => { disposed = true; window.clearInterval(timer) }
   }, [job?.job_id, job?.status])
 
   const curves = preview?.curves ?? {}
@@ -128,9 +163,10 @@ export function WeightComposerPreview({
   const yMax = Math.max(...allValues, 1.1)
   const normalizedStats = preview?.stats?.combined_normalized
   const datasetDir = String(config.train_data_dir ?? '')
-  const running = ['pending', 'running'].includes(String(job?.status ?? ''))
+  const running = submitting || ['pending', 'running', 'queued'].includes(String(job?.status ?? ''))
 
   async function startScoring() {
+    if (!mounted.current || busy.current) return
     if (!datasetDir.trim()) {
       toast.warn('请先设置训练数据集目录', 'DATASET')
       return
@@ -139,6 +175,13 @@ export function WeightComposerPreview({
       toast.warn('终止权重不能小于起始权重', 'DATASET')
       return
     }
+    const request = { previewOnly, isCurrent: captureScope() }
+    if (!request.isCurrent()) return
+    scoreRequest.current = request
+    busy.current = true
+    setSubmitting(true)
+    setApplySkipped(false)
+    setJob(null)
     try {
       const response = await trainApi.startSampleDifficultyScoring({
         dataset_dir: datasetDir,
@@ -150,9 +193,14 @@ export function WeightComposerPreview({
         overwrite,
         preview_only: previewOnly,
       })
-      setJob(unwrap<ScoreStatus>(response))
+      if (mounted.current && scoreRequest.current === request) receiveStatus(unwrap<ScoreStatus>(response), request)
     } catch (error) {
+      if (!mounted.current || scoreRequest.current !== request) return
+      scoreRequest.current = null
+      busy.current = false
       toast.warn((error as Error).message, 'DATASET')
+    } finally {
+      if (mounted.current && (scoreRequest.current === request || scoreRequest.current === null)) setSubmitting(false)
     }
   }
 
@@ -196,8 +244,8 @@ export function WeightComposerPreview({
           <Button onClick={() => void startScoring()} disabled={running}>{running ? `评分中 ${Math.round((job?.progress || 0) * 100)}%` : '启动离线评分'}</Button>
         </div>
         {job?.result ? <small>报告：{job.result.report_path || '-'}{job.result.sidecar_path ? ` · 权重：${job.result.sidecar_path}` : ''}</small> : null}
+        {applySkipped ? <small>草稿已更改：评分结果保留，未自动修改当前难度文件路径。</small> : null}
       </div>
     </div>
   )
 }
-

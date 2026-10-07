@@ -1,7 +1,9 @@
 {
   "key": "oom_skip_batch_enabled",
   "title": "OOM 跳批",
+  "title_en": "OOM",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Skips a batch that OOMs (runs out of VRAM) automatically",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "自动跳过 OOM (显存不足) 的 batch，而不是直接崩溃。适合显存紧张的情况",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Automatically skips batches that hit OOM (out of memory) instead of crashing outright. Useful when VRAM is tight.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

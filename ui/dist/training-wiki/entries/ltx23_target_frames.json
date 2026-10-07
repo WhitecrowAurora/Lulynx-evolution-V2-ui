@@ -1,0 +1,19 @@
+{
+  "key": "ltx23_target_frames",
+  "title": "目标帧数",
+  "category": "数据集 / 图说",
+  "appliesTo": [
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora"
+  ],
+  "standard": {
+    "summary": "每个训练 clip 采样的帧数；单图训练保持 1。",
+    "effect": "写入训练配置 ltx23_target_frames，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 1，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

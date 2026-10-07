@@ -1,12 +1,17 @@
 {
   "key": "concept_edit_timestep_curriculum_buckets",
   "title": "课程 Band 数",
+  "title_en": "Curriculum Band Count",
   "category": "训练 / 高级",
+  "category_en": "Training / Advanced",
   "appliesTo": [
     "concept-edit"
   ],
   "layers": [
     "采样层"
+  ],
+  "layers_en": [
+    "Sampling layer"
   ],
   "standard": {
     "summary": "概念编辑时间步课程每个循环划分的 band 数量。默认 10，范围 2~50。",
@@ -14,12 +19,25 @@
     "whenToUse": "总步数多（≥500）可以用更细的 band（15~20）获得更平滑的课程；短训练用较粗的 band（5~8）保证覆盖完整。",
     "avoidWhen": "concept_edit_timestep_curriculum 关闭时无效；band 数超过总步数除以合理循环次数时部分 band 只被访问一两次，课程失去意义。"
   },
+  "standard_en": {
+    "summary": "How many bands each cycle of the concept-edit timestep curriculum is divided into. Default 10, range 2-50.",
+    "effect": "More bands mean narrower bands and more concentrated supervision per step, but a full sweep takes more steps. A non-integer input warns and falls back to the default of 10.",
+    "whenToUse": "With plenty of steps (>=500) finer bands (15-20) give a smoother curriculum; short runs want coarser bands (5-8) so coverage completes.",
+    "avoidWhen": "It has no effect when concept_edit_timestep_curriculum is off, and once the band count exceeds the step count divided by a sensible number of cycles, some bands are visited only once or twice and the curriculum loses its point."
+  },
   "advanced": {
     "principle": "band 宽度 = 时间步窗口 / band 数。窄 band 使批内与批间的 timestep 方差都更小（梯度更一致），但课程周期变长；band 数是「梯度一致性 ↔ 覆盖速度」的调节旋钮。",
     "intervention": "concept_edit_curriculum.py：解析 band 数（异常输入 warning + 回落 10），据此计算每步所属 band 与其 timestep 范围。",
     "expectedImpact": "细 band 下 loss 锯齿更细密、编辑方向更纯；粗 band 接近关闭课程的行为。",
     "tradeoffs": "建议 band 数 × 每 band 期望步数 ≤ 总步数，否则最后的 band 训练不足。",
     "codePath": "concept_edit_curriculum.py：concept_edit_timestep_curriculum_buckets 解析（默认 10）"
+  },
+  "advanced_en": {
+    "principle": "Band width = timestep window / band count. Narrow bands lower both intra- and inter-batch timestep variance (more consistent gradients) but lengthen the curriculum cycle; the band count is the knob between \"gradient consistency ↔ coverage speed\".",
+    "intervention": "concept_edit_curriculum.py: parses the band count (warning + fallback to 10 on bad input) and derives each step's band and its timestep range.",
+    "expectedImpact": "Fine bands give finer loss sawtooth and purer edit direction; coarse bands approach curriculum-off behavior.",
+    "tradeoffs": "Aim for band count × expected steps per band ≤ total steps, otherwise the final bands are under-trained.",
+    "codePath": "concept_edit_curriculum.py: concept_edit_timestep_curriculum_buckets parsing (default 10)"
   },
   "relatedConfigs": [
     "concept_edit_timestep_curriculum",

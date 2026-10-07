@@ -1,0 +1,20 @@
+{
+  "key": "lora2_adaptive_rank_threshold",
+  "title": "LoRA2 有效 rank 阈值",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "LoRA2 有效 rank 阈值。",
+    "effect": "重要性低于该阈值的 rank 维被视为无效并停止更新。",
+    "whenToUse": "想结构化压缩有效 rank 时使用。",
+    "avoidWhen": "默认 0.01 保守；调太大会误剪。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

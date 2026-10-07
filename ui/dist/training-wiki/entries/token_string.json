@@ -1,0 +1,17 @@
+{
+  "key": "token_string",
+  "title": "Token 字符串",
+  "category": "训练 / Textual Inversion",
+  "appliesTo": [
+    "sd-textual-inversion",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "tokenizer 中不存在的新 token。",
+    "effect": "写入训练配置 token_string，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

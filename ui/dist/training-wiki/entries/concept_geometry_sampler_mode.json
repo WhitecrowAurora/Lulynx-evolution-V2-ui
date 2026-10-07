@@ -1,11 +1,13 @@
 {
   "key": "concept_geometry_sampler_mode",
   "title": "采样模式",
+  "title_en": "Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "curriculum / density /",
+    "summary": "curriculum / density / density_curriculum / concept_batch。",
     "effect": "",
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。",
@@ -16,8 +18,26 @@
       "concept_batch": "按概念组 batch。"
     }
   },
+  "standard_en": {
+    "summary": "curriculum / density / density_curriculum / concept_batch.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "curriculum": "Samples easy to hard.",
+      "density": "Samples the hard places more densely.",
+      "density_curriculum": "Mixes density with the curriculum.",
+      "concept_batch": "Batches by concept group."
+    }
+  },
   "advanced": {
     "principle": "curriculum / density / density_curriculum / concept_batch。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "curriculum / density / density_curriculum / concept_batch.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

@@ -1,0 +1,19 @@
+{
+  "key": "anima_cache_build_batch_size",
+  "title": "缓存构建批大小",
+  "category": "数据集 / 图说",
+  "appliesTo": [
+    "anima-controlnet",
+    "anima-edit-model",
+    "anima-finetune",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "首轮缓存构建时每批 VAE 编码的图像数。",
+    "effect": "越大越快、显存占用越高（VAE 切片已默认打开，按批维逐张编码，数值与批大小无关）。",
+    "whenToUse": "默认 8，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

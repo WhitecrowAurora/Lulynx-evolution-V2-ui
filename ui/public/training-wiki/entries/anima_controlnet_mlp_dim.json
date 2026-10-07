@@ -1,0 +1,16 @@
+{
+  "key": "anima_controlnet_mlp_dim",
+  "title": "适配器瓶颈维",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "anima-controlnet"
+  ],
+  "standard": {
+    "summary": "每层 down/mid/up 与 FiLM 隐宽。",
+    "effect": "写入训练配置 anima_controlnet_mlp_dim，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 64，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

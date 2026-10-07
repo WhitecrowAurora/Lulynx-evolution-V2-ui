@@ -1,0 +1,16 @@
+{
+  "key": "extractor_type",
+  "title": "提取器类型",
+  "category": "特征提取器设置",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "选择统计特征仅用于 smoke；正式训练请配置外部模型。",
+    "effect": "写入训练配置 extractor_type，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

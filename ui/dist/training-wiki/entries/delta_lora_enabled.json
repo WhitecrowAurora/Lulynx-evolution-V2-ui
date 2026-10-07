@@ -1,7 +1,9 @@
 {
   "key": "delta_lora_enabled",
   "title": "Delta-LoRA",
+  "title_en": "Delta-LoRA (dynamic BA scaling)",
   "category": "LoRA 变体 / Delta",
+  "category_en": "LoRA Variants / Delta",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -17,9 +19,19 @@
     "whenToUse": "各变体均为实验性功能，需要根据具体任务对比测试。大多数场景标准 LoRA 已经足够，只有明确的参数效率或质量需求时才尝试变体。",
     "avoidWhen": "这些变体通常不与推理框架（A1111/ComfyUI）的标准 LoRA 加载器兼容，使用前确认推理端支持该变体格式。"
   },
+  "standard_en": {
+    "summary": "A round-up of LoRA variants: Delta-LoRA (optimises the update difference) / HydraLoRA (multi-head LoRA balancing different features) / TensorRing (tensor-ring LoRA) / FlexRank (elastic rank) / LoftQ (quantisation-aware initialisation) / LoKr (Kronecker factorisation).",
+    "effect": "Each variant adds a different parameter-efficiency or regularisation property on top of standard LoRA: Delta-LoRA optimises the LoRA's update increment; HydraLoRA learns different feature directions on several branches; LoftQ gives a quantised base model a better initialisation; LoKr uses a Kronecker factorisation.",
+    "whenToUse": "All of these are experimental and need a comparative test on your own task. Standard LoRA is enough for most cases; reach for a variant only with a definite parameter-efficiency or quality need.",
+    "avoidWhen": "These variants are usually incompatible with the standard LoRA loaders in inference frameworks (A1111, ComfyUI), so confirm your inference side supports the format before using one."
+  },
   "advanced": {
     "principle": "Delta-LoRA：只更新 LoRA 增量方向（∆W），固定 A/B 矩阵的乘积方向；HydraLoRA：多个 A 矩阵共享一个 B 矩阵（或反之），每个 A 学习不同特征子空间；LoftQ：先量化基座，再用 SVD 初始化 LoRA 补偿量化误差；lokr_factor 控制 LoKr 的 Kronecker 分解维度比例（通常为 ⌈√d_in⌉ × ⌈√d_out⌉）。fractional_grad_damping/grad_cosine 是梯度控制技术，通过阻尼或余弦相似性约束梯度更新方向。",
     "tradeoffs": "变体越复杂（如 TensorRing），与现有推理基础设施的兼容性越低，导出和部署成本越高。建议在实验阶段使用，产品化前确认端到端可用。"
+  },
+  "advanced_en": {
+    "principle": "Delta-LoRA: only updates the LoRA increment direction (∆W), fixing the product direction of the A/B matrices. HydraLoRA: multiple A matrices share one B matrix (or vice versa), each A learning a different feature subspace. LoftQ: quantizes the base first, then initializes the LoRA with SVD to compensate quantization error. lokr_factor controls LoKr's Kronecker factorization dimension ratio (usually ⌈√d_in⌉ × ⌈√d_out⌉). fractional_grad_damping/grad_cosine are gradient-control techniques constraining update direction via damping or cosine similarity.",
+    "tradeoffs": "The more complex the variant (e.g. TensorRing), the lower its compatibility with existing inference infrastructure and the higher the export/deployment cost. Use in experiments and confirm end-to-end usability before productizing."
   },
   "relatedConfigs": [
     "network_dim",

@@ -1,0 +1,16 @@
+{
+  "key": "hf_token_env",
+  "title": "HF Token 环境变量",
+  "category": "特征提取器设置",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "读取 HuggingFace Token 的环境变量名。",
+    "effect": "写入训练配置 hf_token_env，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

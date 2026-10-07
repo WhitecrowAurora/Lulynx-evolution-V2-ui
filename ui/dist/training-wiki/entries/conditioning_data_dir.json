@@ -1,7 +1,9 @@
 {
   "key": "conditioning_data_dir",
   "title": "条件化数据目录",
+  "title_en": "Data Path",
   "category": "训练 / 条件化",
+  "category_en": "Training / Conditioning",
   "appliesTo": [
     "sdxl-lora",
     "anima-lora"
@@ -22,9 +24,19 @@
     "whenToUse": "需要训练 ControlNet LoRA 或条件化 LoRA 时使用。大多数标准 LoRA 训练不需要条件化数据。",
     "avoidWhen": "不需要条件化生成时不要设置（增加复杂度和计算量）。"
   },
+  "standard_en": {
+    "summary": "Settings for conditioned training: conditioning_data_dir holds the condition images (edge maps, depth maps); controlnet_model_name_or_path points at the ControlNet model; the diff parameters serve difference-comparison training.",
+    "effect": "Conditioned training lets the model learn the original concept and the conditioned generation together (a character's appearance alongside the matching edge-map condition, say). dop_weight/dpo_weight set the loss weights of the different objectives.",
+    "whenToUse": "When training a ControlNet LoRA or a conditioned LoRA. Most standard LoRA training needs no conditioning data.",
+    "avoidWhen": "Leave it unset when you do not need conditioned generation -- it adds both complexity and computation."
+  },
   "advanced": {
     "principle": "ControlNet LoRA 在标准 LoRA 基础上额外学习条件化控制：condition_image → ControlNet encoder → 条件特征注入 UNet/DiT。diff_target 系列用于\"差分微调\"（PALP/Custom Diffusion 等方法的实现）：对比 target（新概念）和 original（基础概念），只保留差异方向的更新。",
     "tradeoffs": "条件化训练需要额外准备条件图像数据集（与训练图像对应的边缘图/深度图等），数据准备工作量是主要障碍。"
+  },
+  "advanced_en": {
+    "principle": "ControlNet LoRA learns conditional control on top of standard LoRA: condition_image → ControlNet encoder → condition features injected into UNet/DiT. The diff_target family implements \"difference fine-tuning\" (PALP/Custom Diffusion-style methods): contrasting target (new concept) with original (base concept), keeping only difference-direction updates.",
+    "tradeoffs": "Conditional training needs an extra conditioning-image dataset (edges/depth maps matching the training images); data prep is the main barrier."
   },
   "relatedConfigs": [
     "pretrained_model_name_or_path",

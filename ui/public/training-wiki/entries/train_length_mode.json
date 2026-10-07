@@ -1,7 +1,9 @@
 {
   "key": "train_length_mode",
   "title": "训练长度模式",
+  "title_en": "Training Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "最大轮数": "按 epoch 数停。",
       "最大步数": "按 step 数停。"
+    }
+  },
+  "standard_en": {
+    "summary": "The values available for the training length mode (auto-generated skeleton, still open to polish).",
+    "effect": "Switching between the enum values changes training behaviour or resource use; see the individual entries.",
+    "whenToUse": "Choose by task and hardware; when unsure use the product default.",
+    "avoidWhen": "Do not pick an experimental or aggressive gear blindly before you understand what the entries mean.",
+    "optionDescriptions": {
+      "最大轮数": "Stops on an epoch count.",
+      "最大步数": "Stops on a step count."
     }
   },
   "advanced": {},

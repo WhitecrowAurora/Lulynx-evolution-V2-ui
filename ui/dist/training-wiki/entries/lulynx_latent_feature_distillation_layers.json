@@ -1,7 +1,9 @@
 {
   "key": "lulynx_latent_feature_distillation_layers",
   "title": "特征层列表",
+  "title_en": "Feature Layer List",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "aliases": [
     "lpips_latent_feature_layers"
@@ -13,8 +15,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Which DiT layers' features to use, comma-separated (such as \"4,8,12\").",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "使用哪些 DiT 层特征，逗号分隔 (如 \"4,8,12\")。需与 Multi-Scale 层对齐。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Which DiT layer features to use, comma-separated (e.g. \"4,8,12\"). Must align with the Multi-Scale layers.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

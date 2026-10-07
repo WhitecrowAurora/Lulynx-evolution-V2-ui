@@ -1,7 +1,9 @@
 {
   "key": "newbie_block_residency",
   "title": "Newbie Block Offload（newbie_block_residency）",
+  "title_en": "Newbie Block Offload",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -11,11 +13,29 @@
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。",
     "optionDescriptions": {
       "resident": "冻结权重常驻 GPU。",
-      "block_cpu_pinned": "CPU pinned 流式，显存省，最好配 checkpoint。"
+      "block_cpu_pinned": "CPU pinned 流式，显存省，最好配 checkpoint。",
+      "streaming_offload": "逐 block 串流:冻结 block 常驻 CPU,forward 时按需把当前 block 搬上卡,最省显存也最吃 PCIe;「稀疏交换」那三个旋钮只在这一档下生效(低显存守卫自行把驻留切成这一档时,会连带打开稀疏交换)。"
+    }
+  },
+  "standard_en": {
+    "summary": "Controls the residency strategy for native Newbie's frozen DiT weights.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "resident": "The frozen weights stay resident on the GPU.",
+      "block_cpu_pinned": "Streamed from CPU pinned memory: saves VRAM, and is best paired with checkpointing.",
+      "streaming_offload": "Streams block by block: the frozen blocks stay resident on the CPU and the current block is moved onto the card on demand during the forward pass, which saves the most VRAM and leans hardest on PCIe; the three sparse-swap knobs only take effect in this gear (and when the low-VRAM guard switches residency to this gear itself, it turns sparse swap on along with it)."
     }
   },
   "advanced": {
     "principle": "控制原生 Newbie 冻结 DiT 权重的驻留策略。Block CPU pinned 牺牲速度换更少显存使用量，1024/4096-token 训练需要配合 DiT Block Checkpointing。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Controls the residency policy for native Newbie frozen DiT weights. Block CPU pinned trades speed for lower VRAM usage; 1024/4096-token training needs DiT Block Checkpointing alongside it.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

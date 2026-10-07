@@ -1,7 +1,9 @@
 {
   "key": "text_encoder_lr",
   "title": "文本编码器学习率",
+  "title_en": "Learning Rate",
   "category": "训练 / 学习率",
+  "category_en": "Training / Learning Rate",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -16,9 +18,19 @@
     "whenToUse": "训练包含 TE 时（train_text_encoder=true），建议单独设置 TE LR 使其低于 UNet LR。",
     "avoidWhen": "train_text_encoder=false 时设置无意义。"
   },
+  "standard_en": {
+    "summary": "Sets a separate learning rate for the text encoder (CLIP, T5 and so on), usually 1/2 to 1/10 of the UNet LR.",
+    "effect": "A lower TE LR preserves the pretrained semantic understanding while still letting the TE adapt to new concepts (a character or style trigger word, say).",
+    "whenToUse": "When the TE is part of the training (train_text_encoder=true), it is advisable to set the TE LR separately and keep it below the UNet LR.",
+    "avoidWhen": "Setting it is meaningless when train_text_encoder=false."
+  },
   "advanced": {
     "principle": "TE 的语义表征空间比 UNet 更「脆弱」，过高 LR 会破坏 CLIP 的语义一致性，导致提示词响应变弱。",
     "tradeoffs": "TE LR=0 相当于不训练 TE；过高 LR 导致语言理解退化。经验值：UNet LR / 5 ~ UNet LR / 2。"
+  },
+  "advanced_en": {
+    "principle": "The TE's semantic representation space is more \"fragile\" than the UNet's; too high an LR breaks CLIP's semantic consistency, weakening prompt responsiveness.",
+    "tradeoffs": "TE LR=0 is equivalent to not training the TE; too high an LR degrades language understanding. Rule of thumb: UNet LR / 5 ~ UNet LR / 2."
   },
   "relatedConfigs": [
     "learning_rate",

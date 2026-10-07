@@ -1,7 +1,9 @@
 {
   "key": "caption_variant_schedule",
   "title": "变体调度",
+  "title_en": "Scheduler",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -16,12 +18,26 @@
       "custom": "自定义日程。"
     }
   },
+  "standard_en": {
+    "summary": "alternate rotates through them.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "alternate": "Takes the several captions in turn.",
+      "ratio": "Mixes them by ratio.",
+      "curriculum": "Switches curriculum-style.",
+      "custom": "Your own schedule."
+    }
+  },
   "advanced": {
     "principle": "alternate 轮换；ratio 按比例；curriculum 课程；custom 自定义序列。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "alternate = rotate; ratio = by proportion; curriculum = staged; custom = custom sequence."
   },
   "relatedConfigs": []
 }

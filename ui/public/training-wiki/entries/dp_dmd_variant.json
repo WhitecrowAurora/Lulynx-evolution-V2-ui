@@ -1,0 +1,24 @@
+{
+  "key": "dp_dmd_variant",
+  "title": "DP-DMD 实现模式",
+  "category": "采样与优化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "lulynx 优化模式保留历史 teacher-regression 组合；标准模式要求真实/生成双 score provider，缺失时后端会明确拒绝，绝不静默冒充。",
+    "effect": "写入训练配置 dp_dmd_variant，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 lulynx_optimized，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

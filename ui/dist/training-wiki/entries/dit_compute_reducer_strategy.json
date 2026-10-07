@@ -1,7 +1,9 @@
 {
   "key": "dit_compute_reducer_strategy",
   "title": "DiT 计算缩减",
+  "title_en": "DiT BlockSkip",
   "category": "DiT / 性能",
+  "category_en": "DiT / Performance",
   "appliesTo": [
     "anima-lora",
     "newbie-lora"
@@ -9,6 +11,10 @@
   "layers": [
     "性能层",
     "模型层"
+  ],
+  "layers_en": [
+    "Performance layer",
+    "Model layer"
   ],
   "standard": {
     "summary": "在 DiT 的 block 循环中注入计算缩减策略——跳过部分 token（TREAD）、合并相似 token（DiffCR）或跳过部分 block（BlockSkip），加速训练。",
@@ -20,11 +26,28 @@
       "blockskip": "跳部分 DiT block，明显加速，跳多了会糊/塌。"
     }
   },
+  "standard_en": {
+    "summary": "Injects a compute-reduction strategy into the DiT's block loop -- dropping tokens (TREAD), merging similar tokens (DiffCR) or skipping blocks (BlockSkip) -- to speed training up.",
+    "effect": "dit_compute_reducer_strategy='none' (the default, no reduction). 'tread' keeps the top-k tokens by importance score. 'diffcr' merges similar tokens to shorten the sequence. 'blockskip' skips some DiT blocks.",
+    "whenToUse": "When DiT training is too slow and you can accept a slight quality loss for speed.",
+    "avoidWhen": "When quality comes first -- reduction can lose detail.",
+    "optionDescriptions": {
+      "none": "Skips neither blocks nor tokens.",
+      "blockskip": "Skips some DiT blocks: clearly faster, but skip too many and output blurs or collapses."
+    }
+  },
   "advanced": {
     "principle": "TREAD: 对每个 token 计算重要性 score（dit_compute_reducer_score_mode='l2'），保留 top keep_ratio 比例的 token，其余跳过。dit_compute_reducer_min_keep_tokens 设置下限。DiffCR: 对 token 做聚类合并，保留 compression_ratio 比例。BlockSkip: 按 skip_ratio 跳过部分 block。dit_compute_reducer_warmup_steps 控制预热期（前 N 步不缩减）。dit_compute_reducer_min_block 控制不跳过的最低 block 索引。",
     "intervention": "DiT _run_blocks 循环中根据策略跳过 token 或 block。",
     "expectedImpact": "TREAD keep_ratio=0.7 可提速约 30%。质量损失约 2-5%。",
     "tradeoffs": "dit_compute_reducer_min_tokens 和 min_block 提供安全下限。",
+    "codePath": "core/lulynx_trainer/dit_compute_reducer.py → TREAD/DiffCR/BlockSkip strategy dispatch"
+  },
+  "advanced_en": {
+    "principle": "TREAD: computes an importance score per token (dit_compute_reducer_score_mode='l2'), keeps the top keep_ratio fraction, skips the rest. dit_compute_reducer_min_keep_tokens sets the floor. DiffCR: cluster-merges tokens, keeping a compression_ratio fraction. BlockSkip: skips blocks by skip_ratio. dit_compute_reducer_warmup_steps controls the warmup (no reduction in the first N steps). dit_compute_reducer_min_block sets the lowest block index never skipped.",
+    "intervention": "The DiT _run_blocks loop skips tokens or blocks per strategy.",
+    "expectedImpact": "TREAD keep_ratio=0.7 speeds up about 30%. Quality loss roughly 2-5%.",
+    "tradeoffs": "dit_compute_reducer_min_tokens and min_block provide safety floors.",
     "codePath": "core/lulynx_trainer/dit_compute_reducer.py → TREAD/DiffCR/BlockSkip strategy dispatch"
   },
   "relatedConfigs": [

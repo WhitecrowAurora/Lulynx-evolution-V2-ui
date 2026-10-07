@@ -1,7 +1,9 @@
 {
   "key": "edit_injection_strategy",
   "title": "Edit Injection Strategy",
+  "title_en": "Strategy",
   "category": "Edit-LoRA / 注入策略",
+  "category_en": "Edit-LoRA / Injection Policy",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -10,6 +12,10 @@
   "layers": [
     "Edit runtime",
     "前向输入层"
+  ],
+  "layers_en": [
+    "Edit runtime",
+    "Forward input layer"
   ],
   "standard": {
     "summary": "控制 source/reference 信息如何影响 target noisy latent。默认 none 不注入；latent_residual 和 masked_residual 是不增加 token 数的安全策略。",
@@ -22,11 +28,29 @@
       "masked_residual": "只在 mask 里 residual，区外更好保原。"
     }
   },
+  "standard_en": {
+    "summary": "Governs how source/reference information reaches the target noisy latent. The default none injects nothing; latent_residual and masked_residual are safe strategies that add no tokens.",
+    "effect": "latent_residual uses sample + strength * (source - sample). masked_residual uses edit_mask to suppress the reference residual inside the edit region, and preserve_mask to lock the region being kept.",
+    "whenToUse": "When the paired edit batch already supplies source_latents, or a later adapter can supply the reference latent. masked_residual suits data that has an edit-region or preserve-region mask.",
+    "avoidWhen": "Stay on none while there are no source/target latents yet, or the mask semantics are unclear. cross_attention_reference_tokens, self_attention_kv_reference and native_control_path currently need explicit adapter support from the model family.",
+    "optionDescriptions": {
+      "none": "Puts no reference residual into the noisy latent.",
+      "latent_residual": "A whole-image residual; no growth in token count.",
+      "masked_residual": "A residual inside the mask only, which preserves the outside better."
+    }
+  },
   "advanced": {
     "principle": "第一版避免直接 2L self-attention 拼接，先用 shape-compatible latent residual 降低激活显存风险。更强的 attention/token 注入策略保留为 adapter-hooked 合同。",
     "intervention": "forward-input stage 在模型 forward 前改写 sample 或记录 adapter-hook 需求。",
     "expectedImpact": "降低像素漂移，同时避免早期实现引入 attention 激活爆炸。",
     "tradeoffs": "reference_strength 太高会复印 source，太低会保留不足；应配合 edit_timestep_schedule 调整。",
+    "codePath": "core/lulynx_trainer/edit_injection_strategy.py"
+  },
+  "advanced_en": {
+    "principle": "V1 avoids direct 2L self-attention concatenation and first uses shape-compatible latent residual to reduce activation-VRAM risk. Stronger attention/token injection strategies are kept as an adapter-hooked contract.",
+    "intervention": "The forward-input stage rewrites the sample or records adapter-hook needs before the model forward.",
+    "expectedImpact": "Reduces pixel drift while avoiding the attention-activation blowup early implementations risked.",
+    "tradeoffs": "reference_strength too high photocopies the source, too low preserves too little; tune alongside edit_timestep_schedule.",
     "codePath": "core/lulynx_trainer/edit_injection_strategy.py"
   },
   "relatedConfigs": [

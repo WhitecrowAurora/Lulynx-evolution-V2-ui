@@ -1,7 +1,9 @@
 {
   "key": "loss_scheduler_ema_alpha",
   "title": "Loss 调度器平滑系数",
+  "title_en": "Loss",
   "category": "训练 / Loss 调度器",
+  "category_en": "Training / Loss Scheduler",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -17,9 +19,19 @@
     "whenToUse": "配合 loss_gated_cosine 或 loss_weighted_annealed_cosine 调度器使用，让调度器的「进退」决策基于平滑后的 loss，而非单步噪声。",
     "avoidWhen": "使用其他调度器（cosine_with_restarts / linear 等）时这些参数均无效。"
   },
+  "standard_en": {
+    "summary": "The EMA smoothing coefficient for the loss-gated cosine (loss_gated_cosine) and loss-weighted annealed cosine (loss_weighted_annealed_cosine) schedulers; it sets how much the loss is smoothed to filter batch jitter.",
+    "effect": "Larger (closer to 1) is less sensitive to loss fluctuation and needs a longer sustained fall to count as real progress; smaller responds faster but is more easily swayed by noise.",
+    "whenToUse": "Together with the loss_gated_cosine or loss_weighted_annealed_cosine scheduler, so its hold-or-advance decisions rest on the smoothed loss rather than single-step noise.",
+    "avoidWhen": "These parameters have no effect with any other scheduler (cosine_with_restarts, linear and so on)."
+  },
   "advanced": {
     "principle": "loss_ema = ema_alpha × loss_ema + (1-ema_alpha) × current_loss，用平滑 loss 替代原始 loss 做调度决策。min_delta / relative_delta 定义\"有效下降\"的阈值；patience 是连续多少次无效下降才推进余弦相位；cooldown 防止来回抖动；max_hold_steps 限制最长锁定时间。",
     "tradeoffs": "参数组合较多，调整时建议一次只改一个参数观察效果。loss_gated_cosine 比 cosine_with_restarts 更复杂但对 loss 收敛的响应更精准。"
+  },
+  "advanced_en": {
+    "principle": "loss_ema = ema_alpha × loss_ema + (1-ema_alpha) × current_loss, using the smoothed loss for scheduling decisions. min_delta / relative_delta define what counts as \"meaningful decline\"; patience is how many ineffective declines must occur before the cosine phase advances; cooldown prevents oscillation back and forth; max_hold_steps caps the longest lock.",
+    "tradeoffs": "Many interacting parameters — change one at a time when tuning. loss_gated_cosine is more complex than cosine_with_restarts but responds more precisely to loss convergence."
   },
   "relatedConfigs": [
     "lr_scheduler",

@@ -1,0 +1,17 @@
+{
+  "key": "few_step_objective",
+  "title": "Few-step 目标",
+  "category": "Few-step 目标",
+  "appliesTo": [
+    "anima-few-step-lora",
+    "newbie-few-step-lora"
+  ],
+  "standard": {
+    "summary": "Few-step 目标模式。",
+    "effect": "few-step 蒸馏的训练目标形态；contract_probe 是契约探针（只验证管线不产出成品）。",
+    "whenToUse": "正式蒸馏选实际目标；先跑 probe 验证环境。",
+    "avoidWhen": "probe 模式不会产出可用模型。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

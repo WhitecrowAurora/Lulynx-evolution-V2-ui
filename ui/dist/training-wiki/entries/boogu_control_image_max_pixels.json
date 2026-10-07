@@ -1,0 +1,16 @@
+{
+  "key": "boogu_control_image_max_pixels",
+  "title": "控制图最大像素",
+  "category": "训练用模型",
+  "appliesTo": [
+    "boogu-edit-lora"
+  ],
+  "standard": {
+    "summary": "VAE ref 编码前 cap，默认约 1MP",
+    "effect": "写入训练配置 boogu_control_image_max_pixels，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 1048576，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

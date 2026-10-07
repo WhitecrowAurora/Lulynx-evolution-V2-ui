@@ -1,0 +1,18 @@
+{
+  "key": "wan22_discrete_flow_shift",
+  "title": "Flow shift",
+  "category": "训练用模型",
+  "appliesTo": [
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora"
+  ],
+  "standard": {
+    "summary": "TI2V/I2V 倾向 5.0；T2V 常见 12.0。",
+    "effect": "写入训练配置 wan22_discrete_flow_shift，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 5，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

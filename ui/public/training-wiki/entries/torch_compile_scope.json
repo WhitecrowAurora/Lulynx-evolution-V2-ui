@@ -1,7 +1,9 @@
 {
   "key": "torch_compile_scope",
   "title": "torch.compile 作用域",
+  "title_en": "Torch.compile",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "默认（跟随 runtime）": "不强制改，跟着 runtime 默认走。",
       "per_block": "一块一块编，挂了也好定位。",
       "full": "大片一起编，潜力大，图一变也容易炸。"
+    }
+  },
+  "standard_en": {
+    "summary": "The values available for the torch.compile scope (auto-generated skeleton, still open to polish).",
+    "effect": "Switching between the enum values changes training behaviour or resource use; see the individual entries.",
+    "whenToUse": "Choose by task and hardware; when unsure use the product default.",
+    "avoidWhen": "Do not pick an experimental or aggressive gear blindly before you understand what the entries mean.",
+    "optionDescriptions": {
+      "默认（跟随 runtime）": "Forces nothing, and follows the runtime default.",
+      "per_block": "Compiles block by block, which also makes a failure easy to locate.",
+      "full": "Compiles large stretches at once: more potential, and easier to blow up when the graph changes."
     }
   },
   "advanced": {},

@@ -1,0 +1,17 @@
+{
+  "key": "tiered_residency_spill_prefer_copy",
+  "title": "强制自写副本",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "默认关。",
+    "effect": "关闭时优先直接映射原始模型文件里逐位相同的那段，省掉开场那次全量写盘。如果模型在慢盘、而落盘目录在快盘，打开它：宁可开场写一次到快盘，也别让每个块都从慢盘读。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

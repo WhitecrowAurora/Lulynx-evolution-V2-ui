@@ -1,0 +1,41 @@
+{
+  "key": "adaptive_sample_mining_max_samples",
+  "title": "样本状态容量",
+  "category": "渐进式 / 分阶段训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "hunyuan-dit-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "lumina-finetune",
+    "lumina-lora",
+    "newbie-lora",
+    "qwen-image-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "内存与 resume 中最多跟踪多少个样本的 EMA 困难度。",
+    "effect": "写入训练配置 adaptive_sample_mining_max_samples，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 2048，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

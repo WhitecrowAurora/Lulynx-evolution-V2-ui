@@ -1,0 +1,16 @@
+{
+  "key": "distillation_loss_weight",
+  "title": "蒸馏损失权重",
+  "category": "LCM / Turbo 蒸馏参数",
+  "appliesTo": [
+    "sdxl-turbo-lora"
+  ],
+  "standard": {
+    "summary": "蒸馏损失权重。",
+    "effect": "蒸馏 loss 相对其他 loss 项的权重。",
+    "whenToUse": "蒸馏信号被其他目标稀释时调大。",
+    "avoidWhen": "默认 1。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

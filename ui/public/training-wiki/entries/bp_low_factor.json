@@ -1,7 +1,9 @@
 {
   "key": "bp_low_factor",
   "title": "BP-low 下采样倍数",
+  "title_en": "BP-low downsample factor",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,12 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "The downsampling factor. 2 = half resolution (64 to 32), 4 = quarter resolution. Larger saves more VRAM at a slight cost in precision.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "下采样倍数。2 = 半分辨率（64→32），4 = 四分之一分辨率。越大省显存越多但精度略降。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Downsampling factor. 2 = half resolution (64→32), 4 = quarter resolution. Larger saves more VRAM at a slight precision cost."
   },
   "relatedConfigs": []
 }

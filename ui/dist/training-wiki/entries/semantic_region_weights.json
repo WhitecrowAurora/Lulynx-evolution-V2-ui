@@ -1,0 +1,27 @@
+{
+  "key": "semantic_region_weights",
+  "title": "语义区域训练权重",
+  "category": "语义区域加权",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "默认一行；添加不同区域并设置起始/终止权重与调度。",
+    "effect": "自定义策略使用四点单调平滑曲线。",
+    "whenToUse": "默认 [{'region': 'face', 'start_weight': 0.3, 'schedule': 'linear', 'end_weight': 1, 'custom_curve': None}]，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

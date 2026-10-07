@@ -1,12 +1,17 @@
 {
   "key": "h3_checkpoint_mode",
   "title": "H3 激活检查点模式",
+  "title_en": "Activation Checkpoint Mode",
   "category": "显存优化 / 激活",
+  "category_en": "VRAM Optimization / Activations",
   "appliesTo": [
     "minimax-h3-lora"
   ],
   "layers": [
     "内存层"
+  ],
+  "layers_en": [
+    "Memory layer"
   ],
   "standard": {
     "summary": "H3 的激活检查点实现：unsloth（默认）、selective、full。Block Swap 开启时必须用 unsloth；full/selective 仅适合所有 block 常驻 GPU 的诊断场景。",
@@ -14,12 +19,25 @@
     "whenToUse": "任何带 block swap 的 H3 训练（即 16GB 默认配方）保持 unsloth；只有全 block 常驻显存做数值诊断时才切 full/selective。",
     "avoidWhen": "blocks_to_swap>0 时选 full/selective 会被校验直接拒绝（full/selective recompute 无法重载已释放的 block 权重）。"
   },
+  "standard_en": {
+    "summary": "H3's activation checkpointing implementation: unsloth (the default), selective, full. Block Swap requires unsloth; full and selective suit only diagnostic runs with every block resident on the GPU.",
+    "effect": "unsloth cooperates with block swap's weight lifecycle (it can reload freed block weights during backward); config validation permits only unsloth once h3_blocks_to_swap>0, normalises the old value offloaded to unsloth, and errors on an invalid value.",
+    "whenToUse": "Keep unsloth for any H3 run with block swap -- that is, the default 16GB recipe; switch to full or selective only for numerical diagnosis with every block resident.",
+    "avoidWhen": "Choosing full or selective with blocks_to_swap>0 is rejected by validation outright (full/selective recompute cannot reload block weights that were already freed)."
+  },
   "advanced": {
     "principle": "常规激活检查点在反传时重算前向，要求所在模块权重仍在 GPU；block swap 场景下权重可能已被释放，unsloth 风格的 checkpoint 把「激活重算」与「权重重载」调度协同，另配 h3_activation_offload_min_tensor_mb 阈值把大激活卸载到 CPU。",
     "intervention": "configs_h3.py：取值归一化与 swap 互斥校验；trainer_prepare_mixin.py：checkpoint_policy 按 h3_checkpoint_mode 映射（full/selective 直传，unsloth 场景走专用路径）；minimax_h3/loader.py：checkpoint_mode 传入模型。",
     "expectedImpact": "unsloth 让 48 block 全交换 + 激活检查点在 16GB 上可行；full 重算开销最大但语义最简单。",
     "tradeoffs": "unsloth 路径实现复杂、与 block swap 强耦合；诊断数值问题时 full 更容易排除变量。",
     "codePath": "configs_h3.py：h3_checkpoint_mode 校验（swap>0 ⇒ unsloth）；trainer_prepare_mixin.py：checkpoint_policy 映射；minimax_h3/loader.py"
+  },
+  "advanced_en": {
+    "principle": "Regular activation checkpointing recomputes forward during backward, requiring the module's weights still on the GPU; under block swap the weights may already be released. Unsloth-style checkpointing coordinates \"activation recompute\" with \"weight reload\" scheduling, plus an h3_activation_offload_min_tensor_mb threshold offloading large activations to CPU.",
+    "intervention": "configs_h3.py: value normalization and mutual-exclusion validation with swap; trainer_prepare_mixin.py: checkpoint_policy maps by h3_checkpoint_mode (full/selective passed through, unsloth on a dedicated path); minimax_h3/loader.py: checkpoint_mode passed into the model.",
+    "expectedImpact": "unsloth makes full 48-block swap + activation checkpointing feasible on 16GB; full has the largest recompute cost but the simplest semantics.",
+    "tradeoffs": "The unsloth path is complex and tightly coupled to block swap; full is easier for isolating variables when debugging numerics.",
+    "codePath": "configs_h3.py: h3_checkpoint_mode validation (swap>0 ⇒ unsloth); trainer_prepare_mixin.py: checkpoint_policy mapping; minimax_h3/loader.py"
   },
   "relatedConfigs": [
     "h3_blocks_to_swap",

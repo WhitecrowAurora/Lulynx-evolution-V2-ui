@@ -1,0 +1,17 @@
+{
+  "key": "easycontrol_v2_match_target_bucket",
+  "title": "匹配目标 bucket",
+  "category": "EasyControl",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "EasyControl 匹配目标 bucket。",
+    "effect": "控制图按目标图 bucket 尺寸对齐裁剪。",
+    "whenToUse": "控制图与目标图尺寸不一致时开启。",
+    "avoidWhen": "已预对齐数据时关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

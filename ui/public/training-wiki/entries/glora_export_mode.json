@@ -1,7 +1,9 @@
 {
   "key": "glora_export_mode",
   "title": "GLoRA 导出模式",
+  "title_en": "GLoRA Export Mode",
   "category": "LoRA / 变体",
+  "category_en": "LoRA / Variants",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -9,11 +11,20 @@
   "layers": [
     "导出层"
   ],
+  "layers_en": [
+    "Export layer"
+  ],
   "standard": {
     "summary": "GLoRA 适配器训练完成后的保存格式：lora_compatible（默认）导出为 ComfyUI/A1111 可直接加载的标准 LoRA 布局；native 保留 GLoRA 原生参数布局。",
     "effect": "lora_compatible 把 GLoRA 的多分支参数折算/投影为等效 lora_up/lora_down 键；native 原样保存全部 GLoRA 支路，只有本训练器能加载。",
     "whenToUse": "产物要给 WebUI/ComfyUI 用户使用时保持默认 lora_compatible；需要继续训练或做 GLoRA 特有分析时选 native。",
     "avoidWhen": "lycoris_algo 不是 glora 时本项不参与；用 native 导出后不要指望第三方推理端能加载。"
+  },
+  "standard_en": {
+    "summary": "The save format after a GLoRA adapter finishes training: lora_compatible (the default) exports the standard LoRA layout that ComfyUI and A1111 load directly; native keeps GLoRA's own parameter layout.",
+    "effect": "lora_compatible folds or projects GLoRA's multi-branch parameters into equivalent lora_up/lora_down keys; native saves every GLoRA branch as-is and only this trainer can load it.",
+    "whenToUse": "Keep the default lora_compatible when the artefact is for WebUI/ComfyUI users; choose native when you will keep training it or want GLoRA-specific analysis.",
+    "avoidWhen": "It does not apply unless lycoris_algo is glora, and do not expect a native export to load in third-party inference."
   },
   "advanced": {
     "principle": "GLoRA 在权重和偏置上有多组可学习支路（提示式结构搜索），其表达能力超出「单对低秩矩阵」；导出为 LoRA 兼容格式必然是有损/近似折算，native 则保真但牺牲生态兼容。",
@@ -21,6 +32,13 @@
     "expectedImpact": "lora_compatible 产物在主流推理端即插即用；native 产物保留完整 GLoRA 结构与继续训练能力。",
     "tradeoffs": "兼容导出的折算可能与训练时效果有细微差异；注意配置归一化的非法值回落是 native（与 UI 默认 lora_compatible 不同），别名拼错时行为会变成原生导出。",
     "codePath": "trainer_artifact_export.py——glora_export_mode 分支调用 glora_export_rules.export_glora_state_dict；config_adapter_normalizers.py 取值归一化"
+  },
+  "advanced_en": {
+    "principle": "GLoRA has multiple learnable branches over weights and biases (prompt-style structural search) whose expressiveness exceeds \"a single pair of low-rank matrices\"; exporting to a LoRA-compatible format is necessarily a lossy/approximate conversion, while native is faithful at the cost of ecosystem compatibility.",
+    "intervention": "trainer_artifact_export.py: at export reads export_mode, with native going through glora_export_rules.export_glora_state_dict's native branch; the config normalization layer (config_adapter*.py) falls illegal values back to native.",
+    "expectedImpact": "lora_compatible artifacts are plug-and-play on mainstream inference consumers; native keeps the full GLoRA structure and continued-trainability.",
+    "tradeoffs": "The compatible conversion may differ subtly from training-time behavior; note that the normalization fallback for illegal values is native (unlike the UI default lora_compatible) — a misspelled alias turns into native export.",
+    "codePath": "trainer_artifact_export.py — glora_export_mode branch calls glora_export_rules.export_glora_state_dict; normalized in config_adapter_normalizers.py"
   },
   "relatedConfigs": [
     "lycoris_algo",

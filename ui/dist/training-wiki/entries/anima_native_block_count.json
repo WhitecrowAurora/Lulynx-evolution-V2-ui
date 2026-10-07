@@ -1,7 +1,9 @@
 {
   "key": "anima_native_block_count",
   "title": "Anima Native Block 数",
+  "title_en": "Anima Native Block Count",
   "category": "训练 / Anima 专用",
+  "category_en": "Training / Anima-specific",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "高级调试场景，或需要只训练模型特定层级的 block 时。通常保持默认（自动推断）。",
     "avoidWhen": "不了解 Anima 架构时不要修改，错误值会导致 LoRA 注入范围错误。"
   },
+  "standard_en": {
+    "summary": "The number of blocks used by the Anima native DiT path; it bounds which transformer blocks are active during training.",
+    "effect": "Normally inferred by the trainer, so no manual setting is needed. Changing it restricts the range of blocks LoRA is injected into.",
+    "whenToUse": "Advanced debugging, or when you want to train only blocks at particular depths. Otherwise leave it on the default (auto-inferred).",
+    "avoidWhen": "Do not change it without understanding the Anima architecture -- a wrong value gives LoRA the wrong injection range."
+  },
   "advanced": {
     "principle": "Anima native runtime 的 block 数由基座模型决定（如 28 个 transformer block）。此参数覆盖自动推断值，用于需要精确控制注入范围的场景。",
     "tradeoffs": "设置为比模型实际 block 数更小的值会导致最深层 block 不被训练，可能影响全局结构学习。"
+  },
+  "advanced_en": {
+    "principle": "The native Anima runtime's block count is decided by the base model (e.g. 28 transformer blocks). This parameter overrides the auto-inferred value for scenarios needing precise injection-range control.",
+    "tradeoffs": "Setting it smaller than the model's actual block count leaves the deepest blocks untrained, which can affect global structure learning."
   },
   "relatedConfigs": [
     "anima_block_prefetch",

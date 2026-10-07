@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
 import { postJson, request } from './transport'
+import { modelCodePreviewConfig, stripModelCodePermission } from '@/lib/modelCodePermission'
 
 export interface TrainDraftsPayload {
   version?: number
@@ -22,6 +23,11 @@ const LAB_LAUNCH_PATHS: Record<string, string> = {
 export const trainApi = {
   configOptions: () => request('/api/config/options'),
   savedParams: () => request('/api/config/saved_params'),
+
+  modelCodeSources: (config: Record<string, unknown>) =>
+    request(`/api/aesthetic_infer/runtime_status?${new URLSearchParams({
+      scorer_config: JSON.stringify(modelCodePreviewConfig(config)),
+    })}`),
 
   preflight: (config: Record<string, unknown>) =>
     postJson('/api/train/preflight', { allow_attention_fallback: true, ...config }),
@@ -87,7 +93,8 @@ export const trainApi = {
       method: 'POST',
     }),
 
-  saveConfig: (name: string, config: Record<string, unknown>) => postJson('/api/saved_configs/save', { name, config }),
+  saveConfig: (name: string, config: Record<string, unknown>) =>
+    postJson('/api/saved_configs/save', { name, config: stripModelCodePermission(config) }),
   listSavedConfigs: () => request('/api/saved_configs/list'),
   loadSavedConfig: (name: string) => request(`/api/saved_configs/load?name=${encodeURIComponent(name)}`),
   deleteSavedConfig: (name: string) => request(`/api/saved_configs/delete?name=${encodeURIComponent(name)}`, { method: 'DELETE' }),
@@ -103,19 +110,19 @@ export const trainApi = {
   /* 磁盘草稿 working set(与 saved_configs 命名空间隔离) */
   loadTrainDrafts: () => request('/api/train_drafts'),
   saveTrainDrafts: (payload: TrainDraftsPayload) =>
-    request('/api/train_drafts', { method: 'PUT', body: JSON.stringify(payload) }),
+    request('/api/train_drafts', { method: 'PUT', body: JSON.stringify(stripModelCodePermission(payload)) }),
   clearTrainDrafts: (typeId?: string) => {
     const q = typeId ? `?type_id=${encodeURIComponent(typeId)}` : ''
     return request(`/api/train_drafts${q}`, { method: 'DELETE' })
   },
 
-  /* L-F11 上次训练(同源 /last-training,非 /api 信封也可能直接返回 payload) */
-  lastTraining: () => request('/last-training'),
+  /* L-F11 上次训练(后端 canonical 路由挂在 /train 下,非 /api 信封也可能直接返回 payload) */
+  lastTraining: () => request('/train/last-training'),
 
   /* 运行历史磁盘 + 按 run 回填 */
   loadRunHistory: () => request('/api/run_history'),
   saveRunHistory: (payload: { version?: number; updated_at?: number; records?: unknown[] }) =>
-    request('/api/run_history', { method: 'PUT', body: JSON.stringify(payload) }),
+    request('/api/run_history', { method: 'PUT', body: JSON.stringify(stripModelCodePermission(payload)) }),
   runRestorableConfig: (runId: string) =>
     request(`/api/runs/${encodeURIComponent(runId)}/restorable_config`),
 }

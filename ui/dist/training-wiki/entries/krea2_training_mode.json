@@ -1,7 +1,9 @@
 {
   "key": "krea2_training_mode",
   "title": "训练模式（krea2_training_mode）",
+  "title_en": "Training mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -16,8 +18,26 @@
       "standard": "普通 RF/常规训，跟 de_turbo 假设不一样。"
     }
   },
+  "standard_en": {
+    "summary": "The Krea2 training mode",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "de_turbo": "Distillation correction, in the Turbo direction. The inference step count usually still sits in the twenties -- this is not the few-step-and-done regime.",
+      "frozen_delta": "Freezes the base and trains only the LoRA, staying closer to the original fast-inference feel, with a correspondingly limited range of change.",
+      "sigma_selective": "Trains on one band of sigma only, so other bands may come out weak.",
+      "standard": "Ordinary RF / conventional training, which assumes something different from de_turbo."
+    }
+  },
   "advanced": {
     "principle": "Turbo 默认 de_turbo（蒸馏纠偏，推理常需 20-30 步）。Raw 推荐 standard（标准 RF）；若仍选 de_turbo，prepare 会自动落到 standard。frozen_delta：冻底模只训 LoRA（偏保 Turbo 快推）。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Turbo defaults to de_turbo (distillation correction; inference usually needs 20-30 steps). Raw recommends standard (standard RF); if de_turbo is still selected, prepare automatically falls back to standard. frozen_delta: freezes the base model and trains only the LoRA (favoring Turbo's fast inference).",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

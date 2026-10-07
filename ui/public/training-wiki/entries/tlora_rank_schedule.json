@@ -1,0 +1,54 @@
+{
+  "key": "tlora_rank_schedule",
+  "title": "lulynx 渐进秩调度",
+  "title_en": "lulynx Progressive-Rank Schedule",
+  "category": "LoRA 变体 / 张量",
+  "category_en": "LoRA Variants / Tensor Decomposition",
+  "appliesTo": [
+    "anima-lora",
+    "sdxl-lora"
+  ],
+  "aliases": [
+    "lulynx_progressive_rank_schedule",
+    "tlora_orthogonal_init",
+    "tlora_rank_schedule"
+  ],
+  "standard": {
+    "summary": "控制 lulynx 渐进秩 LoRA 随全局训练进度变化的有效 rank；不是 Tensor-Ring，也不是论文 T-LoRA 的 timestep schedule。",
+    "effect": "tlora_rank_schedule 控制 lulynx 渐进秩 LoRA 随全局训练进度的有效 rank；tlora_orthogonal_init 使用正交初始化。不要理解为论文 T-LoRA 的 timestep schedule。",
+    "whenToUse": "实验性功能。追求比标准 LoRA 更高的参数效率（相同参数量 → 更高隐式秩）时尝试。",
+    "avoidWhen": "默认关闭。张量环分解的前向计算比标准 LoRA 更复杂，且推理时需要专门支持。",
+    "optionDescriptions": {
+      "cosine": "有效 rank 按余弦变，常是先宽后收。",
+      "linear": "有效 rank 直线变。",
+      "constant": "全程钉在最小秩,不随步数长;当对照用。",
+      "geometric": "按等比从最小秩乘到最大秩:前期涨得少,收尾涨得快。"
+    }
+  },
+  "standard_en": {
+    "summary": "Controls the effective rank of the lulynx progressive-rank LoRA as global training progresses; it is neither Tensor-Ring nor the paper T-LoRA's timestep schedule.",
+    "effect": "tlora_rank_schedule controls the lulynx progressive-rank LoRA's effective rank against global training progress; tlora_orthogonal_init uses orthogonal initialisation. Do not read it as the paper T-LoRA's timestep schedule.",
+    "whenToUse": "An experimental feature. Try it when you are after higher parameter efficiency than a standard LoRA (the same parameter count -> a higher implicit rank).",
+    "avoidWhen": "Off by default. The tensor-ring decomposition's forward pass is more complex than a standard LoRA's, and inference needs dedicated support.",
+    "optionDescriptions": {
+      "cosine": "The effective rank follows a cosine, usually wide first and narrowing later.",
+      "linear": "The effective rank changes in a straight line.",
+      "constant": "Pinned at the minimum rank throughout and not growing with the step count; use it as a control.",
+      "geometric": "Multiplies geometrically from the minimum rank up to the maximum: it grows little early and fast towards the end."
+    }
+  },
+  "advanced": {
+    "principle": "张量环（Tensor Ring）分解：W ≈ Tr(G_1, G_2, ..., G_k)，通过闭环收缩多个三阶张量核来表示权重矩阵。隐式秩 = 各核维度的乘积，远超标准 LoRA 的显式 rank。",
+    "tradeoffs": "张量环计算比矩阵乘法更复杂（多次收缩），训练速度可能慢 2~3×；但参数效率理论上更高，适合参数量受限的场景。"
+  },
+  "advanced_en": {
+    "principle": "Tensor Ring decomposition: W ≈ Tr(G_1, G_2, ..., G_k), representing the weight matrix by closed-loop contraction of multiple third-order tensor cores. The implicit rank is the product of the cores' dimensions, far exceeding standard LoRA's explicit rank.",
+    "tradeoffs": "Tensor-ring computation is more complex than matrix multiplication (multiple contractions), so training may be 2~3x slower; but parameter efficiency is theoretically higher, suited to parameter-budget-limited scenarios."
+  },
+  "relatedConfigs": [
+    "network_dim",
+    "network_alpha",
+    "krona_enabled",
+    "cdka_enabled"
+  ]
+}

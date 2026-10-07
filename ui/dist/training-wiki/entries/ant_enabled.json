@@ -1,7 +1,9 @@
 {
   "key": "ant_enabled",
   "title": "ANT（自适应噪声训练）",
+  "title_en": "ANT adaptive",
   "category": "前沿储备 / 训练",
+  "category_en": "Frontier Reserve / Training",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "实验性功能，适合研究对比。ant_blend 控制对抗噪声的混合比例（0.0~1.0）。",
     "avoidWhen": "默认关闭。普通 LoRA 训练无需开启。"
   },
+  "standard_en": {
+    "summary": "(Experimental) ANT (Adaptive Noise Training): mixes learnable adversarial noise derived from the dataset into the training noise to make the model more robust.",
+    "effect": "Once on, the training noise is no longer purely Gaussian -- a small adversarial-direction component derived from dataset statistics is blended in, improving robustness to that distribution.",
+    "whenToUse": "An experimental feature suited to research comparisons. ant_blend sets how much adversarial noise is mixed in (0.0-1.0).",
+    "avoidWhen": "Off by default. Ordinary LoRA training does not need it."
+  },
   "advanced": {
     "principle": "ANT 在噪声采样时混合 ε_gaussian 和 ε_adaptive（基于数据集梯度方向的噪声），比例由 ant_blend 控制。对抗噪声让模型被迫对更难的噪声方向进行去噪，提升泛化性。",
     "tradeoffs": "对抗噪声的计算需要额外的 forward pass 来估计数据方向，增加约 20%~50% 的计算量。效果在大数据集上更显著。"
+  },
+  "advanced_en": {
+    "principle": "ANT mixes ε_gaussian and ε_adaptive (noise based on dataset gradient direction) at sampling time, with the ratio controlled by ant_blend. Adversarial noise forces the model to denoise harder noise directions, improving generalization.",
+    "tradeoffs": "Adversarial noise needs an extra forward pass to estimate the data direction, adding roughly 20%~50% compute. The effect is more pronounced on large datasets."
   },
   "relatedConfigs": [
     "noise_offset",

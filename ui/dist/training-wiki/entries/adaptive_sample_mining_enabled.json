@@ -1,0 +1,41 @@
+{
+  "key": "adaptive_sample_mining_enabled",
+  "title": "启用困难样本建议",
+  "category": "渐进式 / 分阶段训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "hunyuan-dit-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "lumina-finetune",
+    "lumina-lora",
+    "newbie-lora",
+    "qwen-image-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "按样本 loss 的 EMA 生成困难样本建议；当前为只读建议模式，不会自动修改采样器或数据集。",
+    "effect": "写入训练配置 adaptive_sample_mining_enabled，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

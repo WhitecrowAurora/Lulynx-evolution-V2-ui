@@ -1,7 +1,9 @@
 {
   "key": "execution_core",
   "title": "执行核心",
+  "title_en": "Execution Core",
   "category": "性能 / 执行",
+  "category_en": "Performance / Execution",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,17 +15,33 @@
   "layers": [
     "计算层"
   ],
+  "layers_en": [
+    "Compute layer"
+  ],
   "standard": {
     "summary": "选择训练的执行核心引擎。standard 使用标准 PyTorch 训练循环；turbo 启用 TurboCore 加速路径（实验性）；auto 自动选择。",
     "effect": "standard 最稳定。turbo 可能提供额外加速但仍处于实验阶段。auto 让系统根据硬件和配置自动选择。",
     "whenToUse": "大多数用户保持 standard。开发者或想尝试加速的用户可选 turbo（需要 turbocore_allow_fallback=True）。",
     "avoidWhen": "生产训练建议用 standard。turbo 的某些特性可能不完全验证。"
   },
+  "standard_en": {
+    "summary": "Picks the execution core for training. standard uses the standard PyTorch training loop; turbo enables the TurboCore acceleration path (experimental); auto chooses for you.",
+    "effect": "standard is the most stable. turbo may go faster but is still experimental. auto lets the system choose from the hardware and configuration.",
+    "whenToUse": "Most users should stay on standard. Developers, or anyone wanting to try the acceleration, can pick turbo (which needs turbocore_allow_fallback=True).",
+    "avoidWhen": "standard is recommended for production training; some of turbo's features are not fully verified."
+  },
   "advanced": {
     "principle": "TurboCore 是一个优化的执行路径，可能包含：融合 kernel、自定义 CUDA 算子、异步数据管线等。turbocore_features 可以细粒度启用/禁用特定 TurboCore 特性。turbocore_strict=True 时在 TurboCore 不可用时直接失败而非回退。",
     "intervention": "entry_train.py 根据 execution_core 选择执行路径。",
     "expectedImpact": "turbo 在支持的硬件上可能提速 10-20%，但稳定性不如 standard。",
     "tradeoffs": "turbocore_allow_fallback=True 在 turbo 不可用时自动回退到 standard。",
+    "codePath": "entry_train.py:execution_core dispatch → standard/turbo/auto"
+  },
+  "advanced_en": {
+    "principle": "TurboCore is an optimized execution path that may include fused kernels, custom CUDA ops, and asynchronous data pipelines. turbocore_features can enable/disable specific TurboCore features finely. With turbocore_strict=True, TurboCore unavailability fails outright instead of falling back.",
+    "intervention": "entry_train.py selects the execution path per execution_core.",
+    "expectedImpact": "turbo may speed up 10-20% on supporting hardware but is less stable than standard.",
+    "tradeoffs": "turbocore_allow_fallback=True auto-falls back to standard when turbo is unavailable.",
     "codePath": "entry_train.py:execution_core dispatch → standard/turbo/auto"
   },
   "relatedConfigs": [

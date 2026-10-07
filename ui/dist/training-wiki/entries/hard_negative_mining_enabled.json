@@ -1,7 +1,9 @@
 {
   "key": "hard_negative_mining_enabled",
   "title": "启用困难样本挖掘 (Hard Negative Mining)",
+  "title_en": "Enable (Hard Negative Mining)",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Backpropagates gradients only from the top-k% samples by loss",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "只回传 loss 最高的 top-k% 样本梯度，聚焦困难样本训练。类似 Focal Loss 思想。默认关闭。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Backpropagates gradients only for the top-k% highest-loss samples, focusing training on hard examples — similar in spirit to Focal Loss. Off by default.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

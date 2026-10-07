@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { SchemaField, SchemaFieldOption } from '@/schema/schemaIndex'
 import { FieldShell, Input, Select, Slider, Switch, Textarea } from '@/components/form'
 import { Button } from '@/components/primitives'
+import { ConceptDirectionPairs } from './ConceptDirectionPairs'
 import { trainApi } from '@/api/trainApi'
 import { unwrap } from '@/api/transport'
 import { candidatesForField, countCandidatesForField } from '@/lib/inventoryAutofill'
@@ -33,10 +34,8 @@ import { toast } from '@/stores/toastStore'
 import {
   useI18n,
   translate,
-  resolveFieldLabel,
-  resolveFieldDesc,
-  resolveOptionLabel,
 } from '@/i18n/useI18n'
+import { resolveFieldLabel, resolveFieldDesc, resolveOptionLabel } from '@/i18n/schemaI18n'
 
 /* schema 字段 → 控件。11 种字段类型的统一渲染入口。 */
 
@@ -505,6 +504,13 @@ export function FieldControl({
   let control: React.ReactNode
   const str = value == null ? '' : String(value)
 
+  if (field.type === 'concept_direction_pairs') {
+    return <div className="lx-field lx-span-full" data-field-key={field.key}>
+      <span className="lx-field-label">{label}{helpBtn}</span>
+      <ConceptDirectionPairs value={value} onChange={onChange} disabled={disabled} />
+      {disabledReason ? <span className="lx-profile-managed-note">{disabledReason}</span> : null}
+    </div>
+  }
   switch (field.type) {
     case 'select': {
       const opts = optionsOf(field, language, draft, runtime)

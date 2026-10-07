@@ -1,7 +1,9 @@
 {
   "key": "cache_latents",
   "title": "缓存 Latent",
+  "title_en": "Enable Latent Cache",
   "category": "缓存 / 数据路径",
+  "category_en": "Cache / Data Path",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,17 +15,33 @@
     "数据缓存层",
     "VAE 层"
   ],
+  "layers_en": [
+    "Data cache layer",
+    "VAE layer"
+  ],
   "standard": {
     "summary": "把图片经过 VAE 编码后的 latent 提前缓存，训练时直接读取。",
     "effect": "减少重复 VAE 编码，通常更稳、更省显存；缓存到磁盘会占用硬盘空间。",
     "whenToUse": "LoRA 常规训练、数据集固定、需要降低训练时 VAE 显存占用时建议开启。",
     "avoidWhen": "训练中需要动态图像增强、分辨率阶段会重建缓存，或磁盘空间/IO 很紧张时谨慎。"
   },
+  "standard_en": {
+    "summary": "Caches the latents produced by VAE-encoding your images ahead of time, so training reads them directly.",
+    "effect": "Cuts repeated VAE encoding, which is usually steadier and easier on VRAM; caching to disk costs disk space.",
+    "whenToUse": "Recommended for ordinary LoRA training on a fixed dataset, and any time you want to cut VAE VRAM usage during the run.",
+    "avoidWhen": "Be careful when training needs dynamic image augmentation, when a resolution stage would rebuild the cache, or when disk space or IO is very tight."
+  },
   "advanced": {
     "principle": "扩散训练实际在 latent 空间优化；提前保存 latent 可以把 VAE 编码从训练主循环移出。",
     "intervention": "介入数据读取与缓存生成阶段，通常不改变 loss 目标。",
     "expectedImpact": "降低 VAE 相关峰值和 CPU/GPU 编码等待；磁盘缓存格式与 dtype 会影响容量和读写速度。",
     "tradeoffs": "缓存与分辨率绑定。若 staged resolution 或 bucket 策略变了，需要重新生成对应 latent。"
+  },
+  "advanced_en": {
+    "principle": "Diffusion training actually optimizes in latent space; saving latents in advance moves VAE encoding out of the main training loop.",
+    "intervention": "Intervenes at data loading and cache generation; usually does not change the loss objective.",
+    "expectedImpact": "Lowers VAE-related peaks and CPU/GPU encode waits; the disk cache format and dtype affect capacity and read/write speed.",
+    "tradeoffs": "Caches are bound to resolution. If staged resolution or bucket policy changes, the corresponding latents must be regenerated."
   },
   "relatedConfigs": [
     "cache_latents_to_disk",

@@ -1,7 +1,9 @@
 {
   "key": "boogu_block_residency",
   "title": "Boogu Block 驻留",
+  "title_en": "Boogu Block",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -14,12 +16,24 @@
       "block_offload": "按 block 卸，省显存，步进可能变慢。"
     }
   },
+  "standard_en": {
+    "summary": "resident is the default (Layer Offload off, every block resident in VRAM); block_offload streams them between system memory and VRAM.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "resident": "Blocks stay resident on the GPU.",
+      "block_offload": "Offloads block by block: saves VRAM, may slow the step down."
+    }
+  },
   "advanced": {
     "principle": "默认 resident（Layer Offload OFF）。OOM 再开 block_offload；勿未测抄 Klein 4/3。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Default is resident (Layer Offload OFF). Only enable block_offload after an actual OOM; do not copy Klein's 4/3 without testing."
   },
   "relatedConfigs": []
 }

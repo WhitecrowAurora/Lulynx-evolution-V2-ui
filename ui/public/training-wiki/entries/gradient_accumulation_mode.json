@@ -1,7 +1,9 @@
 {
   "key": "gradient_accumulation_mode",
   "title": "梯度累积模式",
+  "title_en": "Mode",
   "category": "训练 / 梯度",
+  "category_en": "Training / Gradients",
   "appliesTo": [
     "anima-lora"
   ],
@@ -19,9 +21,23 @@
       "classic": "一块一块更、检查也勤，慢一点，好对比。"
     }
   },
+  "standard_en": {
+    "summary": "Advanced gradient accumulation control: mode chooses between standard accumulation (standard) and immediate gradient release (immediate); release_mode governs when gradients are released inside a fused backward.",
+    "effect": "immediate frees gradients as soon as each layer's backward finishes, lowering the peak VRAM of accumulation. AGC (adaptive gradient clipping) normalises by per-layer parameter norm, which is finer than a global clip_grad_norm.",
+    "whenToUse": "Try immediate when VRAM is extremely tight; AGC can replace or supplement max_grad_norm when training is unstable.",
+    "avoidWhen": "immediate is not fully compatible with every optimizer implementation, and badly chosen AGC parameters (agc_clip_factor/agc_eps) can over-clip.",
+    "optionDescriptions": {
+      "fast": "Updates with the microbatches merged, which runs a little faster.",
+      "classic": "Updates block by block with frequent checks: slower, easier to compare against."
+    }
+  },
   "advanced": {
     "principle": "AGC（Adaptive Gradient Clipping）：clip_threshold = agc_clip_factor × max(‖W‖_F, agc_eps)；若 ‖∇W‖_F > clip_threshold 则裁剪 ∇W *= clip_threshold / ‖∇W‖_F。等价于\"梯度范数不超过权重范数的 agc_clip_factor 倍\"，对每层独立计算（不像 max_grad_norm 是全局）。",
     "tradeoffs": "AGC 与 max_grad_norm 同时使用时双重裁剪，应选其一。AGC 对大权重层（如 MLP）的裁剪阈值更大，对小权重层（如 LoRA）更严格。"
+  },
+  "advanced_en": {
+    "principle": "AGC (Adaptive Gradient Clipping): clip_threshold = agc_clip_factor × max(‖W‖_F, agc_eps); if ‖∇W‖_F > clip_threshold, clip via ∇W *= clip_threshold / ‖∇W‖_F. Equivalent to \"gradient norm at most agc_clip_factor times the weight norm\", computed per layer independently (unlike the global max_grad_norm).",
+    "tradeoffs": "Using AGC together with max_grad_norm double-clips — pick one. AGC's clip threshold is larger for big-weight layers (e.g. MLP) and stricter for small-weight layers (e.g. LoRA)."
   },
   "relatedConfigs": [
     "gradient_accumulation_steps",

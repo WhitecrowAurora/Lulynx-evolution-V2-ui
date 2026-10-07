@@ -1,7 +1,9 @@
 {
   "key": "edit_reference_strength",
   "title": "参考强度",
+  "title_en": "Edit Reference Strength",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "How strongly the source latent acts on the current noisy latent",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "源图 latent 对当前 noisy latent 的残差注入强度。建议从 0.20-0.30 起试（默认 0.25，范围 0~1）。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Strength of residual injection from the source-image latent into the current noisy latent. Start with 0.20-0.30 (default 0.25, range 0~1).",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

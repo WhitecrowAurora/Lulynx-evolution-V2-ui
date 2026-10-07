@@ -1,0 +1,17 @@
+{
+  "key": "concept_geometry_alias_map_path",
+  "title": "别名映射文件",
+  "category": "Concept Geometry",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "概念别名映射文件。",
+    "effect": "JSON 映射表，把同义概念名归并到同一几何向量。",
+    "whenToUse": "数据集概念命名不统一时提供。",
+    "avoidWhen": "留空不做归并。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

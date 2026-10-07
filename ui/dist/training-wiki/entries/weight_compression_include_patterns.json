@@ -1,0 +1,16 @@
+{
+  "key": "weight_compression_include_patterns",
+  "title": "压缩包含模式",
+  "category": "速度优化",
+  "appliesTo": [
+    "ltx23-lora"
+  ],
+  "standard": {
+    "summary": "可选，逗号分隔；仅压缩匹配的组件或参数。",
+    "effect": "写入训练配置 weight_compression_include_patterns，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

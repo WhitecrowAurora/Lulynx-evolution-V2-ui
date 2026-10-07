@@ -1,0 +1,17 @@
+{
+  "key": "concept_geometry_translation_api_model",
+  "title": "翻译 API 模型名",
+  "category": "Concept Geometry",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "概念翻译 API 模型名。",
+    "effect": "云端翻译服务的模型标识。",
+    "whenToUse": "无本地翻译模型时走 API。",
+    "avoidWhen": "不需要翻译时不配。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

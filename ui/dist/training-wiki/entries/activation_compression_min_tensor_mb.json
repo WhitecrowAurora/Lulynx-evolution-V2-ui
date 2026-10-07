@@ -1,0 +1,17 @@
+{
+  "key": "activation_compression_min_tensor_mb",
+  "title": "激活压缩最小体积 MB",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "只压缩达到该体积的激活张量，小张量不值得压。",
+    "effect": "写入训练配置 activation_compression_min_tensor_mb，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 1，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

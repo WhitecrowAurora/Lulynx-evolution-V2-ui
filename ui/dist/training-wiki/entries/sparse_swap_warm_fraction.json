@@ -1,0 +1,18 @@
+{
+  "key": "sparse_swap_warm_fraction",
+  "title": "稀疏交换 Warm 比例",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "冷层中允许提前预取的比例，0~1，默认 0.35；守卫自动开启时，若这里填 0 会按显存档位补成 0.25（极低显存目标）或 0.35，已填的非零值不动。",
+    "effect": "写入训练配置 sparse_swap_warm_fraction，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0.35，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,20 @@
+{
+  "key": "vera_prng_key",
+  "title": "VeRA PRNG 种子",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "VeRA 共享随机矩阵种子。",
+    "effect": "决定共享随机矩阵 A/B 的 PRNG 种子；同 seed 下结构可复现。",
+    "whenToUse": "需要精确复现 VeRA 结构时固定。",
+    "avoidWhen": "默认 0 即可。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

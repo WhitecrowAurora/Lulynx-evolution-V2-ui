@@ -1,0 +1,16 @@
+{
+  "key": "dataset",
+  "title": "数据集目录",
+  "category": "数据集 / 图说",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "可选。",
+    "effect": "未指定标注文件时，从此目录查找 annotations.jsonl/labels.jsonl 等文件。",
+    "whenToUse": "路径留空时走默认解析/该功能不启用。",
+    "avoidWhen": "填错路径会在预检或启动时报错，注意路径有效性。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "sdxl_low_vram_optimization",
   "title": "SDXL 低显存优化套件",
+  "title_en": "Enable VRAM",
   "category": "速度 / 显存",
+  "category_en": "Speed / VRAM",
   "appliesTo": [
     "sdxl-lora"
   ],
@@ -25,9 +27,19 @@
     "whenToUse": "8~12GB 显卡训练 SDXL 时的综合优化套件。比手动逐一配置各个显存选项更方便。",
     "avoidWhen": "16GB+ 显卡无需使用（会降低训练速度）。单独需要某项优化时可以只开启对应的具体选项。"
   },
+  "standard_en": {
+    "summary": "The SDXL-specific low-VRAM suite, which combines block swap, adaptive resolution, two-stage caching and other memory-saving strategies so that an 8GB card can train an SDXL LoRA.",
+    "effect": "One switch enables a combination of low-VRAM strategies: automatic resolution step-down (to avoid OOM), smart block swap, two-stage caching (text embeddings first, then latents), keeping components resident on CPU, and so on.",
+    "whenToUse": "The all-in-one optimisation suite for training SDXL on an 8~12GB card. More convenient than configuring each memory option by hand.",
+    "avoidWhen": "A 16GB+ card does not need it (it slows training down). If you only need one of the optimisations, enable just that specific option."
+  },
   "advanced": {
     "principle": "套件按优先级自动组合策略：auto_resolution_probe 先探测在当前显存下可用的最大分辨率；two_phase_cache 优先缓存文本（轻量），再缓存 latent（重量）；fixed_block_swap 固定 offload 特定 block，不动态调整；unet_backend 控制 SDXL UNet 的计算后端（影响 kernel 选择和内存布局）。",
     "tradeoffs": "组合策略的交互效果复杂，auto_protection 开启时会自动降低分辨率（可能影响训练图像比例）；建议先了解单个选项再启用套件。"
+  },
+  "advanced_en": {
+    "principle": "The suite combines strategies automatically by priority: auto_resolution_probe first probes the maximum usable resolution under current VRAM; two_phase_cache caches text first (lightweight), then latents (heavy); fixed_block_swap offloads specific blocks on a fixed schedule without dynamic adjustment; unet_backend controls the SDXL UNet's compute backend (affects kernel choice and memory layout).",
+    "tradeoffs": "The interaction of combined strategies is complex; with auto_protection on, resolution is lowered automatically (possibly changing the training image aspect). Understand the individual options before enabling the suite."
   },
   "relatedConfigs": [
     "sdxl_block_swap_enabled",

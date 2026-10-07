@@ -1,21 +1,36 @@
 {
   "key": "lora2_adaptive_enabled",
   "title": "LoRA2 Adaptive (自动 Rank 选择)",
+  "title_en": "LoRA2 Adaptive",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "指数衰减权重自动学习最优 rank。",
-    "effect": "",
-    "whenToUse": "不确定时先保持默认，小步数短测后再调。",
-    "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
+    "summary": "指数衰减权重自动学习每层的有效 rank，代价是训练变慢约三分之一。",
+    "effect": "开启后不再手填统一 rank：每层自己学一个 ν 参数决定用到多少维。实测收益集中在产物体积（同一配置 69.7MB → 17.5MB），显存与质量基本不动。",
+    "whenToUse": "想让不同层用不同 rank、且在意产物体积时。不确定时先保持默认，小步数短测后再调。",
+    "avoidWhen": "在意训练速度时（实测慢约 35%），或与预检冲突、与其它互斥选项同时开启时。"
+  },
+  "standard_en": {
+    "summary": "Exponentially decaying weights learn each layer's effective rank automatically, at the cost of about a third more training time.",
+    "effect": "Once on, you no longer fill in a single rank: each layer learns its own nu parameter deciding how many dimensions it uses. The measured benefit lands on artefact size (69.7MB to 17.5MB at the same configuration), with VRAM and quality essentially unchanged.",
+    "whenToUse": "When you want different ranks in different layers and care about artefact size. When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When training speed matters (measured about 35% slower), when it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
   },
   "advanced": {
-    "principle": "指数衰减权重自动学习最优 rank。每层学习 ν 参数控制有效 rank。Rank-512 质量但 Rank-64 显存。",
-    "intervention": "",
-    "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "principle": "每层给 r_max 维各配一个指数衰减权重，训练中学习 ν 控制衰减速度，低于 rank_threshold 的维度在导出时被截掉，于是每层落在自己的有效 rank 上。它换到的是产物体积与逐层自适应，不是显存 —— 实测显存只差 1%。",
+    "intervention": "r_max 给上界（越大搜索空间越大、越慢），nu_init 给初始有效 rank 的松紧，decay_lambda 给衰减强度，rank_threshold 决定导出时截在哪。export_mode=native 保留 LoRA2 结构，static_full 转成普通 LoRA 以便被通用推理端读取。",
+    "expectedImpact": "80 步真机对照（同数据同种子）：标准 LoRA 1229 ms/step / 4267 MB，LoRA2 native 1657 ms/step / 4229 MB —— 慢 35%、显存少 1%、末 20 步 loss 约 0.181（与标准档持平，没变差也没变好）。产物 69.7MB → 17.5MB。单 nn.Linear 微基准的 1.78× 不能外推成训练代价。",
+    "tradeoffs": "确定收益只有产物体积与逐层自适应；速度是确定代价。附带的 rank pruning / minimum-rank 两条实验已于 2026-09-05 因「无稳定收益 + 输出分布风险」归档，不要指望它们再省什么。因此本功能保持 default-off，定位是可选研究功能而非推荐路径。",
+    "codePath": "声明 configs_training_methods.py:337；超参校验 configs.py:206 _validate_lora2_adaptive_config；注入 trainer_prepare_specialized_adapter_mixin.py:370 _inject_lora2_adaptive_adapter → lora2_adaptive_injector.py:120；层实现 lora2_adaptive_layer.py:189；每步惩罚项 training_step_loss_execution_auxiliary.py:167；rank 分布回调 trainer_execution_callbacks.py:231；导出 trainer_artifact_export.py:155 与 lora_export_contract.py:277/420；家族互斥表 contracts/adapter_family_registry.py:173-177。"
+  },
+  "advanced_en": {
+    "principle": "Gives each of the r_max dimensions per layer an exponentially decaying weight; training learns ν to control the decay rate, and dimensions below rank_threshold are truncated at export, so each layer settles on its own effective rank. What it trades for is artifact size and per-layer adaptivity, not VRAM — measured VRAM differs by only 1%.",
+    "intervention": "r_max sets the upper bound (bigger = larger search space, slower), nu_init sets how loose the initial effective rank is, decay_lambda sets decay strength, and rank_threshold decides where export truncates. export_mode=native keeps the LoRA2 structure; static_full converts to a plain LoRA so generic inference consumers can read it.",
+    "expectedImpact": "80-step on-device comparison (same data, same seed): standard LoRA 1229 ms/step / 4267 MB, LoRA2 native 1657 ms/step / 4229 MB — 35% slower, 1% less VRAM, final-20-step loss ≈ 0.181 (on par with standard, neither better nor worse). Artifact 69.7MB → 17.5MB. The 1.78× microbenchmark on a single nn.Linear does not extrapolate to training cost.",
+    "tradeoffs": "The certain benefits are artifact size and per-layer adaptivity; speed is a certain cost. The accompanying rank-pruning / minimum-rank experiments were archived on 2026-09-05 for \"no stable benefit + output-distribution risk\" — do not expect further savings from them. The feature therefore stays default-off, positioned as an optional research feature rather than a recommended path.",
+    "codePath": "declaration configs_training_methods.py:337; hyperparameter validation configs.py:206 _validate_lora2_adaptive_config; injection trainer_prepare_specialized_adapter_mixin.py:370 _inject_lora2_adaptive_adapter → lora2_adaptive_injector.py:120; layer implementation lora2_adaptive_layer.py:189; per-step penalty training_step_loss_execution_auxiliary.py:167; rank-distribution callback trainer_execution_callbacks.py:231; export trainer_artifact_export.py:155 and lora_export_contract.py:277/420; family exclusion table contracts/adapter_family_registry.py:173-177."
   },
   "relatedConfigs": []
 }

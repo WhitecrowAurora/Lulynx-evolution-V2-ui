@@ -1,7 +1,9 @@
 {
   "key": "max_bucket_reso",
   "title": "Bucket 最大分辨率",
+  "title_en": "Bucket max resolution",
   "category": "数据集 / 分辨率",
+  "category_en": "Dataset / Resolution",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -17,9 +19,19 @@
     "whenToUse": "max_bucket_reso 在数据集包含超高分辨率图像时防止 OOM；min_bucket_reso 在数据集包含低分辨率图像时避免无效训练。",
     "avoidWhen": "与 resolution（全局目标分辨率）重复设置时，max/min 是 bucket 分组的上下界，resolution 是理想桶面积目标，两者共同约束。"
   },
+  "standard_en": {
+    "summary": "The resolution range for bucket training: max_bucket_reso sets the maximum resolution (an image above it is scaled down rather than placed in a larger bucket); min_bucket_reso sets the minimum (an image below it is scaled up as needed or dropped).",
+    "effect": "Limiting the range lets you cap the VRAM use of training (max) and make sure the training resolution never gets too low (min).",
+    "whenToUse": "max_bucket_reso prevents OOM when the dataset contains very high-resolution images; min_bucket_reso avoids wasted training when the dataset contains low-resolution ones.",
+    "avoidWhen": "They are not duplicates of resolution (the global target): max/min are the upper and lower bounds of bucket grouping while resolution is the ideal bucket area, and the two constrain things together."
+  },
   "advanced": {
     "principle": "Bucket 算法在 [min_bucket_reso, max_bucket_reso] 范围内枚举所有可能的 bucket 尺寸，步长为 bucket_reso_steps。超出范围的图像会被缩放到范围边界最近的 bucket。",
     "tradeoffs": "max/min 设置过紧（范围太小）会导致大量图像被强制缩放（偏离原始比例），可能影响训练质量。"
+  },
+  "advanced_en": {
+    "principle": "The bucket algorithm enumerates all possible bucket sizes in [min_bucket_reso, max_bucket_reso] with step bucket_reso_steps. Images outside the range are scaled to the nearest in-range bucket.",
+    "tradeoffs": "Setting max/min too tightly (small range) forces many images to rescale (deviating from their original ratio), possibly hurting training quality."
   },
   "relatedConfigs": [
     "enable_bucket",

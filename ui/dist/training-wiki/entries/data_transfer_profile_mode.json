@@ -1,7 +1,9 @@
 {
   "key": "data_transfer_profile_mode",
   "title": "传输计时模式",
+  "title_en": "Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -15,8 +17,25 @@
       "off": "不记传输时间。"
     }
   },
+  "standard_en": {
+    "summary": "event uses CUDA events with deferred synchronisation",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "event": "Times with CUDA events, which disturbs training little.",
+      "sync": "Times with a hard synchronisation: accurate, but it slows training.",
+      "off": "Does not time transfers."
+    }
+  },
   "advanced": {
     "principle": "event 使用 CUDA events 延迟同步；sync 保留旧全局同步计时；off 忽略 profiling。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "event uses CUDA events with deferred sync; sync keeps the legacy global-synchronization timing; off ignores profiling.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

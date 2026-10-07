@@ -1,7 +1,9 @@
 {
   "key": "turbocore_mode",
   "title": "TurboCore 模式（开发者选项）",
+  "title_en": "Turbo Core Mode (on)",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -15,8 +17,25 @@
       "native_experimental": "实验加速，开发向。"
     }
   },
+  "standard_en": {
+    "summary": "Effective once TurboCore is enabled from the top bar. profile = performance analysis; native_experimental = experimental acceleration. Off by default.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "off": "TurboCore off.",
+      "profile": "Performance observation only.",
+      "native_experimental": "Experimental acceleration, aimed at development."
+    }
+  },
   "advanced": {
     "principle": "由顶栏启用 TurboCore 后生效。profile=性能分析；native_experimental=实验性加速。默认关闭。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Takes effect only after TurboCore is enabled in the top bar. profile = performance analysis; native_experimental = experimental acceleration. Off by default.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

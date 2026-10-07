@@ -1,7 +1,9 @@
 {
   "key": "fera_enabled",
   "title": "FeRA (特征调制适配)",
+  "title_en": "Fera Enabled",
   "category": "LoRA / 实验性",
+  "category_en": "LoRA / Experimental",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -10,17 +12,33 @@
   "layers": [
     "适配器层"
   ],
+  "layers_en": [
+    "Adapter layer"
+  ],
   "standard": {
     "summary": "FeRA 通过逐输出通道门控控制 LoRA 增量强度，门控默认初始化为 1.0。",
     "effect": "fera_gate_init 默认 1.0。显式填写 0 也会归一化为 1.0，避免零门控与零初始化 LoRA up 同时出现时所有 FeRA 梯度锁死。",
     "whenToUse": "想更平滑地引入 LoRA 特征时。减少训练初期的不稳定性。",
     "avoidWhen": "增加少量参数和计算开销。实验性特性。"
   },
+  "standard_en": {
+    "summary": "FeRA controls LoRA delta strength through a per-output-channel gate, initialised to 1.0 by default.",
+    "effect": "fera_gate_init defaults to 1.0. An explicit 0 is normalised to 1.0 as well, so a zero gate cannot coincide with a zero-initialised LoRA up and lock every FeRA gradient at zero.",
+    "whenToUse": "When you want LoRA features introduced more gently, reducing instability early in the run.",
+    "avoidWhen": "It adds a few parameters and a little computation. An experimental feature."
+  },
   "advanced": {
     "principle": "在 LoRA 增量上添加逐输出通道可学习门控 g：output = base_output + g · lora_delta。g 初始化为 fera_gate_init（默认 1.0），训练中可按通道调整增量强度。",
     "intervention": "LoRA forward 增量乘以逐输出通道可学习门控向量后叠加到基模型输出。",
     "expectedImpact": "训练初期更稳定，减少因 LoRA 初始化不当导致的 loss spike。",
     "tradeoffs": "每层增加一个长度等于输出通道数的可训练门控向量。",
+    "codePath": "core/lulynx/ → FeRA gated LoRA output"
+  },
+  "advanced_en": {
+    "principle": "Adds a per-output-channel learnable gate g to the LoRA increment: output = base_output + g · lora_delta. g initializes to fera_gate_init (default 1.0) and can adjust increment strength per channel during training.",
+    "intervention": "LoRA forward multiplies the increment by the per-channel learnable gate vector before adding to the base model output.",
+    "expectedImpact": "More stable early training, reducing loss spikes from poor LoRA initialization.",
+    "tradeoffs": "Adds one trainable gate vector of output-channel length per layer.",
     "codePath": "core/lulynx/ → FeRA gated LoRA output"
   },
   "relatedConfigs": [

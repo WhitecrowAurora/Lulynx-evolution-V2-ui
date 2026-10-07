@@ -1,7 +1,9 @@
 {
   "key": "quality_evaluation_validation_prompts",
   "title": "评估 / XY 提示词",
+  "title_en": "/ XY",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "One per line. With no preview_groups they serve as the metric evaluation's and the XY's",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "每行一个。无 preview_groups 时作为指标评估与 XY 的 Y 轴。建议同时配置预览测试组以获得更清晰的对照。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "One per line. Without preview_groups, serves metric evaluation and the XY grid's Y axis. Configure preview groups alongside for cleaner comparisons.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

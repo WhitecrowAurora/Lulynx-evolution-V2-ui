@@ -1,0 +1,24 @@
+{
+  "key": "fera_gate_init",
+  "title": "FeRA gate 初值",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "逐输出通道门控初值；默认 1.0。",
+    "effect": "显式填写 0 会归一化为 1.0，避免与零初始化 LoRA up 形成梯度死锁。",
+    "whenToUse": "默认 1，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

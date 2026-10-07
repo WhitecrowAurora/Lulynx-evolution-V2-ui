@@ -1,0 +1,17 @@
+{
+  "key": "concept_geometry_embedding_allow_download",
+  "title": "允许下载 Embedding",
+  "category": "Concept Geometry",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "允许下载 Embedding 模型。",
+    "effect": "首次运行允许从 Hub 拉取 embedding 模型。",
+    "whenToUse": "联网且接受下载时开启。",
+    "avoidWhen": "离线环境保持关闭（会报错提示用本地路径）。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

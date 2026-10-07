@@ -1,0 +1,16 @@
+{
+  "key": "ed_lora_sequence_length",
+  "title": "ED-LoRA 序列长度",
+  "category": "LoRA 结构变体",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "Token 序列长度（CLIP 标准 77）。",
+    "effect": "写入训练配置 ed_lora_sequence_length，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 77，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

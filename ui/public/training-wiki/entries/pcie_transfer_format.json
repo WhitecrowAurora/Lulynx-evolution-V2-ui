@@ -1,7 +1,9 @@
 {
   "key": "pcie_transfer_format",
   "title": "PCIe 训练传输格式",
+  "title_en": "PCIe transfer format",
   "category": "PCIe / 交换",
+  "category_en": "PCIe / Swap",
   "appliesTo": [
     "sdxl-lora",
     "anima-lora",
@@ -10,6 +12,10 @@
   "layers": [
     "传输层",
     "冻结权重层"
+  ],
+  "layers_en": [
+    "Transfer layer",
+    "Frozen weight layer"
   ],
   "standard": {
     "summary": "把 CPU-pinned 冻结权重以实验性低精度格式传输，再在 GPU 侧还原。",
@@ -25,11 +31,31 @@
       "raw_fp16": "原样 FP16。"
     }
   },
+  "standard_en": {
+    "summary": "Transfers the CPU-pinned frozen weights in an experimental low-precision format and restores them on the GPU side.",
+    "effect": "The aim is to move less data over PCIe and ease offload waiting on a low-end card.",
+    "whenToUse": "Worth trying when streaming/offload is clearly held up by PCIe and a benchmark shows the FP8/INT8 formats help.",
+    "avoidWhen": "Keep it off when VRAM is sufficient, when PCIe is not the bottleneck, or when you want fully conservative quality.",
+    "optionDescriptions": {
+      "off": "No extra compression on the transfer format.",
+      "fp8_e4m3": "Treated as FP8 while in transit.",
+      "int8_rowwise": "Row-wise INT8.",
+      "uint4_rowwise": "Row-wise UINT4.",
+      "raw_bf16": "BF16 as-is.",
+      "raw_fp16": "FP16 as-is."
+    }
+  },
   "advanced": {
     "principle": "冻结权重不参与梯度更新，可以在 CPU 侧预打包为较低精度传输格式，计算前在 GPU 侧解包。",
     "intervention": "介入 CPU-pinned 冻结 Linear 权重的搬运格式，不应影响可训练 LoRA 权重。",
     "expectedImpact": "可能降低 PCIe bytes 和等待；收益依赖解压开销、batch 规模、prefetch 覆盖和总线带宽。",
     "tradeoffs": "实验功能。低精度还原可能带来数值差异，默认不由自动增强开启，需用户显式选择或增强防护授权。"
+  },
+  "advanced_en": {
+    "principle": "Frozen weights take no part in gradient updates, so they can be pre-packed on the CPU side into a lower-precision transfer format and unpacked on the GPU before compute.",
+    "intervention": "Intervenes in the transfer format of CPU-pinned frozen Linear weights and should not affect trainable LoRA weights.",
+    "expectedImpact": "May reduce PCIe bytes and wait time; the benefit depends on decompression overhead, batch size, prefetch coverage, and bus bandwidth.",
+    "tradeoffs": "Experimental feature. Low-precision restoration can introduce numerical differences; it is not enabled by auto-boost by default and requires explicit user opt-in or boosted-protection authorization."
   },
   "relatedConfigs": [
     "sparse_swap_enabled",

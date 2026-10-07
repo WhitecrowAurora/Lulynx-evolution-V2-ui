@@ -1,0 +1,17 @@
+{
+  "key": "apply_t5_attn_mask",
+  "title": "应用 T5 注意力掩码",
+  "category": "FLUX 专用参数",
+  "appliesTo": [
+    "flux-finetune",
+    "flux-lora"
+  ],
+  "standard": {
+    "summary": "应用 T5 注意力掩码以更好处理变长文本",
+    "effect": "写入训练配置 apply_t5_attn_mask，由训练后端在相应阶段消费。",
+    "whenToUse": "默认开启，适合大多数场景。",
+    "avoidWhen": "排查问题想回到原始行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

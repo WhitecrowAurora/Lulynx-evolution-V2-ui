@@ -1,0 +1,18 @@
+{
+  "key": "pissa_cache_mode",
+  "title": "PiSSA 缓存模式",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-addift",
+    "anima-ileco",
+    "anima-multi-addift"
+  ],
+  "standard": {
+    "summary": "INIT_LORA 等；对齐后端 PissaCacheMode。",
+    "effect": "写入训练配置 pissa_cache_mode，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 INIT_LORA，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

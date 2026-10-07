@@ -1,7 +1,9 @@
 {
   "key": "concept_geometry_compute_backend",
   "title": "图计算后端",
+  "title_en": "Backend",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "auto": "图计算后端自动。",
       "native": "原生路径。",
       "rust": "Rust 加速（有的话）。"
+    }
+  },
+  "standard_en": {
+    "summary": "Graph compute backend: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "auto": "Picks the graph compute backend automatically.",
+      "native": "The native path.",
+      "rust": "Rust acceleration, where available."
     }
   },
   "advanced": {},

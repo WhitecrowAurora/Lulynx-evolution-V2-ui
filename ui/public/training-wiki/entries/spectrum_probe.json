@@ -1,7 +1,9 @@
 {
   "key": "spectrum_probe",
   "title": "Spectrum Probe",
+  "title_en": "Spectrum Probe",
   "category": "推理 / DiT 加速",
+  "category_en": "Inference / DiT Acceleration",
   "appliesTo": [
     "anima-lora",
     "newbie-lora"
@@ -9,17 +11,33 @@
   "layers": [
     "DiT Block"
   ],
+  "layers_en": [
+    "DiT block"
+  ],
   "standard": {
     "summary": "Spectrum 通过特征预测跳过部分 DiT block。当前 Lulynx 只保留 observe-only 探针，不会真的跳过计算。",
     "effect": "spectrum_window_size、spectrum_warmup_steps 等字段只记录 would-skip eligibility。",
     "whenToUse": "想收集哪些 step/block 适合做未来 block skip 时。",
     "avoidWhen": "期待立即降低推理耗时；当前没有启用 Chebyshev 预测或真实 block skip。"
   },
+  "standard_en": {
+    "summary": "Spectrum skips some DiT blocks by predicting their features. Lulynx currently keeps only an observe-only probe, which never actually skips computation.",
+    "effect": "Fields such as spectrum_window_size and spectrum_warmup_steps only record would-skip eligibility.",
+    "whenToUse": "When you want to collect which steps and blocks would suit a future block skip.",
+    "avoidWhen": "When you expect an immediate cut in inference time; neither Chebyshev prediction nor real block skipping is enabled today."
+  },
   "advanced": {
     "principle": "先统计窗口、warmup 和 stop-caching 阶段的可跳过性，避免无质量证据就改变输出。",
     "intervention": "GenerationRequest → Spectrum step context → executable subset telemetry。",
     "expectedImpact": "当前仅有极小 telemetry 开销；真实加速需要后续 cache/skip 执行。",
     "tradeoffs": "探针不等于推理加速完成。",
+    "codePath": "backend/core/lulynx_trainer/spectrum_probe.py"
+  },
+  "advanced_en": {
+    "principle": "First measures skippability over the window, warmup, and stop-caching phases, so outputs are never changed without quality evidence.",
+    "intervention": "GenerationRequest → Spectrum step context → executable subset telemetry.",
+    "expectedImpact": "Currently only minimal telemetry overhead; real speedup requires subsequent cache/skip execution.",
+    "tradeoffs": "A probe is not a finished inference acceleration.",
     "codePath": "backend/core/lulynx_trainer/spectrum_probe.py"
   },
   "relatedConfigs": [

@@ -1,0 +1,24 @@
+{
+  "key": "distillation_softrank_warmup_ratio",
+  "title": "SoftRank 预热比例",
+  "category": "采样与优化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "训练前该比例步数不做 SoftRank。",
+    "effect": "写入训练配置 distillation_softrank_warmup_ratio，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,16 @@
+{
+  "key": "image_root",
+  "title": "图片根目录",
+  "category": "数据集 / 图说",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "图片根目录（scorer）。",
+    "effect": "scorer 训练图片根目录。",
+    "whenToUse": "必配。",
+    "avoidWhen": ""
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

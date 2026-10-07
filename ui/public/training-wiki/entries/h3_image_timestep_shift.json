@@ -1,0 +1,17 @@
+{
+  "key": "h3_image_timestep_shift",
+  "title": "图片训练 Shift",
+  "category": "H3 CFG 保真目标",
+  "appliesTo": [
+    "minimax-h3-finetune",
+    "minimax-h3-lora"
+  ],
+  "standard": {
+    "summary": "MiniMax H3 的 图片训练 Shift，默认 1。",
+    "effect": "H3 音视频训练管线的 图片训练 Shift，覆盖 VAE 路径、帧率、缓存与低显存运行时。",
+    "whenToUse": "训练 H3 音视频 LoRA 时按素材规格配置。",
+    "avoidWhen": "图像训练路线不涉及。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "network_dim",
   "title": "LoRA Rank / 网络维度",
+  "title_en": "Network",
   "category": "LoRA / 容量",
+  "category_en": "LoRA / Capacity",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,17 +14,33 @@
     "适配器层",
     "优化器层"
   ],
+  "layers_en": [
+    "Adapter layer",
+    "Optimizer layer"
+  ],
   "standard": {
     "summary": "Rank 决定 LoRA 可以学习多少额外通道。",
     "effect": "Rank 越大容量越强，但显存、文件体积和过拟合风险也越高。",
     "whenToUse": "角色或复杂风格可适当提高；简单概念、姿势或小数据集通常用较低 rank。",
     "avoidWhen": "样本少、目标简单或已经过拟合时不要盲目加大。"
   },
+  "standard_en": {
+    "summary": "The rank decides how many extra channels the LoRA can learn.",
+    "effect": "A larger rank means more capacity, but also more VRAM, a larger file and a higher risk of overfitting.",
+    "whenToUse": "Raise it a little for a character or a complex style; a simple concept, a pose or a small dataset usually wants a lower rank.",
+    "avoidWhen": "Do not raise it blindly when samples are few, the target is simple, or you are already overfitting."
+  },
   "advanced": {
     "principle": "LoRA 用低秩矩阵近似权重更新；rank 控制低秩子空间维度，alpha 控制缩放。",
     "intervention": "改变可训练参数数量和 optimizer state 规模，不改变底模冻结权重本身。",
     "expectedImpact": "提升上限容量，也增加训练噪声记忆能力。后期细节不足可能需要 rank、步数、分辨率和 caption 一起看。",
     "tradeoffs": "高 rank 不等于高质量；数据质量、局部裁剪、学习率和训练步数不匹配时会先学整体而不是细节。"
+  },
+  "advanced_en": {
+    "principle": "LoRA approximates the weight update with low-rank matrices; rank controls the low-rank subspace's dimensionality and alpha the scaling.",
+    "intervention": "Changes the trainable parameter count and optimizer-state size; the frozen base weights themselves are untouched.",
+    "expectedImpact": "Raises the capacity ceiling and also the ability to memorize training noise. Late-stage detail shortfalls may require looking at rank, steps, resolution, and captions together.",
+    "tradeoffs": "High rank does not mean high quality; with mismatched data quality, local cropping, learning rate, and step count, the model learns the whole before the details."
   },
   "relatedConfigs": [
     "network_alpha",

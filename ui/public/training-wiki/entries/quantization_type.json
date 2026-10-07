@@ -1,7 +1,9 @@
 {
   "key": "quantization_type",
   "title": "量化类型",
+  "title_en": "Quantization Type",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "qlora_nf4": "QLoRA NF4。",
       "int8": "INT8，比 4bit 肥一点。"
+    }
+  },
+  "standard_en": {
+    "summary": "The quantization type: the values below include what changing gear does. The real FP4 switch is a separate field, bnb_4bit_quant_type, and is not among this field's values.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "qlora_nf4": "QLoRA NF4.",
+      "int8": "INT8, a little fatter than 4-bit."
     }
   },
   "advanced": {},

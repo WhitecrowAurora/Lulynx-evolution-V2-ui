@@ -1,7 +1,9 @@
 {
   "key": "experimental_attention_profile_torch_max_tokens",
   "title": "Torch 回退最大 Token",
+  "title_en": "Torch Max Token",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Stops the pure PyTorch O(n^2) fallback from running by mistake on a long sequence.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "防止纯 PyTorch O(n²) fallback 在长序列误跑。仅 torch_fallback 生效。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Prevents the pure-PyTorch O(n²) fallback from accidentally running on long sequences. Only effective for torch_fallback.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

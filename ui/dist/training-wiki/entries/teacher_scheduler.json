@@ -1,7 +1,9 @@
 {
   "key": "teacher_scheduler",
   "title": "Teacher Scheduler（teacher_scheduler）",
+  "title_en": "Teacher Scheduler",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -15,6 +17,18 @@
       "dpmpp_2m_karras": "DPM++ 2M Karras。",
       "ddim": "DDIM，确定性。",
       "lcm": "LCM 调度，配 LCM 蒸馏。"
+    }
+  },
+  "standard_en": {
+    "summary": "Teacher Scheduler (teacher_scheduler); the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "euler_a": "Teacher Euler A, with stochasticity.",
+      "dpmpp_2m_karras": "DPM++ 2M Karras.",
+      "ddim": "DDIM, deterministic.",
+      "lcm": "The LCM schedule, to pair with LCM distillation."
     }
   },
   "advanced": {},

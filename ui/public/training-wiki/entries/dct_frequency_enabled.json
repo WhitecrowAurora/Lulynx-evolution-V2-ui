@@ -1,7 +1,9 @@
 {
   "key": "dct_frequency_enabled",
   "title": "DCT 频域 Loss",
+  "title_en": "Enable DCT",
   "category": "前沿储备 / 质量",
+  "category_en": "Frontier Reserve / Quality",
   "appliesTo": [
     "anima-lora"
   ],
@@ -18,9 +20,19 @@
     "whenToUse": "实验性功能。对纹理细节要求高的 LoRA 训练（如皮肤纹理、布料质感）可以尝试。",
     "avoidWhen": "默认关闭。DCT 计算开销极小，但效果需要通过 A/B 对比验证。"
   },
+  "standard_en": {
+    "summary": "(Experimental) DCT frequency-domain loss: applies a DCT to the training prediction and computes the loss on high- and low-frequency components separately, constraining reconstruction quality in particular bands.",
+    "effect": "A higher high_weight strengthens the constraint on high frequency (texture and detail); low_cutoff sets where low and high frequency divide. It activates only within a noise-level range (min_t to max_t).",
+    "whenToUse": "An experimental feature. Worth trying on LoRAs where texture detail matters (skin texture, fabric).",
+    "avoidWhen": "Off by default. The DCT itself costs almost nothing, but the benefit needs an A/B comparison to confirm."
+  },
   "advanced": {
     "principle": "DCT loss = ||DCT(x_pred) - DCT(x_target)||² × W（频率加权矩阵），W 对高频系数放大 high_weight 倍。只在 sigma ∈ [min_t, max_t] 的步骤计算（避免对全噪声步骤无效约束）。",
     "tradeoffs": "DCT loss 与标准 MSE loss 不完全正交（低频 DCT ≈ MSE 的低频版本），需要确保 weight 不过大导致 loss 被 DCT 主导。"
+  },
+  "advanced_en": {
+    "principle": "DCT loss = ||DCT(x_pred) - DCT(x_target)||² × W (a frequency-weighting matrix), with W amplifying high-frequency coefficients by high_weight. Computed only on steps with sigma ∈ [min_t, max_t] (avoiding pointless constraints on fully-noised steps).",
+    "tradeoffs": "DCT loss is not fully orthogonal to standard MSE loss (low-frequency DCT ≈ a low-frequency version of MSE); keep the weight from growing so large that DCT dominates the loss."
   },
   "relatedConfigs": [
     "lineart_loss_enabled",

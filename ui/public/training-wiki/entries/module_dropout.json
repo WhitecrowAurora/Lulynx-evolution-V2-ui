@@ -1,0 +1,30 @@
+{
+  "key": "module_dropout",
+  "title": "LoKr Module Dropout",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "flux-lora",
+    "hunyuan-dit-lora",
+    "lumina-lora",
+    "qwen-image-lora",
+    "sd-addift",
+    "sd-ileco",
+    "sd-ip-adapter",
+    "sd-lora",
+    "sd-multi-addift",
+    "sd3-lora",
+    "sdxl-addift",
+    "sdxl-ileco",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-multi-addift"
+  ],
+  "standard": {
+    "summary": "LoKr 专用：按整个模块随机丢弃的概率。",
+    "effect": "写入训练配置 module_dropout，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

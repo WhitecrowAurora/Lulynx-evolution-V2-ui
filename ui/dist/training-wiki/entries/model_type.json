@@ -1,0 +1,16 @@
+{
+  "key": "model_type",
+  "title": "model_type",
+  "category": "Edit 训练",
+  "appliesTo": [
+    "anima-edit-model"
+  ],
+  "standard": {
+    "summary": "model_type。默认 anima",
+    "effect": "写入训练配置 model_type，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 anima，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

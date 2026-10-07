@@ -1,7 +1,9 @@
 {
   "key": "multires_noise_iterations",
   "title": "多分辨率噪声",
+  "title_en": "Resolution",
   "category": "训练 / 噪声控制",
+  "category_en": "Training / Noise Control",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -15,9 +17,19 @@
     "whenToUse": "希望 LoRA 同时改善全局构图和局部细节时可以尝试。对风格类 LoRA 可能有益。",
     "avoidWhen": "不确定效果时不建议使用，多分辨率噪声改变了训练分布，可能需要更多步数才能收敛。"
   },
+  "standard_en": {
+    "summary": "Replaces standard Gaussian noise with multi-resolution noise: several noise maps at different resolutions are generated and summed with weights, which helps the model learn multi-scale features.",
+    "effect": "iterations=6 means six noise layers at different resolutions are generated and stacked. The model then learns to remove noise from the global structure and the local detail at the same time.",
+    "whenToUse": "Worth trying when you want a LoRA to improve global composition and local detail together. It may benefit style LoRAs.",
+    "avoidWhen": "Not recommended while you are unsure of the effect: multi-resolution noise changes the training distribution and may need more steps to converge."
+  },
   "advanced": {
     "principle": "生成 N 个不同下采样分辨率的高斯噪声，上采样回原始分辨率后加权叠加（discount 控制每层权重的衰减）。多分辨率噪声包含更多低频成分，引导模型学习全局特征。",
     "tradeoffs": "multires_noise 显著改变噪声分布，与标准 noise schedule 不完全兼容，可能影响推理时使用标准采样器的效果。"
+  },
+  "advanced_en": {
+    "principle": "Generates N Gaussian noises at different downsampled resolutions, upsamples each back to original resolution, and sums with weights (discount controls per-level weight decay). Multi-resolution noise contains more low-frequency components, guiding the model toward global features.",
+    "tradeoffs": "multires_noise substantially changes the noise distribution and is not fully compatible with the standard noise schedule — it may affect results when standard samplers are used at inference."
   },
   "relatedConfigs": [
     "noise_offset",

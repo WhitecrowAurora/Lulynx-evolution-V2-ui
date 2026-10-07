@@ -1,7 +1,9 @@
 {
   "key": "dokr_mode",
   "title": "DoKr 模式",
+  "title_en": "DoKr mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -15,8 +17,25 @@
       "structure": "主要动方向/结构，染色弱。"
     }
   },
+  "standard_en": {
+    "summary": "full = direction plus magnitude, style = magnitude only, structure = direction only.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "full": "Learns both direction and strength, so it changes a lot.",
+      "style": "Mostly moves strength and appearance, leaving the skeleton largely alone.",
+      "structure": "Mostly moves direction and structure, with weak recolouring."
+    }
+  },
   "advanced": {
     "principle": "full=方向+magnitude, style=magnitude only, structure=方向 only。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "full = direction + magnitude; style = magnitude only; structure = direction only.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

@@ -1,0 +1,16 @@
+{
+  "key": "edit_target_prompt_field",
+  "title": "目标 Prompt 字段",
+  "category": "Edit 训练",
+  "appliesTo": [
+    "anima-edit-model"
+  ],
+  "standard": {
+    "summary": "目标 Prompt 字段。",
+    "effect": "侧车 JSON 里读取编辑后描述的字段名。",
+    "whenToUse": "同上。",
+    "avoidWhen": "默认 target_prompt。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

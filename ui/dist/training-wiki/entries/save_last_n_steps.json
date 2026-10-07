@@ -1,7 +1,9 @@
 {
   "key": "save_last_n_steps",
   "title": "只保留最近 N 个 checkpoint",
+  "title_en": "N Model",
   "category": "训练 / 保存",
+  "category_en": "Training / Saving",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -14,9 +16,19 @@
     "whenToUse": "磁盘空间有限时推荐设为 3~5，只保留最近几个版本。",
     "avoidWhen": "希望保留全部 checkpoint 对比时设为 0。"
   },
+  "standard_en": {
+    "summary": "Caps how many intermediate checkpoints are kept (the most recent N), deleting older ones automatically. 0 = keep them all.",
+    "effect": "It stops the disk filling up with checkpoints and keeps only the last few versions for comparison.",
+    "whenToUse": "3~5 is advisable when disk space is limited, keeping only the last few versions.",
+    "avoidWhen": "Set it to 0 when you want to keep every checkpoint for comparison."
+  },
   "advanced": {
     "principle": "每次保存新 checkpoint 时，检查现有 checkpoint 数量，超过 N 则删除最旧的（按时间戳排序）。",
     "tradeoffs": "删除是不可逆的，若误删了最优 checkpoint 则无法恢复。建议至少保留 3 个以上。"
+  },
+  "advanced_en": {
+    "principle": "Each time a new checkpoint is saved, it checks the number of existing checkpoints and deletes the oldest when above N (sorted by timestamp).",
+    "tradeoffs": "Deletion is irreversible; if the optimal checkpoint is deleted it cannot be recovered. Keep at least 3."
   },
   "relatedConfigs": [
     "save_every_n_steps",

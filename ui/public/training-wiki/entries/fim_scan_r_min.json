@@ -1,0 +1,24 @@
+{
+  "key": "fim_scan_r_min",
+  "title": "FIM 最小 rank",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "FIM（Fisher 信息矩阵）rank 扫描的 FIM 最小 rank，默认 8。",
+    "effect": "FIM 扫描用短校准步估计各层重要 rank 分布，给出「哪些层值得多少 rank」的建议，FIM 最小 rank 控制扫描粒度。",
+    "whenToUse": "确定 LoRA rank 预算前跑一次扫描做参考。",
+    "avoidWhen": "只是经验性设 rank 时不必开；扫描本身消耗额外校准步。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

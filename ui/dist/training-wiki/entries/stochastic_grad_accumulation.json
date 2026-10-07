@@ -1,7 +1,9 @@
 {
   "key": "stochastic_grad_accumulation",
   "title": "梯度累加随机舍入（未接线 reserve）",
+  "title_en": "Stochastic Rounding for Gradient Accumulation (reserved)",
   "category": "优化器 / 进阶",
+  "category_en": "Optimizer / Advanced",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,17 +14,33 @@
   "layers": [
     "优化器层"
   ],
+  "layers_en": [
+    "Optimizer layer"
+  ],
   "standard": {
     "summary": "当前训练 loop 只拿到已经量化的 BF16/FP16 grad，没有舍入前 FP32 source；启用会 fail-fast。",
     "effect": "不再对已量化 grad 做无效的二次舍入，也不再宣称能恢复小于一个 ULP 的梯度残差。",
     "whenToUse": "当前不要启用；待累加 seam 显式提供 FP32 gradient source 后再开放。",
     "avoidWhen": "所有现有通用训练路径；使用 FP32 梯度累加或 optimizer-owned master gradient 方案。"
   },
+  "standard_en": {
+    "summary": "The current training loop only receives gradients already quantized to BF16/FP16, with no pre-rounding FP32 source; enabling this fails fast.",
+    "effect": "It no longer performs a pointless second rounding of already-quantized gradients, and no longer claims to recover gradient residue smaller than one ULP.",
+    "whenToUse": "Do not enable it for now; it will open up once the accumulation seam explicitly provides an FP32 gradient source.",
+    "avoidWhen": "Every existing general training path; use FP32 gradient accumulation or an optimizer-owned master-gradient scheme instead."
+  },
   "advanced": {
     "principle": "随机舍入必须在 FP32 精确梯度转换到低精度的边界执行。当前 hook 位于低精度 grad 已形成之后，原始残差不可恢复。",
     "intervention": "TrainingLoop builder 对 stochastic_grad_accumulation=True 返回 STOCHASTIC_GRAD_ACCUMULATION_FP32_SOURCE_REQUIRED。",
     "expectedImpact": "当前没有收益声明；该字段仅保留旧配置可读性。",
     "tradeoffs": "启用即拒绝，避免静默 no-op。",
+    "codePath": "trainer_execution_loop_builder.py preflight + stochastic_rounding.py source-aware contract"
+  },
+  "advanced_en": {
+    "principle": "Stochastic rounding must be applied at the boundary where exact FP32 gradients convert to lower precision. The current hook sits after the low-precision grad has already formed, so the original residual is unrecoverable.",
+    "intervention": "The TrainingLoop builder returns STOCHASTIC_GRAD_ACCUMULATION_FP32_SOURCE_REQUIRED for stochastic_grad_accumulation=True.",
+    "expectedImpact": "No benefit claimed currently; the field is kept only so old configs stay readable.",
+    "tradeoffs": "Enabling it is rejected outright, avoiding a silent no-op.",
     "codePath": "trainer_execution_loop_builder.py preflight + stochastic_rounding.py source-aware contract"
   },
   "relatedConfigs": [

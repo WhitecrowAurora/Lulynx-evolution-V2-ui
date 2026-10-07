@@ -1,7 +1,9 @@
 {
   "key": "optimizer_preset",
   "title": "优化器预设",
+  "title_en": "Optimizer Preset",
   "category": "训练 / 优化器",
+  "category_en": "Training / Optimizer",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -16,9 +18,19 @@
     "whenToUse": "不确定优化器参数时使用预设作为起点；optimizer_state_paging 在 AdamW 优化器状态占用显著时（>2GB）且 CPU RAM 充足时开启。",
     "avoidWhen": "有精细调参需求时不使用预设（预设优先级低于手动设置）；state_paging 增加 CPU-GPU 数据交换开销，建议先用 AdamW8bit（原生省显存）。"
   },
+  "standard_en": {
+    "summary": "Quick optimizer presets: pick a tuned combination of optimizer, learning rate and beta parameters instead of configuring each one by hand.",
+    "effect": "Choose a preset by training goal (steady convergence / fast convergence / low VRAM) and it fills in optimizer_type / optimizer_backend / weight_decay and the rest. optimizer_state_paging pages the optimizer state (the momenta) out to the CPU to save VRAM.",
+    "whenToUse": "Use a preset as a starting point when you are unsure of the optimizer parameters; turn optimizer_state_paging on when AdamW's optimizer state takes up a lot (>2GB) and CPU RAM is plentiful.",
+    "avoidWhen": "Do not use a preset when you need fine-grained tuning (a preset ranks below a manual setting); state_paging adds CPU-GPU exchange overhead, so try AdamW8bit first (it saves VRAM natively)."
+  },
   "advanced": {
     "principle": "optimizer_state_paging：将优化器动量 tensor（m/v）分页到 CPU，大于 min_tensor_mb 的 tensor 才分页（避免小 tensor 频繁传输）；pin_memory 使用 CPU 固定内存（page-locked），加速 GPU-CPU 传输。newbie_auto_swap_release 是新手模式特有的自动 block swap 管理（自动决定何时释放换出的 block）。",
     "tradeoffs": "optimizer_state_paging 的 pin_memory=True 会占用更多 CPU RAM（固定内存），但传输速度约快 2×；min_tensor_mb 设置过小会导致大量小 tensor 频繁传输（反而更慢）。"
+  },
+  "advanced_en": {
+    "principle": "optimizer_state_paging: pages optimizer momentum tensors (m/v) to CPU; only tensors larger than min_tensor_mb are paged (to avoid frequent small-tensor transfers); pin_memory uses page-locked CPU memory to speed up GPU-CPU transfers. newbie_auto_swap_release is the newbie-mode-specific automatic block swap manager (decides when to release swapped-out blocks).",
+    "tradeoffs": "optimizer_state_paging with pin_memory=True consumes more CPU RAM (page-locked), but transfers are about 2x faster; setting min_tensor_mb too small causes many frequent small-tensor transfers (actually slower)."
   },
   "relatedConfigs": [
     "optimizer_type",

@@ -1,0 +1,16 @@
+{
+  "key": "universal_dit_probe_inputs_json",
+  "title": "Forward 输入契约 JSON",
+  "category": "Batch / Objective / Forward 契约",
+  "appliesTo": [
+    "universal-dit-lora"
+  ],
+  "standard": {
+    "summary": "描述模型 forward kwargs 的 shape/dtype/value，不执行任意代码。",
+    "effect": "forward/train_smoke 模式必须覆盖模型要求的全部参数。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

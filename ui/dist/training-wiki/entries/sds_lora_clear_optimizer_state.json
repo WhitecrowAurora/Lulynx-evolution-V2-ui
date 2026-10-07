@@ -1,0 +1,24 @@
+{
+  "key": "sds_lora_clear_optimizer_state",
+  "title": "SDS-LoRA 清空动量",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "重参数时清理一次 optimizer momentum。",
+    "effect": "写入训练配置 sds_lora_clear_optimizer_state，由训练后端在相应阶段消费。",
+    "whenToUse": "默认开启，适合大多数场景。",
+    "avoidWhen": "排查问题想回到原始行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,18 @@
+{
+  "key": "wan22_expert_timestep_preset",
+  "title": "按塔限定时间步",
+  "category": "训练用模型",
+  "appliesTo": [
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora"
+  ],
+  "standard": {
+    "summary": "默认关。",
+    "effect": "开启后用所选噪声塔自己的 σ 区间填时间步先验（high→[875,1000)，low→[0,875)，边界跟随 wan22_sigma_stage_boundary）。只写你没填的字段：手填过范围或分段权重时本预设不生效。",
+    "whenToUse": "默认 off，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

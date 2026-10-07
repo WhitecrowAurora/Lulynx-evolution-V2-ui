@@ -1,0 +1,17 @@
+{
+  "key": "tiered_residency_spill_active_eviction",
+  "title": "主动踢出内存页",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "权重拷进显存后立刻把对应的内存页还给系统，而不是等系统自己回收。",
+    "effect": "这是\"宁可频繁读磁盘也不让系统写页面文件\"的关键开关，也是保护 SSD 寿命的那一步。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

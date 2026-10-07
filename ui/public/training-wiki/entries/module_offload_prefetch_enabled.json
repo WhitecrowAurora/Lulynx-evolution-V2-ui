@@ -1,7 +1,9 @@
 {
   "key": "module_offload_prefetch_enabled",
   "title": "模块 Offload 预取配置",
+  "title_en": "Enable Offload prefetch",
   "category": "速度 / 显存",
+  "category_en": "Speed / VRAM",
   "appliesTo": [
     "anima-lora"
   ],
@@ -16,6 +18,12 @@
     "effect": "prefetch 让 GPU 计算与 CPU-GPU 数据传输重叠，提升 offload 效率（减少等待时间）；profile 帮助识别传输瓶颈。",
     "whenToUse": "使用 module_offload 时推荐同时开启 prefetch；profile 在性能调优时使用。verify_state 在每次换入/换出时验证数据完整性（调试用）。",
     "avoidWhen": "verify_state 有显著额外开销，只在怀疑数据损坏时临时开启。"
+  },
+  "standard_en": {
+    "summary": "Prefetch and profiling controls for module offload: prefetch_enabled turns on asynchronous prefetch (fetching the next block while the current one computes); profile mode records each module's transfer time; ratio controls the overall offload proportion.",
+    "effect": "Prefetch overlaps GPU compute with CPU-GPU transfer, making offload more efficient (less waiting); profile helps identify the transfer bottleneck.",
+    "whenToUse": "Enabling prefetch alongside module_offload is recommended; profile is for performance tuning. verify_state checks data integrity on every swap in and out (for debugging).",
+    "avoidWhen": "verify_state has significant extra overhead, so only turn it on temporarily when you suspect data corruption."
   },
   "relatedConfigs": [
     "module_offload_backbone_ratio",

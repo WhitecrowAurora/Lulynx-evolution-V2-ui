@@ -1,0 +1,16 @@
+{
+  "key": "lokr_rank_dropout",
+  "title": "LoKr Rank Dropout",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "LoKr Rank Dropout。",
+    "effect": "对 LoKr 分解内部 rank 维做 dropout。",
+    "whenToUse": "LoKr 特有的正则手段。",
+    "avoidWhen": "默认 0。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

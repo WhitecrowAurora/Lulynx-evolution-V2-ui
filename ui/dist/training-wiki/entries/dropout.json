@@ -1,7 +1,9 @@
 {
   "key": "dropout",
   "title": "LyCORIS Dropout",
+  "title_en": "Dropout",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "The main LyCORIS dropout probability.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "LyCORIS 主 dropout 概率。当前后端在 LoCon / LoHa / LoKr / Full 路线消费该字段。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Main LyCORIS dropout probability. Currently consumed by the backend on the LoCon / LoHa / LoKr / Full routes.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

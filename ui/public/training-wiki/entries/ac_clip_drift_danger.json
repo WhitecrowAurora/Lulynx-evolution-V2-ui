@@ -1,7 +1,9 @@
 {
   "key": "ac_clip_drift_danger",
   "title": "CLIP 漂移危险阈值",
+  "title_en": "CLIP threshold",
   "category": "训练 / 自动化",
+  "category_en": "Training / Automation",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "配合 CLIP 评估监控开启。0.05 = 对齐度下降 5% 时触发，是常见合理值。",
     "avoidWhen": "若不关心文本对齐（如纯风格 LoRA），可适当调高避免误触发。"
   },
+  "standard_en": {
+    "summary": "CLIP-score drift above this value triggers an intervention such as lowering the learning rate. Default 0.05.",
+    "effect": "Once the danger threshold is exceeded for ac_clip_drift_consecutive steps, the AutoController fires the matching intervention strategy.",
+    "whenToUse": "Turn it on together with CLIP evaluation monitoring. 0.05 means it fires when alignment drops by 5%, a common sensible value.",
+    "avoidWhen": "If text alignment does not matter to you -- a pure style LoRA, say -- raise it so it does not fire spuriously."
+  },
   "advanced": {
     "principle": "危险级别触发干预：降低 LR 或发出停止信号。需连续 ac_clip_drift_consecutive 步超过阈值才触发，防止偶发误触发。",
     "tradeoffs": "CLIP 分数本身有波动，单步超阈值不足以判断漂移，需要连续超阈值才有意义。"
+  },
+  "advanced_en": {
+    "principle": "Danger level triggers intervention: lowering LR or emitting a stop signal. Fires only after ac_clip_drift_consecutive consecutive steps over the threshold, preventing one-off false triggers.",
+    "tradeoffs": "CLIP scores fluctuate by themselves — a single step over threshold is not evidence of drift; only consecutive over-threshold steps are meaningful."
   },
   "relatedConfigs": [
     "ac_enabled",

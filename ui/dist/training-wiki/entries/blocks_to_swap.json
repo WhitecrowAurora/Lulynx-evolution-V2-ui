@@ -1,7 +1,9 @@
 {
   "key": "blocks_to_swap",
   "title": "换入/换出的 Block 数",
+  "title_en": "Blocks to swap",
   "category": "速度 / 显存",
+  "category_en": "Speed / VRAM",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -12,9 +14,19 @@
     "whenToUse": "显存不足但不想用 gradient_checkpointing 时的替代方案；或两者结合使用以最大化显存节省。",
     "avoidWhen": "显存充足时无需使用（会降低训练速度）。"
   },
+  "standard_en": {
+    "summary": "Swaps the weights of a given number of transformer blocks out to CPU memory and pulls them back to the GPU only when needed, lowering peak VRAM.",
+    "effect": "Each block takes roughly 400MB-2GB of VRAM depending on the model, so swapping N blocks saves that much. The cost is slower training (PCIe transfer overhead).",
+    "whenToUse": "As an alternative when VRAM is short but you would rather not use gradient_checkpointing, or combined with it to save as much as possible.",
+    "avoidWhen": "Not needed when VRAM is plentiful -- it only slows training down."
+  },
   "advanced": {
     "principle": "类似 CPU offload 但以整个 block 为单位。选择换出频率最低（离输出最远）的 block，最大化换出收益与换入开销比。",
     "tradeoffs": "block_swap 的速度开销取决于 PCIe 带宽。NVMe → GPU Direct Storage 可以绕过 CPU，提升传输速度（实验性）。"
+  },
+  "advanced_en": {
+    "principle": "Like CPU offload but at whole-block granularity. Chooses the blocks swapped out least often (farthest from the output), maximizing the swap-out benefit to swap-in cost ratio.",
+    "tradeoffs": "block_swap's speed cost depends on PCIe bandwidth. NVMe → GPU Direct Storage can bypass the CPU to raise transfer speed (experimental)."
   },
   "relatedConfigs": [
     "gradient_checkpointing",

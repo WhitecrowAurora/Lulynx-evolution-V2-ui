@@ -1,0 +1,21 @@
+{
+  "key": "activation_cpu_offload_min_tensor_mb",
+  "title": "Offload 最小体积 MB",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora"
+  ],
+  "standard": {
+    "summary": "激活 Offload 最小体积 MB。",
+    "effect": "小于该体积的激活不值得搬，直接留 GPU。",
+    "whenToUse": "调小会更激进卸载（省显存、更慢）。",
+    "avoidWhen": "默认 1MB 平衡点。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

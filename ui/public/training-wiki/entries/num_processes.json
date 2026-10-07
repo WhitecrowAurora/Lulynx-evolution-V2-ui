@@ -1,7 +1,9 @@
 {
   "key": "num_processes",
   "title": "并行进程数",
+  "title_en": "Num Processes",
   "category": "训练 / 分布式",
+  "category_en": "Training / Distributed",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -20,9 +22,19 @@
     "whenToUse": "有多块 GPU 且希望加速训练时使用。DDP 提供线性加速（2 卡 ≈ 2× 速度）但需要正确配置通信参数。",
     "avoidWhen": "LoRA 训练数据集通常很小（<100张），多卡并行在数据层面意义不大；单卡高效率通常比多卡 DDP 更实用。"
   },
+  "standard_en": {
+    "summary": "The number of processes for distributed training (DDP), usually equal to the number of GPUs. num_processes=1 = single-card training (the default); >1 = multi-card data parallelism.",
+    "effect": "Multi-card training: each card computes the gradient for one batch, and the parameters are updated in sync after the gradients are combined. The effective batch size = batch_size x num_processes.",
+    "whenToUse": "When you have several GPUs and want to speed training up. DDP gives close to linear scaling (2 cards is roughly 2x the speed) but the communication parameters have to be configured correctly.",
+    "avoidWhen": "A LoRA dataset is usually very small (<100 images), so multi-card parallelism means little at the data level; one efficient card is usually more practical than multi-card DDP."
+  },
   "advanced": {
     "principle": "DDP（DistributedDataParallel）：每个进程持有完整模型副本，独立计算本地 batch 梯度，all-reduce 操作同步梯度后各自更新。ddp_gradient_as_bucket_view 优化 all-reduce 的内存效率；ddp_static_graph 在计算图固定时提供额外优化。",
     "tradeoffs": "DDP 有通信开销（all-reduce），小模型/小 batch 时通信可能成为瓶颈（多卡反而比单卡慢）。LoRA 参数量少（约 1~100MB），通信开销相对可控。"
+  },
+  "advanced_en": {
+    "principle": "DDP (DistributedDataParallel): each process holds a full model replica, computes local batch gradients independently, and updates after an all-reduce syncs gradients. ddp_gradient_as_bucket_view optimizes all-reduce memory efficiency; ddp_static_graph offers extra optimization when the graph is fixed.",
+    "tradeoffs": "DDP has communication overhead (all-reduce) — with small models/batches communication can become the bottleneck (multi-GPU slower than single). LoRA's small parameter count (~1~100MB) keeps communication manageable."
   },
   "relatedConfigs": [
     "train_batch_size",

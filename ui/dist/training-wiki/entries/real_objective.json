@@ -1,7 +1,9 @@
 {
   "key": "real_objective",
   "title": "真实短测目标（real_objective）",
+  "title_en": "Real short-run objective",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -14,8 +16,24 @@
       "epsilon_lora_probe": "短测 ε-LoRA。"
     }
   },
+  "standard_en": {
+    "summary": "LCM consistency uses the teacher to generate",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "lcm_consistency_probe": "A short LCM consistency test, with the teacher producing x0.",
+      "epsilon_lora_probe": "A short epsilon-LoRA test."
+    }
+  },
   "advanced": {
     "principle": "LCM consistency 会用 teacher 生成 x0 target。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "LCM consistency uses the teacher to generate the x0 target.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

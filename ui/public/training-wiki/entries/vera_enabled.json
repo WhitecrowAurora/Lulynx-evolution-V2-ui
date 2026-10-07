@@ -1,7 +1,9 @@
 {
   "key": "vera_enabled",
   "title": "VeRA (向量随机适配)",
+  "title_en": "Vera Enabled",
   "category": "LoRA / 变体",
+  "category_en": "LoRA / Variants",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,17 +13,33 @@
   "layers": [
     "适配器层"
   ],
+  "layers_en": [
+    "Adapter layer"
+  ],
   "standard": {
     "summary": "VeRA 使用固定的随机矩阵代替 LoRA 的可训练低秩矩阵，只训练 per-channel 缩放向量。可训练参数量减少 90% 以上。",
     "effect": "参数量极少（每层只有 2 个向量），训练极快，文件极小。质量约为 LoRA 的 80-90%。",
     "whenToUse": "极小数据集（<20 张）防过拟合。快速原型验证。需要极小文件体积时。",
     "avoidWhen": "追求最高质量时。复杂多概念训练时。"
   },
+  "standard_en": {
+    "summary": "VeRA replaces LoRA's trainable low-rank matrices with fixed random matrices and trains only per-channel scaling vectors. That cuts the trainable parameter count by more than 90%.",
+    "effect": "Very few parameters (just 2 vectors per layer), extremely fast training and a tiny file. Quality is roughly 80-90% of LoRA's.",
+    "whenToUse": "A tiny dataset (<20 images), to avoid overfitting. Quick prototype validation. When you need a very small file.",
+    "avoidWhen": "When you are after the highest quality. For complex multi-concept training."
+  },
   "advanced": {
     "principle": "VeRA: W' = W + diag(d) · R_random · diag(b)，其中 R_random 是固定的随机矩阵（不训练），d 和 b 是可训练的缩放向量。vera_d_initial 控制 d 的初始值。随机矩阵由 vera_prng_key 种子生成，确保可复现。",
     "intervention": "替换 LoRA 的 矩阵为固定随机矩阵 + 可训练缩放向量。",
     "expectedImpact": "参数量减少 90%+，但质量天花板较低。适合简单任务。",
     "tradeoffs": "可与 LoRA 组合使用——部分层用 LoRA，部分层用 VeRA。",
+    "codePath": "core/training_components/vera.py → fixed random projection + trainable scaling"
+  },
+  "advanced_en": {
+    "principle": "VeRA: W' = W + diag(d) · R_random · diag(b), where R_random is a fixed random matrix (not trained) and d and b are trainable scaling vectors. vera_d_initial controls d's initial value. The random matrix is generated from the vera_prng_key seed, ensuring reproducibility.",
+    "intervention": "Replaces the LoRA matrices with a fixed random matrix + trainable scaling vectors.",
+    "expectedImpact": "Over 90% fewer parameters, but a lower quality ceiling. Suited to simple tasks.",
+    "tradeoffs": "Can be combined with LoRA — some layers use LoRA, others VeRA.",
     "codePath": "core/training_components/vera.py → fixed random projection + trainable scaling"
   },
   "relatedConfigs": [

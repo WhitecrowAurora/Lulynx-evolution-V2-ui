@@ -1,7 +1,9 @@
 {
   "key": "edit_loss_plan",
   "title": "Edit Loss Plan",
+  "title_en": "Loss scheme",
   "category": "Edit-LoRA / Loss",
+  "category_en": "Edit-LoRA / Loss",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -9,6 +11,10 @@
   ],
   "layers": [
     "Loss 层",
+    "Edit runtime"
+  ],
+  "layers_en": [
+    "Loss layer",
     "Edit runtime"
   ],
   "standard": {
@@ -20,11 +26,27 @@
       "target": "以 target 扩散/flow 损失打底，可再叠 mask/preserve 权重。"
     }
   },
+  "standard_en": {
+    "summary": "Supervision for edit training is based on the target denoising/flow/noise loss, with edit_mask_weight available to emphasise the edit region and edit_preserve_weight to constrain the region being kept.",
+    "effect": "With edit_mask_weight > 1, target error inside the mask counts for more. With edit_preserve_weight > 0, the preserve_mask region gains an additional preservation loss.",
+    "whenToUse": "When the paired data carries an edit mask or a preserve mask. Without a mask, keep the default target loss.",
+    "avoidWhen": "When the mask does not line up with the target, the mask's provenance is unreliable, or this is just ordinary LoRA caption training.",
+    "optionDescriptions": {
+      "target": "Built on the target diffusion/flow loss, with mask and preserve weights available on top."
+    }
+  },
   "advanced": {
     "principle": "第一版不引入 VLM/CLIP reward 依赖，只在已有 diffusion target loss 上叠加确定性的 mask/preserve delta，避免训练路径膨胀。",
     "intervention": "loss execution stage 在基础 target loss 后追加 edit loss delta，并记录小型 edit_loss 报告。",
     "expectedImpact": "让模型把学习容量集中到目标编辑区域，同时减少非编辑区域漂移。",
     "tradeoffs": "preserve loss 目前复用 target-space 误差；source-vs-target latent preservation 需要后续 source encode 路径。",
+    "codePath": "core/lulynx_trainer/edit_loss_plan.py"
+  },
+  "advanced_en": {
+    "principle": "V1 introduces no VLM/CLIP reward dependency — only deterministic mask/preserve deltas stacked on the existing diffusion target loss, avoiding training-path bloat.",
+    "intervention": "The loss execution stage appends the edit loss delta after the base target loss and records a small edit_loss report.",
+    "expectedImpact": "Concentrates the model's learning capacity on the target edit region while reducing drift elsewhere.",
+    "tradeoffs": "The preserve loss currently reuses target-space error; source-vs-target latent preservation needs a later source-encode path.",
     "codePath": "core/lulynx_trainer/edit_loss_plan.py"
   },
   "relatedConfigs": [

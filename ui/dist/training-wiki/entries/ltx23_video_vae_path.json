@@ -1,0 +1,19 @@
+{
+  "key": "ltx23_video_vae_path",
+  "title": "LTX-2.3 视频 VAE",
+  "category": "训练用模型",
+  "appliesTo": [
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora"
+  ],
+  "standard": {
+    "summary": "匹配底座的视频 VAE；标准目录可自动解析，自定义布局时覆盖。",
+    "effect": "写入训练配置 ltx23_video_vae_path，由训练后端在相应阶段消费。",
+    "whenToUse": "路径留空时走默认解析/该功能不启用。",
+    "avoidWhen": "填错路径会在预检或启动时报错，注意路径有效性。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

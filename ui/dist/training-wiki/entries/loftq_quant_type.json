@@ -1,7 +1,9 @@
 {
   "key": "loftq_quant_type",
   "title": "LoftQ 量化粒度（loftq_quant_type）",
+  "title_en": "LoftQ quant type",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "rowwise": "按行/通道量化，细一点。",
       "tensorwise": "整层一个 scale，简单；通道差大时误差也大。"
+    }
+  },
+  "standard_en": {
+    "summary": "LoftQ quantisation granularity (loftq_quant_type): the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "rowwise": "Quantises per row or channel, which is finer.",
+      "tensorwise": "One scale for the whole layer: simple, but the error grows when channels differ a lot."
     }
   },
   "advanced": {},

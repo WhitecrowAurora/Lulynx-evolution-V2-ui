@@ -1,0 +1,17 @@
+{
+  "key": "zimage_max_text_length",
+  "title": "最大文本长度",
+  "category": "训练与模型",
+  "appliesTo": [
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "Qwen3 TE 序列长度，默认 512。",
+    "effect": "写入训练配置 zimage_max_text_length，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 512，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

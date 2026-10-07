@@ -1,7 +1,9 @@
 {
   "key": "pixel_space_loss_type",
   "title": "像素损失类型",
+  "title_en": "Pixel Space Loss Type",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -15,6 +17,18 @@
       "l1": "像素 L1，对亮瞎/暗死没那么炸。",
       "lpips": "按「看起来像不像」罚，算得贵，权重大了容易糊或风格飘。",
       "hybrid": "像素和感知混着来，权重要自己拧。"
+    }
+  },
+  "standard_en": {
+    "summary": "The pixel loss type: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "mse": "MSE over the pixels; simple.",
+      "l1": "L1 over the pixels; less explosive on blown-out or crushed areas.",
+      "lpips": "Punishes by how alike things look, which is expensive to compute; too large a weight easily blurs the image or lets the style drift.",
+      "hybrid": "Mixes pixel and perceptual; you have to set the weights yourself."
     }
   },
   "advanced": {},

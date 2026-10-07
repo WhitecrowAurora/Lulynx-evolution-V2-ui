@@ -1,0 +1,37 @@
+{
+  "key": "sample_difficulty_weighting_min",
+  "title": "样本权重下限",
+  "category": "统一权重组合",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "样本难度权重下限。",
+    "effect": "难度加权后单样本权重的下限，防止简单样本被完全饿死。",
+    "whenToUse": "发现简单样本长期不参与时调高。",
+    "avoidWhen": "默认 0.25 足够。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "sdxl_low_vram_resolution_mode",
   "title": "分辨率规划模式",
+  "title_en": "Resolution Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "long_edge": "按长边规划桶。",
       "short_edge": "按短边规划桶。"
+    }
+  },
+  "standard_en": {
+    "summary": "Resolution planning mode; the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "long_edge": "Plans the buckets by the long edge.",
+      "short_edge": "Plans the buckets by the short edge."
     }
   },
   "advanced": {},

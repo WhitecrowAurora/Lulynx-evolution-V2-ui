@@ -1,0 +1,37 @@
+{
+  "key": "sample_difficulty_weighting_max",
+  "title": "样本权重上限",
+  "category": "统一权重组合",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "样本难度权重上限。",
+    "effect": "难样本权重上限，防止有毒样本主导训练。",
+    "whenToUse": "loss 尖峰集中在个别样本时调低。",
+    "avoidWhen": "默认 4 已偏激进，谨慎调大。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

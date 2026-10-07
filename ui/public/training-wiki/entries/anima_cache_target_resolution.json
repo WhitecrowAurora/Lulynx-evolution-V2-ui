@@ -1,7 +1,9 @@
 {
   "key": "anima_cache_target_resolution",
   "title": "Anima 缓存目标分辨率",
+  "title_en": "Cache Target Resolution",
   "category": "Anima / 配置",
+  "category_en": "Anima / Configuration",
   "appliesTo": [
     "anima-lora",
     "anima-finetune"
@@ -9,11 +11,20 @@
   "layers": [
     "数据层"
   ],
+  "layers_en": [
+    "Data layer"
+  ],
   "standard": {
     "summary": "Anima 缓存构建前把源图缩放到的目标分辨率：0（默认）跟随训练 resolution，>0 时按 anima_cache_resize_mode 的语义缩放到该目标，负数才是「保持源图尺寸」。",
     "effect": "进缓存的图先做保比缩放（longest：最长边=目标；shortest：最短边=目标；freefit：等效面积档位），再进 VAE 编码；填负数时源图什么样就编码什么样。改了 resolution 或本键之后，受影响的缓存文件会在下次构建时自动重新编码，不需要 force。",
     "whenToUse": "默认值通常就够：它等于训练分桶的尺度。只在想让缓存分辨率与训练 resolution 脱钩时才显式填值（例如缓存按 1024 编码、训练跑 768）。",
     "avoidWhen": "别为了「保留全部细节」填负数：VAE 首层激活与像素数成正比，一张 2500×2600 的原图单独就要约 3 GiB 显存，一批下来足以打满 64 GiB 的卡；设得比训练 resolution 小则缓存成为分辨率上限、白白损失细节。"
+  },
+  "standard_en": {
+    "summary": "The resolution source images are scaled to before the Anima cache is built: 0 (the default) follows the training resolution, a value above 0 scales to that target with the semantics of anima_cache_resize_mode, and only a negative value means keep the source size.",
+    "effect": "Images are first scaled with the aspect ratio preserved -- longest: longest edge equals the target; shortest: shortest edge equals the target; freefit: equivalent-area buckets -- and then VAE-encoded. With a negative value the source is encoded exactly as it is. After you change the resolution or this key, the affected cache files are re-encoded automatically on the next build; no force is needed.",
+    "whenToUse": "The default is usually enough: it equals the scale of the training buckets. Set a value explicitly only when you want the cache resolution decoupled from the training resolution -- caching at 1024 while training at 768, say.",
+    "avoidWhen": "Do not put in a negative value to 'keep every detail': the VAE's first-layer activations scale with the pixel count, so a single 2500x2600 original needs about 3 GiB of VRAM and a batch of them fills a 64 GiB card. Setting it below the training resolution makes the cache the resolution ceiling and throws detail away for nothing."
   },
   "advanced": {
     "principle": "缓存训练的分辨率链路是「源图 → 缓存前缩放 → VAE latent → 训练桶」，本键控制第一次几何变换。在缓存阶段就归一尺寸，比训练时再缩放省去每 epoch 的重复计算，也让缓存体积可预算；缩放到训练分桶尺度还顺带让 latent 的空间尺寸与读它的分桶数据集一致。",
@@ -21,6 +32,13 @@
     "expectedImpact": "缓存体积与编码耗时随目标分辨率平方缩放；训练可见细节以此为上限。缓存构建期的显存占用同样随平方增长，这是缓存构建 OOM 的首要来源。改分辨率会让受影响的文件重新编码一次，这一次的代价等于一次冷构建。",
     "tradeoffs": "改分辨率后缓存自动重建：命中检查按源图尺寸推出当前边界下应有的 latent 尺寸，与文件名里记录的尺寸不符就当未命中重新编码，调大调小两个方向都算（这条 resize 不带「小图不放大」分支，所以偏小同样只意味着来自别的边界）。推期望值用的是编码自己那套 resize 算术而不是拿边界除以 8——边界 1000 实际落在 992px、124 latent 像素，自己算会把本来正确的缓存判成过期、每次启动重编整个数据集。旧文件不会被删除（文件名带尺寸，重建是新增而非覆盖），只是不再被选中，想回收磁盘可手工删。两处刻意不下判断：源图尺寸档（负值）按 ±1 latent 像素容差比对；分块编码（anima_vae_chunk_size>0）时高度那一维不比对——分块是按行切开分别编码再拼接，高度是各块取整之和而不是一次除法，此时只比对宽度（切分不动宽度，而宽度同样随边界变化）。与训练 resolution 不匹配时以两者中较小者决定实际细节水平。",
     "codePath": "anima_cache_encoding.py：resolve_anima_cache_target_resolution（语义单一权威）、resized_size_for_target（尺寸算术单一权威，编码与命中检查共用）、cache_geometry_for_image / cache_geometry_stale_reason（几何判据）；anima_cache_builder.py：_find_current_cache_pair（在命中「选择」处逐候选过滤，三个复用点共用这一处）；trainer_anima_cache_runtime.py：_anima_cache_target_resolution 传参；configs_anima.py 定义（0 = 跟随 resolution，<0 = 源图尺寸）"
+  },
+  "advanced_en": {
+    "principle": "The cached-training resolution chain is \"source image → pre-cache resize → VAE latent → training bucket\", and this key controls the first geometric transform. Normalizing sizes at cache stage avoids re-scaling every epoch during training, makes cache size budgetable, and — by resizing to the training bucketing scale — also makes the latent's spatial size consistent with the bucketed dataset that reads it.",
+    "intervention": "anima_cache_encoding.resolve_anima_cache_target_resolution(config) is the single semantic authority: when 0, the corresponding edge of the training resolution is taken per resize_mode (long edge for longest, short edge for shortest, square-equivalent edge for freefit); non-zero values pass through as-is. The cache fingerprint reads the resolved value, so changing resolution makes the lynx shard cache judge a mismatch and rebuild.",
+    "expectedImpact": "Cache size and encode time scale with the square of the target resolution; training-visible detail is capped by it. VRAM during cache build also grows quadratically — the primary cause of cache-build OOM. Changing resolution re-encodes affected files once, costing the same as a cold build.",
+    "tradeoffs": "After changing resolution the cache rebuilds automatically: the hit check derives the latent size the current boundary should produce from the source image size and re-encodes on mismatch — both larger and smaller count (this resize has no \"don't upscale small images\" branch, so a smaller value equally just means a different boundary). The expectation is computed with the encoder's own resize arithmetic rather than dividing the boundary by 8 — a boundary of 1000 actually lands on 992px / 124 latent pixels, so computing it yourself would judge a correct cache stale and re-encode the whole dataset on every launch. Old files are not deleted (filenames carry the size; rebuild adds rather than overwrites) — they just stop being selected; delete manually to reclaim disk. Two deliberate non-judgments: source-image-size profiles (negative values) compare with a ±1 latent-pixel tolerance; with chunked encoding (anima_vae_chunk_size>0) the height dimension is not compared — chunking splits by rows, encodes separately, and concatenates, so height is the sum of per-chunk rounding rather than one division; only width is compared (splitting doesn't touch width, and width also changes with the boundary). When mismatched with the training resolution, the smaller of the two decides the actual detail level.",
+    "codePath": "anima_cache_encoding.py: resolve_anima_cache_target_resolution (single semantic authority), resized_size_for_target (single size-arithmetic authority, shared by encoding and hit check), cache_geometry_for_image / cache_geometry_stale_reason (geometry criteria); anima_cache_builder.py: _find_current_cache_pair (per-candidate filtering at the hit \"selection\" point, shared by all three reuse sites); trainer_anima_cache_runtime.py: _anima_cache_target_resolution passes the value; defined in configs_anima.py (0 = follow resolution, <0 = source image size)"
   },
   "relatedConfigs": [
     "anima_cache_resize_mode",

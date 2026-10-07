@@ -1,7 +1,9 @@
 {
   "key": "lossless_cache_replacement_mode",
   "title": "无损缓存引擎后端",
+  "title_en": "Cache",
   "category": "速度 / 缓存",
+  "category_en": "Speed / Caching",
   "appliesTo": [
     "anima-lora"
   ],
@@ -21,9 +23,25 @@
       "anima_sqlite_bin_probe": "SQLite+bin 探测。"
     }
   },
+  "standard_en": {
+    "summary": "Chooses the storage engine behind the training cache: off = the original npz/safetensors; lxfs/lynx = the Lulynx lossless compression engine, which gives faster reads and writes and a smaller disk footprint.",
+    "effect": "The lxfs/lynx modes replace the DataLoader's cache path entirely and store latents in a custom lossless format (lz4fast/zstd and so on), which is roughly 20%-40% faster at I/O depending on SSD speed.",
+    "whenToUse": "Consider it when the dataset is large and I/O has become the training bottleneck (CPU/IO wait time > 5% of training time). The effect is more visible on an NVMe SSD.",
+    "avoidWhen": "On a small dataset (<100 images) or in GPU-bound training (GPU utilisation staying >95%) the I/O gain is hidden behind GPU compute and the improvement is hard to notice.",
+    "optionDescriptions": {
+      "off": "Still the original npz/safetensors.",
+      "anima_lxfs_probe": "The LXFS lossless cache probe.",
+      "anima_lynx_manifest_probe": "The Lynx manifest probe.",
+      "anima_sqlite_bin_probe": "The SQLite+bin probe."
+    }
+  },
   "advanced": {
     "principle": "lossless 引擎通过 lossless_cache_replacement_codecs（lz4fast/zstd1/raw）控制压缩算法；prefetch_depth 控制异步预取深度；decoded_payload_cache 将解压后的 latent 保留在内存（减少重复解压）；fallback_to_raw 在引擎错误时回退到原格式。",
     "tradeoffs": "lossless 引擎复杂度更高，首次缓存生成需要转换格式（比 npz 慢）；但稳态读取速度更快。对于 anima 大基座的 GPU-bound 训练，提升约 2.3%（端到端）；数据密集型训练提升更显著。"
+  },
+  "advanced_en": {
+    "principle": "The lossless engine controls the compression algorithm via lossless_cache_replacement_codecs (lz4fast/zstd1/raw); prefetch_depth controls async prefetch depth; decoded_payload_cache keeps decompressed latents in memory (avoiding repeated decompression); fallback_to_raw falls back to the original format on engine errors.",
+    "tradeoffs": "The lossless engine is more complex and the first cache build needs format conversion (slower than npz); steady-state reads are faster. For GPU-bound training on the large anima base the gain is about 2.3% end-to-end; data-bound training gains more."
   },
   "relatedConfigs": [
     "cache_latents",

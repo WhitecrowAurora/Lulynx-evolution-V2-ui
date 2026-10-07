@@ -1,0 +1,18 @@
+{
+  "key": "wan22_block_offload_gpu_slots",
+  "title": "Block Offload GPU 槽位",
+  "category": "Wan2.2 Block Offload",
+  "appliesTo": [
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora"
+  ],
+  "standard": {
+    "summary": "同时驻留在 GPU 的 block 数。",
+    "effect": "写入训练配置 wan22_block_offload_gpu_slots，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 4，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

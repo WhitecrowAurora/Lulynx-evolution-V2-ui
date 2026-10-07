@@ -8,6 +8,8 @@
 import { TRAINING_TYPES as ALL_TRAINING_TYPES, VISIBLE_TRAINING_TYPES, UI_TABS } from './trainingTypeRegistry.js';
 import { TARGET_LORA_OPTIMIZERS, schedulerOptions } from './features/settingsOptions.js';
 import { buildRunConfigFromSections } from './runConfigBuilder.js';
+import { withConceptDirection } from './conceptDirectionSchema.js';
+import { withAnimaRuntimeFields } from './features/animaRuntimeFields.js';
 import {
   SDXL_LORA_SECTIONS, SDXL_ILECO_SECTIONS, SDXL_ADDIFT_SECTIONS, SDXL_MULTI_ADDIFT_SECTIONS,
   SDXL_FT_SECTIONS, SDXL_CN_SECTIONS, SDXL_CN_LLLITE_SECTIONS, SDXL_TI_SECTIONS,
@@ -23,14 +25,14 @@ import {
 import {
   FLUX_LORA_SECTIONS, LUMINA_LORA_SECTIONS, QWEN_IMAGE_LORA_SECTIONS, HUNYUAN_DIT_LORA_SECTIONS,
   HUNYUAN_IMAGE_COMPAT_SECTIONS, FLUX_FT_SECTIONS, LUMINA_FT_SECTIONS, FLUX_CN_SECTIONS, NEWBIE_LORA_SECTIONS,
-  KREA2_LORA_SECTIONS, KREA2_FT_SECTIONS, FLUX2_LORA_SECTIONS, ZIMAGE_LORA_SECTIONS, WAN22_TI2V_LORA_SECTIONS, WAN22_T2V_A14B_LORA_SECTIONS, LTX23_LORA_SECTIONS, LTX25_LORA_SECTIONS, BOOGU_LORA_SECTIONS, BOOGU_EDIT_LORA_SECTIONS, BOOGU_FT_SECTIONS, LTX23_FT_SECTIONS, LTX25_FT_SECTIONS, FLUX2_FT_SECTIONS, ZIMAGE_FT_SECTIONS, WAN22_FT_SECTIONS,
+  KREA2_LORA_SECTIONS, KREA2_FT_SECTIONS, FLUX2_LORA_SECTIONS, ZIMAGE_LORA_SECTIONS, WAN22_TI2V_LORA_SECTIONS, WAN22_T2V_A14B_LORA_SECTIONS, LTX23_LORA_SECTIONS, LTX25_LORA_SECTIONS, BOOGU_LORA_SECTIONS, BOOGU_EDIT_LORA_SECTIONS, BOOGU_FT_SECTIONS, LTX23_FT_SECTIONS, LTX25_FT_SECTIONS, FLUX2_FT_SECTIONS, ZIMAGE_FT_SECTIONS, WAN22_FT_SECTIONS, QWEN_IMAGE_FT_SECTIONS,
 } from './otherDitSchemas.js';
 import {
   LAB_DISTILLER_SECTIONS, SDXL_TURBO_LORA_SECTIONS, ANIMA_FEW_STEP_LORA_SECTIONS, NEWBIE_FEW_STEP_LORA_SECTIONS,
 } from './experimentalTrainingSchemas.js';
 import { CONCEPT_EDIT_UNIFIED_SECTIONS } from './conceptEditUnifiedSchema.js';
 import { S_TRAINING_INTENT_PROFILE } from './schemaFrontierGroups.js';
-import { applyAdapterFamilyCapabilities } from './schemaCommon.js';
+import { applyAdapterFamilyCapabilities, sec, when } from './schemaCommon.js';
 import { S_UNIVERSAL_DIT } from './universalDitFields.js';
 import { MINIMAX_H3_LORA_SECTIONS, MINIMAX_H3_FT_SECTIONS } from './minimaxH3Schema.js';
 
@@ -82,6 +84,7 @@ const SECTIONS_MAP = {
   'lumina-finetune':        LUMINA_FT_SECTIONS,
   'anima-finetune':         ANIMA_FT_SECTIONS,
   'krea2-finetune':         KREA2_FT_SECTIONS,
+  'qwen-image-finetune':    QWEN_IMAGE_FT_SECTIONS,
   'boogu-finetune':         BOOGU_FT_SECTIONS,
   'ltx23-finetune':         LTX23_FT_SECTIONS,
   'ltx25-finetune':         LTX25_FT_SECTIONS,
@@ -97,6 +100,8 @@ const SECTIONS_MAP = {
   'flux-controlnet':        FLUX_CN_SECTIONS,
   'sd-textual-inversion':   SD_TI_SECTIONS,
   'sdxl-textual-inversion': SDXL_TI_SECTIONS,
+  'sd-ip-adapter':          createIpAdapterSections(SD15_LORA_SECTIONS, 'sd-ip-adapter'),
+  'sdxl-ip-adapter':        createIpAdapterSections(SDXL_LORA_SECTIONS, 'sdxl-ip-adapter'),
   'yolo':                   YOLO_SECTIONS,
   'aesthetic-scorer':       AESTHETIC_SCORER_SECTIONS,
 };
@@ -129,6 +134,32 @@ const UNIVERSAL_DIT_SECTION = {
   description: '对未被专用族路由识别的 DiT/Transformer 提供的探测与基础 LoRA 接入。',
   fields: S_UNIVERSAL_DIT,
 };
+function IP_ADAPTER_SECTION(typeId) {
+  return {
+  id: 'ip-adapter-settings',
+  tab: 'network',
+  title: 'IP-Adapter 设置',
+  description: 'IP-Adapter 图像编码器与注入 token 配置。',
+  fields: [
+    { key: 'ip_image_encoder_path', type: 'string', label: '图像编码器路径', title: 'ip_image_encoder_path', desc: 'CLIP 视觉编码器路径。', defaultValue: 'openai/clip-vit-large-patch14' },
+    { key: 'ip_num_tokens', type: 'number', label: '图像 Token 数', title: 'ip_num_tokens', desc: '注入 UNet 的 IP-Adapter token 数。', defaultValue: typeId === 'sdxl-ip-adapter' ? 16 : 4, min: 1, max: 64, step: 1 },
+  ],
+  };
+}
+function createIpAdapterSections(baseSections, typeId) {
+  const sections = baseSections.map((section) => {
+    if (section.id !== 'model-settings') return section;
+    return {
+      ...section,
+      fields: section.fields.map((field) => field.key === 'model_train_type'
+        ? { ...field, defaultValue: typeId }
+        : field),
+    };
+  });
+  const networkIndex = sections.findIndex((section) => section.id === 'network-settings');
+  sections.splice(networkIndex >= 0 ? networkIndex + 1 : sections.length, 0, IP_ADAPTER_SECTION(typeId));
+  return sections;
+}
 const TRAINING_INTENT_PROFILE_SECTION = {
   id: 'training-intent-profile',
   tab: 'training',
@@ -136,7 +167,42 @@ const TRAINING_INTENT_PROFILE_SECTION = {
   description: '用途 Profile 只生成配置建议，不会在运行时静默改写参数。',
   fields: S_TRAINING_INTENT_PROFILE,
 };
-const _profiledSectionsCache = {};
+// 素材解耦（高级）：为每个素材子文件夹指定内容角色/标注/遮罩策略，序列化进单个
+// subset_content_roles 字段(JSON 字符串)，由 collectVisiblePayload 原样带给后端。
+// 自定义多行编辑器在 SectionCard 按 section.id 注入(MaterialDecouplingEditor)。
+const MATERIAL_DECOUPLING_SECTION = sec(
+  'material-decoupling',
+  'dataset',
+  '素材解耦（高级）',
+  '为每个素材子文件夹单独指定内容角色与标注/遮罩策略；留空则沿用全局设置，不影响其它字段。',
+  [
+    {
+      key: 'subset_content_roles',
+      type: 'textarea',
+      label: '素材解耦配置',
+      title: 'subset_content_roles',
+      desc: '每行给一个相对 train_data_dir 的素材子文件夹指定内容角色、标注模式与 mask 模式，序列化为 JSON 字符串提交。',
+      defaultValue: '',
+      visibleWhen: when('performance_expert_mode', true),
+    },
+  ],
+  { expert: true },
+);
+
+// 只对含 train_data_dir 的标准图像数据集族叠加；目标检测/美学打分等非扩散训练族排除。
+const MATERIAL_DECOUPLING_EXCLUDED_TYPES = new Set(['yolo', 'aesthetic-scorer']);
+function injectMaterialDecoupling(sections, typeId) {
+  if (MATERIAL_DECOUPLING_EXCLUDED_TYPES.has(typeId)) return sections;
+  const dsIndex = sections.findIndex(
+    (s) => s.id === 'dataset-settings' && s.fields.some((f) => f.key === 'train_data_dir'),
+  );
+  if (dsIndex < 0) return sections;
+  const next = sections.slice();
+  next.splice(dsIndex + 1, 0, MATERIAL_DECOUPLING_SECTION);
+  return next;
+}
+
+const _sectionsCache = {};
 
 // 兼容旧名
 export const SDXL_SECTIONS = SDXL_LORA_SECTIONS;
@@ -145,10 +211,13 @@ export const SDXL_SECTIONS = SDXL_LORA_SECTIONS;
 // 公共 API
 // ================================================================
 export function getSectionsForType(typeId) {
-  const base = SECTIONS_MAP[typeId] || SDXL_LORA_SECTIONS;
-  if (!TRAINING_INTENT_SUPPORTED_TYPES.has(typeId)) return base;
-  if (!_profiledSectionsCache[typeId]) _profiledSectionsCache[typeId] = [TRAINING_INTENT_PROFILE_SECTION, UNIVERSAL_DIT_SECTION, ...base];
-  return _profiledSectionsCache[typeId];
+  if (_sectionsCache[typeId]) return _sectionsCache[typeId];
+  const base = withAnimaRuntimeFields(SECTIONS_MAP[typeId] || SDXL_LORA_SECTIONS, typeId);
+  const withProfile = TRAINING_INTENT_SUPPORTED_TYPES.has(typeId)
+    ? [TRAINING_INTENT_PROFILE_SECTION, UNIVERSAL_DIT_SECTION, ...base]
+    : base;
+  _sectionsCache[typeId] = withConceptDirection(injectMaterialDecoupling(withProfile, typeId), typeId || 'sdxl-lora');
+  return _sectionsCache[typeId];
 }
 
 function buildFieldMap(sections) {
@@ -165,8 +234,8 @@ function getFieldMapForType(typeId) {
 
 export function getFieldDefinition(key, typeId) {
   if (typeId) return getFieldMapForType(typeId).get(key);
-  for (const sections of Object.values(SECTIONS_MAP)) {
-    const map = buildFieldMap(sections);
+  for (const id of Object.keys(SECTIONS_MAP)) {
+    const map = getFieldMapForType(id);
     if (map.has(key)) return map.get(key);
   }
   return undefined;

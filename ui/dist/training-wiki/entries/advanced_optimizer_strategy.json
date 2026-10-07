@@ -1,7 +1,9 @@
 {
   "key": "advanced_optimizer_strategy",
   "title": "进阶优化器策略",
+  "title_en": "Advanced optimizer strategy",
   "category": "优化器 / 进阶",
+  "category_en": "Optimizer / Advanced",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,6 +13,9 @@
   ],
   "layers": [
     "优化器层"
+  ],
+  "layers_en": [
+    "Optimizer layer"
   ],
   "standard": {
     "summary": "对优化器行为做进阶调整，包括 LoRA+（对 A/B 矩阵用不同学习率）和 RSLoRA 等。",
@@ -26,11 +31,31 @@
       "lulynx_svd_gradient_filter": "把梯度投到低秩子空间再更新,秩与刷新间隔另有两个键;想压梯度噪声、顺带省优化器状态时选它。"
     }
   },
+  "standard_en": {
+    "summary": "Advanced adjustments to optimizer behaviour, including LoRA+ (different learning rates for the A and B matrices) and RSLoRA.",
+    "effect": "lora_plus gives the LoRA up_proj a higher learning rate to speed up convergence; rs_lora adjusts the scaling in rank-stabilized mode.",
+    "whenToUse": "auto lets the system pick the strategy that fits; lora_plus usually gains 5-15% in LoRA training.",
+    "avoidWhen": "Skipped automatically on non-LoRA training such as a finetune. The lulynx SVD gradient filter does not reduce the base optimizer state to a low-rank shape.",
+    "optionDescriptions": {
+      "auto": "Leaves your existing settings alone.",
+      "off": "Advanced strategies off.",
+      "profile_only": "Only records a profile; the parameter groups are untouched.",
+      "lora_plus": "LoRA+, where the A and B learning rates can be separated.",
+      "rs_lora": "The RS-LoRA scaling and initialisation.",
+      "lulynx_svd_gradient_filter": "Projects the gradient into a low-rank subspace before the update; the rank and refresh interval have two keys of their own. Pick it when you want to damp gradient noise and save optimizer state along the way."
+    }
+  },
   "advanced": {
     "principle": "LoRA+ 发现 LoRA 的 down_proj（A 矩阵）和 up_proj（B 矩阵）对梯度的敏感度不同，对 B 使用 2-16x 的学习率可以加速。RSLoRA 调整 alpha/dim 缩放随 rank 变化。lulynx SVD 梯度过滤先做双侧低秩投影，再重构回全形状梯度；它是工程近似，不是 GaLore 的低秩 optimizer-state 维护。",
     "intervention": "修改 optimizer 构造时的参数分组，对不同 param group 设置不同学习率。",
     "expectedImpact": "LoRA+ 在不增加显存的情况下加速收敛；RSLoRA 在不同 rank 下表现更一致。",
     "tradeoffs": "lulynx SVD 梯度过滤保留全尺寸基础优化器状态，主要改变梯度方向/噪声；需要定期 SVD 重算基，不能宣称 GaLore 的 optimizer-state 显存节省。"
+  },
+  "advanced_en": {
+    "principle": "LoRA+ observed that LoRA's down_proj (A matrix) and up_proj (B matrix) differ in gradient sensitivity, so using a 2-16× higher learning rate on B accelerates training. RSLoRA adjusts the alpha/dim scaling as rank changes. lulynx SVD gradient filtering first does a two-sided low-rank projection, then reconstructs back to a full-shape gradient; it is an engineering approximation, not GaLore's low-rank optimizer-state maintenance.",
+    "intervention": "Modifies parameter grouping at optimizer construction, giving different param groups different learning rates.",
+    "expectedImpact": "LoRA+ accelerates convergence without extra VRAM; RSLoRA behaves more consistently across ranks.",
+    "tradeoffs": "lulynx SVD gradient filtering keeps full-size base optimizer state and mainly changes gradient direction/noise; it requires periodic SVD re-computation of the basis and cannot claim GaLore's optimizer-state VRAM savings."
   },
   "relatedConfigs": [
     "optimizer_type",

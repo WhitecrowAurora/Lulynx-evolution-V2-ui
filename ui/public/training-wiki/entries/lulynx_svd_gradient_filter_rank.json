@@ -1,0 +1,24 @@
+{
+  "key": "lulynx_svd_gradient_filter_rank",
+  "title": "SVD 过滤 rank",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "SVD 梯度过滤 rank。",
+    "effect": "按 SVD 截断梯度中低重要度成分的 rank 预算。",
+    "whenToUse": "梯度去噪实验时使用。",
+    "avoidWhen": "默认关闭路径；属前沿储备。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

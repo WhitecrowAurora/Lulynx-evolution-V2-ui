@@ -1,7 +1,9 @@
 {
   "key": "lulynx_sra2_alignment_loss_type",
   "title": "对齐损失类型",
+  "title_en": "Alignment Loss Type",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -17,6 +19,17 @@
       "cosine": "只对齐方向，不管特征有多长。",
       "l2": "方向幅度一起压，信号猛，也容易去贴教师的范数。",
       "l1": "特征 L1，比 L2 钝一点。"
+    }
+  },
+  "standard_en": {
+    "summary": "The alignment loss type: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "cosine": "Aligns direction only, regardless of how long the features are.",
+      "l2": "Presses direction and magnitude together: a strong signal, and prone to chasing the teacher's norm.",
+      "l1": "L1 on the features, a little blunter than L2."
     }
   },
   "advanced": {},

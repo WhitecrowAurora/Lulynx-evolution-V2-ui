@@ -1,7 +1,9 @@
 {
   "key": "image_decode_backend",
   "title": "图片解码后端（image_decode_backend）",
+  "title_en": "Image decode backend",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -16,8 +18,26 @@
       "torchvision_cpu": "torchvision CPU 解码。"
     }
   },
+  "standard_en": {
+    "summary": "pil is the most compatible; pil_lru caches decoded RGB keyed on file mtime and size",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "pil": "Pillow.",
+      "auto": "Automatic.",
+      "pil_lru": "PIL with a cache: fast on repeat reads, hungry for memory.",
+      "torchvision_cpu": "torchvision CPU decoding."
+    }
+  },
   "advanced": {
     "principle": "pil 最兼容；pil_lru 会按文件 mtime/大小缓存已解码 RGB/Alpha；torchvision_cpu 使用 torchvision 在 CPU 解码后回到现有 PIL augment 链路，不提前占用训练显存。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "pil is the most compatible; pil_lru caches decoded RGB/Alpha keyed by file mtime/size; torchvision_cpu decodes on CPU via torchvision and returns to the existing PIL augment chain, without occupying training VRAM early.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

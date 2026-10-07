@@ -1,7 +1,9 @@
 {
   "key": "turbocore_profile",
   "title": "TurboCore 性能分析",
+  "title_en": "Turbo Core tier",
   "category": "速度 / TurboCore",
+  "category_en": "Speed / TurboCore",
   "appliesTo": [
     "anima-lora"
   ],
@@ -20,6 +22,17 @@
       "basic": "加速动得最少。",
       "balanced": "中间档。",
       "aggressive": "内核和策略开得更满，赚得多也更容易出幺蛾子。"
+    }
+  },
+  "standard_en": {
+    "summary": "TurboCore debugging and analysis parameters: profile records per-component timing statistics; strict enables strict validation mode (fail-closed on an error rather than falling back); tuned_kernel_disable disables a particular tuned kernel (for testing and debugging); workspace_mb sets the size of TurboCore's internal workspace.",
+    "effect": "profile records a breakdown of the time spent in each TurboCore stage to the log, which helps locate a performance bottleneck; update_shadow_mode controls when the shadow weights update (used by TurboCore's sign-back verification flow).",
+    "whenToUse": "Use it when debugging TurboCore behaviour or analysing performance. Keep the defaults for normal training (leave these debugging options off).",
+    "avoidWhen": "strict mode raises immediately when a TurboCore component fails (instead of falling back automatically), so use it only while debugging.",
+    "optionDescriptions": {
+      "basic": "The lightest touch of acceleration.",
+      "balanced": "The middle gear.",
+      "aggressive": "Kernels and strategies turned up further: it gains more, and misbehaves more easily."
     }
   },
   "relatedConfigs": [

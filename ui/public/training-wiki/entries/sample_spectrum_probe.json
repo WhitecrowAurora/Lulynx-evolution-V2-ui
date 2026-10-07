@@ -1,0 +1,17 @@
+{
+  "key": "sample_spectrum_probe",
+  "title": "Spectrum 探针",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "块缓存线性外推探针（与预览加速 seam 独立）。",
+    "effect": "写入训练配置 sample_spectrum_probe，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

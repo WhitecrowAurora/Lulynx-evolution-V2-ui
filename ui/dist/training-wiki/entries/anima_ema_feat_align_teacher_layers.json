@@ -1,0 +1,16 @@
+{
+  "key": "anima_ema_feat_align_teacher_layers",
+  "title": "EMA Teacher 层",
+  "category": "表征对齐",
+  "appliesTo": [
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "逗号分隔的 teacher 层索引，如 \"9\"。",
+    "effect": "写入训练配置 anima_ema_feat_align_teacher_layers，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

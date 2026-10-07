@@ -1,7 +1,9 @@
 {
   "key": "validation_seed",
   "title": "验证随机种子",
+  "title_en": "Validation",
   "category": "训练 / 评估",
+  "category_en": "Training / Evaluation",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -11,6 +13,12 @@
     "effect": "固定 validation_seed 后，相同模型在验证集上的 loss 评估完全可重复，方便跨训练运行比较。",
     "whenToUse": "开启验证集评估（validate_every_n_steps）时设置，获得可重复的验证 loss。",
     "avoidWhen": "不使用验证集时此参数无意义。"
+  },
+  "standard_en": {
+    "summary": "The random seed used when evaluating on the validation set, which keeps every validation on the same random state (so comparisons repeat).",
+    "effect": "With validation_seed fixed, the same model's loss evaluation on the validation set is exactly reproducible, which makes comparing across training runs easy.",
+    "whenToUse": "Set it when validation-set evaluation is on (validate_every_n_steps), for a reproducible validation loss.",
+    "avoidWhen": "Meaningless when no validation set is used."
   },
   "relatedConfigs": [
     "validate_every_n_steps",

@@ -1,7 +1,9 @@
 {
   "key": "repa_encoder_device",
   "title": "REPA 编码器设备",
+  "title_en": "REPA",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -14,8 +16,24 @@
       "cuda": "教师放 GPU，快，但跟训练抢显存。"
     }
   },
+  "standard_en": {
+    "summary": "The device the DINOv2/Jina weights live on. cpu = does not take GPU memory (recommended); cuda = opt-in for a big card.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "cpu": "The teacher encoder sits on the CPU, taking no training VRAM; the speed depends on your CPU and PCIe.",
+      "cuda": "The teacher sits on the GPU: fast, but it competes with training for VRAM."
+    }
+  },
   "advanced": {
     "principle": "DINOv2/Jina 权重所在设备。cpu=不占 GPU（推荐）；cuda=大卡 opt-in。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Device holding the DINOv2/Jina weights. cpu = no GPU usage (recommended); cuda = opt-in on large cards.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

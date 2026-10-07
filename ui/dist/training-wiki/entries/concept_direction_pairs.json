@@ -1,0 +1,17 @@
+{
+  "key": "concept_direction_pairs",
+  "title": "概念对",
+  "category": "概念方向训练 · Concept Direction",
+  "appliesTo": [
+    "sd-lora",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "正向描述希望增强的概念，负向描述对应的对照；每对两侧都需填写。",
+    "effect": "可添加多对，建议每对只改变一个概念。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

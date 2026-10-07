@@ -1,0 +1,16 @@
+{
+  "key": "anima_controlnet_multiplier",
+  "title": "适配器倍率",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "anima-controlnet"
+  ],
+  "standard": {
+    "summary": "Anima ControlNet 倍率。",
+    "effect": "控制注入强度的倍率。",
+    "whenToUse": "控制感调整。",
+    "avoidWhen": "默认 1。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

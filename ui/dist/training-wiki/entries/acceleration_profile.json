@@ -1,7 +1,9 @@
 {
   "key": "acceleration_profile",
   "title": "加速预设",
+  "title_en": "Model acceleration tier",
   "category": "性能 / 加速",
+  "category_en": "Performance / Acceleration",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,6 +14,9 @@
   ],
   "layers": [
     "性能层"
+  ],
+  "layers_en": [
+    "Performance layer"
   ],
   "standard": {
     "summary": "acceleration_profile 是一键加速预设，自动组合 torch.compile、attention 后端、缓存策略等优化。提供 off/safe/balanced/aggressive/low_vram 五档。",
@@ -26,11 +31,31 @@
       "low_vram": "先省显存：缓存往盘上扔、checkpoint 卸掉；速度一般会慢一截。"
     }
   },
+  "standard_en": {
+    "summary": "acceleration_profile is a one-click acceleration preset that combines torch.compile, the attention backend, cache policy and other optimisations for you. Five levels: off / safe / balanced / aggressive / low_vram.",
+    "effect": "safe enables only the safest optimisations such as SDPA; balanced adds torch.compile plus caching; aggressive turns everything on and may affect compatibility; low_vram puts saving VRAM first.",
+    "whenToUse": "When you would rather not configure each performance option by hand. balanced is the recommended default.",
+    "avoidWhen": "Do not use a preset when you need exact control over each optimisation. Turn the preset off and test item by item when debugging a performance problem.",
+    "optionDescriptions": {
+      "off": "All acceleration presets off, parameters left as they are -- handy as a baseline to compare the other levels against.",
+      "safe": "Only the sturdy items (caching, foreach and the like). Not much faster, but not much to go wrong either.",
+      "balanced": "The usual acceleration combination for this model. Decent speed, decent amount of fuss.",
+      "aggressive": "compile and the fast paths get turned on wherever possible. The first compile takes noticeably longer and odd configurations break more easily.",
+      "low_vram": "VRAM first: caches go to disk, checkpointing is offloaded. Usually a fair bit slower."
+    }
+  },
   "advanced": {
     "principle": "acceleration_profile 会批量设置多个底层参数：attention_backend（auto→flash2/sdpa）、torch_compile（True/False + mode）、compile_runtime（off→compile/cudagraph）、native_cache_mode（cache_first）、weight_compression（off→fp8）、以及各 swap/offload 选项。aggressive 模式下 compile_fullgraph=True + cudagraph 组合可能获得最大加速但兼容性风险最高。",
     "intervention": "config validator 阶段根据预设自动设置底层参数。",
     "expectedImpact": "balanced 通常提速 30-50%。aggressive 可达 2-3 倍。low_vram 在显存受限时提速 20-40%。",
     "tradeoffs": "预设可能与特定模型/硬件不兼容。建议先用 balanced，稳定后再尝试 aggressive。",
+    "codePath": "core/model_acceleration_policy.py → profile dispatch → set attention/compile/cache/compression params"
+  },
+  "advanced_en": {
+    "principle": "acceleration_profile batch-sets many low-level parameters: attention_backend (auto→flash2/sdpa), torch_compile (True/False + mode), compile_runtime (off→compile/cudagraph), native_cache_mode (cache_first), weight_compression (off→fp8), plus the various swap/offload options. In aggressive mode the compile_fullgraph=True + cudagraph combination may yield the greatest speedup but carries the highest compatibility risk.",
+    "intervention": "The config validator stage sets the low-level parameters automatically per preset.",
+    "expectedImpact": "balanced usually speeds up 30-50%. aggressive can reach 2-3×. low_vram speeds up 20-40% when VRAM-constrained.",
+    "tradeoffs": "Presets may be incompatible with specific models/hardware. Start with balanced, then try aggressive once stable.",
     "codePath": "core/model_acceleration_policy.py → profile dispatch → set attention/compile/cache/compression params"
   },
   "relatedConfigs": [

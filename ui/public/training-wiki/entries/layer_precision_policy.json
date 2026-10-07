@@ -1,0 +1,32 @@
+{
+  "key": "layer_precision_policy",
+  "title": "分层精度策略",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "sd-addift",
+    "sd-controlnet",
+    "sd-dreambooth",
+    "sd-ileco",
+    "sd-ip-adapter",
+    "sd-lora",
+    "sd-multi-addift",
+    "sd-textual-inversion",
+    "sdxl-addift",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ileco",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-multi-addift",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "逐层精度的 分层精度策略，默认 sensitive_bf16。",
+    "effect": "逐层精度策略允许对指定层覆盖全局混合精度（如对敏感层保持 fp32），分层精度策略 控制规则来源或解析方式。",
+    "whenToUse": "量化/低精度训练出现特定层数值问题时使用。",
+    "avoidWhen": "没有明确的层级精度需求时保持默认，全局精度策略已足够。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

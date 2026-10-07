@@ -1,0 +1,17 @@
+{
+  "key": "mem_eff_save",
+  "title": "省内存保存",
+  "category": "FLUX 专用参数",
+  "appliesTo": [
+    "flux-finetune",
+    "lumina-finetune"
+  ],
+  "standard": {
+    "summary": "省内存保存。",
+    "effect": "保存前把权重移到 CPU，降低保存瞬间的显存峰值。",
+    "whenToUse": "大模型保存时 OOM 就开启。",
+    "avoidWhen": "保存稍慢。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

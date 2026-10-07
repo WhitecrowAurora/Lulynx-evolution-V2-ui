@@ -1,7 +1,9 @@
 {
   "key": "distillation_mode",
   "title": "蒸馏模式",
+  "title_en": "Distillation mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -14,8 +16,24 @@
       "anyflow": "AnyFlow 管线（FM 一致性）。注意 AnyFlow 分支只接受 anima / newbie 两族；在其他训练类型上选它，后端会回落到 dp_dmd_turbo。"
     }
   },
+  "standard_en": {
+    "summary": "dp_dmd_turbo = few-step distillation",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "dp_dmd_turbo": "The DMD/Turbo pipeline.",
+      "anyflow": "The AnyFlow pipeline (FM consistency). Note that the AnyFlow branch accepts only the anima and newbie families; choose it on another training type and the backend falls back to dp_dmd_turbo."
+    }
+  },
   "advanced": {
     "principle": "dp_dmd_turbo=少步蒸馏；anyflow=AnyFlow 一致性蒸馏。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "dp_dmd_turbo = few-step distillation; anyflow = AnyFlow consistency distillation.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

@@ -1,7 +1,9 @@
 {
   "key": "caption_variant_ratio",
   "title": "Caption 变体比例",
+  "title_en": "Ratio JSON",
   "category": "数据集 / 图说",
+  "category_en": "Dataset / Captions",
   "appliesTo": [
     "anima-lora"
   ],
@@ -15,9 +17,19 @@
     "whenToUse": "每张图有多个 caption 变体时开启（通过 caption_variants 字段指定变体列表）。",
     "avoidWhen": "没有 caption 变体文件时设为 0，否则会 fallback 到主 caption 或产生错误。"
   },
+  "standard_en": {
+    "summary": "How often caption variants (several ways of describing the same image) are mixed into training. It helps the LoRA cope with different description styles.",
+    "effect": "0.0 = always the main caption; 0.3 = 30% of steps draw one at random from the variant pool; 1.0 = always a variant.",
+    "whenToUse": "Turn it on when each image has several caption variants (listed through the caption_variants field).",
+    "avoidWhen": "Set it to 0 when there are no variant files, or it falls back to the main caption or errors out."
+  },
   "advanced": {
     "principle": "caption 变体通常存储在 .caption_variants.json 等辅助文件中，训练时按比例从主 caption 和变体池随机采样。",
     "tradeoffs": "caption 多样性有助于 LoRA 的语言泛化，但需要额外制作 caption 变体文件（增加数据准备工作量）。"
+  },
+  "advanced_en": {
+    "principle": "Caption variants are usually stored in auxiliary files such as .caption_variants.json; during training they are sampled by ratio from the main caption and the variant pool.",
+    "tradeoffs": "Caption diversity helps the LoRA's language generalization, but requires producing variant files (extra data-prep work)."
   },
   "relatedConfigs": [
     "caption_extension",

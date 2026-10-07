@@ -1,0 +1,17 @@
+{
+  "key": "rank_comp_rank",
+  "title": "回补秩",
+  "category": "精度 / 量化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "越大越准也越占显存。",
+    "effect": "r16 削误差约 32%，r64 约 65%",
+    "whenToUse": "默认 16，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

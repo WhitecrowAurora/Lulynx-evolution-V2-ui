@@ -1,0 +1,16 @@
+{
+  "key": "universal_dit_objective_template",
+  "title": "训练 Objective 契约",
+  "category": "Batch / Objective / Forward 契约",
+  "appliesTo": [
+    "universal-dit-lora"
+  ],
+  "standard": {
+    "summary": "必须与外部模型真实训练目标一致。",
+    "effect": "Auto 在证据不足时会显式失败，不会按类名猜测。",
+    "whenToUse": "默认 auto，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

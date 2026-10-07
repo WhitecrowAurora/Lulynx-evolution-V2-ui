@@ -1,0 +1,16 @@
+{
+  "key": "allow_stats_extractor",
+  "title": "允许统计特征 fallback",
+  "category": "训练参数",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "仅用于 smoke 或无外部模型时的显式降级。",
+    "effect": "写入训练配置 allow_stats_extractor，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

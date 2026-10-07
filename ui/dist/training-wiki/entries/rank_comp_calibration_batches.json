@@ -1,0 +1,17 @@
+{
+  "key": "rank_comp_calibration_batches",
+  "title": "校准样本数",
+  "category": "精度 / 量化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "校准样本批数。",
+    "effect": "rank 压缩校准用多少个 batch 的激活统计。",
+    "whenToUse": "统计不稳时加大。",
+    "avoidWhen": "默认 8。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

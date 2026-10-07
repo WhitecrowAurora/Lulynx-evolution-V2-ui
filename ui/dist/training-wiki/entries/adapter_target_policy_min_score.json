@@ -1,0 +1,17 @@
+{
+  "key": "adapter_target_policy_min_score",
+  "title": "最低分数阈值",
+  "category": "FG-LoRA / 选择性注入",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "层的重要性分数低于此值会被过滤。",
+    "effect": "0 表示不设阈值。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

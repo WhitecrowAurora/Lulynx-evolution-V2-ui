@@ -1,0 +1,17 @@
+{
+  "key": "krea2_layer_offload_resident_ratio",
+  "title": "Layer 常驻比例 %",
+  "category": "Krea2 Block/Layer Offload",
+  "appliesTo": [
+    "krea2-finetune",
+    "krea2-lora"
+  ],
+  "standard": {
+    "summary": "Krea2 Layer 常驻比例。",
+    "effect": "始终留在显存的层比例（%）。",
+    "whenToUse": "常用层驻留可减少换入。",
+    "avoidWhen": "默认 0。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

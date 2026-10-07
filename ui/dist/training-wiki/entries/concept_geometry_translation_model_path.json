@@ -1,0 +1,17 @@
+{
+  "key": "concept_geometry_translation_model_path",
+  "title": "翻译模型路径",
+  "category": "Concept Geometry",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "概念翻译模型路径。",
+    "effect": "本地翻译模型（多语言概念归一）目录。",
+    "whenToUse": "多语言 caption 数据集时使用。",
+    "avoidWhen": "纯中文/英文数据集不需要。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

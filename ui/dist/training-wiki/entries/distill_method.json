@@ -1,7 +1,9 @@
 {
   "key": "distill_method",
   "title": "蒸馏方法（distill_method）",
+  "title_en": "Distillation method",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "lcm_lora": "LCM-LoRA 蒸馏。",
       "turbo_lora": "Turbo 类少步 LoRA 蒸馏。"
+    }
+  },
+  "standard_en": {
+    "summary": "The distillation method (distill_method); the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "lcm_lora": "LCM-LoRA distillation.",
+      "turbo_lora": "Turbo-style few-step LoRA distillation."
     }
   },
   "advanced": {},

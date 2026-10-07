@@ -1,7 +1,9 @@
 {
   "key": "anima_self_attn_lr",
   "title": "Self-Attention 学习率",
+  "title_en": "Self-Attention Learning Rate",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,12 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "A separate learning rate for the self-attention layers of the Anima DiT.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "Anima DiT Self-Attention 层的独立学习率。0 = 使用全局学习率。高级用户可针对不同层设置不同学习率。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Standalone learning rate for the Anima DiT Self-Attention layers. 0 = use the global learning rate. Advanced users can set different learning rates per layer group."
   },
   "relatedConfigs": []
 }

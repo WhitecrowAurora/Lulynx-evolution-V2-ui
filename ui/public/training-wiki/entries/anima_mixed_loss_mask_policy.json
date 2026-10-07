@@ -1,0 +1,17 @@
+{
+  "key": "anima_mixed_loss_mask_policy",
+  "title": "同 batch 缺失 Mask 时",
+  "category": "其他训练选项",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "仅在同一 batch 同时出现有 Mask 与无 Mask 样本时生效",
+    "effect": "写入训练配置 anima_mixed_loss_mask_policy，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 full_sample，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

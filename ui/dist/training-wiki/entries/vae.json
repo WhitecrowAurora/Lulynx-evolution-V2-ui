@@ -1,7 +1,9 @@
 {
   "key": "vae",
   "title": "VAE 路径",
+  "title_en": "Qwen Image VAE Path",
   "category": "模型 / VAE",
+  "category_en": "Model / VAE",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -19,10 +21,21 @@
     "whenToUse": "SDXL 训练推荐使用官方发布的改进版 VAE（fp16-fix 版本），可修复原 VAE 的色彩偏差问题。",
     "avoidWhen": "使用最新的已内置改进 VAE 的基础模型时无需单独指定。"
   },
+  "standard_en": {
+    "summary": "Names the path of the VAE model used during training. Left blank, the base model's built-in VAE is used.",
+    "effect": "Using a separate VAE file (sdxl_vae.safetensors, say) can give better image encode/decode quality than the model's built-in VAE (less colour bias and less detail loss).",
+    "whenToUse": "For SDXL training, the officially released improved VAE (the fp16-fix version) is recommended, which fixes the colour bias of the original.",
+    "avoidWhen": "No need to name one when using a recent base model that already embeds the improved VAE."
+  },
   "advanced": {
     "principle": "VAE（Variational Autoencoder）负责将像素空间图像编码到 latent 空间（VAE encode，训练时）和将 latent 解码回图像（VAE decode，生成时）。训练时只用 encode 方向，VAE 本身不被训练（权重冻结）。",
     "intervention": "vae_batch_size 控制 VAE 编码时的 batch（影响预缓存速度）；vae_slicing 将 VAE 编码分块处理（节省显存，略降速度）；vae_tiling 对大图 VAE 编码分区域处理（高分辨率必备）；no_half_vae 禁止 VAE 使用 fp16（某些老 VAE 在 fp16 下有数值问题）。",
     "tradeoffs": "vae_tiling 开启后解码结果可能有轻微 tile 边界痕迹；no_half_vae 使 VAE 运行在 fp32，增加显存约 50%（通常只对 VAE 部分有影响）。"
+  },
+  "advanced_en": {
+    "principle": "The VAE (Variational Autoencoder) encodes pixel-space images into latent space (VAE encode, during training) and decodes latents back into images (VAE decode, during generation). Training uses only the encode direction; the VAE itself is not trained (weights frozen).",
+    "intervention": "vae_batch_size controls the VAE encode batch (affects pre-cache speed); vae_slicing processes VAE encoding in chunks (saves VRAM, slightly slower); vae_tiling processes large images region by region (essential at high resolution); no_half_vae forbids fp16 in the VAE (some older VAEs have numerical problems in fp16).",
+    "tradeoffs": "With vae_tiling on, decode results may have slight tile-boundary artifacts; no_half_vae runs the VAE in fp32, adding about 50% VRAM (usually only affects the VAE portion)."
   },
   "relatedConfigs": [
     "cache_latents",

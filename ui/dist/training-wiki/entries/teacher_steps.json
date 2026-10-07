@@ -1,0 +1,18 @@
+{
+  "key": "teacher_steps",
+  "title": "Teacher 步数",
+  "category": "LCM / Turbo 蒸馏参数",
+  "appliesTo": [
+    "anima-few-step-lora",
+    "newbie-few-step-lora",
+    "sdxl-turbo-lora"
+  ],
+  "standard": {
+    "summary": "Teacher 步数。",
+    "effect": "蒸馏时 teacher（原模型）采样步数，决定监督信号质量。",
+    "whenToUse": "teacher 步数越高蒸馏信号越好、越慢。",
+    "avoidWhen": "默认 30。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

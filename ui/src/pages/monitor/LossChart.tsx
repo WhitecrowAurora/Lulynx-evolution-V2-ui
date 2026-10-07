@@ -1,10 +1,15 @@
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
 import { useEffect, useRef, useState } from 'react'
-import type { ECharts } from 'echarts'
+import { use as useECharts, init as initECharts, type ECharts } from 'echarts/core'
+import { LineChart } from 'echarts/charts'
+import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components'
+import { CanvasRenderer } from 'echarts/renderers'
 import type { ChartPoint } from '@/stores/monitorStore'
 import { isEcoMotion, useThemeStore } from '@/stores/themeStore'
 
-/* Loss/LR 双序列曲线,echarts 懒加载(vendor-echarts chunk),配色取当前主题 CSS 变量 */
+/* Loss/LR 双序列曲线,仅注册实际用到的 ECharts 模块,配色取当前主题 CSS 变量 */
+
+useECharts([LineChart, GridComponent, LegendComponent, TooltipComponent, CanvasRenderer])
 
 export function LossChart({ loss, lr }: { loss: ChartPoint[]; lr: ChartPoint[] }) {
   const ref = useRef<HTMLDivElement | null>(null)
@@ -13,19 +18,15 @@ export function LossChart({ loss, lr }: { loss: ChartPoint[]; lr: ChartPoint[] }
   const [ready, setReady] = useState(0)
 
   useEffect(() => {
-    let disposed = false
     let ro: ResizeObserver | undefined
-    void import('echarts').then((echarts) => {
-      if (disposed || !ref.current) return
-      chartRef.current?.dispose()
-      const chart = echarts.init(ref.current)
-      chartRef.current = chart
-      ro = new ResizeObserver(() => chart.resize())
-      ro.observe(ref.current)
-      setReady((n) => n + 1)
-    })
+    if (!ref.current) return
+    chartRef.current?.dispose()
+    const chart = initECharts(ref.current)
+    chartRef.current = chart
+    ro = new ResizeObserver(() => chart.resize())
+    ro.observe(ref.current)
+    setReady((n) => n + 1)
     return () => {
-      disposed = true
       ro?.disconnect()
       chartRef.current?.dispose()
       chartRef.current = null

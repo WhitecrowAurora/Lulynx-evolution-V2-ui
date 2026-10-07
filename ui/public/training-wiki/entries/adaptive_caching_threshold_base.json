@@ -1,0 +1,17 @@
+{
+  "key": "adaptive_caching_threshold_base",
+  "title": "阈值基线",
+  "category": "DiT / 训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "自适应缓存阈值基线。",
+    "effect": "DiT 块跳过（自适应缓存）判断「块输出变化是否足够小」的基准阈值。",
+    "whenToUse": "块跳过路线的精度/速度旋钮。",
+    "avoidWhen": "调小更保守（跳得少、质量稳）。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

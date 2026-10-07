@@ -1,7 +1,9 @@
 {
   "key": "caption_tag_dropout_targets",
   "title": "Caption Tag Dropout 目标",
+  "title_en": "Tag",
   "category": "数据集 / 图说",
+  "category_en": "Dataset / Captions",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -17,6 +19,12 @@
     "effect": "targets 列表中的 tag 类别才参与 dropout，其他 tag 不受影响（如只对描述性 tag 做 dropout，保留触发词）。",
     "whenToUse": "需要精确控制哪些 tag 参与 dropout 时使用。dual_caption 适合数据集同时有详细描述和简短标签两种格式。",
     "avoidWhen": "简单的 tag dropout 用 caption_tag_dropout_rate 即可，无需精细控制目标。"
+  },
+  "standard_en": {
+    "summary": "Fine control over tag dropout: targets restricts dropout to particular tag categories; target_count sets how many tags to drop; target_mode picks how (random/structured). dual_caption supports datasets carrying both a long and a short caption (with long_key/short_key naming the fields). anima_caption_variant_cache turns on caption variant caching.",
+    "effect": "Only the tag categories listed in targets take part in dropout; the rest are untouched -- letting you drop descriptive tags while keeping the trigger word.",
+    "whenToUse": "When you need exact control over which tags participate. dual_caption suits datasets that carry both a detailed description and a short tag list.",
+    "avoidWhen": "For simple tag dropout, caption_tag_dropout_rate is enough and no targeting is needed."
   },
   "relatedConfigs": [
     "caption_tag_dropout_rate",

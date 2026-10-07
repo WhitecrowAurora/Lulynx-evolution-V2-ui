@@ -1,7 +1,9 @@
 {
   "key": "adapter_type",
   "title": "适配器类型（adapter_type）",
+  "title_en": "LoRA Type",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -34,12 +36,44 @@
       "lulynx_progressive_rank_lora": "渐进秩 LoRA:有效秩随训练进度按调度变化,早期低秩更稳;后端走 tlora 那条实现,不是论文 T-LoRA 的 timestep 调度。"
     }
   },
+  "standard_en": {
+    "summary": "Newbie adapter type; it maps onto the native LoRA.",
+    "whenToUse": "When unsure keep the default, then short-test a few steps before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is on at the same time.",
+    "optionDescriptions": {
+      "lora": "Standard LoRA: the best compatibility, roughly 2*r*d parameters.",
+      "lora_plus": "LoRA+, where the A and B learning rates can be split; set one side wrong and it stops learning.",
+      "rs_lora": "rsLoRA scaling, less prone to numerical blow-ups at high rank.",
+      "lora_fa": "LoRA-FA: part of it is frozen, so there are fewer trainable parameters.",
+      "vera": "VeRA: very small files, but easily too weak for a difficult concept.",
+      "tlora": "lulynx progressive-rank LoRA (historical T-LoRA key): the effective rank changes with global training progress.",
+      "flexrank": "The rank may differ from layer to layer.",
+      "fera": "FeRA, experimental.",
+      "gdlokr": "GDLoKr: Kronecker plus magnitude. Expressive, heavy to implement.",
+      "locon": "Low-rank on the convolutions too: takes texture well, usually a larger file.",
+      "loha": "Hadamard product: often richer than LoRA at the same budget, and more expensive.",
+      "lokr": "Kronecker factorisation, parameter-thrifty; an extreme factor makes it hard to train.",
+      "glora": "GLoRA.",
+      "glokr": "GLoKr.",
+      "ia3": "Learns almost nothing but channel scales -- the smallest file.",
+      "dora": "Direction plus magnitude, usually closer to the base than plain LoRA and slightly slower per step. (Not in this selector: DoRA goes through its own entry, network_module='networks.lora' plus the use_dora switch, not a value of this field.)",
+      "oft": "Changes things under an orthogonality constraint; wrong block or rank settings and it will not learn.",
+      "diag-oft": "The diagonal flavour of OFT, a little lighter.",
+      "full": "Effectively the full-parameter tier: the most capable, the most VRAM-hungry, and the easiest to overfit.",
+      "hydralora": "Multi-expert routing; unstable routing throws the compute away. (Not in this selector: HydraLoRA is driven by its own hydralora_enabled switch, with hydralora_num_experts / hydralora_top_k and friends.)",
+      "lulynx_frozen_a_lora": "LoRA with the A side frozen (LoRA-FA): A stays fixed and untrained, only B trains, so the optimizer state is smaller. The backend normalises this to lora_fa.",
+      "lulynx_progressive_rank_lora": "Progressive-rank LoRA: the effective rank follows a schedule over training progress, and the low-rank early phase is steadier. It runs on the tlora implementation, not the paper T-LoRA's timestep schedule."
+    }
+  },
   "advanced": {
     "principle": "Newbie 适配器类型，会映射到原生 LoRA、LyCORIS 或对应扩展注入器。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Newbie adapter type; maps to native LoRA, LyCORIS, or the corresponding extension injector."
   },
   "relatedConfigs": []
 }

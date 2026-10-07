@@ -1,7 +1,9 @@
 {
   "key": "model_prediction_type",
   "title": "模型预测类型（model_prediction_type）",
+  "title_en": "Model prediction type",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -16,6 +18,20 @@
       "sigma_scaled": "输出再乘/按 σ 缩放，σ 日程一变等效力度也变。"
     }
   },
+  "standard_en": {
+    "summary": "The model prediction type (model_prediction_type): the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "raw": "The network output is used as originally defined, with nothing wrapped around it.",
+      "additive": "Read as an additive residual; mixing it with raw trains the model crooked.",
+      "sigma_scaled": "The output is further multiplied or scaled by sigma, so a change to the sigma schedule changes the effective strength too."
+    }
+  },
   "advanced": {},
-  "relatedConfigs": []
+  "relatedConfigs": [],
+  "aliases": [
+    "anima_model_prediction_type"
+  ]
 }

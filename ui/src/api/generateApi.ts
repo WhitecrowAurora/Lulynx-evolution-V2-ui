@@ -46,7 +46,7 @@ export interface GenerationRequestPayload {
 }
 
 export interface GenerationTask {
-  status?: 'running' | 'completed' | 'failed' | 'cancelled'
+  status?: 'starting' | 'running' | 'stopping' | 'completed' | 'failed' | 'cancelled'
   output_dir?: string
   request_path?: string
   prompt?: string
@@ -57,6 +57,10 @@ export interface GenerationTask {
   exit_code?: number
   images?: number
   error?: string
+}
+
+export function isGenerationTaskActive(task: GenerationTask): boolean {
+  return task.status === 'starting' || task.status === 'running' || task.status === 'stopping'
 }
 
 export interface GenerationLogItem {

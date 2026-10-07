@@ -1,0 +1,17 @@
+{
+  "key": "sample_spectrum_stop_caching_step",
+  "title": "Spectrum 停缓存步",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "Spectrum 停缓存步。",
+    "effect": "该步之后停止缓存探针统计；-1 不停止。",
+    "whenToUse": "控制探针开销时长。",
+    "avoidWhen": "默认全程。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

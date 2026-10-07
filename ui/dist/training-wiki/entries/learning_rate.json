@@ -1,7 +1,9 @@
 {
   "key": "learning_rate",
   "title": "学习率",
+  "title_en": "Learning rate",
   "category": "优化器 / 学习率",
+  "category_en": "Optimizer / Learning Rate",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,6 +14,9 @@
   ],
   "layers": [
     "优化器层"
+  ],
+  "layers_en": [
+    "Optimizer layer"
   ],
   "standard": {
     "summary": "控制每次参数更新的步幅大小。学习率 × 梯度 = 参数变化量。是最重要的超参数之一——设太大会发散，设太小收敛极慢或卡在局部极小值。",
@@ -28,11 +33,33 @@
     "whenToUse": "AdamW + cosine：LoRA 推荐 1e-4 起步，根据 loss 曲线调整。Prodigy/AutoProdigy 设 1.0 不需要手动调。如果 loss 在前 100 步不降，学习率可能太小；如果 loss 剧烈震荡，学习率可能太大。",
     "avoidWhen": "不要同时设 unet_lr=0 和 text_encoder_lr=0（会退化为全局 learning_rate，不是报错但容易困惑）。不要在学习率还没调好之前加大 rank——先确认学习率能让低 rank 收敛，再提高 rank 增加容量。"
   },
+  "standard_en": {
+    "summary": "Sets the size of each parameter update. Learning rate x gradient = the change in the parameter. One of the most important hyperparameters -- too large diverges, too small converges very slowly or sticks in a local minimum.",
+    "effect": "LoRA training commonly uses 1e-4 to 5e-4; a full finetune 1e-6 to 5e-6. A LoRA has far fewer trainable parameters than the base model (usually under 5%), so it needs a larger learning rate to move them. unet_lr and text_encoder_lr set separate rates for the UNet and the text encoder -- the usual practice is the main rate for the UNet and a half to a fifth of it for the TE, or freezing the TE outright.",
+    "whenToUse": "With AdamW plus cosine, start a LoRA at 1e-4 and adjust from the loss curve. Prodigy/AutoProdigy take 1.0 and need no manual tuning. If the loss does not fall in the first 100 steps the rate may be too small; if it swings wildly it may be too large.",
+    "avoidWhen": "Do not set unet_lr=0 and text_encoder_lr=0 together (it degenerates to the global learning_rate -- not an error, but confusing). And do not raise rank before the learning rate is settled: confirm the rate converges at low rank first, then add capacity.",
+    "recommendedValues": {
+      "sdxl_lora_adamw": "1e-4 (the most common starting point)",
+      "sdxl_lora_prodigy": "1.0 (Prodigy estimates its own step size; 1.0 hands over to D-Adaptation)",
+      "sd15_lora_adamw": "5e-5 to 1e-4",
+      "anima_lora_adamw": "5e-5 to 2e-4",
+      "flux_lora_adamw": "1e-4 to 5e-4",
+      "finetune_sdxl": "1e-6 to 5e-6",
+      "text_encoder_lr": "5e-5 (SDXL) or 0 (freeze the TE and train the UNet only)"
+    }
+  },
   "advanced": {
     "principle": "参数更新公式：θ_{t+1} = θ_t - lr * AdamW(grad_t)。LoRA 的可训练参数量 ≈ 2 * rank * (in_dim + out_dim) * n_layers。SDXL LoRA rank=32 约 48M 可训练参数，比 UNet 的 3.5B 参数少约 1.4%，所以需要更大的 lr 来让这 1.4% 的参数产生足够的梯度信号。warmup_ratio（默认 0.05）在训练前 5% 步数线性增加 lr 到目标值，防止初始梯度方向不稳定时大步更新。",
     "intervention": "training_loop.py 中 _build_optimizer() 使用 learning_rate 构造 optimizer；_build_scheduler() 使用 lr_warmup_steps 或 warmup_ratio 控制 warmup 阶段。scheduler 在每步调用 scheduler.step() 修改 optimizer.param_groups[i]['lr']。",
     "expectedImpact": "学习率直接影响收敛速度和最终质量。经验法则：batch_size 翻倍时 lr 可以适度提高（线性缩放规则在 LoRA 中近似成立但不严格）；rank 提高时 lr 可能需要略微降低（更多参数 → 更大的梯度范数）。",
     "tradeoffs": "loss_gated_cosine scheduler 会根据 loss 变化自动暂停 lr 衰减——当 loss 停滞时保持当前 lr 不变，等 loss 继续下降后才恢复衰减。lr_warmup_steps 和 warmup_ratio 二选一，warmup_ratio 更方便因为它按比例计算不需要知道总步数。",
+    "codePath": "training_loop.py:_build_optimizer() + _build_scheduler() → optimizer.param_groups[i]['lr']"
+  },
+  "advanced_en": {
+    "principle": "Parameter update: θ_{t+1} = θ_t - lr * AdamW(grad_t). LoRA's trainable parameter count ≈ 2 * rank * (in_dim + out_dim) * n_layers. SDXL LoRA rank=32 is about 48M trainable parameters, roughly 1.4% of the UNet's 3.5B — hence a larger lr is needed so that 1.4% produces enough gradient signal. warmup_ratio (default 0.05) linearly raises lr to target over the first 5% of steps, preventing large updates while the initial gradient direction is unstable.",
+    "intervention": "training_loop.py's _build_optimizer() constructs the optimizer with learning_rate; _build_scheduler() uses lr_warmup_steps or warmup_ratio to control the warmup stage. The scheduler calls scheduler.step() each step, modifying optimizer.param_groups[i]['lr'].",
+    "expectedImpact": "The learning rate directly affects convergence speed and final quality. Rules of thumb: when batch_size doubles, lr can be raised moderately (linear scaling approximately holds for LoRA but not strictly); when rank rises, lr may need a slight decrease (more parameters → larger gradient norms).",
+    "tradeoffs": "The loss_gated_cosine scheduler auto-pauses lr decay based on loss changes — holding the current lr while loss stalls and resuming decay once loss drops again. lr_warmup_steps and warmup_ratio are alternatives; warmup_ratio is more convenient as it computes by proportion without knowing total steps.",
     "codePath": "training_loop.py:_build_optimizer() + _build_scheduler() → optimizer.param_groups[i]['lr']"
   },
   "relatedConfigs": [

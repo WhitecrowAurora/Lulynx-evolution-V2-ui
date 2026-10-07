@@ -1,0 +1,18 @@
+{
+  "key": "transformer_path",
+  "title": "Transformer 目录",
+  "category": "训练用模型",
+  "appliesTo": [
+    "anima-few-step-lora",
+    "newbie-few-step-lora",
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "单独指定 transformer 目录（可选）",
+    "effect": "写入训练配置 transformer_path，由训练后端在相应阶段消费。",
+    "whenToUse": "路径留空时走默认解析/该功能不启用。",
+    "avoidWhen": "填错路径会在预检或启动时报错，注意路径有效性。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

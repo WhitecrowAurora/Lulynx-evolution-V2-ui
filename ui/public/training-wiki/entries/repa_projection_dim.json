@@ -1,0 +1,24 @@
+{
+  "key": "repa_projection_dim",
+  "title": "REPA 投影维",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "REPA 投影维度。",
+    "effect": "REPA 对齐头的投影输出维；0 = 按编码器默认。",
+    "whenToUse": "对齐 loss 不收敛时调整投影容量。",
+    "avoidWhen": "默认自适应即可。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

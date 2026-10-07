@@ -1,0 +1,16 @@
+{
+  "key": "universal_dit_allow_fused_qkv",
+  "title": "允许 fused QKV 整层注入",
+  "category": "Batch / Objective / Forward 契约",
+  "appliesTo": [
+    "universal-dit-lora"
+  ],
+  "standard": {
+    "summary": "仅当模型确实用单个 Linear 承载融合 QKV 时开启；不会拆分 q/k/v slice adapter。",
+    "effect": "写入训练配置 universal_dit_allow_fused_qkv，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

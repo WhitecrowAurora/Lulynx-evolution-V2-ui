@@ -1,0 +1,17 @@
+{
+  "key": "tiered_residency_spill_allow_vae",
+  "title": "允许 VAE 落盘",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "默认开。",
+    "effect": "VAE 只在编解码时用到，落盘代价低。",
+    "whenToUse": "默认开启，适合大多数场景。",
+    "avoidWhen": "排查问题想回到原始行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

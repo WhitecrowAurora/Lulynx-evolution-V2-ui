@@ -1,0 +1,17 @@
+{
+  "key": "gemma2",
+  "title": "Gemma2 模型路径",
+  "category": "训练用模型",
+  "appliesTo": [
+    "lumina-finetune",
+    "lumina-lora"
+  ],
+  "standard": {
+    "summary": "Gemma2 模型路径。",
+    "effect": "Lumina 路线的 Gemma2 文本编码器路径。",
+    "whenToUse": "Lumina 训练必配。",
+    "avoidWhen": "留空用默认解析。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

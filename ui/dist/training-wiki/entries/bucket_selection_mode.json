@@ -1,7 +1,9 @@
 {
   "key": "bucket_selection_mode",
   "title": "分桶策略（bucket_selection_mode）",
+  "title_en": "Bucketing strategy",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -22,11 +24,36 @@
       "no_upscale": "与 smaller 等价（后端同一分支）。"
     }
   },
+  "standard_en": {
+    "summary": "Decides which bucket each image lands in. The ten values are really four groups: aspect matches aspect ratio (the default), area/pixel/pixels match area, larger/ceil/no_downscale never shrink, and smaller/floor/no_upscale never enlarge.",
+    "effect": "It only affects how an image is matched to a bucket, never the bucket table itself. When a custom bucket list (bucket_custom_resos) is filled in, that list defines the table and this field still decides how images are sorted into it.",
+    "whenToUse": "Use aspect when composition matters; try area when sizes are mixed but you want to keep the amount of detail; use the smaller family when training images must never be enlarged (to avoid blur), and the larger family when they must never be shrunk (to avoid losing detail).",
+    "avoidWhen": "The larger family filters everything out when the material is generally bigger than every bucket, and the smaller family does the same when it is generally smaller; in that case matching falls back to the default bucket. Prefer aspect when sizes vary a great deal.",
+    "optionDescriptions": {
+      "aspect": "The default. Picks the bucket whose aspect ratio is closest to the original, which disturbs composition least.",
+      "area": "Picks the bucket whose total pixel count is closest to the original, favouring the amount of detail over the aspect ratio.",
+      "pixel": "Equivalent to area (the same backend branch).",
+      "pixels": "Equivalent to area (the same backend branch).",
+      "larger": "Considers only buckets at least as wide and tall as the original, then takes the smallest of those -- never shrinks, at the cost of possible padding.",
+      "ceil": "Equivalent to larger (the same backend branch).",
+      "no_downscale": "Equivalent to larger (the same backend branch).",
+      "smaller": "Considers only buckets no wider or taller than the original, then takes the largest of those -- never enlarges, at the cost of a little resolution.",
+      "floor": "Equivalent to smaller (the same backend branch).",
+      "no_upscale": "Equivalent to smaller (the same backend branch)."
+    }
+  },
   "advanced": {
     "principle": "后端 dataset_bucketing.py:111-129 对每个候选桶算一个 diff 再取最小：area/pixel/pixels 用 |原图面积 - 桶面积|；larger/ceil/no_downscale 先跳过任一维小于原图的桶、再用 桶面积 - 原图面积；smaller/floor/no_upscale 先跳过任一维大于原图的桶、再用 原图面积 - 桶面积；其余（含 aspect）用 |原图宽高比 - 桶宽高比|。",
     "intervention": "改本字段不需要重建缓存桶表，但会改变已有图片落到哪个桶，等价于换了一次数据分布。",
     "expectedImpact": "对 loss 曲线通常是二阶影响；对「训练图有没有被拉伸/留边」是一阶影响。",
     "tradeoffs": "aspect 保构图但可能改变有效分辨率；area 保细节量但可能轻微拉伸；larger/smaller 各自单边牺牲。",
+    "codePath": "backend/core/lulynx_trainer/dataset_bucketing.py:111-129"
+  },
+  "advanced_en": {
+    "principle": "The backend (dataset_bucketing.py:111-129) computes one diff per candidate bucket and takes the minimum: area/pixel/pixels use |image area - bucket area|; larger/ceil/no_downscale first skip any bucket with a dimension smaller than the image, then use bucket area - image area; smaller/floor/no_upscale first skip any bucket with a dimension larger than the image, then use image area - bucket area; the rest (including aspect) use |image aspect ratio - bucket aspect ratio|.",
+    "intervention": "Changing this field does not require rebuilding the cached bucket table, but it changes which bucket existing images fall into — equivalent to swapping the data distribution once.",
+    "expectedImpact": "Usually a second-order effect on the loss curve; a first-order effect on whether training images get stretched or letterboxed.",
+    "tradeoffs": "aspect preserves composition but can change effective resolution; area preserves detail volume but can stretch slightly; larger/smaller each sacrifice one side.",
     "codePath": "backend/core/lulynx_trainer/dataset_bucketing.py:111-129"
   },
   "relatedConfigs": [

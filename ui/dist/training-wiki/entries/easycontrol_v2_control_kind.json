@@ -1,7 +1,9 @@
 {
   "key": "easycontrol_v2_control_kind",
   "title": "控制类型",
+  "title_en": "Easycontrol V2 Control Kind",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "reference_latent": "用参考 latent 当条件。",
       "control_image": "用控制图（线稿/深度之类）。"
+    }
+  },
+  "standard_en": {
+    "summary": "Control kind; the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "reference_latent": "Uses a reference latent as the condition.",
+      "control_image": "Uses a control image (line art, depth and the like)."
     }
   },
   "advanced": {},

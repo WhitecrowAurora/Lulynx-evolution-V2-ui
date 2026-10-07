@@ -1,0 +1,16 @@
+{
+  "key": "universal_dit_forward_mapping_json",
+  "title": "Forward 参数映射 JSON",
+  "category": "Batch / Objective / Forward 契约",
+  "appliesTo": [
+    "universal-dit-lora"
+  ],
+  "standard": {
+    "summary": "仅在 cache tensor 与 forward 参数无法唯一匹配时填写。",
+    "effect": "映射冲突或 required 参数无来源会在训练前失败。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

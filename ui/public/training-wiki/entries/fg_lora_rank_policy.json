@@ -1,7 +1,9 @@
 {
   "key": "fg_lora_rank_policy",
   "title": "Fine-Grained LoRA Rank 策略",
+  "title_en": "Rank allocation Strategy",
   "category": "LoRA 变体 / Fine-Grained",
+  "category_en": "LoRA Variants / Fine-Grained",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -22,9 +24,25 @@
       "fim_profile": "按 FIM/重要性表分 rank。"
     }
   },
+  "standard_en": {
+    "summary": "Fine-grained LoRA rank policy: gives different layers different ranks instead of one rank everywhere, raising learning efficiency at the same parameter budget.",
+    "effect": "coupled-prune allocates rank by pruning on layer importance (high rank for important layers, low for secondary ones); orthogonal-redistribute redistributes orthogonally, keeping the total parameter count while optimising the per-layer rank distribution.",
+    "whenToUse": "An experimental feature. Worth trying when you want the most learning out of a fixed parameter budget.",
+    "avoidWhen": "Keep the default (one uniform rank) when you do not know the relative importance of the layers -- it carries less uncertainty.",
+    "optionDescriptions": {
+      "uniform": "One rank for every layer.",
+      "coupled_prune": "Cuts or lowers weak layers and adds rank to strong ones.",
+      "orthogonal_redistribute": "Keeps every layer and only redistributes rank.",
+      "fim_profile": "Allocates rank from the FIM / importance table."
+    }
+  },
   "advanced": {
     "principle": "通过分析各层梯度 stable rank 或权重奇异值分布，动态调整各层的 LoRA rank 分配。fg_lora_rank_map_json 允许手动指定每层的 rank，提供最大灵活性。",
     "tradeoffs": "非均匀 rank 分配使 LoRA 结构更复杂，与某些推理框架（如 A1111）的标准 LoRA 加载可能不完全兼容。"
+  },
+  "advanced_en": {
+    "principle": "Dynamically adjusts per-layer LoRA rank allocation by analyzing each layer's gradient stable rank or weight singular-value distribution. fg_lora_rank_map_json allows manually specifying per-layer rank for maximum flexibility.",
+    "tradeoffs": "Non-uniform rank allocation makes the LoRA structure more complex and may not fully load as a standard LoRA in some inference frameworks (e.g. A1111)."
   },
   "relatedConfigs": [
     "network_dim",

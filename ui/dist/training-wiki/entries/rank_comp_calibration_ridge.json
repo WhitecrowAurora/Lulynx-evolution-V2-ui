@@ -1,0 +1,17 @@
+{
+  "key": "rank_comp_calibration_ridge",
+  "title": "校准 ridge",
+  "category": "精度 / 量化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "相对平均能量的正则项，避免零方差通道把逆打成 inf",
+    "effect": "写入训练配置 rank_comp_calibration_ridge，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0.001，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

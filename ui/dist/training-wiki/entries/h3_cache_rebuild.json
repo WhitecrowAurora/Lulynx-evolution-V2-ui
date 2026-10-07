@@ -1,0 +1,17 @@
+{
+  "key": "h3_cache_rebuild",
+  "title": "重建已有 Cache",
+  "category": "H3 音视频数据",
+  "appliesTo": [
+    "minimax-h3-finetune",
+    "minimax-h3-lora"
+  ],
+  "standard": {
+    "summary": "H3 重建已有 Cache。",
+    "effect": "忽略旧缓存重算。",
+    "whenToUse": "素材或配置变更后使用。",
+    "avoidWhen": "代价是全量重算。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

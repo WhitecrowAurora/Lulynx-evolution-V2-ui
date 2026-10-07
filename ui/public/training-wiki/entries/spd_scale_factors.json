@@ -1,0 +1,17 @@
+{
+  "key": "spd_scale_factors",
+  "title": "SPD 分辨率层级",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "逗号分隔缩放比例，例如 0.5,1.0。",
+    "effect": "写入训练配置 spd_scale_factors，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0.5,1.0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

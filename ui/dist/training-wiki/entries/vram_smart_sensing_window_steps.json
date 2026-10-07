@@ -1,0 +1,20 @@
+{
+  "key": "vram_smart_sensing_window_steps",
+  "title": "智能感知窗口步数",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-controlnet",
+    "anima-edit-model",
+    "anima-lora",
+    "flux-finetune",
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "智能感知窗口步数。",
+    "effect": "VRAM 智能感知用最近 N 步的显存曲线决定交换/缓存策略。",
+    "whenToUse": "低显存路线一般保持默认。",
+    "avoidWhen": "显存波动剧烈时可加大窗口平滑决策。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

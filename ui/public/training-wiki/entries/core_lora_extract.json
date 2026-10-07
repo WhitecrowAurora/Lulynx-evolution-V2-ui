@@ -1,7 +1,9 @@
 {
   "key": "core_lora_extract",
   "title": "目标 Rank",
+  "title_en": "Target Rank",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Extracts a LoRA from the difference between a base model and a finetuned one.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "从底模和微调模型的差分中提取 LoRA。大模型会比较慢，建议先小 rank 测试。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Extracts a LoRA from the difference between the base model and a fine-tuned model. Large models are slow; start with a small rank to test.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

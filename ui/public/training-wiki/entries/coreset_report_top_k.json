@@ -1,0 +1,24 @@
+{
+  "key": "coreset_report_top_k",
+  "title": "Coreset 报告 top-k",
+  "category": "采样与优化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "Coreset 难例治理的 Coreset 报告 top-k，默认 20。",
+    "effect": "Coreset 机制按 loss/梯度统计把样本分为 easy/hard/toxic 桶并输出治理报告，Coreset 报告 top-k 控制分桶或报告行为。",
+    "whenToUse": "数据集质量参差、怀疑有毒样本拖累训练时开启并调整阈值。",
+    "avoidWhen": "小而干净的数据集通常不需要，保持默认权重 0 即可。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

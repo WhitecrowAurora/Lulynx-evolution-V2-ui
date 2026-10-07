@@ -1,0 +1,16 @@
+{
+  "key": "krea2_text_fusion_mode",
+  "title": "文本融合模式",
+  "category": "训练用模型",
+  "appliesTo": [
+    "krea2-lora"
+  ],
+  "standard": {
+    "summary": "决定缓存与 DiT 装载：fusion_frozen 缓存 txtfusion 后输出（默认，塔不参训）；fusion_trainable 缓存 12 层原始 stack 并装回 343M txtfusion 塔参训。",
+    "effect": "两种模式的缓存互不兼容，切换需重建缓存",
+    "whenToUse": "默认 fusion_frozen，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

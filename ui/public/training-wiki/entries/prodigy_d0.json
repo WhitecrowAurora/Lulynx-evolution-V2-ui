@@ -1,7 +1,9 @@
 {
   "key": "prodigy_d0",
   "title": "Prodigy 初始步长估计",
+  "title_en": "Prodigy d0",
   "category": "训练 / 优化器",
+  "category_en": "Training / Optimizer",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -12,9 +14,19 @@
     "whenToUse": "通常留空（自动估计）。若训练初期 loss 特别不稳定，可尝试设置小初始值（如 1e-6）。",
     "avoidWhen": "不了解 Prodigy 步长机制时保持默认（留空）。"
   },
+  "standard_en": {
+    "summary": "The initial step-size estimate d0 for the Prodigy / ProdigyPlus optimizers. Leave it blank to use the optimizer's default (automatic estimation).",
+    "effect": "A larger d0 makes Prodigy more aggressive at the start; a smaller one has it build its estimate from a more conservative step size.",
+    "whenToUse": "Usually leave it blank (automatic estimation). If the loss is particularly unstable early on, try a small initial value such as 1e-6.",
+    "avoidWhen": "Keep the default (blank) if you do not know how Prodigy's step-size mechanism works."
+  },
   "advanced": {
     "principle": "Prodigy 通过在线估计梯度与权重的内积关系，自动推断有效步长。d₀ 是初始估计的起点，影响估计的收敛速度。",
     "tradeoffs": "d₀ 设置不当可能导致前几步步长过大/过小，从而影响 TE 和 UNet 权重的初始更新。"
+  },
+  "advanced_en": {
+    "principle": "Prodigy automatically infers the effective step size by estimating the inner-product relationship between gradients and weights online. d₀ is the starting point of the initial estimate and affects how fast the estimate converges.",
+    "tradeoffs": "A poorly set d₀ can make the first few steps too large or too small, affecting the initial updates of the TE and UNet weights."
   },
   "relatedConfigs": [
     "optimizer_type",

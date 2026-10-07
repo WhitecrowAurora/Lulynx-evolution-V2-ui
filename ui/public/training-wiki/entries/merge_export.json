@@ -1,7 +1,9 @@
 {
   "key": "merge_export",
   "title": "合并导出 (Merged Checkpoint)",
+  "title_en": "Merge Export",
   "category": "保存 / 导出",
+  "category_en": "Saving / Export",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,17 +13,33 @@
   "layers": [
     "保存层"
   ],
+  "layers_en": [
+    "Saving layer"
+  ],
   "standard": {
     "summary": "训练结束后自动将 LoRA 权重合并到底模中，导出完整的合并模型而非单独的 LoRA 文件。",
     "effect": "merge_export=True 启用合并导出。anima_merge_export 对 Anima 模型有特殊处理。导出的模型是完整的底模 + LoRA 合并结果。",
     "whenToUse": "需要部署独立模型（不依赖推理端支持 LoRA）时。推理端只支持完整模型时。",
     "avoidWhen": "文件会非常大（数 GB 到数十 GB）。失去 LoRA 的灵活性（无法快速切换不同适配器）。"
   },
+  "standard_en": {
+    "summary": "Merges the LoRA weights into the base model automatically when training ends, exporting a complete merged model rather than a standalone LoRA file.",
+    "effect": "merge_export=True enables merged export. anima_merge_export handles Anima models specially. The exported model is the complete base plus the merged LoRA.",
+    "whenToUse": "When you need to deploy a standalone model (with no dependency on the inference side supporting LoRA). When the inference side only supports complete models.",
+    "avoidWhen": "The file will be very large (several GB to tens of GB). You lose LoRA's flexibility (no quick switching between adapters)."
+  },
   "advanced": {
     "principle": "合并公式：W_merged = W_base + scale × (A·B)，其中 A 和 B 是 LoRA 的 down/up 矩阵，scale = alpha/dim。合并后模型推理时不需要额外的 LoRA 加载步骤。anima_merge_export 对 Anima DiT 有特殊处理（可能涉及 Qwen3 LLM adapter 的合并）。prefuse_adapter_path 允许在训练前先将已有 LoRA 合并到底模中。",
     "intervention": "训练结束后遍历所有 LoRA 权重，计算 delta 并加到底模对应权重上。",
     "expectedImpact": "导出完整模型。文件增大到完整底模大小。",
     "tradeoffs": "base_weight 和 base_weights_multiplier 支持多 LoRA 加权合并。",
+    "codePath": "trainer.py:merge_export → LoRA delta computation → weight addition → full model save"
+  },
+  "advanced_en": {
+    "principle": "Merge formula: W_merged = W_base + scale × (A·B), where A and B are the LoRA's down/up matrices and scale = alpha/dim. The merged model needs no extra LoRA loading step at inference. anima_merge_export has special handling for Anima DiT (possibly involving Qwen3 LLM adapter merging). prefuse_adapter_path lets an existing LoRA be merged into the base model before training.",
+    "intervention": "After training, traverses all LoRA weights, computes deltas, and adds them to the base model's corresponding weights.",
+    "expectedImpact": "Exports a full model. File grows to full base-model size.",
+    "tradeoffs": "base_weight and base_weights_multiplier support weighted multi-LoRA merging.",
     "codePath": "trainer.py:merge_export → LoRA delta computation → weight addition → full model save"
   },
   "relatedConfigs": [

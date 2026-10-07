@@ -1,0 +1,17 @@
+{
+  "key": "krea2_block_offload_prefetch_depth",
+  "title": "Block Offload 预取深度",
+  "category": "Krea2 Block/Layer Offload",
+  "appliesTo": [
+    "krea2-finetune",
+    "krea2-lora"
+  ],
+  "standard": {
+    "summary": "Krea2 Block Offload 预取深度。",
+    "effect": "提前换入后续 block 的数量，隐藏换入延迟。",
+    "whenToUse": "换入成为瓶颈时加大（多耗显存）。",
+    "avoidWhen": "默认 2。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

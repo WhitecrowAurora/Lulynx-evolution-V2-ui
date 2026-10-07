@@ -1,7 +1,9 @@
 {
   "key": "lulynx_gradient_norm_rescale_enabled",
   "title": "lulynx 梯度范数重缩放（工程启发式）",
+  "title_en": "lulynx Gradient Norm Rescaling",
   "category": "优化器 / 进阶",
+  "category_en": "Optimizer / Advanced",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -14,11 +16,20 @@
   "layers": [
     "优化器层"
   ],
+  "layers_en": [
+    "Optimizer layer"
+  ],
   "standard": {
     "summary": "在优化器 step 前把每个可训练参数的梯度按 grad/(||param||₂+eps) 重缩放（arXiv:2410.09692），让参数范数小的方向获得相对更大的更新。",
     "effect": "开启后优化器被包上一层梯度重缩放包装器；关闭（默认）时训练与基础优化器逐位一致。范数低于 allora_norm_threshold 的参数（如零初始化的 LoRA B 矩阵）跳过缩放，避免除小数爆炸。",
     "whenToUse": "LoRA 训练中觉得不同层收敛速度差异大、想要免调参的逐参数自适应步长时；与任意优化器后端可组合。",
     "avoidWhen": "追求与既有配方位级复现时；已用 Prodigy/D-Adaptation 等强自适应优化器时叠加收益不明、行为更难解释。"
+  },
+  "standard_en": {
+    "summary": "Rescales each trainable parameter's gradient as grad/(||param||_2+eps) before the optimizer step (arXiv:2410.09692), so directions with a small parameter norm receive a relatively larger update.",
+    "effect": "With this on the optimizer is wrapped in a gradient-rescaling wrapper; with it off (the default) training is bit-for-bit identical to the base optimizer. Parameters whose norm is below allora_norm_threshold (a zero-initialised LoRA B matrix, for example) skip the rescale, which avoids blowing up on a division by a tiny number.",
+    "whenToUse": "In LoRA training when you feel different layers converge at very different speeds and want a tuning-free per-parameter adaptive step size; it composes with any optimizer backend.",
+    "avoidWhen": "When you need bit-level reproduction of an existing recipe; and when you already use a strongly adaptive optimizer such as Prodigy or D-Adaptation, where the added benefit is unclear and the behaviour is harder to explain."
   },
   "advanced": {
     "principle": "当前实现对所有 optimizer-owned 参数应用梯度范数重缩放，不移除 LoRA dropout/scaling，也不保证论文 ALLoRA 的 LoRA-only、per-sample 完整语义。",
@@ -27,11 +38,17 @@
     "tradeoffs": "改变了梯度的数值语义，与依赖原始梯度范数的功能（梯度裁剪阈值、梯度监控指标）解释性变差；runtime profile 会记录 wired/default_off 契约便于审计。",
     "codePath": "trainer_optimizer_factory.py:_maybe_wrap_allora；allora_optimizer_wrapper.py（use_allora 主开关、allora_eps、allora_norm_threshold）"
   },
+  "advanced_en": {
+    "principle": "The current implementation applies gradient-norm rescaling to all optimizer-owned parameters; it does not remove LoRA dropout/scaling and does not guarantee the paper ALLoRA's LoRA-only, per-sample full semantics.",
+    "intervention": "trainer_optimizer_factory.py:_maybe_wrap_allora wraps after optimizer construction; the wrapper rewrites param.grad in place before optimizer.step. When combined with the gradient_release mode, the flux_trainer_optimization_mixin branch handles it.",
+    "expectedImpact": "More balanced per-layer convergence and faster progress on under-trained layers; overall quality gain depends on data and rank configuration.",
+    "tradeoffs": "Changes the numerical semantics of gradients, making features that rely on raw gradient norms (clip thresholds, gradient-monitoring metrics) harder to interpret; the runtime profile records the wired/default_off contract for auditability.",
+    "codePath": "trainer_optimizer_factory.py:_maybe_wrap_allora; allora_optimizer_wrapper.py (use_allora master switch, allora_eps, allora_norm_threshold)"
+  },
   "relatedConfigs": [
     "allora_eps",
     "allora_norm_threshold",
     "optimizer_type",
     "lora_plus_enabled"
-  ],
-  "summary": "在 optimizer step 前按 1/(||param||₂+eps) 重缩放 optimizer-owned 参数梯度；这是 lulynx 工程启发式，不是完整论文 ALLoRA。"
+  ]
 }

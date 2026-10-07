@@ -1,0 +1,41 @@
+{
+  "key": "adaptive_sample_mining_report_limit",
+  "title": "建议列表上限",
+  "category": "渐进式 / 分阶段训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "hunyuan-dit-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "lumina-finetune",
+    "lumina-lora",
+    "newbie-lora",
+    "qwen-image-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "挖掘报告条数上限。",
+    "effect": "困难样本建议列表最多展示的条数。",
+    "whenToUse": "按需调整展示量。",
+    "avoidWhen": "仅影响报告展示，不影响训练。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

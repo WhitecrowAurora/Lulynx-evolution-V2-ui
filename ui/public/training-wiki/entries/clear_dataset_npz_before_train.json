@@ -1,7 +1,9 @@
 {
   "key": "clear_dataset_npz_before_train",
   "title": "训练前清除缓存",
+  "title_en": "Training Cache",
   "category": "数据集 / 缓存",
+  "category_en": "Dataset / Cache",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -15,9 +17,19 @@
     "whenToUse": "修改了训练数据集图像内容后开启 clear；数据加载速度慢时尝试 persistent_workers=True 和 image_decode_cache。",
     "avoidWhen": "数据集未修改时不要开启 clear（浪费重新生成时间）；persistent_workers 在显存有限时可能额外占用 CPU 内存。"
   },
+  "standard_en": {
+    "summary": "clear_dataset_npz_before_train deletes the old .npz cache files before training starts, forcing them to be regenerated -- for use after the dataset images change.",
+    "effect": "Stops the trainer using a stale cache after the dataset changes (the old cache no longer matches the new images). persistent_data_loader_workers keeps DataLoader worker processes alive between epochs, avoiding repeated start-up cost. image_decode_backend selects the image decoding library (PIL/cv2/libjpeg-turbo).",
+    "whenToUse": "Turn clear on after changing the training images; when data loading is slow, try persistent_workers=True together with image_decode_cache.",
+    "avoidWhen": "Do not turn clear on when the dataset is unchanged (it wastes time regenerating), and note that persistent_workers can hold extra CPU memory when RAM is limited."
+  },
   "advanced": {
     "principle": ".npz 缓存以图像文件名 + 分辨率为键（不包含图像内容 hash），所以图像内容更改但文件名不变时，缓存不会自动失效。clear_before_train 是手动失效机制。bucket_selection_mode 控制 Bucket 分桶算法（按总像素/按短边/按长边等不同策略）。",
     "tradeoffs": "persistent_data_loader_workers=True 会让 worker 进程长期存活（占用约 200MB~1GB 额外内存），但消除了每 epoch 重启 worker 的开销（约 2~10 秒）。"
+  },
+  "advanced_en": {
+    "principle": "The .npz cache is keyed by image filename + resolution (no content hash), so changing image contents without renaming does not invalidate the cache. clear_before_train is the manual invalidation mechanism. bucket_selection_mode controls the bucketing algorithm (by total pixels / short edge / long edge, etc.).",
+    "tradeoffs": "persistent_data_loader_workers=True keeps worker processes alive long-term (about 200MB~1GB extra memory) but removes the per-epoch worker restart cost (about 2~10 seconds)."
   },
   "relatedConfigs": [
     "cache_latents",

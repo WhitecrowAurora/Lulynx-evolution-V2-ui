@@ -1,7 +1,9 @@
 {
   "key": "block_swap_strategy",
   "title": "BlockSwap 搬运策略",
+  "title_en": "Block swap strategy",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "auto": "后端怎么解析就怎么搬。",
       "sync": "同步搬，慢一点，好查。",
       "async": "异步预取，想盖住 PCIe 等待。"
+    }
+  },
+  "standard_en": {
+    "summary": "The values available for the BlockSwap transfer strategy (auto-generated skeleton, still open to polish).",
+    "effect": "Switching between the enum values changes training behaviour or resource use; see the individual entries.",
+    "whenToUse": "Choose by task and hardware; when unsure use the product default.",
+    "avoidWhen": "Do not pick an experimental or aggressive gear blindly before you understand what the entries mean.",
+    "optionDescriptions": {
+      "auto": "Transfers however the backend resolves it.",
+      "sync": "Synchronous transfer: a little slower, easier to inspect.",
+      "async": "Asynchronous prefetch, meant to hide the PCIe wait."
     }
   },
   "advanced": {},

@@ -1,7 +1,9 @@
 {
   "key": "train_data_dir",
   "title": "训练数据目录",
+  "title_en": "Training data directory",
   "category": "数据集 / 基础",
+  "category_en": "Dataset / Basics",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -17,9 +19,19 @@
     "whenToUse": "每次训练必须设置。建议为每次训练实验使用独立的数据目录。",
     "avoidWhen": "数据目录中混入非训练文件（如 .DS_Store、Thumbs.db）可能被误识别，建议清理干净。"
   },
+  "standard_en": {
+    "summary": "The directory path of the training image dataset. The image files (.png/.jpg and so on) in that directory together with their caption files (.txt/.caption) make up the training dataset.",
+    "effect": "Absolute and relative paths both work. Subdirectories are allowed (they need caption files). data_transfer_profile records data-loading timing statistics, for diagnosing an I/O bottleneck.",
+    "whenToUse": "It has to be set for every training run. Using a separate data directory per experiment is advisable.",
+    "avoidWhen": "Non-training files mixed into the data directory (.DS_Store, Thumbs.db) may be misidentified, so cleaning it out is advisable."
+  },
   "advanced": {
     "principle": "训练器遍历数据目录，寻找支持格式的图像（png/jpg/webp）及同名图说文件（caption_extension 设定的扩展名）。子目录支持需要图说文件或子目录名被识别为概念名。data_backend 选择图像读取后端（pillow / opencv），影响读取速度和格式支持。",
     "tradeoffs": "数据在 NVMe 上训练速度最快（I/O 延迟低）；HDD 上大数据集可能成为 I/O 瓶颈（配合缓存可改善）。"
+  },
+  "advanced_en": {
+    "principle": "The trainer walks the data directory looking for images in supported formats (png/jpg/webp) plus same-named caption files (with the extension set by caption_extension). Subdirectory support requires caption files, or the subdirectory name being recognized as a concept name. data_backend selects the image reading backend (pillow / opencv), affecting read speed and format support.",
+    "tradeoffs": "Training on NVMe data is fastest (low I/O latency); on HDD, large datasets can become the I/O bottleneck (mitigated with caching)."
   },
   "relatedConfigs": [
     "caption_extension",

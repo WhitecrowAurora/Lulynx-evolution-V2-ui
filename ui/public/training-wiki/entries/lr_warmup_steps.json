@@ -1,7 +1,9 @@
 {
   "key": "lr_warmup_steps",
   "title": "学习率预热步数",
+  "title_en": "Warmup steps",
   "category": "训练 / 学习率",
+  "category_en": "Training / Learning Rate",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -9,17 +11,28 @@
     "newbie-lora"
   ],
   "standard": {
-    "summary": "训练开始时学习率从 0 线性增长到目标值的步数，防止训练初期大梯度破坏预训练权重。",
-    "effect": "前 N 步 LR 线性爬升，N 步后达到设定的 learning_rate 并进入正式调度阶段。",
+    "summary": "支持预热的调度器在训练开始时，用这些步数将学习率从较低值线性增长到目标值，降低初期更新过大的风险。",
+    "effect": "正数优先于 warmup_ratio，实际预热步数不超过总步数减 1；设为 0 时回退到 warmup_ratio。预热后进入所选调度器的后续阶段，起始学习率由调度器决定。",
     "whenToUse": "推荐总步数的 5%~10% 作为预热。总步数 500 时，warmup=25~50。使用高学习率（>5e-4）时更需要预热。",
-    "avoidWhen": "极短训练（<50步）或已使用自适应优化器（Prodigy 自带预热机制）时可设为 0。"
+    "avoidWhen": "极短训练可缩短或关闭预热；关闭时需同时将 lr_warmup_steps 和 warmup_ratio 设为 0。不支持预热的调度器不会使用此参数。"
+  },
+  "standard_en": {
+    "summary": "For schedulers that support warmup, the number of initial steps used to raise the learning rate linearly from a lower value to the target, reducing the risk of overly large early updates.",
+    "effect": "A positive value takes precedence over warmup_ratio and is capped at total steps minus 1. A value of 0 falls back to warmup_ratio. After warmup, the selected schedule continues; the starting learning rate depends on the scheduler.",
+    "whenToUse": "5%~10% of the total steps is the recommended warmup. With 500 total steps that is warmup=25~50. A high learning rate (>5e-4) needs warmup more.",
+    "avoidWhen": "Short runs may need less or no warmup. To disable it, set both lr_warmup_steps and warmup_ratio to 0. Schedulers without warmup support do not use this parameter."
   },
   "advanced": {
-    "principle": "预热期 lr_t = lr_target × (t / warmup_steps)，防止初始 momentum 为 0 时大梯度更新损坏预训练特征。",
+    "principle": "线性预热期 lr_t = lr_start + (lr_target - lr_start) × t / warmup_steps。cosine 默认从目标学习率的 1% 开始，预热结束后衰减到最低学习率；续训沿用 checkpoint 保存的调度进度，不重新预热。",
     "tradeoffs": "预热过短 → 初期大幅度更新可能影响基础能力；预热过长 → 占用太多有效训练步数。"
+  },
+  "advanced_en": {
+    "principle": "Linear warmup: lr_t = lr_start + (lr_target - lr_start) × t / warmup_steps. cosine starts at 1% of the target LR by default and decays to the minimum after warmup; resume follows the scheduler progress saved in the checkpoint without re-warming.",
+    "tradeoffs": "Too short a warmup → large early updates may hurt base capability; too long → wastes effective training steps."
   },
   "relatedConfigs": [
     "learning_rate",
+    "warmup_ratio",
     "lr_scheduler",
     "lr_scheduler_num_cycles"
   ]

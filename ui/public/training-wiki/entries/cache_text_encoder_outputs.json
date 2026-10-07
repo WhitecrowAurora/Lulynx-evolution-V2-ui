@@ -1,7 +1,9 @@
 {
   "key": "cache_text_encoder_outputs",
   "title": "缓存文本编码器输出",
+  "title_en": "Enable output Cache",
   "category": "缓存 / Caption",
+  "category_en": "Cache / Caption",
   "appliesTo": [
     "sdxl-lora",
     "anima-lora",
@@ -12,17 +14,33 @@
     "文本编码层",
     "数据缓存层"
   ],
+  "layers_en": [
+    "Text encoding layer",
+    "Data cache layer"
+  ],
   "standard": {
     "summary": "把 caption 经过文本编码器后的结果提前缓存，训练时直接读取。",
     "effect": "减少文本编码器计算和显存占用，适合 caption 固定的训练。",
     "whenToUse": "不训练文本编码器、caption 不需要每步随机变化时建议开启。",
     "avoidWhen": "开启 shuffle caption、caption dropout、Tag/NL 混合采样或训练文本编码器时要谨慎，通常需要关闭或重建多变体缓存。"
   },
+  "standard_en": {
+    "summary": "Caches the text-encoder output for each caption ahead of time, so training reads it directly.",
+    "effect": "Cuts text-encoder computation and VRAM, which suits runs where the captions are fixed.",
+    "whenToUse": "Recommended when you are not training the text encoder and the captions do not need to vary from step to step.",
+    "avoidWhen": "Be careful with shuffle caption, caption dropout, mixed Tag/NL sampling, or text-encoder training -- those usually mean turning it off or building a multi-variant cache."
+  },
   "advanced": {
     "principle": "文本编码器输出是条件输入的一部分。缓存它可以把 TE forward 从训练主循环移出。",
     "intervention": "介入 caption 编码与读取层；对 cache-first 路线，caption 变体需要在缓存生成时固定。",
     "expectedImpact": "降低 TE 显存与耗时，尤其是 SDXL 双文本编码器和 DiT 文本模型较重时。",
     "tradeoffs": "会限制训练时动态 caption 策略；改 caption、触发词、dropout 或混合比例后应重建缓存。"
+  },
+  "advanced_en": {
+    "principle": "Text-encoder output is part of the conditioning input. Caching it moves the TE forward out of the main training loop.",
+    "intervention": "Intervenes at caption encoding and the read layer; on cache-first routes, caption variants must be fixed at cache-generation time.",
+    "expectedImpact": "Cuts TE VRAM and time, especially with SDXL's dual text encoders or heavy DiT text models.",
+    "tradeoffs": "Restricts dynamic caption strategies during training; rebuild the cache after changing captions, trigger words, dropout, or mix ratios."
   },
   "relatedConfigs": [
     "caption_source_mix_enabled",

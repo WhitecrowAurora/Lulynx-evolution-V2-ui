@@ -1,7 +1,9 @@
 {
   "key": "low_vram_autotune_mode",
   "title": "Triton 低显存调优模式",
+  "title_en": "Triton VRAMmode",
   "category": "性能 / 内核",
+  "category_en": "Performance / Kernels",
   "appliesTo": [
     "anima-lora",
     "newbie-lora",
@@ -13,6 +15,9 @@
   "layers": [
     "性能层"
   ],
+  "layers_en": [
+    "Performance layer"
+  ],
   "standard": {
     "summary": "给低显存卡一个显式的 Triton 保守模式，避免首步在线 autotune 把临时池顶爆。",
     "effect": "off 保持现有 Triton 行为。conservative 会让支持的 fused LoRA / QKV / FFN 内核绕开在线 autotune，改用单一保守 launch config。",
@@ -23,11 +28,28 @@
       "conservative": "autotune 偏保守，优先别 OOM。"
     }
   },
+  "standard_en": {
+    "summary": "Gives low-VRAM cards an explicit conservative Triton mode, so online autotune on the first step cannot blow out the temporary pool.",
+    "effect": "off keeps the existing Triton behaviour. conservative makes the supported fused LoRA / QKV / FFN kernels skip online autotune and use a single conservative launch config instead.",
+    "whenToUse": "On 8GB or tighter cards, enabled by hand once you have confirmed the Triton fused path is on but the first step tends to OOM.",
+    "avoidWhen": "When VRAM is plentiful and you want the highest throughput. conservative is mainly there to save the peak; it does not promise to be the fastest.",
+    "optionDescriptions": {
+      "off": "The low-VRAM autotune special mode is off.",
+      "conservative": "Autotune leans conservative, avoiding OOM before anything else."
+    }
+  },
   "advanced": {
     "principle": "Triton 在线 autotune 会在首个真实 shape 上尝试多组 kernel config，常见现象是第一步 temporary pool / reserved memory 突然抬高。该开关不会自动替用户判断显存，而是提供一个显式 opt-in：conservative 时直接跳过在线 autotune，使用预选的低峰值单配置。",
     "intervention": "训练器在 Triton 注入阶段读取 low_vram_autotune_mode；conservative 会透传到 fused kernel 调用路径，切换到单配置 launch。",
     "expectedImpact": "降低首步显存峰值和 temporary pool 暴涨概率，特别适合 8GB 卡。代价是部分 shape 下吞吐可能低于 autotune 最优配置。",
     "tradeoffs": "它只影响接入了该策略的 Triton fused 路线；如果本次训练没开 Triton，或瓶颈不在 autotune 峰值，这个开关不会带来收益。",
+    "codePath": "core/triton_ops/autotune_policy.py -> triton_inject.py -> fused LoRA/QKV/FFN kernels"
+  },
+  "advanced_en": {
+    "principle": "Triton's online autotune tries multiple kernel configs on the first real shape; the common symptom is the first step's temporary pool / reserved memory suddenly jumping. This switch does not auto-judge VRAM for the user — it provides an explicit opt-in: conservative skips online autotune entirely, using a pre-picked low-peak single config.",
+    "intervention": "The trainer reads low_vram_autotune_mode at the Triton injection stage; conservative passes through to the fused-kernel call path, switching to single-config launch.",
+    "expectedImpact": "Lowers first-step VRAM peak and the chance of a temporary-pool explosion — especially good for 8GB cards. The cost is throughput possibly below autotune's optimum on some shapes.",
+    "tradeoffs": "It only affects Triton fused routes wired to this policy; if the run doesn't use Triton or the bottleneck isn't the autotune peak, this switch gains nothing.",
     "codePath": "core/triton_ops/autotune_policy.py -> triton_inject.py -> fused LoRA/QKV/FFN kernels"
   },
   "relatedConfigs": [

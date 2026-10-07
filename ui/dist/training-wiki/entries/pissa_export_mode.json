@@ -1,7 +1,9 @@
 {
   "key": "pissa_export_mode",
   "title": "PiSSA 导出模式",
+  "title_en": "PiSSA export mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "LoRA无损兼容导出": "尽量无损收成能挂原底的 LoRA。",
       "LoRA快速近似导出": "近似快收，精度可能差一点。"
+    }
+  },
+  "standard_en": {
+    "summary": "The PiSSA export mode; the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "LoRA无损兼容导出": "Closes out as losslessly as it can into a LoRA that can hang on the original base.",
+      "LoRA快速近似导出": "An approximate, quick close-out; the accuracy may be a little worse."
     }
   },
   "advanced": {},

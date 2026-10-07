@@ -1,0 +1,17 @@
+{
+  "key": "tiered_residency_spill_allow_backbone",
+  "title": "允许底座落盘",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "开启后 DiT 主干块才会真正落盘——这是省 RAM 的大头。",
+    "effect": "关闭时只有 VAE / 文本编码器落盘，省不了多少。仅对冻结权重生效。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "bucket_reso_steps",
   "title": "Bucket 分辨率步长",
+  "title_en": "Bucket resolution step",
   "category": "数据集 / 预处理",
+  "category_en": "Dataset / Preprocessing",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,9 +15,19 @@
     "whenToUse": "默认 64 适合大多数场景。数据集比例差异大（如同时有 1:1 和 16:9 图）时可降低到 32。",
     "avoidWhen": "steps 过小（<16）会生成大量极少用到的桶，内存开销增加且意义不大。"
   },
+  "standard_en": {
+    "summary": "The enumeration step, in pixels, for bucket resolutions. It decides how many distinct buckets exist: a smaller value gives finer buckets and less cropping loss.",
+    "effect": "steps=64 = resolutions in 64-pixel increments (256/320/384...); steps=32 = denser buckets and more accurate grouping.",
+    "whenToUse": "The default of 64 suits most cases. Drop to 32 when aspect ratios in the dataset vary widely (1:1 and 16:9 images together, say).",
+    "avoidWhen": "Too small a step (<16) generates a great many buckets that barely get used, costing memory for little gain."
+  },
   "advanced": {
     "principle": "桶生成算法：从最小分辨率到最大分辨率，以 steps 为间隔枚举所有面积接近 target_resolution² 的分辨率对。每张图像被分配到面积差异最小的桶。",
     "tradeoffs": "步长越小 = 桶越多 = 图像裁剪损失越少，但相同桶内图像数量更少（batch 内相同分辨率的图更难凑齐）。"
+  },
+  "advanced_en": {
+    "principle": "Bucket generation: from the minimum to the maximum resolution, enumerates resolution pairs at step intervals whose area is close to target_resolution². Each image goes to the bucket with the smallest area difference.",
+    "tradeoffs": "Smaller steps = more buckets = less crop loss, but fewer images per bucket (harder to fill a batch with same-resolution images)."
   },
   "relatedConfigs": [
     "enable_bucket",

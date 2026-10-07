@@ -1,0 +1,17 @@
+{
+  "key": "epochs",
+  "title": "训练轮数",
+  "category": "训练参数",
+  "appliesTo": [
+    "aesthetic-scorer",
+    "yolo"
+  ],
+  "standard": {
+    "summary": "训练轮数（scorer）。",
+    "effect": "aesthetic-scorer 训练的 epoch 数。",
+    "whenToUse": "scorer 收敛快。",
+    "avoidWhen": "默认 100。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

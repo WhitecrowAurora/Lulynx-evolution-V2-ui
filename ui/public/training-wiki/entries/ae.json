@@ -1,0 +1,19 @@
+{
+  "key": "ae",
+  "title": "AE 模型路径",
+  "category": "训练用模型",
+  "appliesTo": [
+    "flux-finetune",
+    "flux-lora",
+    "lumina-finetune",
+    "lumina-lora"
+  ],
+  "standard": {
+    "summary": "AE 模型路径。",
+    "effect": "FLUX 的 autoencoder 权重路径（底模分组件加载）。",
+    "whenToUse": "Flux 系训练按组件路径配置。",
+    "avoidWhen": "留空用默认解析。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

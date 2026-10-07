@@ -1,7 +1,9 @@
 {
   "key": "concept_geometry_translation_provider",
   "title": "翻译提供方",
+  "title_en": "Concept Geometry Translation Provider",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "local_path": "本地翻译资源。",
       "api": "远程翻译 API。"
+    }
+  },
+  "standard_en": {
+    "summary": "Translation provider; the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "local_path": "A local translation resource.",
+      "api": "A remote translation API."
     }
   },
   "advanced": {},

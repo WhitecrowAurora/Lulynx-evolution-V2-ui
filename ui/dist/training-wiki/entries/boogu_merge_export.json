@@ -1,0 +1,16 @@
+{
+  "key": "boogu_merge_export",
+  "title": "保存后导出合并整模",
+  "category": "保存设置",
+  "appliesTo": [
+    "flux2-lora"
+  ],
+  "standard": {
+    "summary": "训练完成后将 LoRA 合并进 Boogu 系 DiT 并额外保存 dense 整模。",
+    "effect": "写入训练配置 boogu_merge_export，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

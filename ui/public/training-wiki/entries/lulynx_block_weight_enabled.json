@@ -1,7 +1,9 @@
 {
   "key": "lulynx_block_weight_enabled",
   "title": "Lulynx Block 权重（SDXL）",
+  "title_en": "Enable Block Weight (SDXL)",
   "category": "训练 / Block 权重",
+  "category_en": "Training / Block Weights",
   "appliesTo": [
     "sdxl-lora"
   ],
@@ -18,9 +20,19 @@
     "whenToUse": "SDXL LoRA 时需要对不同层级差异化训练时使用。例如只训练解码器（up）可实现更精细的局部特征学习。",
     "avoidWhen": "不了解 UNet 各层功能时保持默认（所有层等权），差异化设置需要对模型行为有深入理解。"
   },
+  "standard_en": {
+    "summary": "Block-level learning-rate differentiation on the SDXL route: independent learning-rate weights for the UNet's down blocks / mid block / up blocks, for fine-grained control.",
+    "effect": "down_lr_weight controls the LR multiplier of the encoder (downsampling) blocks; mid_lr_weight controls the bottleneck block; up_lr_weight controls the decoder (upsampling) blocks.",
+    "whenToUse": "For an SDXL LoRA when you need to train the different levels differently. Training only the decoder (up), for instance, gives finer local-feature learning.",
+    "avoidWhen": "Keep the default (every level weighted equally) if you do not know what each UNet level does; differentiated settings need a deep understanding of model behaviour."
+  },
   "advanced": {
     "principle": "SDXL UNet 分三段：input_blocks（down，下采样，捕捉低级特征）/ middle_block（mid，瓶颈，高级语义）/ output_blocks（up，上采样，精细化和重建）。差异化 LR 权重等价于更粗粒度的 block weight 控制。smart_rank 根据各层梯度自动调整参与训练的 rank 数量。",
     "tradeoffs": "up_lr 过高 → 解码器训练过度，结果可能失去整体一致性；down_lr 过高 → 特征提取过度，可能影响其他 LoRA 兼容性。"
+  },
+  "advanced_en": {
+    "principle": "The SDXL UNet has three segments: input_blocks (down, capturing low-level features) / middle_block (mid, bottleneck, high-level semantics) / output_blocks (up, refinement and reconstruction). Differentiated LR weights amount to coarser-grained block-weight control. smart_rank automatically adjusts how many ranks participate in training per layer based on gradients.",
+    "tradeoffs": "up_lr too high → over-trained decoder, results may lose global coherence; down_lr too high → over-extracted features, possibly hurting compatibility with other LoRAs."
   },
   "relatedConfigs": [
     "block_weight_preset",

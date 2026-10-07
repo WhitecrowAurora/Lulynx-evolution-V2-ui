@@ -1,0 +1,17 @@
+{
+  "key": "gemma2_max_token_length",
+  "title": "Gemma2 最大 token",
+  "category": "Lumina 专用参数",
+  "appliesTo": [
+    "lumina-finetune",
+    "lumina-lora"
+  ],
+  "standard": {
+    "summary": "Gemma2 最大 Token。",
+    "effect": "Gemma2 编码截断长度。",
+    "whenToUse": "caption 长时加大。",
+    "avoidWhen": "默认按模型上限。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

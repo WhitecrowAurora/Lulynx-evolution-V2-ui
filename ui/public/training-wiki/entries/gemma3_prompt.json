@@ -1,0 +1,16 @@
+{
+  "key": "gemma3_prompt",
+  "title": "Gemma3 系统提示词",
+  "category": "DiT / 缓存",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "Gemma3 系统提示词。",
+    "effect": "默认与官方模板对齐",
+    "whenToUse": "默认 You are an assistant designed to generate high-quality anime images with the highest degree of image-text alignment based on textual prompts. <Prompt Start>，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

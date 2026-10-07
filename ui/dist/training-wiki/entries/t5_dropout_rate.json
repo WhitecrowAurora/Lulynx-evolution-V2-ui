@@ -1,0 +1,16 @@
+{
+  "key": "t5_dropout_rate",
+  "title": "T5 Dropout",
+  "category": "其他设置",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "训练时以该概率丢弃 T5 文本条件（FLUX/Anima 等）。",
+    "effect": "写入训练配置 t5_dropout_rate，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

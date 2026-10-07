@@ -1,0 +1,17 @@
+{
+  "key": "ip_adapter_cond_dim",
+  "title": "IP-Adapter 条件维",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "IP-Adapter 条件维度。",
+    "effect": "注入底模的条件投影维度，需与底模 cross-attn 维匹配。",
+    "whenToUse": "非标准底模时按架构调整。",
+    "avoidWhen": "默认 1152 对应 SDXL 类。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

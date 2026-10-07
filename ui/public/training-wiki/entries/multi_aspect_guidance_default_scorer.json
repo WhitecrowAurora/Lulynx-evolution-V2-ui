@@ -1,7 +1,9 @@
 {
   "key": "multi_aspect_guidance_default_scorer",
   "title": "默认 scorer",
+  "title_en": "Default scorer",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "latent_style_contrast": "用 latent 风格对比打分。",
       "clip_text_similarity": "用 CLIP 文图相似度打分。"
+    }
+  },
+  "standard_en": {
+    "summary": "The default scorer: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "latent_style_contrast": "Scores by latent style contrast.",
+      "clip_text_similarity": "Scores by CLIP text-image similarity."
     }
   },
   "advanced": {},

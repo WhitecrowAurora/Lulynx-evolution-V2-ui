@@ -1,0 +1,16 @@
+{
+  "key": "glora_compat_layout",
+  "title": "GLoRA 实现方式",
+  "category": "网络设置",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "GLoRA 实现方式。",
+    "effect": "标准=精确低秩分解（lora_up/lora_down+alpha），无精度损失、体积最小、兼容性最好。",
+    "whenToUse": "默认标准即可。",
+    "avoidWhen": ""
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

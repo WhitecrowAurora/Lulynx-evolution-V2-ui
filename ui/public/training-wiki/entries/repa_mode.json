@@ -1,7 +1,9 @@
 {
   "key": "repa_mode",
   "title": "REPA 对齐模式",
+  "title_en": "REPA Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -14,8 +16,24 @@
       "relational": "用关系/Gram 对齐，维可以不对齐。"
     }
   },
+  "standard_en": {
+    "summary": "absolute = same-dimension cosine/L2; relational = Gram (the dimensions need not match, recommended with latent_identity). Default absolute.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "absolute": "Aligns same-dimension features directly.",
+      "relational": "Aligns by relations/Gram, so the dimensions need not match."
+    }
+  },
   "advanced": {
     "principle": "absolute=同维 cosine/L2；relational=Gram（维可不齐，latent_identity 推荐）。默认 absolute。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "absolute = same-dimension cosine/L2; relational = Gram (dimensions need not match; recommended with latent_identity). Default absolute.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

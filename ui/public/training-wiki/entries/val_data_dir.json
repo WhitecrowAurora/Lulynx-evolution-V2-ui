@@ -1,0 +1,16 @@
+{
+  "key": "val_data_dir",
+  "title": "验证图像目录",
+  "category": "数据集 / 图说",
+  "appliesTo": [
+    "yolo"
+  ],
+  "standard": {
+    "summary": "验证图像目录。",
+    "effect": "训练中验证评估用的图像目录。",
+    "whenToUse": "配置后可周期性产出验证指标。",
+    "avoidWhen": "未配置不做验证评估。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,17 @@
+{
+  "key": "easy_control_channels",
+  "title": "Legacy 通道数",
+  "category": "EasyControl",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "EasyControl Legacy 通道数。",
+    "effect": "旧版路线控制图通道数（如 Canny=1、深度=3）。",
+    "whenToUse": "按控制图类型设置。",
+    "avoidWhen": "新训练用 v2 字段。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

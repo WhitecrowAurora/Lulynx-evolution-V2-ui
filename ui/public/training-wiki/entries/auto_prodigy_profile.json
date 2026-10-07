@@ -1,7 +1,9 @@
 {
   "key": "auto_prodigy_profile",
   "title": "AutoProdigy 档位",
+  "title_en": "Auto Prodigy tier",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -16,12 +18,26 @@
       "custom": "不套预设，全听你手填的子参数。"
     }
   },
+  "standard_en": {
+    "summary": "The safe / balanced / aggressive presets.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "safe": "Adaptation stays on the conservative side.",
+      "balanced": "The middle gear.",
+      "aggressive": "Adaptation pushes harder; convergence may be quicker but also shakier.",
+      "custom": "No preset at all -- every sub-parameter comes from what you filled in."
+    }
+  },
   "advanced": {
     "principle": "safe/balanced/aggressive 预设；custom 使用下方手填参数。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "safe/balanced/aggressive presets; custom uses the manually filled parameters below."
   },
   "relatedConfigs": []
 }

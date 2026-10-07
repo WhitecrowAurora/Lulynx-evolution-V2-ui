@@ -33,7 +33,7 @@ export function familiesForTypeId(typeId: string): string[] {
   if (id.startsWith('wan')) return ['wan', 'wan22', 'wan2.2', 'wan2']
   if (id.startsWith('flux')) return ['flux']
   if (id.startsWith('sdxl')) return ['sdxl']
-  if (id.startsWith('sd15') || id.startsWith('sd1')) return ['sd15', 'sd1.5']
+  if (id.startsWith('sd15') || id.startsWith('sd1') || id.startsWith('sd-')) return ['sd15', 'sd1.5']
   return []
 }
 
@@ -119,6 +119,10 @@ function roleFilter(fieldKey: string, item: PathCandidate): boolean {
     if (!kind || kind === 'model' || kind === 'file') return true
     // family 命中但 kind 未知: 仍接受非 lora/vae
     return !VAE_HINTS.some((t) => h.includes(`/${t}`) || h.includes(`\\${t}`))
+  }
+  // adapter 字段(teacher_adapter_path / prefuse_adapter_path 等): 只接受 LoRA-like
+  if (key.endsWith('adapter_path')) {
+    return isLoraLike(item)
   }
   // 其他 model-file: 排除 lora 默认
   return !isLoraLike(item)

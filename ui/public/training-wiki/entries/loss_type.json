@@ -1,7 +1,9 @@
 {
   "key": "loss_type",
   "title": "Loss 类型",
+  "title_en": "Loss function type",
   "category": "正则 / Loss",
+  "category_en": "Regularization / Loss",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,6 +14,9 @@
   ],
   "layers": [
     "Loss 层"
+  ],
+  "layers_en": [
+    "Loss layer"
   ],
   "standard": {
     "summary": "选择损失函数的数学形式，决定模型如何衡量预测值和目标值之间的误差。不同 loss 对异常值的敏感度和对细节的关注度不同。",
@@ -31,11 +36,36 @@
       "pseudo_huber": "Huber 的平滑版 δ²(√(1+(r/δ)²)−1),处处可导,对离群样本比 L2 温和;阈值同样看 huber_c。"
     }
   },
+  "standard_en": {
+    "summary": "Chooses the mathematical form of the loss function, which decides how the model measures the error between its prediction and the target. Different losses differ in how sensitive they are to outliers and how much attention they pay to detail.",
+    "effect": "L2 (MSE, the default) punishes large errors hardest (a squared relation), pushing the model to remove big deviations first. Huber is equivalent to L2 while the error is below huber_c and switches to a linear penalty above it, which is more robust to outlier samples. L1 (MAE) is linear throughout and is usually worse than L2 in diffusion training.",
+    "whenToUse": "The default L2 is a safe starting point. If the loss curve occasionally shows a very large spike (>10x the normal value) there are outlier samples, so try Huber. wavelet_loss computes an extra frequency-domain loss on top of L2 and emphasises high-frequency detail -- good when you are after texture quality, but it adds about 15% compute.",
+    "avoidWhen": "Do not use wavelet/pattern loss at the very start of training -- confirm the basic training flow is fine with L2 first, then add the frequency-domain loss as a controlled experiment. stepped_loss allows switching the loss type mid-run (L2 early and Huber later, say), but setting the switch point takes experience.",
+    "optionDescriptions": {
+      "l2": "Squared error. A large error is punished heavily, so a bad sample pulls the loss up a long way.",
+      "l1": "Absolute error. Less sensitive to wild points, but usually not as good as L2 as the main loss.",
+      "huber": "L2 for small errors, linear for large ones. With dirty captions and the occasional spike the spikes are less wild; the turning point follows huber_c, and the larger it is the more this behaves like L2.",
+      "smooth_l1": "The same family as Huber, with beta controlling how wide the turn is.",
+      "pseudo_huber": "The smooth version of Huber, delta^2 * (sqrt(1 + (r/delta)^2) - 1): differentiable everywhere and gentler than L2 on outlier samples; the threshold again follows huber_c."
+    },
+    "recommendedValues": {
+      "l2": "The default, right for the great majority of cases. The strongest gradient signal and the fastest convergence",
+      "huber": "Recommended when the data has noisy labels (wrong captions) or extreme brightness/contrast samples. huber_c=0.1 is the usual threshold",
+      "smooth_l1": "PyTorch's alias for Huber; its beta parameter is equivalent to huber_c"
+    }
+  },
   "advanced": {
     "principle": "L2 = mean((pred - target)²)，梯度 = 2*(pred-target)，误差越大梯度越大。Huber = mean(if |err| < c: err²/2 else c·|err| - c²/2)，梯度 = if |err|<c: err else c·sign(err)。c = huber_c 控制转折点。huber_schedule 允许 c 随训练变化：constant 固定值；exponential 按 exp(-decay*step) 递减（后期更鲁棒）；snr 根据 timestep 的 SNR 动态调整（高噪声 timestep 用更大的 c）。wavelet_loss 对 pred 和 target 做 DWT（离散小波变换），分别对 LL（低频近似）和 LH/HL/HH（高频细节）子带计算 loss，high_freq_weight 控制细节子带的权重倍数。pattern_loss 更进一步，允许对不同频带使用不同 loss 函数（如 LL 用 L2，高频用 Huber）。",
     "intervention": "training_loop.py 的 _compute_diffusion_loss() 根据 loss_type 分发到 F.mse_loss / F.smooth_l1_loss / F.l1_loss。wavelet_loss 在 loss 计算后额外叠加：wl = wavelet_loss(pred, target, levels=2, high_freq_weight=2.0)；loss = loss + wl。pattern_loss 类似但使用 frequency-band-specific loss 函数。",
     "expectedImpact": "Huber 在有 5-10% 噪声样本的数据集上可将 FID 改善 3-8%（通过减少离群样本对梯度的扭曲）。wavelet_loss 对高频细节（发丝、眼睛、文字）改善明显但可能降低整体构图稳定性——建议配合 min_snr_gamma 使用。",
     "tradeoffs": "loss_precision 控制 loss 计算本身的精度（fp32_loss 在 FP32 中计算 loss 再转回 BF16，避免低精度下的累积误差）。huber_auto_percentile 在 auto 模式下从 batch 残差的指定百分位数计算 delta，自适应程度更高但实现更复杂。",
+    "codePath": "training_loop.py:_compute_diffusion_loss() → F.mse_loss / F.smooth_l1_loss → optional wavelet_loss() / pattern_loss()"
+  },
+  "advanced_en": {
+    "principle": "L2 = mean((pred - target)²), gradient = 2*(pred-target) — larger error, larger gradient. Huber = mean(if |err| < c: err²/2 else c·|err| - c²/2), gradient = if |err|<c: err else c·sign(err). c = huber_c sets the turning point. huber_schedule lets c vary over training: constant fixed; exponential decaying as exp(-decay*step) (more robust later); snr adjusting dynamically by timestep SNR (larger c for high-noise timesteps). wavelet_loss applies a DWT (discrete wavelet transform) to pred and target, computing loss separately on the LL (low-frequency approximation) and LH/HL/HH (high-frequency detail) sub-bands, with high_freq_weight scaling the detail sub-bands. pattern_loss goes further, allowing different loss functions per frequency band (e.g. L2 for LL, Huber for high frequency).",
+    "intervention": "training_loop.py's _compute_diffusion_loss() dispatches by loss_type to F.mse_loss / F.smooth_l1_loss / F.l1_loss. wavelet_loss is stacked after loss computation: wl = wavelet_loss(pred, target, levels=2, high_freq_weight=2.0); loss = loss + wl. pattern_loss is similar but uses frequency-band-specific loss functions.",
+    "expectedImpact": "Huber can improve FID by 3-8% on datasets with 5-10% noisy samples (by limiting outliers' distortion of the gradient). wavelet_loss visibly improves high-frequency detail (hair strands, eyes, text) but may reduce overall composition stability — pair with min_snr_gamma.",
+    "tradeoffs": "loss_precision controls the precision of loss computation itself (fp32_loss computes the loss in FP32 then converts back to BF16, avoiding low-precision accumulation error). huber_auto_percentile computes delta from a chosen percentile of batch residuals in auto mode — more adaptive but more complex.",
     "codePath": "training_loop.py:_compute_diffusion_loss() → F.mse_loss / F.smooth_l1_loss → optional wavelet_loss() / pattern_loss()"
   },
   "relatedConfigs": [

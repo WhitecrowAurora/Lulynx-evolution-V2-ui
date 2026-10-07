@@ -1,0 +1,17 @@
+{
+  "key": "anima_block_checkpointing",
+  "title": "Anima 梯度检查点",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "Anima 的梯度检查点主力：反传时按 DiT block 重算激活以降低显存峰值。",
+    "effect": "比通用梯度检查点更省显存，会增加重算时间。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "sample_sampler",
   "title": "预览采样器",
+  "title_en": "Sample Sampler",
   "category": "训练 / 预览",
+  "category_en": "Training / Preview",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -31,9 +33,31 @@
       "dpmsolver++": "DPM-Solver++，少步出图质量一般不错。"
     }
   },
+  "standard_en": {
+    "summary": "Controls the sampler used to generate preview images during training (euler / euler_a / dpm++ and so on) and the generation parameters (steps, resolution, seed).",
+    "effect": "euler/euler_a are fast (good for previews); dpm++ gives higher quality (and needs more steps). sample_steps is usually 15~25 for a quick preview, without needing as many steps as inference.",
+    "whenToUse": "euler with 15~20 steps is the fastest preview setup and is enough to judge whether the LoRA is heading in the right direction.",
+    "avoidWhen": "A preview does not need the highest-quality sampler; avoid wasting training time (generating a preview pauses training).",
+    "optionDescriptions": {
+      "ddim": "DDIM: decent even at a low step count, and often used for previews.",
+      "pndm": "PNDM, a somewhat older sampler.",
+      "lms": "LMS, multi-step linear, with a different flavour from Euler.",
+      "euler": "Euler: simple and direct.",
+      "euler_a": "Euler Ancestral: a touch of randomness makes the image livelier, and it cannot be reproduced exactly.",
+      "heun": "Heun, second order, usually a little finer than Euler and more expensive too.",
+      "dpm_2": "DPM 2nd order, deterministic.",
+      "dpm_2_a": "DPM 2nd order ancestral, with randomness.",
+      "dpmsolver": "The DPM-Solver family.",
+      "dpmsolver++": "DPM-Solver++: usually good quality at a low step count."
+    }
+  },
   "advanced": {
     "principle": "预览生成使用与推理相同的采样器逻辑，但步数更少。sample_smoothcache_error_threshold 控制本仓 lulynx 误差缓存的复用阈值；它不是 SmoothCache 论文的 calibration schedule。sample_seed 固定后每次预览使用相同种子，方便对比不同步数的变化。",
     "tradeoffs": "sample_width/height 应与 resolution 匹配，分辨率不匹配时预览效果可能误导（预览清晰但实际生成不同分辨率时效果可能不同）。"
+  },
+  "advanced_en": {
+    "principle": "Preview generation uses the same sampler logic as inference, with fewer steps. sample_smoothcache_error_threshold controls this repo's lulynx error-cache reuse threshold; it is not the SmoothCache paper's calibration schedule. Once sample_seed is fixed, every preview uses the same seed, making it easy to compare changes across step counts.",
+    "tradeoffs": "sample_width/height should match resolution; a mismatch can make previews misleading (a sharp preview may not translate when actual generation happens at a different resolution)."
   },
   "relatedConfigs": [
     "sample_every_n_steps",

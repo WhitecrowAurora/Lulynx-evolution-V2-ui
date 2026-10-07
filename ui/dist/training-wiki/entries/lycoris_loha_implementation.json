@@ -1,7 +1,9 @@
 {
   "key": "lycoris_loha_implementation",
   "title": "LoHa 实现方案",
+  "title_en": "LoHa Implementation",
   "category": "LoRA / LyCORIS",
+  "category_en": "LoRA / LyCORIS",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -10,6 +12,9 @@
   ],
   "layers": [
     "适配器层"
+  ],
+  "layers_en": [
+    "Adapter layer"
   ],
   "standard": {
     "summary": "选择 LoHa 的数学实现。默认标准 LyCORIS LoHa；Lulynx 简化 LoHa 用于兼容旧训练和旧权重。",
@@ -21,11 +26,28 @@
       "lulynx_simplified": "Lulynx 历史简化实现，只用于旧训练和旧权重兼容。"
     }
   },
+  "standard_en": {
+    "summary": "Chooses the mathematical implementation of LoHa. The default is the standard LyCORIS LoHa; the Lulynx simplified LoHa is for compatibility with old training runs and old weights.",
+    "effect": "The standard implementation produces the four Hada factors the ecosystem uses; the simplified implementation keeps Lulynx's historical formula and its old export behaviour.",
+    "whenToUse": "Use the standard LyCORIS LoHa for new training. Only choose the simplified implementation to continue an old Lulynx simplified-LoHa run or to load old weights.",
+    "avoidWhen": "Do not train a new model with the simplified implementation if it is meant to be loaded directly by a third-party LoHa loader.",
+    "optionDescriptions": {
+      "lycoris_standard": "The standard LyCORIS LoHa, the default and the recommended choice, matching the mainstream LoHa weight structure.",
+      "lulynx_simplified": "Lulynx's historical simplified implementation, only for old runs and old-weight compatibility."
+    }
+  },
   "advanced": {
     "principle": "标准实现使用 ΔW=(W1a@W1b)⊙(W2a@W2b)·(alpha/rank)。简化实现使用 ΔW=(W2a⊙W2b)^T@(W1a⊙W1b)·(alpha/rank)。",
     "intervention": "仅在 network_module 为 LyCORIS 且 lycoris_algo=loha 时生效。",
     "expectedImpact": "标准实现提高与 LyCORIS、ComfyUI、Musubi 等生态的 checkpoint 兼容性；简化实现保持历史结果可继续训练。",
     "tradeoffs": "两种实现不能静默互读。Lulynx 会依据 metadata 和 tensor shape 识别并拒绝不匹配的运行时。",
+    "codePath": "lycoris_loha.py → LyCORISConfig → LyCORISInjector → checkpoint identity contract"
+  },
+  "advanced_en": {
+    "principle": "The standard implementation uses ΔW=(W1a@W1b)⊙(W2a@W2b)·(alpha/rank). The simplified implementation uses ΔW=(W2a⊙W2b)^T@(W1a⊙W1b)·(alpha/rank).",
+    "intervention": "Only effective when network_module is LyCORIS and lycoris_algo=loha.",
+    "expectedImpact": "The standard implementation improves checkpoint compatibility with the LyCORIS/ComfyUI/Musubi ecosystem; the simplified keeps historical results trainable and continuing.",
+    "tradeoffs": "The two implementations must not silently read each other. Lulynx identifies and rejects mismatched runtimes via metadata and tensor shape.",
     "codePath": "lycoris_loha.py → LyCORISConfig → LyCORISInjector → checkpoint identity contract"
   },
   "relatedConfigs": [

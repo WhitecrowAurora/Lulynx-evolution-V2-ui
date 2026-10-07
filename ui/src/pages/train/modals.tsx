@@ -4,11 +4,14 @@ import { Modal } from '@/components/overlay'
 import { Badge, Button } from '@/components/primitives'
 import { Input } from '@/components/form'
 import { trainApi } from '@/api/trainApi'
-import { formatApiMessage, unwrap } from '@/api/transport'
+import { formatApiMessage, formatPreflightItem, unwrap } from '@/api/transport'
 import {
   buildExportBundle,
   exportBundleToDownload,
+  normalizeSavedConfigBundle,
   readFileAsSavedBundle,
+  savedConfigPayload,
+  type SavedConfigBundle,
 } from '@/lib/savedConfigIo'
 import { useTrainConfigStore } from '@/stores/configStore'
 import { toast } from '@/stores/toastStore'
@@ -26,43 +29,60 @@ const LIST_KEYS: { key: string; labelKey: string; tone: 'danger' | 'warn' | 'ok'
   { key: 'checks', labelKey: 'preflight.checks', tone: 'ok' },
 ]
 
+/* 后端唯一允许 allow_unverified_dataset_start 绕过的两类"数据集无法确认"错误。
+   dataset_missing（确认缺失/为空）不在其中，任何开关都绕不过。 */
+const BYPASSABLE_DATASET_ERROR_CODES = ['dataset_probe_failed', 'dataset_unverified']
+
 export function PreflightModal({
   open,
   onClose,
   buildPayload,
+  onReport,
 }: {
   open: boolean
   onClose: () => void
   buildPayload: () => Record<string, unknown>
+  /* 预检报告回传:提交时 TrainPage 需要把 dataset_validation_bypass 记录
+     显式带回 /api/run,否则旁路证据只存在于预检响应里。 */
+  onReport?: (report: Record<string, unknown> | null) => void
 }) {
-  const { t } = useI18n()
+  const { t, language } = useI18n()
   const [state, setState] = useState<'idle' | 'running' | 'done' | 'failed'>('idle')
   const [report, setReport] = useState<Record<string, unknown> | null>(null)
   const [error, setError] = useState('')
+  const requestGeneration = useRef(0)
+  const allowUnverified = useTrainConfigStore(
+    (s) => Boolean(s.drafts[s.typeId]?.allow_unverified_dataset_start),
+  )
 
-  useEffect(() => {
-    if (!open) return
+  const runPreflight = () => {
+    const generation = ++requestGeneration.current
     setState('running')
     setReport(null)
     setError('')
-    let alive = true
-    void trainApi
-      .preflight(buildPayload())
-      .then((resp) => {
-        if (!alive) return
+    onReport?.(null)
+    void (async () => {
+      try {
+        const resp = await trainApi.preflight(buildPayload())
+        if (generation !== requestGeneration.current) return
         const data = unwrap<Record<string, unknown>>(resp)
         setReport(data && typeof data === 'object' ? data : { result: data })
+        onReport?.(data && typeof data === 'object' ? data : null)
         setState('done')
-      })
-      .catch((e: Error) => {
-        if (!alive) return
-        setError(e.message)
+      } catch (e) {
+        if (generation !== requestGeneration.current) return
+        setError(e instanceof Error ? e.message : String(e))
         setState('failed')
-      })
-    return () => {
-      alive = false
-    }
+      }
+    })()
+  }
+
+  useEffect(() => {
+    if (!open) return
     // buildPayload 由父组件以最新 draft 闭包传入,open 变化时执行一次
+    runPreflight()
+    // 所有重跑共享代次；关闭/卸载也使 checkbox 发起的请求失效。
+    return () => { requestGeneration.current += 1 }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
@@ -74,6 +94,20 @@ export function PreflightModal({
       }).filter((l) => l.items.length > 0)
     : []
   const hasProblems = lists.some((l) => l.tone === 'danger' || l.tone === 'warn')
+  /* 报告里出现了"仅允许该开关绕过"的数据集错误时，在报告底部给出上下文开关 */
+  const hasBypassableDatasetErrors = lists.some((l) =>
+    l.items.some((item) => {
+      const code = (item as Record<string, unknown>)?.code
+      return typeof code === 'string' && BYPASSABLE_DATASET_ERROR_CODES.includes(code)
+    }),
+  )
+
+  const toggleAllowUnverified = () => {
+    const store = useTrainConfigStore.getState()
+    store.setValue('allow_unverified_dataset_start', !allowUnverified)
+    // 草稿已更新，直接按新配置重跑预检，让用户当场看到阻断变放行 + 绕过警告。
+    runPreflight()
+  }
 
   return (
     <Modal open={open} title={t('preflight.title')} onClose={onClose} width={640}>
@@ -113,12 +147,38 @@ export function PreflightModal({
               </h4>
               <ul>
                 {l.items.map((item, i) => (
-                  <li key={i}>{formatApiMessage(item)}</li>
+                  <li key={i}>{formatPreflightItem(item, language)}</li>
                 ))}
               </ul>
             </div>
           ))}
           {!lists.length ? <p style={{ color: 'var(--lx-dim)' }}>{t('preflight.no_lists')}</p> : null}
+          {hasBypassableDatasetErrors ? (
+            <div
+              style={{
+                border: '1px solid var(--lx-warn, var(--lx-line))',
+                borderRadius: 8,
+                padding: 10,
+                margin: '12px 0',
+              }}
+            >
+              <label style={{ display: 'flex', gap: 8, alignItems: 'flex-start', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={allowUnverified}
+                  onChange={toggleAllowUnverified}
+                  style={{ marginTop: 3 }}
+                />
+                <span>
+                  <strong>{t('preflight.allow_unverified_dataset_start')}</strong>
+                  <br />
+                  <span style={{ color: 'var(--lx-dim)', fontSize: 12 }}>
+                    {t('preflight.allow_unverified_dataset_start_risk')}
+                  </span>
+                </span>
+              </label>
+            </div>
+          ) : null}
           <details style={{ marginTop: 12 }}>
             <summary className="lx-num" style={{ cursor: 'pointer', color: 'var(--lx-dim)', fontSize: 11 }}>
               RAW REPORT JSON
@@ -166,7 +226,7 @@ export function SavedConfigsModal({
   open: boolean
   onClose: () => void
   currentDraft: () => Record<string, unknown>
-  onLoad: (config: Record<string, unknown>) => void
+  onLoad: (bundle: SavedConfigBundle) => boolean
 }) {
   const { t } = useI18n()
   const [items, setItems] = useState<SavedItem[]>([])
@@ -188,6 +248,13 @@ export function SavedConfigsModal({
   }, [open])
 
   const schemaId = () => useTrainConfigStore.getState().typeId
+  const loadBundle = (bundle: SavedConfigBundle, fallbackType: string): SavedConfigBundle | null => {
+    if (!bundle.schema_id && !bundle.typeId) {
+      toast.warn(t('presets.legacy_type', { type: fallbackType }))
+      bundle = { ...bundle, schema_id: fallbackType, typeId: fallbackType }
+    }
+    return onLoad(bundle) ? bundle : null
+  }
 
   const doSave = async () => {
     const trimmed = name.trim()
@@ -197,7 +264,8 @@ export function SavedConfigsModal({
     }
     setBusy(true)
     try {
-      await trainApi.saveConfig(trimmed, currentDraft())
+      const bundle = buildExportBundle({ name: trimmed, config: currentDraft(), schemaId: schemaId() })
+      await trainApi.saveConfig(trimmed, savedConfigPayload(bundle))
       toast.ok(t('presets.saved', { name: trimmed }), 'SAVED')
       setName('')
       await refresh()
@@ -209,17 +277,13 @@ export function SavedConfigsModal({
   }
 
   const doLoad = async (n: string) => {
+    const fallbackType = schemaId()
     setBusy(true)
     try {
       const payload = unwrap<Record<string, unknown>>(await trainApi.loadSavedConfig(n))
-      const config = (payload?.config ?? payload) as Record<string, unknown>
-      if (config && typeof config === 'object') {
-        onLoad(config)
-        toast.ok(t('presets.loaded', { name: n }), 'LOADED')
-        onClose()
-      } else {
-        toast.warn(t('presets.empty_config'))
-      }
+      if (!loadBundle({ ...normalizeSavedConfigBundle(payload), name: n }, fallbackType)) return
+      toast.ok(t('presets.loaded', { name: n }), 'LOADED')
+      onClose()
     } catch (e) {
       toast.err((e as Error).message, t('presets.load_fail'))
     } finally {
@@ -260,12 +324,8 @@ export function SavedConfigsModal({
     setBusy(true)
     try {
       const payload = unwrap<Record<string, unknown>>(await trainApi.loadSavedConfig(n))
-      const config = (payload?.config ?? payload) as Record<string, unknown>
-      if (!config || typeof config !== 'object') {
-        toast.warn(t('presets.export_empty'))
-        return
-      }
-      exportBundleToDownload(buildExportBundle({ name: n, config, schemaId: schemaId() }))
+      const bundle = normalizeSavedConfigBundle(payload)
+      exportBundleToDownload(buildExportBundle({ name: n, config: bundle.config, schemaId: bundle.schema_id }))
       toast.ok(t('presets.exported', { name: n }), 'EXPORT')
     } catch (e) {
       toast.err((e as Error).message, t('presets.export_fail'))
@@ -276,15 +336,16 @@ export function SavedConfigsModal({
 
   const doImportFile = async (file: File | null) => {
     if (!file) return
+    const fallbackType = schemaId()
     setBusy(true)
     try {
-      const bundle = await readFileAsSavedBundle(file)
-      onLoad(bundle.config)
+      const bundle = loadBundle(await readFileAsSavedBundle(file), fallbackType)
+      if (!bundle) return
       const alsoSave = window.confirm(
         t('presets.import_also_save', { name: bundle.name }),
       )
       if (alsoSave) {
-        await trainApi.saveConfig(bundle.name, bundle.config)
+        await trainApi.saveConfig(bundle.name, savedConfigPayload(bundle))
         await refresh()
         toast.ok(t('presets.import_save', { name: bundle.name }), 'IMPORT')
       } else {
@@ -301,6 +362,7 @@ export function SavedConfigsModal({
 
   const doImportExternal = async (file: File | null) => {
     if (!file) return
+    const fallbackType = schemaId()
     setBusy(true)
     try {
       const response = await trainApi.importExternalConfig(file)
@@ -314,7 +376,7 @@ export function SavedConfigsModal({
       if (!config || typeof config !== 'object') {
         throw new Error(t('presets.external_empty'))
       }
-      onLoad(config)
+      if (!loadBundle(normalizeSavedConfigBundle(data), fallbackType)) return
       const mapped = Number(data.mapped_count || Object.keys(config).length || 0)
       const notePreview = (data.notes || [])
         .filter((line) => line && !String(line).startsWith('==='))
@@ -381,4 +443,3 @@ export function SavedConfigsModal({
     </Modal>
   )
 }
-

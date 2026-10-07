@@ -1,7 +1,9 @@
 {
   "key": "fg_lora_rank_profile",
   "title": "Rank 深度曲线",
+  "title_en": "Rank depth curve",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -16,8 +18,26 @@
       "flat": "深度方向差不多平。"
     }
   },
+  "standard_en": {
+    "summary": "Used by orthogonal_redistribute only: center_peak = higher in the middle layers; ascending = higher deeper; descending = higher shallower; flat = level.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "center_peak": "High rank in the middle layers.",
+      "ascending": "Higher the deeper it goes.",
+      "descending": "Higher the shallower it is.",
+      "flat": "Roughly level with depth."
+    }
+  },
   "advanced": {
     "principle": "仅 orthogonal_redistribute 使用：center_peak=中间层更高；ascending=深层更高；descending=浅层更高；flat=平坦。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Only used by orthogonal_redistribute: center_peak = middle layers higher; ascending = deeper layers higher; descending = shallower layers higher; flat = uniform.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

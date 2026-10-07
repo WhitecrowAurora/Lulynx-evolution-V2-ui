@@ -1,7 +1,9 @@
 {
   "key": "sageattn_drift_check_interval",
   "title": "SageAttn 漂移检测间隔",
+  "title_en": "SageAttn Drift Check Interval",
   "category": "性能 / 内核",
+  "category_en": "Performance / Kernels",
   "appliesTo": [
     "sdxl-lora",
     "anima-lora",
@@ -10,11 +12,20 @@
   "layers": [
     "前向层"
   ],
+  "layers_en": [
+    "Forward layer"
+  ],
   "standard": {
     "summary": "使用 SageAttention（量化 attention）后端时，每 N 步把 SageAttn 输出与 SDPA 参考输出对比一次，检测量化漂移。0 = 关闭（默认）。",
     "effect": "开启后训练循环内建 AttentionDriftMonitor，每 N 步做一次双后端对比；相对误差超过阈值时按 sageattn_drift_fallback 策略告警或切回 SDPA。",
     "whenToUse": "首次在新模型/新数据上启用 SageAttn，想确认 INT8 量化 attention 不会悄悄污染训练时；长训任务想要漂移兜底时设 100~500。",
     "avoidWhen": "attention 后端不是 sageattn 时无意义；检测步需要额外跑一次 SDPA 参考前向，间隔太小（<50）会明显拖慢训练。"
+  },
+  "standard_en": {
+    "summary": "When the SageAttention (quantised attention) backend is in use, compares SageAttn's output against an SDPA reference every N steps to detect quantisation drift. 0 = off (the default).",
+    "effect": "With this on, an AttentionDriftMonitor is built into the training loop and compares the two backends every N steps; when the relative error exceeds the threshold it warns or switches back to SDPA according to sageattn_drift_fallback.",
+    "whenToUse": "The first time you enable SageAttn on a new model or new data and want to confirm INT8 quantised attention is not quietly contaminating training; set 100~500 as a drift safety net on a long run.",
+    "avoidWhen": "Meaningless when the attention backend is not sageattn; a detection step has to run an extra SDPA reference forward pass, so too small an interval (<50) slows training noticeably."
   },
   "advanced": {
     "principle": "SageAttention 用 INT8 量化 QK^T 换速度，个别分布下量化误差会放大。周期性与全精度 SDPA 输出对比相对误差，把「量化是否可靠」从盲信变成可观测指标。",
@@ -22,6 +33,13 @@
     "expectedImpact": "检测步吞吐下降（双前向），其余步无开销；漂移事件会进日志/告警。",
     "tradeoffs": "注意：UI 上的阈值键 sageattn_drift_check_threshold 后端实际读取的是 sageattn_drift_threshold（默认 0.01）；间隔与阈值需权衡误报率与检出率。",
     "codePath": "training_loop_init_core.py：sageattn_drift_check_interval > 0 时构建 AttentionDriftMonitor；attention_drift_monitor.py；configs_performance.py 定义"
+  },
+  "advanced_en": {
+    "principle": "SageAttention quantizes QK^T to INT8 for speed, and under some distributions the quantization error gets amplified. Periodically comparing relative error against full-precision SDPA output turns \"is quantization reliable\" from blind trust into an observable metric.",
+    "intervention": "training_loop_init_core.py: when interval > 0 it instantiates attention_drift_monitor.AttentionDriftMonitor(threshold, fallback); the epoch loop triggers the comparison every N steps.",
+    "expectedImpact": "Throughput drops on check steps (double forward), other steps have no overhead; drift events go to logs/alerts.",
+    "tradeoffs": "Note: the UI's threshold key sageattn_drift_check_threshold is actually read by the backend as sageattn_drift_threshold (default 0.01); interval and threshold must trade off false-positive rate against detection rate.",
+    "codePath": "training_loop_init_core.py: builds AttentionDriftMonitor when sageattn_drift_check_interval > 0; attention_drift_monitor.py; defined in configs_performance.py"
   },
   "relatedConfigs": [
     "sageattn_drift_fallback",

@@ -1,0 +1,16 @@
+{
+  "key": "cls_pos_weight",
+  "title": "正样本权重",
+  "category": "训练参数",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "正样本权重。",
+    "effect": "分类 loss 的正类权重（处理类别不均衡）。",
+    "whenToUse": "正样本稀少时调大。",
+    "avoidWhen": "默认 0 = 不加权。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,16 @@
+{
+  "key": "waifu_clip_model_name",
+  "title": "Waifu CLIP 模型",
+  "category": "特征提取器设置",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "open_clip 模型名称，例如 ViT-L-14。",
+    "effect": "写入训练配置 waifu_clip_model_name，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -103,16 +103,15 @@ export function addRunRecord(typeId: string, config: Record<string, unknown>, ru
   scheduleDiskWrite(next)
 }
 
-/** 按任务 id 或名称匹配本地记录 */
+/** 有任务 id 时只精确匹配；无 id 的旧记录仅在名称无歧义时回落。 */
 export function findRunRecord(taskId?: string, name?: string): RunRecord | undefined {
   const records = loadLocal()
   if (taskId) {
-    const hit = records.find((r) => r.id && r.id === taskId)
-    if (hit) return hit
+    return records.find((r) => r.id === taskId)
   }
   if (name) {
-    const hit = records.find((r) => r.name && r.name === name)
-    if (hit) return hit
+    const matches = records.filter((r) => r.name === name)
+    if (matches.length === 1) return matches[0]
   }
   return undefined
 }

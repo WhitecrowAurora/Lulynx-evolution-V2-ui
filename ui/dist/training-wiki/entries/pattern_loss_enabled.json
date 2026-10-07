@@ -1,7 +1,9 @@
 {
   "key": "pattern_loss_enabled",
   "title": "Pattern Loss (频带定制 Loss)",
+  "title_en": "Pattern Loss (Frequency-Band Loss)",
   "category": "正则 / Loss",
+  "category_en": "Regularization / Loss",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,17 +14,33 @@
   "layers": [
     "Loss 层"
   ],
+  "layers_en": [
+    "Loss layer"
+  ],
   "standard": {
     "summary": "比 wavelet_loss 更精细的频率域 loss 控制——允许对不同频带使用不同的 loss 函数（如低频用 L2，高频用 Huber）。",
     "effect": "pattern_loss_ll_type 和 pattern_loss_high_type 分别指定低频和高频的 loss 函数。可以组合出 L2+Huber、L1+L2 等混合策略。",
     "whenToUse": "wavelet_loss 不够精细时。需要对不同频率成分施加不同正则化策略时。",
     "avoidWhen": "wavelet_loss 已经满足需求时不需要叠加。计算开销略高于 wavelet_loss。"
   },
+  "standard_en": {
+    "summary": "Finer-grained frequency-domain loss control than wavelet_loss -- it allows a different loss function per frequency band (L2 for the low band and Huber for the high band, say).",
+    "effect": "pattern_loss_ll_type and pattern_loss_high_type name the loss function for the low and the high band respectively. You can combine L2+Huber, L1+L2 and other mixed strategies.",
+    "whenToUse": "When wavelet_loss is not fine-grained enough. When different frequency components need different regularisation.",
+    "avoidWhen": "No need to stack it when wavelet_loss already meets the need. It costs slightly more compute than wavelet_loss."
+  },
   "advanced": {
     "principle": "对 pred 和 target 做 DWT 分解后，对 LL 子带用 pattern_loss_ll_type（如 l2），对 LH/HL/HH 子带用 pattern_loss_high_type（如 huber，对离群高频噪声更鲁棒）。pattern_loss_high_huber_c 控制高频 Huber 的转折点。",
     "intervention": "training_step 中替代或叠加 wavelet_loss。",
     "expectedImpact": "在高频有噪声（JPEG 压缩伪影、传感器噪声）的数据集上比纯 L2 高频 loss 更稳定。",
     "tradeoffs": "pattern_loss_levels 控制 DWT 分解层数。",
+    "codePath": "training_loop.py:pattern_loss() → per-band loss with configurable functions"
+  },
+  "advanced_en": {
+    "principle": "After DWT decomposition of pred and target, the LL subband uses pattern_loss_ll_type (e.g. l2) and the LH/HL/HH subbands use pattern_loss_high_type (e.g. huber, more robust to outlier high-frequency noise). pattern_loss_high_huber_c controls the Huber knee of the high-frequency bands.",
+    "intervention": "In training_step, replaces or stacks with wavelet_loss.",
+    "expectedImpact": "On datasets with high-frequency noise (JPEG compression artifacts, sensor noise) it is more stable than a pure L2 high-frequency loss.",
+    "tradeoffs": "pattern_loss_levels controls the number of DWT decomposition levels.",
     "codePath": "training_loop.py:pattern_loss() → per-band loss with configurable functions"
   },
   "relatedConfigs": [

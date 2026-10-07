@@ -1,0 +1,30 @@
+{
+  "key": "conv_dim",
+  "title": "卷积维度",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "flux-lora",
+    "hunyuan-dit-lora",
+    "lumina-lora",
+    "qwen-image-lora",
+    "sd-addift",
+    "sd-ileco",
+    "sd-ip-adapter",
+    "sd-lora",
+    "sd-multi-addift",
+    "sd3-lora",
+    "sdxl-addift",
+    "sdxl-ileco",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-multi-addift"
+  ],
+  "standard": {
+    "summary": "LyCORIS 卷积层维度。",
+    "effect": "Conv2d 层的 LoRA/LyCORIS rank；不设时部分实现用 dim 的一半或同值。",
+    "whenToUse": "数据集含大量纹理/低频结构、卷积层也想充分训练时调高。",
+    "avoidWhen": "纯 attention 注入（network_module 不含 conv）时不生效。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

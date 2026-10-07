@@ -1,7 +1,9 @@
 {
   "key": "concept_geometry_path",
   "title": "几何图路径",
+  "title_en": "Path",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Empty = concept_geometry.json under the training directory (the older h_lora_geometry.json is still accepted).",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "空=训练目录下 concept_geometry.json（兼容旧 h_lora_geometry.json）。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Empty = concept_geometry.json under the training directory (legacy h_lora_geometry.json also accepted).",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

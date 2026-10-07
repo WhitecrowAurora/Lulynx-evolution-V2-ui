@@ -1,7 +1,9 @@
 {
   "key": "adaptive_loss_weighting_enabled",
   "title": "自适应 Loss 加权",
+  "title_en": "Adaptive (learnable SNR γ)",
   "category": "正则 / Loss",
+  "category_en": "Regularization / Loss",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,17 +14,33 @@
   "layers": [
     "Loss 层"
   ],
+  "layers_en": [
+    "Loss layer"
+  ],
   "standard": {
     "summary": "min_snr_gamma 的可学习版本——训练一组参数（gamma/offset/scale）自适应调整每个 timestep 的 loss 权重，不需要手动选择 gamma 值。",
     "effect": "自动学习最优的 timestep 加权曲线。比固定 min_snr_gamma 更灵活，但增加少量可训练参数。",
     "whenToUse": "不确定最佳 gamma 值时。想自动适应不同数据集的 timestep 分布时。",
     "avoidWhen": "与 min_snr_gamma 不应同时使用（选一个）。短训练（<200 步）时参数可能还没学好。"
   },
+  "standard_en": {
+    "summary": "The learnable version of min_snr_gamma: it trains a small set of parameters (gamma / offset / scale) that adapt the loss weight of each timestep, so you do not have to pick a gamma by hand.",
+    "effect": "The optimal timestep weighting curve is learned automatically. More flexible than a fixed min_snr_gamma at the cost of a few extra trainable parameters.",
+    "whenToUse": "When you are unsure what the best gamma is, or when you want the weighting to adapt to different datasets' timestep distributions.",
+    "avoidWhen": "It should not be combined with min_snr_gamma -- pick one. On a short run (under 200 steps) the parameters may not be learned well yet."
+  },
   "advanced": {
     "principle": "训练一个小的参数集 {γ, offset, scale}，用于计算每个 timestep 的权重：w(t) = scale * clamp(SNR(t) + offset, max=γ) / SNR(t)。这些参数用 adaptive_loss_weighting_lr 的学习率独立优化。",
     "intervention": "在 training_step 中用可学习权重替代固定的 min_snr_gamma 权重。",
     "expectedImpact": "比固定 gamma 改善约 1-3% FID，但需要足够的训练步数来学习参数。",
     "tradeoffs": "adaptive_loss_weighting_init_gamma 控制初始 gamma 值（默认 5.0）。",
+    "codePath": "core/lulynx_trainer/adaptive_loss_weighting.py:AdaptiveLossWeighter → learnable SNR weights"
+  },
+  "advanced_en": {
+    "principle": "Trains a small parameter set {γ, offset, scale} used to compute per-timestep weights: w(t) = scale * clamp(SNR(t) + offset, max=γ) / SNR(t). These parameters are optimized independently with the adaptive_loss_weighting_lr learning rate.",
+    "intervention": "Replaces the fixed min_snr_gamma weighting with learnable weights in training_step.",
+    "expectedImpact": "Roughly 1-3% FID improvement over fixed gamma, but requires enough training steps to learn the parameters.",
+    "tradeoffs": "adaptive_loss_weighting_init_gamma sets the initial gamma (default 5.0).",
     "codePath": "core/lulynx_trainer/adaptive_loss_weighting.py:AdaptiveLossWeighter → learnable SNR weights"
   },
   "relatedConfigs": [

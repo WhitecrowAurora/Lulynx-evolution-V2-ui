@@ -1,0 +1,17 @@
+{
+  "key": "lulynx_sra2_alignment_min_relative_improvement",
+  "title": "最小相对改进",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "SRA2 表征对齐的 最小相对改进，默认 0。",
+    "effect": "SRA2 在训练中对齐中间表征与参考分布，最小相对改进 控制权重日程（起止步、衰减、平台耐心）。",
+    "whenToUse": "需要按训练进度精细控制对齐强度时使用。",
+    "avoidWhen": "默认权重日程（全程恒定）已适合多数场景。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

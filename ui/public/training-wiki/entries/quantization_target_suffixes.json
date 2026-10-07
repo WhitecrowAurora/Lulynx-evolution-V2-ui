@@ -1,0 +1,17 @@
+{
+  "key": "quantization_target_suffixes",
+  "title": "量化目标后缀",
+  "category": "精度 / 量化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "量化目标后缀。",
+    "effect": "按模块名后缀限定量化范围（如只量化 to_q,to_k）。",
+    "whenToUse": "想排除敏感层时配置。",
+    "avoidWhen": "留空=全部目标量化。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,16 @@
+{
+  "key": "newbie_use_flash_attn2",
+  "title": "Newbie FlashAttention 2",
+  "category": "缓存与运行时",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "Newbie 路线启用 FlashAttention 2（需环境支持）。",
+    "effect": "默认开启。",
+    "whenToUse": "默认开启，适合大多数场景。",
+    "avoidWhen": "排查问题想回到原始行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

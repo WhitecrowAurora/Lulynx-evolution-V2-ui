@@ -1,0 +1,20 @@
+{
+  "key": "flow_uniform_static_ratio",
+  "title": "RF 固定偏移比率",
+  "category": "训练 / 噪声控制",
+  "appliesTo": [
+    "sd-ip-adapter",
+    "sd-lora",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "填写后覆盖分辨率动态偏移。",
+    "effect": "留空则不使用固定比率",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "module_offload_profile",
   "title": "Module Offload 配置",
+  "title_en": "Module Offload Profile",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -15,8 +17,25 @@
       "aggressive": "多卸，峰值最低，空等也多。"
     }
   },
+  "standard_en": {
+    "summary": "Preset offload strategies: balanced = balanced; aggressive = aggressive (saves the most VRAM); conservative = conservative (faster).",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "conservative": "Offloads little: fast, and uses VRAM.",
+      "balanced": "In between.",
+      "aggressive": "Offloads a lot: the lowest peak, and plenty of idle waiting."
+    }
+  },
   "advanced": {
     "principle": "预设的 offload 策略：balanced=平衡；aggressive=激进（最省显存）；conservative=保守（更快）。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Preset offload strategies: balanced = balanced; aggressive = aggressive (most VRAM saved); conservative = conservative (faster).",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

@@ -1,0 +1,24 @@
+{
+  "key": "pilot_strategy",
+  "title": "训练 Pilot 策略",
+  "title_en": "Training Pilot Strategy",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "训练 Pilot：盯着梯度范数，出状况就按比例调学习率。这个字段选策略，off = 整个功能关闭。",
+    "effect": "默认 off = 完全不变（历史声明默认曾是 population，已按“默认对齐现实”改掉）。population = 额外监控离群层；heuristic = 只看整体梯度。",
+    "whenToUse": "训练后期变慢、想自动保护和微调时用 population。",
+    "avoidWhen": "没做过对照实验前别开；不支持的值（如 pid）启动直接报错。"
+  },
+  "standard_en": {
+    "summary": "The Training Pilot watches gradient norms and scales the learning rate when something looks off. This selects the strategy; off disables the whole feature.",
+    "effect": "Default off = nothing changes (the historical declared default 'population' was re-defaulted to reality). population = additionally watches outlier layers; heuristic = global gradient rules only.",
+    "whenToUse": "Use population for late-stage slowdowns or protective modulation.",
+    "avoidWhen": "Do not enable without a controlled comparison; unsupported values (e.g. pid) fail closed at startup."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

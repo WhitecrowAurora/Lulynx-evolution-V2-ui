@@ -1,7 +1,9 @@
 {
   "key": "block_weight_preset",
   "title": "Block 权重预设",
+  "title_en": "Block-Weight Preset",
   "category": "训练 / Block 权重",
+  "category_en": "Training / Block Weights",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -22,9 +24,19 @@
     "whenToUse": "希望针对特定训练目标（细节/风格/结构）快速调整各 block 的贡献时使用预设。",
     "avoidWhen": "不确定各 block 权重含义时保持默认（所有 block 权重相等），避免某些 block 被过度强调。"
   },
+  "standard_en": {
+    "summary": "Sets LoRA weights across transformer block types quickly through a preset. Block types (cross-attn / self-attn / MLP and so on) contribute differently during training and can be weighted apart.",
+    "effect": "The preset fills in each block type's weight for you, with no need to configure them one by one. The detail preset, for instance, raises cross-attn weights; the structure preset raises self-attn weights.",
+    "whenToUse": "When you want a quick adjustment of each block's contribution towards a particular goal (detail, style or structure).",
+    "avoidWhen": "If you are unsure what the block weights mean, keep the default (every block equal) so that no block ends up over-emphasised."
+  },
   "advanced": {
     "principle": "LoRA 更新 ΔW_block = weight_factor × LoRA_output_block。不同 block 在生成过程中分工不同：cross-attn 控制语义/提示词响应；self-attn 控制结构/布局；MLP 控制细节纹理；adaln 控制时间步条件（对 DiT 类模型）。",
     "tradeoffs": "手动调权需要对模型架构有深入理解。预设提供经验积累的均衡方案，对大多数任务效果良好。非均匀权重可能导致某些方面过训练（如细节过于锐化而结构扭曲）。"
+  },
+  "advanced_en": {
+    "principle": "LoRA update ΔW_block = weight_factor × LoRA_output_block. Different blocks play different roles in generation: cross-attn controls semantics/prompt response; self-attn controls structure/layout; MLP controls detail texture; adaln controls timestep conditioning (for DiT-family models).",
+    "tradeoffs": "Manual weighting requires deep understanding of the architecture. Presets offer experience-accumulated balanced schemes that work well for most tasks. Non-uniform weights can over-train some aspects (e.g. over-sharpened detail with warped structure)."
   },
   "relatedConfigs": [
     "network_dim",

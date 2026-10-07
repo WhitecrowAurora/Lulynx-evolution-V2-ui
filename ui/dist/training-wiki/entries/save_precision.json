@@ -1,7 +1,9 @@
 {
   "key": "save_precision",
   "title": "保存精度",
+  "title_en": "Save",
   "category": "精度 / 输出",
+  "category_en": "Precision / Output",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,6 +14,9 @@
   ],
   "layers": [
     "输出层"
+  ],
+  "layers_en": [
+    "Output layer"
   ],
   "standard": {
     "summary": "LoRA/模型权重保存时的数值精度。FP16 文件最小，FP32 精度最高。",
@@ -25,11 +30,29 @@
       "auto": "不指定,交给运行时按训练精度与量化配置决定落盘精度;显式值解析不了时也会落回这里。"
     }
   },
+  "standard_en": {
+    "summary": "The numeric precision the LoRA/model weights are saved at. FP16 gives the smallest file, FP32 the highest precision.",
+    "effect": "An fp16 file is about half the size of fp32; bf16 and fp16 files are similar in size but differ in numeric range.",
+    "whenToUse": "fp16 is the most common choice, balancing file size against inference precision well.",
+    "avoidWhen": "If you will merge or continue training later, save fp32 or float to avoid accumulating precision loss.",
+    "optionDescriptions": {
+      "fp16": "Saved as fp16, for a slightly smaller file.",
+      "float": "Saved as fp32, the largest and fattest.",
+      "bf16": "Saved as bf16, about the same size as fp16.",
+      "auto": "Unspecified: the runtime decides the on-disk precision from the training precision and the quantization configuration; an explicit value that cannot be parsed also falls back here."
+    }
+  },
   "advanced": {
     "principle": "训练过程中权重保持 FP32 主副本（mixed_precision 下）。保存时将 FP32 权重 cast 到目标精度。fp16 有 5 位指数 + 10 位尾数，bf16 有 8 位指数 + 7 位尾数。",
     "intervention": "在 save_pretrained / safetensors 保存时转换 dtype。",
     "expectedImpact": "fp16/bf16 保存对推理质量影响极小（<0.1%），但文件体积减半。",
     "tradeoffs": "mem_efficient_save 在保存前将 tensor 移到 CPU，减少保存时的 GPU 显存峰值。"
+  },
+  "advanced_en": {
+    "principle": "During training, weights keep an FP32 master copy (under mixed_precision). At save time the FP32 weights are cast to the target precision. fp16 has 5 exponent bits + 10 mantissa bits; bf16 has 8 exponent bits + 7 mantissa bits.",
+    "intervention": "Converts dtype during save_pretrained / safetensors saving.",
+    "expectedImpact": "fp16/bf16 saving has a minimal effect on inference quality (<0.1%) but halves file size.",
+    "tradeoffs": "mem_efficient_save moves tensors to CPU before saving, reducing the GPU VRAM peak during saving."
   },
   "relatedConfigs": [
     "save_model_as",

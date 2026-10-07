@@ -1,0 +1,52 @@
+{
+  "key": "ddp_find_unused_parameters",
+  "title": "DDP 查找未用参数",
+  "title_en": "DDP Find Unused Parameters",
+  "category": "训练 / 分布式",
+  "category_en": "Training / Distributed",
+  "appliesTo": [
+    "sdxl-lora",
+    "sd-lora",
+    "anima-lora",
+    "flux-lora",
+    "finetune"
+  ],
+  "layers": [
+    "并行层"
+  ],
+  "layers_en": [
+    "Parallelism layer"
+  ],
+  "standard": {
+    "summary": "开启后 DDP 每步遍历计算图，找出这一步没参与反向的参数。默认关闭。",
+    "effect": "直接传给 DDP 包装器的 find_unused_parameters。开启时 DDP 会在反向开始前扫一遍计算图，把没用到的参数从这一步的梯度同步里排除掉。",
+    "whenToUse": "模型里有条件分支、某些层只在部分步参与计算，训练报 “Expected to have finished reduction in the prior iteration” 时开启。",
+    "avoidWhen": "没报过那个错就不要开 —— 每步多一次图遍历，纯粹是白花的开销。"
+  },
+  "standard_en": {
+    "summary": "Once on, DDP walks the graph every step to find parameters that did not take part in that step's backward. Off by default.",
+    "effect": "Passed straight through to the DDP wrapper as find_unused_parameters. When on, DDP scans the graph before backward begins and excludes the unused parameters from that step's gradient synchronisation.",
+    "whenToUse": "Turn it on when the model has conditional branches, some layers participate only on some steps, and training reports \"Expected to have finished reduction in the prior iteration\".",
+    "avoidWhen": "Do not turn it on without that error -- the extra graph walk each step is pure overhead."
+  },
+  "advanced": {
+    "principle": "DDP 在反向开始时假定所有注册的参数都会拿到梯度，靠这个假定把梯度分桶后一次性 all-reduce。若某步有参数没参与反向，桶永远等不满，下一步就会报 reduction 未完成。find_unused_parameters 让 DDP 先遍历一遍 autograd 图，把这一步用不到的参数标记掉。",
+    "intervention": "distributed_runtime.py 在包装 DDP 时直读这个键传给 DDPModelWrapper(find_unused_parameters=)，与 ddp_gradient_as_bucket_view / ddp_static_graph 是同一组 wrapper 参数。",
+    "expectedImpact": "开启后每步多一次计算图遍历，通常是个位数百分比的步时代价；换来的是有条件分支的模型能跑起来。",
+    "tradeoffs": "与 ddp_static_graph 语义相反：static_graph 承诺图不变，find_unused_parameters 承认图会变。两个都开时 PyTorch 以 static_graph 为准，等于这个键被忽略。",
+    "codePath": "configs_base.py:ddp_find_unused_parameters 声明；distributed_runtime.py 直读并传给 DDPModelWrapper；三分叉 S_DISTRIBUTED 暴露（2026-09-05 补齐，此前三个 wrapper 参数只暴露了两个）"
+  },
+  "advanced_en": {
+    "principle": "At the start of backward, DDP assumes every registered parameter will receive a gradient, bucketing gradients on that assumption for a single all-reduce. If some parameters don't participate in backward on a step, the bucket never fills and the next step reports an unfinished reduction. find_unused_parameters makes DDP traverse the autograd graph first and mark the parameters unused that step.",
+    "intervention": "distributed_runtime.py reads this key directly when wrapping DDP and passes find_unused_parameters= to DDPModelWrapper — same wrapper-parameter group as ddp_gradient_as_bucket_view / ddp_static_graph.",
+    "expectedImpact": "Adds one graph traversal per step, usually a single-digit-percent step-time cost; in exchange, models with conditional branches can run at all.",
+    "tradeoffs": "Semantically opposite to ddp_static_graph: static_graph promises the graph is fixed, find_unused_parameters admits it varies. With both on, PyTorch honors static_graph — this key is effectively ignored.",
+    "codePath": "configs_base.py:ddp_find_unused_parameters declaration; distributed_runtime.py reads directly and passes to DDPModelWrapper; exposed in the three-way S_DISTRIBUTED fork (added 2026-09-05; previously only two of the three wrapper parameters were exposed)"
+  },
+  "relatedConfigs": [
+    "enable_distributed_training",
+    "ddp_gradient_as_bucket_view",
+    "ddp_static_graph",
+    "ddp_timeout"
+  ]
+}

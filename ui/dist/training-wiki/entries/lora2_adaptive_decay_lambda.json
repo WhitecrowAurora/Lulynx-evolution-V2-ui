@@ -1,0 +1,20 @@
+{
+  "key": "lora2_adaptive_decay_lambda",
+  "title": "LoRA2 衰减系数",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "LoRA2 自适应衰减系数。",
+    "effect": "LoRA2 自适应 rank 机制的重要性衰减速度。",
+    "whenToUse": "训练后期想让旧重要性评分逐渐让位给新样本时调大。",
+    "avoidWhen": "默认 1 即标准衰减。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

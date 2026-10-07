@@ -1,0 +1,17 @@
+{
+  "key": "dpo_anchor_alpha",
+  "title": "Anchor α",
+  "category": "DPO 偏好对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "policy≈ref 全局 MSE 正则；0=关。",
+    "effect": "写入训练配置 dpo_anchor_alpha，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,20 @@
+{
+  "key": "krona_weight_decompose",
+  "title": "KronA DoRA 分解",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "KronA 的 KronA DoRA 分解，默认 默认关闭。",
+    "effect": "KronA 用 Kronecker 积参数化适配器，KronA DoRA 分解 控制分解因子与梯度 rescale 强度。",
+    "whenToUse": "选择 krona network args 时按需调整。",
+    "avoidWhen": "未使用 KronA 时不生效。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,24 @@
+{
+  "key": "adaptive_loss_weighting_lr",
+  "title": "自适应加权学习率",
+  "category": "采样与优化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "自适应损失加权参数的学习率",
+    "effect": "写入训练配置 adaptive_loss_weighting_lr，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0.001，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

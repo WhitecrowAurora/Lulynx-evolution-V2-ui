@@ -1,0 +1,16 @@
+{
+  "key": "cls_loss_weight",
+  "title": "分类损失权重",
+  "category": "训练参数",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "分类损失权重。",
+    "effect": "scorer 分类分支的 loss 权重。",
+    "whenToUse": "分类与回归目标权衡。",
+    "avoidWhen": "默认 0.8。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

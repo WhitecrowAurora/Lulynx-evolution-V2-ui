@@ -1,0 +1,16 @@
+{
+  "key": "target_dims",
+  "title": "评分维度",
+  "category": "训练参数",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "评分维度。",
+    "effect": "aesthetic-scorer 的目标维度清单。",
+    "whenToUse": "与数据标注维度对应。",
+    "avoidWhen": "默认 aesthetic,composition,color,sexual。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

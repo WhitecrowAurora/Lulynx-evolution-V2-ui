@@ -1,0 +1,17 @@
+{
+  "key": "spd_resize_mode",
+  "title": "SPD Resize 模式",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "SPD Resize 模式。",
+    "effect": "分辨率级之间的重采样方式。",
+    "whenToUse": "默认 bilinear 通用。",
+    "avoidWhen": ""
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

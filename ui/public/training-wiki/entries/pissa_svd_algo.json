@@ -1,0 +1,21 @@
+{
+  "key": "pissa_svd_algo",
+  "title": "PiSSA SVD 算法",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-addift",
+    "anima-ileco",
+    "anima-multi-addift"
+  ],
+  "standard": {
+    "summary": "PiSSA SVD 算法。",
+    "effect": "PiSSA 初始化分解用的 SVD 实现：rsvd 快（随机近似），精确 SVD 慢但准。",
+    "whenToUse": "大矩阵初始化慢时选 rsvd。",
+    "avoidWhen": "默认 rsvd。",
+    "optionDescriptions": {
+      "rsvd": "随机化 SVD，快，有微小近似误差。"
+    }
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "ac_early_stopping_threshold",
   "title": "早停阈值",
+  "title_en": "Threshold",
   "category": "训练 / 自动化",
+  "category_en": "Training / Automation",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "默认 0.001 适合大多数 LoRA 训练。若 loss 量级很小（如 <0.01），可适当降低到 0.0001。",
     "avoidWhen": "不建议设为 0（任何微小改善都算有进展，早停永远不触发）。"
   },
+  "standard_en": {
+    "summary": "A loss improvement smaller than this counts as no improvement. Default 0.001, meaning only an improvement above 0.001 counts as progress.",
+    "effect": "A larger threshold is more permissive and makes early stopping harder to reach; a smaller one is stricter and counts even tiny improvements as progress.",
+    "whenToUse": "The default 0.001 fits most LoRA training. If your loss lives at a very small magnitude, below 0.01 say, lower it to 0.0001.",
+    "avoidWhen": "Do not set it to 0 -- every tiny improvement then counts as progress and early stopping never fires."
+  },
   "advanced": {
     "principle": "改善量 = max(hist_losses) - current_best。若改善量 < threshold 视为未改善，patience 计数器递增。",
     "tradeoffs": "需要与训练的 loss 量级匹配，不同 scheduler/optimizer 组合的 loss 范围差异较大。"
+  },
+  "advanced_en": {
+    "principle": "Improvement = max(hist_losses) - current_best. If improvement < threshold it counts as no improvement and the patience counter increments.",
+    "tradeoffs": "Must match the training loss magnitude; loss ranges differ widely across scheduler/optimizer combinations."
   },
   "relatedConfigs": [
     "ac_enabled",

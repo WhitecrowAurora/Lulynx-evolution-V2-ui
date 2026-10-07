@@ -1,0 +1,17 @@
+{
+  "key": "tiered_residency_spill_allow_text_encoders",
+  "title": "允许文本编码器落盘",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "允许文本编码器落盘。",
+    "effect": "分层驻留路线允许把文本编码器权重也换出到磁盘。",
+    "whenToUse": "显存极紧且 TE 巨大（T5-XXL）时开启。",
+    "avoidWhen": "默认开启；频繁换入换出 TE 会拖慢。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

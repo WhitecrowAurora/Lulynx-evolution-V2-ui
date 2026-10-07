@@ -1,7 +1,9 @@
 {
   "key": "cpu_offload_checkpointing",
   "title": "CPU Offload Checkpointing",
+  "title_en": "CPU offload checkpointing",
   "category": "速度 / 显存",
+  "category_en": "Speed / VRAM",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -14,6 +16,12 @@
     "effect": "mode 控制卸载策略（哪些激活卸载，哪些保留 GPU）；pool_gb 限制 CPU 内存池大小（防止占满 RAM）。te_vae_offload_strategy 控制文本编码器和 VAE 的卸载时机。",
     "whenToUse": "开启标准 gradient_checkpointing 仍然 OOM 时的进一步措施。比 block_swap 更细粒度。",
     "avoidWhen": "CPU-GPU 传输速度（PCIe 带宽）成为瓶颈时，offload checkpointing 可能比重算更慢。"
+  },
+  "standard_en": {
+    "summary": "Offloads the intermediate activations of gradient checkpointing to the CPU instead of merely discarding them (standard checkpointing discards and recomputes). It saves more VRAM than standard checkpointing at the cost of CPU-GPU transfers.",
+    "effect": "mode sets the offload policy (which activations move and which stay on the GPU); pool_gb caps the CPU memory pool so it cannot fill RAM. te_vae_offload_strategy governs when the text encoders and VAE are offloaded.",
+    "whenToUse": "The next step to take when standard gradient_checkpointing is on and you still OOM. Finer-grained than block_swap.",
+    "avoidWhen": "When CPU-GPU transfer (PCIe bandwidth) is the bottleneck, offload checkpointing can be slower than recomputing."
   },
   "relatedConfigs": [
     "gradient_checkpointing",

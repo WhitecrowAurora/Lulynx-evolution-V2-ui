@@ -1,7 +1,9 @@
 {
   "key": "caption_tag_dropout_rate",
   "title": "Tag Dropout 率",
+  "title_en": "Caption Tag Dropout Rate",
   "category": "数据集 / 图说",
+  "category_en": "Dataset / Captions",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,9 +15,19 @@
     "whenToUse": "数据集图说包含大量 tag（>10 个 tag/图）时，开启 dropout（0.05~0.1）可以提升生成的多样性和 tag 响应能力。",
     "avoidWhen": "图说非常短（如只有触发词）时，dropout 会让图说几乎为空，训练效果变差。"
   },
+  "standard_en": {
+    "summary": "The probability of dropping individual tags from a caption during training. Default 0 (no dropping).",
+    "effect": "0.1 = each tag has a 10% chance of being dropped on that step. It varies the captions more, so the LoRA generalises across tag combinations.",
+    "whenToUse": "When captions carry many tags (>10 per image), dropout of 0.05-0.1 improves both output variety and tag response.",
+    "avoidWhen": "With very short captions (just a trigger word), dropout leaves the caption nearly empty and training suffers."
+  },
   "advanced": {
     "principle": "对 caption 按 tag 分割后，对每个 tag 独立进行 Bernoulli 采样决定是否保留。触发词通常被保护，不参与 dropout。",
     "tradeoffs": "tag dropout 增加训练随机性，有助于防止模型过度依赖某些 tag 的组合，但会降低对 tag 语义的精确响应。"
+  },
+  "advanced_en": {
+    "principle": "Splits the caption into tags, then Bernoulli-samples each tag independently to keep or drop it. Trigger words are usually protected and excluded from dropout.",
+    "tradeoffs": "Tag dropout adds training randomness, helping prevent over-reliance on particular tag combinations, but reduces precise response to tag semantics."
   },
   "relatedConfigs": [
     "caption_extension",

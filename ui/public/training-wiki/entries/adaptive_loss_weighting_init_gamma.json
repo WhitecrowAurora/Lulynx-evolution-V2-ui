@@ -1,0 +1,24 @@
+{
+  "key": "adaptive_loss_weighting_init_gamma",
+  "title": "自适应加权初始 γ",
+  "category": "采样与优化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "learnable SNR gamma 初值。",
+    "effect": "写入训练配置 adaptive_loss_weighting_init_gamma，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 5，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

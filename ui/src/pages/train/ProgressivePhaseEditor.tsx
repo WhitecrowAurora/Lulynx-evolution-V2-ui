@@ -5,12 +5,7 @@ import { Button } from '@/components/primitives'
 
 type JsonValue = null | boolean | number | string | JsonValue[] | JsonObject
 interface JsonObject { [key: string]: JsonValue }
-type Phase = JsonObject & {
-  id: string
-  start: number
-  end: number
-  lr_scale: number
-}
+type Phase = JsonObject
 
 type ParsedSchedule = {
   root: JsonObject | null
@@ -21,6 +16,7 @@ type ParsedSchedule = {
 
 const ALIASES: Record<string, string[]> = {
   id: ['phase_id', 'phaseId'],
+  lr_scale: ['learning_rate_scale'],
   module_policy: ['modules', 'module', 'modulePolicy'],
   difficulty_policy: ['difficulty', 'curriculum', 'difficultyPolicy'],
   timestep_policy: ['timesteps', 'timestep', 'timestepPolicy'],
@@ -78,19 +74,25 @@ function numberOr(value: JsonValue, fallback: number): number {
   return Number.isFinite(result) ? result : fallback
 }
 
-function toPhase(value: unknown, index: number): Phase {
-  const source = asObject(value) ?? {}
+function progressValue(value: JsonValue): number {
+  if (value == null || value === '') return NaN
+  const percent = typeof value === 'string' && value.trim().endsWith('%')
+  const result = Number(percent ? String(value).trim().slice(0, -1) : value)
+  return percent || (result > 1 && result <= 100) ? result / 100 : result
+}
+
+// Display aliases in canonical controls; never serialize this view over untouched fields.
+function phaseView(source: Phase) {
   return {
-    ...clone(source),
-    id: String(readField(source, 'id', `phase-${index + 1}`) || `phase-${index + 1}`),
-    start: numberOr(source.start, index === 0 ? 0 : 0),
-    end: numberOr(source.end, index === 0 ? 1 : 1),
-    lr_scale: numberOr(source.lr_scale, 1),
-    module_policy: clone(readField(source, 'module_policy')),
-    difficulty_policy: clone(readField(source, 'difficulty_policy')),
-    timestep_policy: clone(readField(source, 'timestep_policy')),
-    resolution_hint: clone(readField(source, 'resolution_hint')),
-    rank_hint: clone(readField(source, 'rank_hint')),
+    id: String(readField(source, 'id', '')),
+    start: progressValue(source.start),
+    end: progressValue(source.end),
+    lr_scale: readField(source, 'lr_scale', 1),
+    module_policy: readField(source, 'module_policy'),
+    difficulty_policy: readField(source, 'difficulty_policy'),
+    timestep_policy: readField(source, 'timestep_policy'),
+    resolution_hint: readField(source, 'resolution_hint'),
+    rank_hint: readField(source, 'rank_hint'),
   }
 }
 
@@ -105,18 +107,16 @@ function parseSchedule(value: unknown): ParsedSchedule {
     }
   }
   if (Array.isArray(parsed)) {
-    const phases = parsed.length ? parsed.map(toPhase) : [clone(DEFAULT_PHASE)]
-    return { root: null, phases, invalid: '', wasArray: true }
+    return { root: null, phases: parsed.filter(asObject).map(clone), invalid: parsed.every(asObject) ? '' : 'Phase 必须为对象，当前编辑不会覆盖原始内容。', wasArray: true }
   }
   const root = asObject(parsed)
   if (root && Array.isArray(root.phases)) {
-    const phases = root.phases.length ? root.phases.map(toPhase) : [clone(DEFAULT_PHASE)]
-    return { root, phases, invalid: '', wasArray: false }
+    return { ...parseSchedule(root.phases), root, wasArray: false }
   }
   if (root && ('start' in root || 'end' in root || 'lr_scale' in root)) {
-    return { root: {}, phases: [toPhase(root, 0)], invalid: '', wasArray: false }
+    return { root: {}, phases: [clone(root)], invalid: '', wasArray: false }
   }
-  return { root: {}, phases: [clone(DEFAULT_PHASE)], invalid: '', wasArray: false }
+  return { root: {}, phases: [], invalid: '请输入 JSON 数组或包含 phases 数组的对象。', wasArray: false }
 }
 
 function scheduleText(parsed: ParsedSchedule): string {
@@ -211,6 +211,7 @@ export function ProgressivePhaseEditor({
   }, [parsed, value])
 
   const commit = (phases: Phase[]) => {
+    if (parsed.invalid) return
     const next = parsed.wasArray ? phases : { ...(parsed.root ?? {}), phases }
     onChange(JSON.stringify(next))
   }
@@ -222,7 +223,8 @@ export function ProgressivePhaseEditor({
 
   const addPhase = () => {
     const previous = parsed.phases[parsed.phases.length - 1] ?? DEFAULT_PHASE
-    const start = Math.min(1, Math.max(0, previous.end))
+    const end = progressValue(previous.end)
+    const start = Number.isFinite(end) ? Math.min(1, Math.max(0, end)) : 0
     commit([...parsed.phases, { ...clone(DEFAULT_PHASE), id: `phase-${parsed.phases.length + 1}`, start, end: 1 }])
   }
 
@@ -233,8 +235,8 @@ export function ProgressivePhaseEditor({
 
   const importJson = () => {
     try {
-      const next = parseSchedule(jsonDraft)
-      if (next.invalid || (typeof JSON.parse(jsonDraft) !== 'object' && !Array.isArray(JSON.parse(jsonDraft)))) throw new Error('invalid')
+      const next = parseSchedule(JSON.parse(jsonDraft))
+      if (next.invalid) throw new Error('invalid')
       const payload = next.wasArray ? next.phases : { ...(next.root ?? {}), phases: next.phases }
       onChange(JSON.stringify(payload))
       setJsonError('')
@@ -250,12 +252,13 @@ export function ProgressivePhaseEditor({
           <b>Phase Editor</b>
           <span>结构化编辑会写回 progressive_phase_schedule；未知字段会随 JSON 一起保留。</span>
         </div>
-        <Button size="sm" onClick={addPhase}>＋ 添加 Phase</Button>
+        <Button size="sm" onClick={addPhase} disabled={Boolean(parsed.invalid)}>＋ 添加 Phase</Button>
       </div>
 
       <div className="lx-progressive-phase-list">
-        {parsed.phases.map((phase, index) => {
-          const invalidRange = phase.start < 0 || phase.end > 1 || phase.start >= phase.end
+        {parsed.phases.map((raw, index) => {
+          const phase = phaseView(raw)
+          const invalidRange = !Number.isFinite(phase.start) || !Number.isFinite(phase.end) || phase.start < 0 || phase.end > 1 || phase.start >= phase.end
           return (
             <div className="lx-progressive-phase-row" key={`${phase.id}-${index}`}>
               <div className="lx-progressive-phase-title">
@@ -263,9 +266,9 @@ export function ProgressivePhaseEditor({
                 <button type="button" className="lx-progressive-remove" onClick={() => removePhase(index)} disabled={parsed.phases.length <= 1} aria-label={`删除 ${phase.id}`}>−</button>
               </div>
               <label><span>ID</span><Input value={phase.id} onChange={(event) => updatePhase(index, { id: event.target.value })} /></label>
-              <label><span>Start</span><Input type="number" min={0} max={1} step={0.01} value={phase.start} onChange={(event) => updatePhase(index, { start: clampProgress(event.target.value, phase.start) })} /></label>
-              <label><span>End</span><Input type="number" min={0} max={1} step={0.01} value={phase.end} onChange={(event) => updatePhase(index, { end: clampProgress(event.target.value, phase.end) })} /></label>
-              <label><span>LR Scale</span><Input type="number" min={0} step={0.05} value={phase.lr_scale} onChange={(event) => updatePhase(index, { lr_scale: numberOr(event.target.value, phase.lr_scale) })} /></label>
+              <label><span>Start</span><Input type="number" min={0} max={1} step={0.01} value={Number.isFinite(phase.start) ? phase.start : ''} onChange={(event) => updatePhase(index, { start: clampProgress(event.target.value, phase.start) })} /></label>
+              <label><span>End</span><Input type="number" min={0} max={1} step={0.01} value={Number.isFinite(phase.end) ? phase.end : ''} onChange={(event) => updatePhase(index, { end: clampProgress(event.target.value, phase.end) })} /></label>
+              <label><span>LR Scale</span><Input type="number" min={0} step={0.05} value={String(phase.lr_scale)} onChange={(event) => updatePhase(index, { lr_scale: numberOr(event.target.value, Number(phase.lr_scale)) })} /></label>
               <label><span>Module</span><PolicySelect value={phase.module_policy} presets={MODULE_PRESETS} onChange={(next) => updatePhase(index, { module_policy: next })} /></label>
               <label><span>Difficulty</span><PolicySelect value={phase.difficulty_policy} presets={DIFFICULTY_PRESETS} onChange={(next) => updatePhase(index, { difficulty_policy: next })} /></label>
               <label><span>Timestep</span><PolicySelect value={phase.timestep_policy} presets={TIMESTEP_PRESETS} onChange={(next) => updatePhase(index, { timestep_policy: next })} /></label>
@@ -282,7 +285,7 @@ export function ProgressivePhaseEditor({
         <p>用于复杂 policy、别名字段和未识别字段的精确 round-trip。点击“导出当前”刷新为结构化编辑器当前值。</p>
         <Textarea rows={8} value={jsonDraft} onChange={(event) => setJsonDraft(event.target.value)} spellCheck={false} />
         <div className="lx-progressive-json-actions">
-          <Button size="sm" onClick={() => { setJsonDraft(scheduleText(parsed)); setJsonError('') }}>导出当前</Button>
+          <Button size="sm" disabled={Boolean(parsed.invalid)} onClick={() => { setJsonDraft(scheduleText(parsed)); setJsonError('') }}>导出当前</Button>
           <Button size="sm" variant="primary" onClick={importJson}>应用 JSON</Button>
           {jsonError || parsed.invalid ? <span className="lx-progressive-json-error">{jsonError || parsed.invalid}</span> : null}
         </div>
@@ -290,4 +293,3 @@ export function ProgressivePhaseEditor({
     </div>
   )
 }
-

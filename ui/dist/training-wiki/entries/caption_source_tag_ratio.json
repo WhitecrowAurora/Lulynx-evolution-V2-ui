@@ -1,7 +1,9 @@
 {
   "key": "caption_source_tag_ratio",
   "title": "Tag 图说比例",
+  "title_en": "Tag Ratio",
   "category": "数据集 / 图说",
+  "category_en": "Dataset / Captions",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -17,9 +19,19 @@
     "whenToUse": "数据集同时包含 tag 图说和 NL 描述时，设置混合比例（如 tag=0.7，nl=0.3）提升适应性。",
     "avoidWhen": "只有单一格式的图说时无需设置（只用一种格式就好）。"
   },
+  "standard_en": {
+    "summary": "How caption sources are sampled: the share given to tag format, natural language, an empty caption, and trigger words alone. The four should add up to 1.0.",
+    "effect": "Decides which caption format each training step uses. Mixing formats lets one LoRA respond to both tag strings and natural-language descriptions.",
+    "whenToUse": "When the dataset holds both tag captions and NL descriptions, set a mix (tag=0.7, nl=0.3, say) to broaden what the model handles.",
+    "avoidWhen": "No need to set anything when there is only one caption format -- just use that one."
+  },
   "advanced": {
     "principle": "每个训练样本随机按比例从不同图说来源采样：概率分布 [tag, nl, empty, trigger_only]。同一张图可能有多种格式的图说文件。",
     "tradeoffs": "empty ratio 过高等于部分无条件训练，影响 CFG 引导；trigger_only ratio 过高导致模型只响应触发词，失去细粒度控制能力。"
+  },
+  "advanced_en": {
+    "principle": "Each training sample randomly samples across caption sources by ratio: the distribution [tag, nl, empty, trigger_only]. The same image can have caption files in several formats.",
+    "tradeoffs": "An overly high empty ratio amounts to partial unconditional training, affecting CFG guidance; an overly high trigger_only ratio makes the model respond only to the trigger word, losing fine-grained control."
   },
   "relatedConfigs": [
     "caption_extension",

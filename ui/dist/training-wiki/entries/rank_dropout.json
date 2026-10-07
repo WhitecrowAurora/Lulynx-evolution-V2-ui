@@ -1,0 +1,39 @@
+{
+  "key": "rank_dropout",
+  "title": "LoRA Rank Dropout",
+  "title_en": "LoRA Rank Dropout",
+  "category": "LoRA / 网络结构",
+  "category_en": "LoRA / Network Structure",
+  "appliesTo": [
+    "anima-lora",
+    "sdxl-lora",
+    "sd-lora"
+  ],
+  "standard": {
+    "summary": "训练时随机丢弃 LoRA 的部分 rank 维度，类似于 Dropout 的正则化效果。默认 0（不丢弃）。",
+    "effect": "设为 0.1 = 每步随机丢弃 10% 的 rank 维度。增加正则化，降低对特定 rank 方向的依赖，有助于泛化。",
+    "whenToUse": "数据集小但 rank 较高（>32）时可开启（0.05~0.1）防止过拟合。",
+    "avoidWhen": "低 rank（<=8）时 dropout 会过度损失有限的表达能力。高 dropout 率（>0.3）容易训练不稳定。"
+  },
+  "standard_en": {
+    "summary": "Randomly drops some of the LoRA's rank dimensions during training, regularising much as dropout does. Default 0 (no dropping).",
+    "effect": "0.1 drops 10% of the rank dimensions each step. It regularises, reduces reliance on particular rank directions, and helps generalisation.",
+    "whenToUse": "Worth turning on (0.05-0.1) against overfitting when the dataset is small but the rank is fairly high (>32).",
+    "avoidWhen": "At low rank (<=8) dropout wastes what little expressiveness there is. A high rate (>0.3) easily destabilises training."
+  },
+  "advanced": {
+    "principle": "每个 forward 随机生成 mask，将选中的 rank 维度清零（Bernoulli 采样）。等价于训练了一系列不同 rank 子集，提高泛化性。",
+    "tradeoffs": "rank dropout 增加训练随机性，配合较高 LR 才能充分采样各 rank 子集；过低 LR 时 dropout 效果不明显。"
+  },
+  "advanced_en": {
+    "principle": "Each forward pass randomly generates a mask and zeroes the selected rank dimensions (Bernoulli sampling). This is equivalent to training a series of different rank subsets, improving generalization.",
+    "tradeoffs": "Rank dropout increases training randomness; a relatively high LR is needed to sample the rank subsets adequately, and at too low an LR the dropout effect is not evident."
+  },
+  "relatedConfigs": [
+    "network_dim",
+    "network_alpha"
+  ],
+  "aliases": [
+    "lora_rank_dropout"
+  ]
+}

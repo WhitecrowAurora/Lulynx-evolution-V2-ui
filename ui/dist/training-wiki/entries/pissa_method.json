@@ -1,7 +1,9 @@
 {
   "key": "pissa_method",
   "title": "PiSSA 分解方式",
+  "title_en": "PiSSA decomposition method",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "rsvd": "随机化 SVD，快，有近似。",
       "svd": "完整 SVD，准，慢。"
+    }
+  },
+  "standard_en": {
+    "summary": "The PiSSA decomposition method; the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "rsvd": "Randomised SVD: fast, with an approximation.",
+      "svd": "Full SVD: accurate, slow."
     }
   },
   "advanced": {},

@@ -1,0 +1,20 @@
+{
+  "key": "lulynx_gradient_norm_rescale_eps",
+  "title": "lulynx rescale epsilon",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "梯度 rescale 数值下限。",
+    "effect": "lulynx 梯度范数 rescale 的 epsilon，防止除零。",
+    "whenToUse": "遇到数值不稳的报错时调大。",
+    "avoidWhen": "默认值已覆盖绝大多数场景。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,16 @@
+{
+  "key": "subset_content_roles",
+  "title": "素材解耦配置",
+  "category": "素材解耦（高级）",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "素材解耦配置。",
+    "effect": "每行为 train_data_dir 下一个素材子文件夹指定内容角色、标注模式与 mask 模式。",
+    "whenToUse": "素材分层（主体/背景/配饰分开管理）时使用。",
+    "avoidWhen": "普通单目录数据集不需要。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "cdka_enabled",
   "title": "CDKA（Kronecker 压缩适配）",
+  "title_en": "CDKA Enabled",
   "category": "LoRA 变体 / Kronecker",
+  "category_en": "LoRA Variants / Kronecker",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -17,9 +19,19 @@
     "whenToUse": "希望减少 LoRA 参数量的实验性场景（如资源受限的边缘部署）。实验性功能。",
     "avoidWhen": "VRAM 不是瓶颈时 CDKA 的参数优势不明显；同等参数量下 CDKA 的表达力可能不如标准 LoRA。"
   },
+  "standard_en": {
+    "summary": "(Experimental) CDKA (Compactly Decomposed Kronecker Adaptation): factorises the weight update through a Kronecker product, which is more parameter-efficient than standard LoRA (fewer parameters for roughly the same expressiveness).",
+    "effect": "Writes the update as dW = scale x kron(w1, w2), describing it with fewer parameters. factor_in/factor_out control how the Kronecker factors' dimensions are split.",
+    "whenToUse": "Experimental cases where you want fewer LoRA parameters, such as resource-constrained edge deployment.",
+    "avoidWhen": "The parameter advantage matters little when VRAM is not the bottleneck, and at equal parameter count CDKA may be less expressive than standard LoRA."
+  },
   "advanced": {
     "principle": "ΔW = scale × kron(w1, w2)，w1 ∈ R^{out_f × in_f}，w2 ∈ R^{out/out_f × in/in_f}。w1 零初始化确保 ΔW=0 parity 起始。factor_in=0 表示未设置（truthy check 修复了一个 bug）。",
     "tradeoffs": "Kronecker 展开需要 materialize 完整 ΔW（out × in 大矩阵），实际 VRAM 比标准 LoRA 高约 3GB（是低秩矩阵 vs 完整矩阵的 trade-off），参数少但 VRAM 不省。"
+  },
+  "advanced_en": {
+    "principle": "ΔW = scale × kron(w1, w2), w1 ∈ R^{out_f × in_f}, w2 ∈ R^{out/out_f × in/in_f}. w1's zero initialization guarantees a ΔW=0 parity start. factor_in=0 means unset (a truthy-check bug was fixed).",
+    "tradeoffs": "Kronecker expansion must materialize the full ΔW (a large out × in matrix), so real VRAM is about 3GB higher than standard LoRA (low-rank vs full-matrix trade-off): fewer parameters but no VRAM savings."
   },
   "relatedConfigs": [
     "network_dim",

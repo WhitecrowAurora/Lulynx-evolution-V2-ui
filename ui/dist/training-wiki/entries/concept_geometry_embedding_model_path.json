@@ -1,0 +1,17 @@
+{
+  "key": "concept_geometry_embedding_model_path",
+  "title": "Embedding 本地路径",
+  "category": "Concept Geometry",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "概念 Embedding 本地路径。",
+    "effect": "本地模型目录；离线环境必填。",
+    "whenToUse": "离线机器训练时配置。",
+    "avoidWhen": "联网环境留空用 Hub 下载。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "enable_block_weights",
   "title": "启用分层学习率",
+  "title_en": "Enable layer Learning Rate",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,6 +12,11 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Enables per-layer learning rates (supported on the networks.* network modules only).",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "启用分层学习率训练（只支持网络模块 networks.lora）。开启后可在下方分别设置 U-Net Encoder / Mid / Decoder 各层的学习率权重，精细控制模型各部分的训练强度",
     "intervention": "",
@@ -17,5 +24,15 @@
     "tradeoffs": "",
     "codePath": ""
   },
-  "relatedConfigs": []
+  "advanced_en": {
+    "principle": "Enables per-layer learning-rate training (only supports the networks.lora network module). When on, you can set learning-rate weights separately for each U-Net Encoder / Mid / Decoder layer to finely control training intensity per part of the model.",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "relatedConfigs": [],
+  "aliases": [
+    "bw_enable"
+  ]
 }

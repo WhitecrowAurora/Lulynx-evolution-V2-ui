@@ -1,7 +1,9 @@
 {
   "key": "caption_shuffle_strategy",
   "title": "Caption 打乱策略",
+  "title_en": "Caption Shuffle Strategy",
   "category": "数据集 / 图说",
+  "category_en": "Dataset / Captions",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -15,9 +17,19 @@
     "whenToUse": "使用 tag 格式图说时推荐开启 shuffle，提升推理时 tag 顺序的灵活性。",
     "avoidWhen": "自然语言图说（句子结构有语法依赖）不应打乱 tag，保持 none。"
   },
+  "standard_en": {
+    "summary": "How the tag list is shuffled during training: none (no shuffling) / shuffle (a random order every step) / partial (keep the first N tags, shuffle the rest).",
+    "effect": "shuffle = a different tag order on every pass, which stops the model depending on one fixed order and makes it respond to any order.",
+    "whenToUse": "Recommended (shuffle) for tag-style captions, so tag order is flexible at inference.",
+    "avoidWhen": "Natural-language captions have grammatical dependencies, so their tags should not be shuffled -- keep none."
+  },
   "advanced": {
     "principle": "Tag 顺序对 CLIP 处理的影响：CLIP tokenizer 是位置感知的，相同 tag 在不同位置的 embedding 略有不同。shuffle 训练让模型对所有位置的 tag 都有良好响应。",
     "tradeoffs": "shuffle 会略微增加训练的随机性，单步梯度方向波动更大；但对 tag 组合的泛化能力有明显提升。"
+  },
+  "advanced_en": {
+    "principle": "How tag order affects CLIP: the CLIP tokenizer is position-aware, so the same tag embeds slightly differently at different positions. Shuffle training lets the model respond well to tags at all positions.",
+    "tradeoffs": "Shuffle adds a bit of training randomness — noisier per-step gradient directions — but clearly improves generalization over tag combinations."
   },
   "relatedConfigs": [
     "caption_extension",

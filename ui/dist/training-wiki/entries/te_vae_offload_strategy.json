@@ -1,7 +1,9 @@
 {
   "key": "te_vae_offload_strategy",
   "title": "TE/VAE Offload 策略",
+  "title_en": "TE/VAE Offload Strategy",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -16,8 +18,26 @@
       "grouped": "CLIP-L 与 VAE 常驻 GPU，9.2GB 的 T5 仍每步搬；少搬运但显存段更多，实测不一定更快。"
     }
   },
+  "standard_en": {
+    "summary": "phase is the default training-lifecycle policy",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "phase": "Offloads the TE/VAE by training phase.",
+      "aggressive": "Offloads more often, pushing VRAM down at the cost of more waiting.",
+      "resident": "The TE/VAE hold the GPU the whole time: the fastest and the most expensive.",
+      "grouped": "CLIP-L and the VAE stay resident on the GPU while the 9.2GB T5 is still moved every step; less transfer but more memory segments, and measurement shows it is not necessarily faster."
+    }
+  },
   "advanced": {
     "principle": "phase 为默认训练生命周期策略；aggressive 面向 6GB 低显存目标；resident 保持兼容但显存占用更高；grouped 只让 CLIP-L 与 VAE 常驻，T5 仍每步搬运",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "phase is the default training-lifecycle strategy; aggressive targets 6GB low-VRAM setups; resident stays compatible but uses more VRAM; grouped keeps only CLIP-L and VAE resident, with T5 still moved every step.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

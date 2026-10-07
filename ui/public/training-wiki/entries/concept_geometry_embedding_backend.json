@@ -1,7 +1,9 @@
 {
   "key": "concept_geometry_embedding_backend",
   "title": "Embedding 后端",
+  "title_en": "Embedding Backend",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -12,6 +14,15 @@
     "avoidWhen": "不要在旧配置中手工指定尚未实现的 ONNX 后端。",
     "optionDescriptions": {
       "pytorch": "使用 PyTorch 计算 embedding。"
+    }
+  },
+  "standard_en": {
+    "summary": "Concept Geometry currently computes its text embeddings on the PyTorch backend.",
+    "effect": "The field stays in the config for compatibility; the product UI offers only the PyTorch path, which is the one implemented.",
+    "whenToUse": "Leave it at the default when semantic embedding enhancement is enabled.",
+    "avoidWhen": "Do not hand-write the unimplemented ONNX backend into an old config.",
+    "optionDescriptions": {
+      "pytorch": "Computes the embeddings with PyTorch."
     }
   },
   "advanced": {},

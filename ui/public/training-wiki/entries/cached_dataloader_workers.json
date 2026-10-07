@@ -1,0 +1,17 @@
+{
+  "key": "cached_dataloader_workers",
+  "title": "缓存 DataLoader workers",
+  "category": "DiT / 缓存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "缓存 DataLoader workers。",
+    "effect": "从磁盘缓存加载样本的 worker 数；auto 按核数。",
+    "whenToUse": "IO 是瓶颈时加大。",
+    "avoidWhen": "默认 auto。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

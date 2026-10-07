@@ -1,0 +1,17 @@
+{
+  "key": "ip_adapter_encoder_dim",
+  "title": "IP-Adapter 编码维",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "IP-Adapter 编码器维度。",
+    "effect": "图像编码器输出维度，需与所用 checkpoint 匹配。",
+    "whenToUse": "换图像编码器时同步修改。",
+    "avoidWhen": "默认对应 CLIP-ViT-L/14。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

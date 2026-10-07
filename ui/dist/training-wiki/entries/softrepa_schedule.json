@@ -1,7 +1,9 @@
 {
   "key": "softrepa_schedule",
   "title": "SoftREPA schedule",
+  "title_en": "SoftREPA schedule",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "linear": "权重直线变。",
       "cosine": "余弦变。",
       "constant": "权重不变。"
+    }
+  },
+  "standard_en": {
+    "summary": "The values available for the SoftREPA schedule (auto-generated skeleton, still open to polish).",
+    "effect": "Switching between the enum values changes training behaviour or resource use; see the individual entries.",
+    "whenToUse": "Choose by task and hardware; when unsure use the product default.",
+    "avoidWhen": "Do not pick an experimental or aggressive gear blindly before you understand what the entries mean.",
+    "optionDescriptions": {
+      "linear": "The weight changes in a straight line.",
+      "cosine": "Changes on a cosine.",
+      "constant": "The weight does not change."
     }
   },
   "advanced": {},

@@ -1,7 +1,9 @@
 {
   "key": "qwen3",
   "title": "Qwen3 LLM 路径",
+  "title_en": "Qwen3 model Path",
   "category": "模型 / 文本编码器",
+  "category_en": "Model / Text Encoder",
   "appliesTo": [
     "anima-lora"
   ],
@@ -18,9 +20,19 @@
     "whenToUse": "通常保持默认（使用 Anima 内置的 LLM 配置）。只有需要替换 LLM 路径或调整 token 限制时才手动设置。",
     "avoidWhen": "qwen3_max_token_length 设置过短会截断长描述，导致后半部分文本完全丢失；过长则增加内存和计算开销（注意力复杂度 O(n²)）。"
   },
+  "standard_en": {
+    "summary": "The text encoder (LLM) configuration Anima uses: qwen3 names the Qwen3 model path (Anima's main text encoder); the t5 parameters configure the T5 encoder (a backup or joint encoder); text_encoder_batch_size controls the batch size of text encoding (which affects pre-caching speed).",
+    "effect": "qwen3_max_token_length caps the token count for text encoding (anything beyond is truncated); t5_max_token_length does the same for T5. llm_adapter_path names pretrained LLM Adapter weights, if you have them.",
+    "whenToUse": "Usually keep the defaults (Anima's built-in LLM configuration). Only set them by hand when you need to swap the LLM path or adjust the token limits.",
+    "avoidWhen": "Too short a qwen3_max_token_length truncates a long description and loses the second half of the text entirely; too long adds memory and compute (attention complexity is O(n^2))."
+  },
   "advanced": {
     "principle": "Anima 的双编码器架构：Qwen3（主 LLM，处理完整自然语言描述）+ T5（辅助，处理结构化描述）。两路 embedding 通过 cross-attention 共同条件化 DiT 的生成过程。text_encoder_batch_size 在预缓存阶段控制每次 LLM 推理处理多少个 caption（不影响训练 batch）。",
     "tradeoffs": "Qwen3 的 max_token_length 设置影响显存：4096 token 的 attention 是 256 token 的 16× 显存（O(n²)）。实践中 512~1024 token 的自然语言描述已经足够详细，2048+ 一般不需要。"
+  },
+  "advanced_en": {
+    "principle": "Anima's dual-encoder architecture: Qwen3 (primary LLM, handles full natural-language descriptions) + T5 (auxiliary, handles structured descriptions). Both embedding streams jointly condition the DiT's generation via cross-attention. text_encoder_batch_size controls how many captions each LLM inference call processes during the pre-caching stage (it does not affect the training batch).",
+    "tradeoffs": "Qwen3's max_token_length setting affects VRAM: 4096-token attention costs 16x the VRAM of 256 tokens (O(n²)). In practice 512~1024-token natural-language descriptions are already detailed enough; 2048+ is rarely needed."
   },
   "relatedConfigs": [
     "anima_train_llm_adapter",

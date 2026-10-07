@@ -1,0 +1,22 @@
+{
+  "key": "negative_semantic_regularization_weight",
+  "title": "负面语义正则权重",
+  "category": "负面语义正则",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sd-ip-adapter",
+    "sd-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "负面语义正则权重。",
+    "effect": "对「不希望学进来的语义方向」施加正则惩罚的强度。",
+    "whenToUse": "训练混入了不想要的风格/概念时使用。",
+    "avoidWhen": "默认 0.1 轻量；无明确污染症状时保持。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

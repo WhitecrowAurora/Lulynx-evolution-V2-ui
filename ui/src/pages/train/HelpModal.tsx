@@ -7,8 +7,10 @@ import { useI18n } from '@/i18n/useI18n'
 import {
   buildSchemaFallbackEntry,
   loadTrainingWikiEntry,
+  pickLocalizedEntry,
   type WikiEntry,
 } from '@/utils/trainingWiki'
+import { useTrainConfigStore } from '@/stores/configStore'
 
 /* 字段帮助: training-wiki manifest + aliases → entries/{key}.json
  * 结构 {title,category,appliesTo,standard{...},advanced{...},relatedConfigs}
@@ -228,7 +230,8 @@ function OptionsBlock({
 }
 
 export function HelpModal({ field, onClose }: { field: SchemaField | null; onClose: () => void }) {
-  const { t } = useI18n()
+  const { t, language } = useI18n()
+  const typeId = useTrainConfigStore((s: { typeId: string }) => s.typeId)
   const [entry, setEntry] = useState<WikiEntry | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -237,21 +240,23 @@ export function HelpModal({ field, onClose }: { field: SchemaField | null; onClo
     setLoading(true)
     setEntry(null)
     let alive = true
+    // 词条走 pickLocalizedEntry（逐字段回退），没有词条的字段走 fallback builder 的
+    // 英文分支 —— 两条路都要接，只接一条的话英文界面上一半字段仍是中文。
     void loadTrainingWikiEntry(field.key)
       .then((wiki) => {
         if (!alive) return
-        setEntry(wiki || buildSchemaFallbackEntry(field))
+        setEntry(pickLocalizedEntry(wiki, language) || buildSchemaFallbackEntry(field, language, typeId))
         setLoading(false)
       })
       .catch(() => {
         if (!alive) return
-        setEntry(buildSchemaFallbackEntry(field))
+        setEntry(buildSchemaFallbackEntry(field, language, typeId))
         setLoading(false)
       })
     return () => {
       alive = false
     }
-  }, [field])
+  }, [field, language, typeId])
 
   const { options: optionRows, notes: noteRows } = useMemo(
     () => (field ? buildOptionRows(field, entry) : { options: [], notes: [] }),

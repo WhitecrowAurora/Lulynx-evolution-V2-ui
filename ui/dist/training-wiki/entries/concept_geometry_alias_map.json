@@ -1,0 +1,17 @@
+{
+  "key": "concept_geometry_alias_map",
+  "title": "别名映射 JSON",
+  "category": "Concept Geometry",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "prep 时概念/标签别名 JSON 文本。",
+    "effect": "写入训练配置 concept_geometry_alias_map，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

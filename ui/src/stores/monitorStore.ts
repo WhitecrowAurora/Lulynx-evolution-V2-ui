@@ -73,9 +73,12 @@ let ws: WebSocket | null = null
 let wsRetry: number | undefined
 let logOffset = 0
 let finalLogDone = false
+let finalChartDone = false
 let samples: { t: number; step: number }[] = []
 let wsKickAt = 0
 let requestGeneration = 0
+let runRequest: object | null = null
+let chartRequest: object | null = null
 
 function isRunning(run: RunStatePayload | null): boolean {
   return !!run && !TERMINAL.has(String(run.status ?? '').toLowerCase())
@@ -94,6 +97,9 @@ function resetRunData() {
   requestGeneration += 1
   logOffset = 0
   finalLogDone = false
+  finalChartDone = false
+  runRequest = null
+  chartRequest = null
   samples = []
   S.setState({ logLines: [], lossPoints: [], lrPoints: [], run: null, etaText: '', stepsPerSec: 0 })
 }
@@ -154,7 +160,9 @@ async function tickActive() {
 
 async function tickRun() {
   const runId = S.getState().runId
-  if (!runId) return
+  if (!runId || runRequest) return
+  const request = {}
+  runRequest = request
   const generation = requestGeneration
   try {
     const run = unwrap<RunStatePayload>(await monitorApi.status(runId))
@@ -193,14 +201,19 @@ async function tickRun() {
     S.setState({ run, etaText, stepsPerSec })
   } catch {
     /* run 目录尚未建立等瞬态,下一轮重试 */
+  } finally {
+    // 旧 run 的迟到请求不能解锁新 run 的请求。
+    if (runRequest === request) runRequest = null
   }
 }
 
 async function tickChart() {
   const { runId, run } = S.getState()
-  if (!runId) return
+  if (!runId || chartRequest || finalChartDone) return
   const generation = requestGeneration
-  if (!isRunning(run) && S.getState().lossPoints.length > 0 && finalLogDone) return
+  const terminalAtStart = !!run && !isRunning(run)
+  const request = {}
+  chartRequest = request
   try {
     const [loss, lr] = await Promise.all([
       monitorApi.chartSeries(runId, 'loss'),
@@ -211,8 +224,12 @@ async function tickChart() {
       lossPoints: unwrap<ChartPayload>(loss)?.points ?? [],
       lrPoints: unwrap<ChartPayload>(lr)?.points ?? [],
     })
+    // 只有在观察到终态后发起且成功完成的请求，才是最后一次曲线刷新。
+    if (terminalAtStart) finalChartDone = true
   } catch {
-    /* ignore */
+    /* 终态刷新失败也必须允许下一轮重试。 */
+  } finally {
+    if (chartRequest === request) chartRequest = null
   }
 }
 

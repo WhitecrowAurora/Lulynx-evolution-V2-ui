@@ -1,7 +1,9 @@
 {
   "key": "cuda_cache_release_strategy",
   "title": "CUDA 缓存释放策略",
+  "title_en": "CUDA Cache Strategy",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -17,8 +19,27 @@
       "aggressive": "阶段和步进后都清，峰值低，抖和同步也多。"
     }
   },
+  "standard_en": {
+    "summary": "oom_only releases only while recovering from an OOM",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "off": "Never clears the cache; the peak looks inflated but there are fewer synchronisations.",
+      "oom_only": "Clears only when firefighting an OOM.",
+      "phase_boundary": "Clears when switching between the TE and VAE phases.",
+      "after_optimizer": "Clears after the optimizer step.",
+      "aggressive": "Clears after both phases and steps: the lowest peak, with more jitter and more synchronisation."
+    }
+  },
   "advanced": {
     "principle": "oom_only 仅在 OOM 恢复时释放；phase_boundary 在 TE/VAE / 组件下 CPU 边界释放；after_optimizer 保留旧低显存稳妥档；aggressive 会把阶段边界和训练步释放都打开。旧 every_step 配置会自动按 aggressive 兼容。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "oom_only releases only during OOM recovery; phase_boundary releases at TE/VAE / component-to-CPU boundaries; after_optimizer keeps the old conservative low-VRAM tier; aggressive turns on both phase-boundary and per-training-step releases. Legacy every_step configs are auto-mapped to aggressive.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

@@ -63,16 +63,18 @@ export async function autofillEmptyModelPaths(opts: { refresh?: boolean } = {}):
   const typeId = state.typeId
   const draft = state.drafts[typeId] ?? {}
   const items = await loadInventoryItems(opts)
-  if (!items.length) return 0
+  if (!items.length || useTrainConfigStore.getState().typeId !== typeId) return 0
   const fields = modelFileFields(typeId)
   const updates = applyUniqueAutofill(draft, typeId, items, fields)
   let n = 0
   for (const [key, path] of Object.entries(updates)) {
     // 再读一次,避免竞态覆盖用户刚输入
-    const cur = useTrainConfigStore.getState().drafts[typeId]?.[key]
+    const current = useTrainConfigStore.getState()
+    if (current.typeId !== typeId) break
+    const cur = current.drafts[typeId]?.[key]
     const field = getFieldDefinition(key, typeId) as SchemaFieldLike | null
     if (!isPathEmptyForAutofill(cur, field)) continue
-    useTrainConfigStore.getState().setValue(key, path)
+    current.setValue(key, path)
     n += 1
   }
   return n

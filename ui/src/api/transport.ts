@@ -90,6 +90,14 @@ export function formatApiMessage(value: unknown): string {
   }
 }
 
+export function formatPreflightItem(value: unknown, language: string): string {
+  if (language === 'en' && value && typeof value === 'object' && !Array.isArray(value)) {
+    const messageEn = formatApiMessage((value as Record<string, unknown>).message_en)
+    if (messageEn.trim()) return messageEn
+  }
+  return formatApiMessage(value)
+}
+
 export class ApiError extends Error {
   status?: number
   payload?: unknown

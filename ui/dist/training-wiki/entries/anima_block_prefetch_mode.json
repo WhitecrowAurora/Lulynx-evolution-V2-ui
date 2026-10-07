@@ -1,11 +1,13 @@
 {
   "key": "anima_block_prefetch_mode",
   "title": "Anima 预取模式",
+  "title_en": "Anima prefetch Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "original=固定深度预取（默认，与历史字节路径一致）（详见 ?）",
+    "summary": "original=固定深度预取（默认，与历史字节路径一致）；adaptive=感知 blockskip / 在线调深度。",
     "effect": "",
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。",
@@ -14,12 +16,24 @@
       "adaptive": "看着 blockskip 之类调深度，空泡少时快，调不准则抖。"
     }
   },
+  "standard_en": {
+    "summary": "original prefetches at a fixed depth -- the default, matching the historical byte-for-byte path; adaptive is aware of blockskip and tunes the depth online.",
+    "whenToUse": "When unsure keep the default, then short-test a few steps before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is on at the same time.",
+    "optionDescriptions": {
+      "original": "The prefetch depth is fixed, so behaviour is easy to predict.",
+      "adaptive": "Tunes the depth by watching things like blockskip: faster when there are few bubbles, jittery when the tuning is off."
+    }
+  },
   "advanced": {
     "principle": "original=固定深度预取（默认，与历史字节路径一致）；adaptive=感知 blockskip / 在线调深度。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "original = fixed-depth prefetch (default, byte-identical to the historical path); adaptive = blockskip-aware / online depth tuning."
   },
   "relatedConfigs": []
 }

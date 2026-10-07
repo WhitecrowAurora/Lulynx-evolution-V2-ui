@@ -223,13 +223,24 @@ function normalizeLycorisNetworkArgs(payload, typeId) {
   if (!SUPPORTED_LYCORIS_ALGOS.has(algo)) algo = 'locon';
   payload.lycoris_algo = algo;
   networkArgs.push('algo=' + algo);
-  if (payload.conv_dim != null && String(payload.conv_dim) !== '') {
-    payload.lycoris_conv_dim = payload.conv_dim;
-    networkArgs.push('conv_dim=' + payload.conv_dim);
+  // The form now emits the canonical lycoris_conv_* spelling directly; the
+  // fallback below only bridges stale drafts saved before the rename
+  // (conv_dim=4 was the old form default, never applied by any backend path).
+  if (payload.lycoris_conv_dim == null || String(payload.lycoris_conv_dim) === '') {
+    if (payload.conv_dim != null && String(payload.conv_dim) !== '') {
+      payload.lycoris_conv_dim = payload.conv_dim;
+    }
   }
-  if (payload.conv_alpha != null && String(payload.conv_alpha) !== '') {
-    payload.lycoris_conv_alpha = payload.conv_alpha;
-    networkArgs.push('conv_alpha=' + payload.conv_alpha);
+  if (payload.lycoris_conv_dim != null && Number(payload.lycoris_conv_dim) > 0) {
+    networkArgs.push('conv_dim=' + payload.lycoris_conv_dim);
+  }
+  if (payload.lycoris_conv_alpha == null || String(payload.lycoris_conv_alpha) === '') {
+    if (payload.conv_alpha != null && String(payload.conv_alpha) !== '') {
+      payload.lycoris_conv_alpha = payload.conv_alpha;
+    }
+  }
+  if (payload.lycoris_conv_alpha != null && Number(payload.lycoris_conv_alpha) > 0) {
+    networkArgs.push('conv_alpha=' + payload.lycoris_conv_alpha);
   }
   if (payload.lycoris_preset != null && String(payload.lycoris_preset).trim() !== '') networkArgs.push('preset=' + String(payload.lycoris_preset).trim());
   if (payload.dropout != null && Number(payload.dropout) > 0) {
@@ -288,7 +299,7 @@ function normalizeLycorisNetworkArgs(payload, typeId) {
   payload.network_args = [...networkArgs, ...customLines];
 
   for (const key of [
-    'conv_dim', 'conv_alpha', 'lycoris_preset', 'dropout',
+    'conv_dim', 'conv_alpha', 'lycoris_conv_dim', 'lycoris_conv_alpha', 'lycoris_preset', 'dropout',
     'rank_dropout', 'module_dropout', 'train_norm', 'use_tucker', 'use_scalar',
     'block_size', 'rescaled', 'constraint', 'rs_lora', 'lokr_factor', 'dora_wd',
     'wd_on_output', 'bypass_mode', 'decompose_both', 'full_matrix',
@@ -605,7 +616,11 @@ function passthroughTopbarPerfToggles(payload, config) {
 export function buildRunConfigFromSections(config, typeId, { getSectionsForType, isFieldVisible }) {
   const resolvedTypeId = typeId || config.model_train_type || 'sdxl-lora';
   const payload = collectVisiblePayload(config, resolvedTypeId, getSectionsForType, isFieldVisible);
-  for (const key of ['semantic_region_weighting_enabled', 'semantic_segmentation_provider', 'semantic_segmentation_model_path']) {
+  for (const key of [
+    'semantic_region_weighting_enabled',
+    'semantic_segmentation_provider',
+    'semantic_segmentation_model_path',
+  ]) {
     if (key in config) payload[key] = config[key];
   }
   normalizeTheoryVariantAliases(payload);

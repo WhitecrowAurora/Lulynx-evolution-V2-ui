@@ -1,7 +1,9 @@
 {
   "key": "compile_static_shape_drop_last",
   "title": "静态形状丢弃末批",
+  "title_en": "Shape",
   "category": "速度 / 编译",
+  "category_en": "Speed / Compilation",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "开启 compile 且使用固定 batch 形状时，若遇到末批大小不一致的编译告警可开启。",
     "avoidWhen": "数据集极小（如 <10 张）时丢失末批比例过高，不建议开启。"
   },
+  "standard_en": {
+    "summary": "When compiling with static shapes, drops the final batch automatically if its size does not match the compiled shape, instead of recompiling.",
+    "effect": "Stops a mismatched tail batch from triggering an extra compilation. You lose a little data (at most one batch's worth of samples) in exchange for compilation stability.",
+    "whenToUse": "With compile on and a fixed batch shape, turn it on if you see a compilation warning about the tail batch size.",
+    "avoidWhen": "Not recommended on a tiny dataset (<10 images), where the dropped tail is too large a fraction."
+  },
   "advanced": {
     "principle": "在 DataLoader 层检测 batch 形状是否与编译时注册的形状一致，不一致时跳过该 batch 而非触发重编译（torch.compile 的重编译代价较高）。",
     "tradeoffs": "丢失数据与避免重编译之间的 trade-off，总体而言编译稳定性通常比丢失几个样本更重要。"
+  },
+  "advanced_en": {
+    "principle": "At the DataLoader layer, checks whether the batch shape matches the shape registered at compile time; on mismatch the batch is skipped rather than triggering a recompile (torch.compile recompiles are expensive).",
+    "tradeoffs": "A trade-off between losing data and avoiding recompiles; overall, compile stability usually matters more than a few lost samples."
   },
   "relatedConfigs": [
     "compile_runtime",

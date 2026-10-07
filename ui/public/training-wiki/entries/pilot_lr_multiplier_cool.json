@@ -1,0 +1,24 @@
+{
+  "key": "pilot_lr_multiplier_cool",
+  "title": "Pilot 降温倍率",
+  "title_en": "Pilot Cool Multiplier",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "Pilot 判定要降温时，学习率倍率要去往的目标值。",
+    "effect": "默认 0.5（压到一半）。必须 > 0。实际移动速度受每步变化上限约束。",
+    "whenToUse": "想压得更狠就调小。",
+    "avoidWhen": "调太小一遇尖峰学习率就崩。"
+  },
+  "standard_en": {
+    "summary": "The target lr multiplier when the Pilot decides to cool down.",
+    "effect": "Default 0.5. Must be > 0. Movement toward it is rate-limited per step.",
+    "whenToUse": "Lower it to cool more aggressively.",
+    "avoidWhen": "Too low collapses the lr on the first spike."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

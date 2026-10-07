@@ -1,7 +1,9 @@
 {
   "key": "edit_mask_weight",
   "title": "编辑区权重",
+  "title_en": "Weights",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "With an edit_mask present, raises or lowers the loss in the edit region",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "有 edit_mask 时用于提高或降低编辑区域 loss 权重。1.0 表示不额外改权重。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "When an edit_mask is present, raises or lowers the loss weight of the edited region. 1.0 means no extra weighting.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

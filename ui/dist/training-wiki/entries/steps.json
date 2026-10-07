@@ -1,0 +1,16 @@
+{
+  "key": "steps",
+  "title": "蒸馏步数",
+  "category": "蒸馏参数",
+  "appliesTo": [
+    "lab-distiller"
+  ],
+  "standard": {
+    "summary": "蒸馏步数。",
+    "effect": "蒸馏训练总步数。",
+    "whenToUse": "蒸馏收敛快，通常几百步量级。",
+    "avoidWhen": "默认 1000。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

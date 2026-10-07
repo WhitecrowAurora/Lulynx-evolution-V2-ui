@@ -1,0 +1,17 @@
+{
+  "key": "bnb_4bit_use_double_quant",
+  "title": "bnb 双重量化",
+  "category": "精度 / 量化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "bnb 双重量化。",
+    "effect": "bitsandbytes NF4 的双重量化，进一步压缩量化常数。",
+    "whenToUse": "默认开启，几乎无质量损失。",
+    "avoidWhen": "极老 GPU 上有问题可关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

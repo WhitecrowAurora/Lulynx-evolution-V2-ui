@@ -1,0 +1,24 @@
+{
+  "key": "svd_enable_callback",
+  "title": "SVD 日志回调",
+  "title_en": "SVD Logging Callback",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "定期对适配器权重增量做奇异值分解并把摘要写进训练日志，用来观察训练是否健康。",
+    "effect": "默认关 = 完全不变。打开后每过一个检查间隔算一次 SVD（有少量额外开销）。",
+    "whenToUse": "想诊断 LoRA 更新的秩/质量、排查训练异常时打开。",
+    "avoidWhen": "不需要诊断信息时别开，白算。"
+  },
+  "standard_en": {
+    "summary": "Periodically computes singular values of the adapter weight deltas and writes a summary into the training log, to observe training health.",
+    "effect": "Default off = nothing changes. On, an SVD runs every check interval with a small overhead.",
+    "whenToUse": "Enable to diagnose the rank/quality of LoRA updates or investigate anomalies.",
+    "avoidWhen": "Leave off when you do not need the diagnostics."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

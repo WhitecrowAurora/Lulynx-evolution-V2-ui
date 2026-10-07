@@ -1,7 +1,9 @@
 {
   "key": "ac_enable_dynamic_loss_scaling",
   "title": "动态损失缩放",
+  "title_en": "Dynamic loss scaling",
   "category": "训练 / 自动化",
+  "category_en": "Training / Automation",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "使用 FP16 混合精度训练且梯度不稳定时考虑开启。",
     "avoidWhen": "已使用 GradScaler 或 BF16（不需要动态缩放）时避免与系统级 loss scaler 冲突。"
   },
+  "standard_en": {
+    "summary": "Adjusts the loss scaling factor from the gradient norm to prevent exploding or vanishing gradients.",
+    "effect": "Shrinks the loss scale when the gradient norm is too large and raises it when too small, keeping gradients in a healthy range.",
+    "whenToUse": "Consider it with FP16 mixed precision when gradients are unstable.",
+    "avoidWhen": "Avoid it when a GradScaler is already in play, or under BF16 where dynamic scaling is unnecessary -- it would fight the system-level loss scaler."
+  },
   "advanced": {
     "principle": "基于历史梯度范数动态调整 loss 缩放系数，类似 AMP GradScaler 的自定义实现。",
     "tradeoffs": "与系统级 GradScaler 可能冲突，需要确认不重复开启。"
+  },
+  "advanced_en": {
+    "principle": "Dynamically adjusts the loss scaling coefficient based on historical gradient norms — a custom implementation similar to AMP's GradScaler.",
+    "tradeoffs": "May conflict with the system-level GradScaler; confirm it is not double-enabled."
   },
   "relatedConfigs": [
     "ac_enabled"

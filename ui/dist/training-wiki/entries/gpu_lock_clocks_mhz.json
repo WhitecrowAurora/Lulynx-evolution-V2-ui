@@ -1,7 +1,9 @@
 {
   "key": "gpu_lock_clocks_mhz",
   "title": "GPU 时钟锁定",
+  "title_en": "GPU (MHz)",
   "category": "速度 / GPU 管理",
+  "category_en": "Speed / GPU Management",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -15,9 +17,19 @@
     "whenToUse": "长时间高负载训练且 GPU 温度接近限制（>80°C）时开启温度控制。benchmark 调参时锁频获得更精确的对比数据。",
     "avoidWhen": "正常训练无需锁频（会限制 boost 性能）；温度正常（<75°C）时无需温控。"
   },
+  "standard_en": {
+    "summary": "GPU performance management: locks the GPU clock (so boost cannot cause instability), sets a power cap, and sets a temperature target (throttling automatically above it).",
+    "effect": "lock_clocks_mhz locks the GPU core clock so step times stay consistent (reducing benchmark noise); power_limit_w caps GPU power draw; target_temp_c limits the boost clock automatically above the target temperature.",
+    "whenToUse": "Enable temperature control for long high-load runs where the GPU approaches its limit (>80C). Lock the clock while benchmarking to get cleaner comparisons.",
+    "avoidWhen": "Ordinary training does not need a clock lock (it caps boost performance), and temperature control is unnecessary while temperatures are normal (<75C)."
+  },
   "advanced": {
     "principle": "gpu_lock_clocks_mhz 通过 nvidia-smi --lock-gpu-clocks 实现（需要 NVIDIA 驱动权限）。power_limit_w 通过 nvidia-smi -pl 设置。temp 超限后 nvidia 驱动会自动降频（thermal throttling），target_temp_c 是在到达硬限前主动降频的软限。",
     "tradeoffs": "锁频低于 GPU 最大 boost clock 会降低峰值性能（实际训练速度下降）；但能提供更一致的每步时间，对长训练的时间预估更准确。"
+  },
+  "advanced_en": {
+    "principle": "gpu_lock_clocks_mhz is implemented via nvidia-smi --lock-gpu-clocks (needs NVIDIA driver permissions). power_limit_w is set via nvidia-smi -pl. Past the temp limit the NVIDIA driver auto-downclocks (thermal throttling); target_temp_c is a soft limit that proactively downclocks before the hard limit.",
+    "tradeoffs": "Locking below the GPU's max boost clock lowers peak performance (real training speed drops), but provides more consistent per-step times and more accurate time estimates for long runs."
   },
   "relatedConfigs": [
     "optimizer_backend",

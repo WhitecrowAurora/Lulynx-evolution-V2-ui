@@ -1,0 +1,16 @@
+{
+  "key": "lllite_skip_output_blocks",
+  "title": "跳过 Output Blocks (UNet)",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "sdxl-controlnet-lllite"
+  ],
+  "standard": {
+    "summary": "不向 UNet output blocks 注入（默认跳过）。",
+    "effect": "写入训练配置 lllite_skip_output_blocks，由训练后端在相应阶段消费。",
+    "whenToUse": "默认开启，适合大多数场景。",
+    "avoidWhen": "排查问题想回到原始行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

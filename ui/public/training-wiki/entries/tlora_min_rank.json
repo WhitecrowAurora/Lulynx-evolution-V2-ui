@@ -1,0 +1,39 @@
+{
+  "key": "tlora_min_rank",
+  "title": "lulynx 渐进秩 LoRA 最小 Rank（历史 T-LoRA key）",
+  "title_en": "lulynx Progressive-Rank LoRA Minimum Rank (historical T-LoRA key)",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [],
+  "aliases": [
+    "lulynx_progressive_rank_min",
+    "tlora_min_rank"
+  ],
+  "layers": [],
+  "standard": {
+    "summary": "lulynx 渐进秩 LoRA 的最小动态 rank；历史字段名仍为 tlora_min_rank。",
+    "effect": "",
+    "whenToUse": "不确定时先保持默认，小步数短测后再调。",
+    "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
+  },
+  "standard_en": {
+    "summary": "The minimum dynamic rank of the lulynx progressive-rank LoRA; the historical field name is still tlora_min_rank.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
+  "advanced": {
+    "principle": "全局训练进度 rank schedule 的下限。仅在历史 network_module=networks.tlora / canonical lulynx progressive-rank mapping 时生效。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Lower bound of the global training-progress rank schedule. Only effective with legacy network_module=networks.tlora / the canonical lulynx progressive-rank mapping.",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "relatedConfigs": []
+}

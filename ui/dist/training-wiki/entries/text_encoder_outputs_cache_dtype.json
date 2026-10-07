@@ -1,7 +1,9 @@
 {
   "key": "text_encoder_outputs_cache_dtype",
   "title": "文本缓存精度",
+  "title_en": "Cache",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -16,8 +18,26 @@
       "fp32": "全精度文本缓存，占地方。"
     }
   },
+  "standard_en": {
+    "summary": "The precision the on-disk text encoder output cache is saved at.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "auto": "Text cache precision chosen automatically.",
+      "fp16": "A half-precision text cache.",
+      "bf16": "A BF16 text cache.",
+      "fp32": "A full-precision text cache, which takes up space."
+    }
+  },
   "advanced": {
     "principle": "文本编码器输出磁盘缓存保存精度。auto 会尽量保留运行时 dtype；fp16 / bf16 更省空间，fp32 兼容性更高",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Storage precision for the text-encoder output disk cache. auto keeps the runtime dtype where possible; fp16 / bf16 save more space, fp32 is more compatible.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

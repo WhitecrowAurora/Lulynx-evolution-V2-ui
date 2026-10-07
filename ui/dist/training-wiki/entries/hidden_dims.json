@@ -1,0 +1,16 @@
+{
+  "key": "hidden_dims",
+  "title": "隐层维度",
+  "category": "融合头设置",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "Fusion head 隐层维度，逗号分隔。",
+    "effect": "写入训练配置 hidden_dims，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 768,256，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

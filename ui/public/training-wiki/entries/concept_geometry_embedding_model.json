@@ -1,0 +1,17 @@
+{
+  "key": "concept_geometry_embedding_model",
+  "title": "Embedding 模型 ID",
+  "category": "Concept Geometry",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "概念 Embedding 模型。",
+    "effect": "把概念文本映射到向量的模型 ID（默认 BGE-M3）。",
+    "whenToUse": "本地有更好模型时可替换。",
+    "avoidWhen": "默认即可。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

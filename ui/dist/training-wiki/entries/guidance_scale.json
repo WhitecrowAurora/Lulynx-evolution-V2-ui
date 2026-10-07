@@ -1,7 +1,9 @@
 {
   "key": "guidance_scale",
   "title": "Guidance Scale (引导强度)",
+  "title_en": "CFG / Guidance",
   "category": "DiT / Flow",
+  "category_en": "DiT / Flow",
   "appliesTo": [
     "flux-lora",
     "finetune"
@@ -9,17 +11,33 @@
   "layers": [
     "训练控制层"
   ],
+  "layers_en": [
+    "Training control layer"
+  ],
   "standard": {
     "summary": "FLUX/SD3 等 Flow Matching 模型的蒸馏引导强度。控制训练时条件信号（文本）对预测的影响力。",
     "effect": "guidance_scale=1.0 是标准训练。>1 增强文本条件的影响（类似推理时的 CFG），让模型更紧密跟随 prompt。",
     "whenToUse": "FLUX LoRA 训练时通常保持 1.0。如果生成的图像不够贴合 prompt 可适当提高。",
     "avoidWhen": "设太高（>3）可能导致过饱和和不自然的颜色。SD1.5/SDXL 不使用此参数。"
   },
+  "standard_en": {
+    "summary": "The distillation guidance strength for Flow Matching models such as FLUX and SD3. It sets how much the conditioning signal (the text) influences the prediction during training.",
+    "effect": "guidance_scale=1.0 is standard training. Above 1 the text condition's influence grows (much like CFG at inference), so the model follows the prompt more closely.",
+    "whenToUse": "Usually left at 1.0 for FLUX LoRA training. Raise it a little if generated images do not follow the prompt closely enough.",
+    "avoidWhen": "Set too high (>3) it can oversaturate and give unnatural colour. SD1.5/SDXL do not use this parameter."
+  },
   "advanced": {
     "principle": "在 Flow Matching 训练中，guidance_scale 控制 conditioned vs unconditioned 预测的混合比例。pred = uncond + scale * (cond - uncond)。scale=1 等价于标准训练。",
     "intervention": "training_step 中在 loss 计算前混合 conditioned/unconditioned 预测。",
     "expectedImpact": "影响 prompt 跟随强度。过高导致过拟合文本条件。",
     "tradeoffs": "与 discrete_flow_shift 交互——两者共同决定 flow matching 的训练行为。",
+    "codePath": "training_loop.py:pred = uncond + guidance_scale * (cond - uncond)"
+  },
+  "advanced_en": {
+    "principle": "In Flow Matching training, guidance_scale controls the mix of conditioned vs unconditioned predictions: pred = uncond + scale * (cond - uncond). scale=1 equals standard training.",
+    "intervention": "Mixes conditioned/unconditioned predictions before loss computation in training_step.",
+    "expectedImpact": "Affects prompt-following strength. Too high overfits text conditions.",
+    "tradeoffs": "Interacts with discrete_flow_shift — together they shape flow-matching training behavior.",
     "codePath": "training_loop.py:pred = uncond + guidance_scale * (cond - uncond)"
   },
   "relatedConfigs": [

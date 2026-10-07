@@ -1,0 +1,24 @@
+{
+  "key": "forgetting_probe_interval",
+  "title": "遗忘探测间隔",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "遗忘探测间隔。",
+    "effect": "每隔多少步用锚点 prompt 检查底模能力遗忘程度。",
+    "whenToUse": "长训担心灾难性遗忘时开启。",
+    "avoidWhen": "短训不需要。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

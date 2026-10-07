@@ -1,0 +1,16 @@
+{
+  "key": "anima_controlnet_cond_emb_dim",
+  "title": "条件嵌入维",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "anima-controlnet"
+  ],
+  "standard": {
+    "summary": "Anima ControlNet 条件嵌入维。",
+    "effect": "条件嵌入的向量宽度。",
+    "whenToUse": "按控制信号复杂度调整。",
+    "avoidWhen": "默认 32。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

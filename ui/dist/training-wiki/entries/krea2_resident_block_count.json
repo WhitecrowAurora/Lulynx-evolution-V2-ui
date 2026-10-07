@@ -1,0 +1,17 @@
+{
+  "key": "krea2_resident_block_count",
+  "title": "常驻 Block 数",
+  "category": "Krea2 Block/Layer Offload",
+  "appliesTo": [
+    "krea2-finetune",
+    "krea2-lora"
+  ],
+  "standard": {
+    "summary": "始终留在 GPU 的 block 数；0=按策略自动。",
+    "effect": "写入训练配置 krea2_resident_block_count，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

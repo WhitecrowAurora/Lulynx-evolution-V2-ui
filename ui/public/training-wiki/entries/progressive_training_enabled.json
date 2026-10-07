@@ -1,0 +1,41 @@
+{
+  "key": "progressive_training_enabled",
+  "title": "启用渐进式 / 分阶段训练",
+  "category": "渐进式 / 分阶段训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "hunyuan-dit-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "lumina-finetune",
+    "lumina-lora",
+    "newbie-lora",
+    "qwen-image-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "按 optimizer progress 切换阶段，可控制阶段学习率、LoRA 模块和后续课程策略。",
+    "effect": "写入训练配置 progressive_training_enabled，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

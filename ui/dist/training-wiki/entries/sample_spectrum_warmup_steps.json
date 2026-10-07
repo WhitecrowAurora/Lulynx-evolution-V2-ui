@@ -1,0 +1,17 @@
+{
+  "key": "sample_spectrum_warmup_steps",
+  "title": "Spectrum 预热步",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "Spectrum 预热步。",
+    "effect": "探针启动前的预热步数。",
+    "whenToUse": "早期统计不稳，先预热。",
+    "avoidWhen": "默认 6。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

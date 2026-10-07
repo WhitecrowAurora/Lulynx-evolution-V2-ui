@@ -1,0 +1,17 @@
+{
+  "key": "quantization_offload_optimizer_states",
+  "title": "量化时 offload 优化器状态",
+  "category": "精度 / 量化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "量化时 offload 优化器状态。",
+    "effect": "QLoRA 路线把优化器状态也卸载出显存。",
+    "whenToUse": "量化训练仍 OOM 时的进一步手段。",
+    "avoidWhen": "会拖慢步时。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

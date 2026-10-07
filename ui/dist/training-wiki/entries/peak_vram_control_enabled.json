@@ -1,7 +1,9 @@
 {
   "key": "peak_vram_control_enabled",
   "title": "Peak VRAM 峰值控制",
+  "title_en": "Enable VRAM",
   "category": "速度 / 显存",
+  "category_en": "Speed / VRAM",
   "appliesTo": [
     "anima-lora"
   ],
@@ -19,9 +21,19 @@
     "whenToUse": "训练偶发 OOM 但平均显存充足时开启（如某些 batch 因高分辨率图偶发 OOM）。",
     "avoidWhen": "显存使用稳定时无需开启（每步都有额外监控开销）。系统性 OOM（每步都 OOM）需要从根本上降低分辨率或 batch size。"
   },
+  "standard_en": {
+    "summary": "Enables dynamic management of the VRAM peak: it watches GPU memory use in real time and triggers a release or a downgrade automatically as OOM approaches, so training does not crash.",
+    "effect": "With this on, the VRAM utilisation is monitored every step, and when the peak nears the configured threshold it automatically applies micro-batch splitting (dividing the current step into smaller sub-batches), a temporary offload, a GC trigger, and similar measures.",
+    "whenToUse": "Turn it on when training OOMs occasionally while average VRAM is plentiful (some batches OOM because of a high-resolution image, for instance).",
+    "avoidWhen": "Not needed when VRAM use is steady (the monitoring costs something every step). Systemic OOM (every step) needs the resolution or batch size lowered at the root."
+  },
   "advanced": {
     "principle": "peak_vram_target_gb 设置目标峰值；soft_limit_gb 是触发降级的阈值；reserved_gb 是预留给系统的显存。diagnostics 模式记录每步 VRAM 使用峰值到日志文件，用于找出 VRAM 瓶颈 batch。micro_batch 模式在 VRAM 接近上限时将 batch 拆分为更小单元序列执行（类似 gradient accumulation 但是在 OOM 保护触发时动态生效）。",
     "tradeoffs": "实时 VRAM 监控（torch.cuda.memory_stats）有约 0.5ms/step 的额外开销；micro_batch 拆分会降低每步速度。"
+  },
+  "advanced_en": {
+    "principle": "peak_vram_target_gb sets the target peak; soft_limit_gb is the threshold that triggers degradation; reserved_gb is VRAM reserved for the system. diagnostics mode records each step's peak VRAM usage to a log file to identify VRAM-bottleneck batches. micro_batch mode splits the batch into a sequence of smaller units when VRAM nears the limit (like gradient accumulation but activated dynamically when OOM protection triggers).",
+    "tradeoffs": "Real-time VRAM monitoring (torch.cuda.memory_stats) adds about 0.5ms/step overhead; micro_batch splitting reduces per-step speed."
   },
   "relatedConfigs": [
     "gradient_checkpointing",

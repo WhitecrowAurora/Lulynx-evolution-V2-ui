@@ -5,14 +5,19 @@ import {
   TRAINING_TYPES,
   applyBackendConfigOptions,
   buildRunConfig,
+  createDefaultConfig,
+  getFieldDefinition,
   getAvailableTabs,
   getSectionsForTab,
   getSectionsForType,
   isFieldVisible,
+  normalizeDraftValue,
 } from '@/schema/schemaIndex.js'
 import { trainApi } from '@/api/trainApi'
 import { unwrap } from '@/api/transport'
 import { autofillEmptyModelPaths } from '@/lib/inventoryAutofill'
+import { submitTrainingDraft } from '@/lib/trainingSubmission'
+import { applySavedConfigDraft } from '@/lib/savedConfigDraft'
 import {
   fetchRestorableLastTraining,
   isDraftNearDefault,
@@ -21,12 +26,12 @@ import {
 } from '@/lib/lastTrainingRestore'
 import {
   clearCurrentTypeDraftOnDisk,
-  flushTrainDraftsToDisk,
+  configureTrainSchema,
+  getTrainDraft,
   hydrateTrainDraftsFromDisk,
   useTrainConfigStore,
   useDraft,
 } from '@/stores/configStore'
-import { addRunRecord } from '@/stores/historyStore'
 import { useRouteStore } from '@/stores/routeStore'
 import { toast } from '@/stores/toastStore'
 import { usePageEntrance } from '@/motion/useEntrance'
@@ -34,14 +39,20 @@ import { PageHead, Tabs } from '@/components/layout'
 import { Button } from '@/components/primitives'
 import { Input } from '@/components/form'
 import { SectionCard } from './SectionCard'
+import { filterIntentSuggestions } from './trainingIntentSuggestions'
 import { useTrainingVramProfile } from './useTrainingVramProfile'
 import { typeIcon } from './typeIcons'
 import { ConfigPreview } from './ConfigPreview'
 import { HelpModal } from './HelpModal'
 import { PreflightModal, SavedConfigsModal } from './modals'
+import { ModelCodeTrustControl, useModelCodeTrust } from './ModelCodeTrustControl'
 import './train.css'
-import { useI18n, resolveTabLabel, resolveGroupLabel } from '@/i18n/useI18n'
+import { useI18n } from '@/i18n/useI18n'
+import { resolveTabLabel, resolveGroupLabel } from '@/i18n/schemaI18n'
 import { validateConfig } from '@/utils/configValidator'
+import { usePerfModeStore } from '@/stores/perfModeStore'
+
+configureTrainSchema({ createDefaultConfig, getFieldDefinition, normalizeDraftValue })
 
 /* 训练配置页:类型轨 → schema 页签表单 → 预检/参数存取/启动 */
 
@@ -112,16 +123,15 @@ function knownTrainingType(id: string): boolean {
 
 function applyRestorable(
   last: RestorableLastTraining,
-  mode: 'seed' | 'explicit',
+  target: string,
   tt: (key: string, vars?: Record<string, string | number>) => string,
 ) {
   const sid = String(last.schemaId || '').trim()
   const st = useTrainConfigStore.getState()
-  if (sid && knownTrainingType(sid) && sid !== st.typeId) {
-    st.setType(sid)
-  } else if (sid && !knownTrainingType(sid) && mode === 'explicit') {
+  if (sid && !knownTrainingType(sid)) {
     toast.warn(tt('train.last_type_fallback', { id: sid }), 'LAST')
   }
+  if (target !== st.typeId) st.setType(target)
   useTrainConfigStore.getState().replaceDraft(last.config)
 }
 
@@ -173,14 +183,24 @@ export default function TrainPage() {
   useBackendOptions()
 
   const typeId = useTrainConfigStore((s) => s.typeId)
+  const diskHydrated = useTrainConfigStore((s) => s.diskHydrated)
+  const lulynxOpt = usePerfModeStore((s) => s.lulynxOptimization)
+  const turbocore = usePerfModeStore((s) => s.turbocore)
+  useEffect(() => {
+    const { applyValues, drafts, typeId: currentType } = useTrainConfigStore.getState()
+    const current = drafts[currentType] ?? {}
+    if (current.lulynx_optimization_enabled !== lulynxOpt || current.turbocore_enabled !== turbocore) {
+      applyValues({ lulynx_optimization_enabled: lulynxOpt, turbocore_enabled: turbocore })
+    }
+  }, [lulynxOpt, turbocore, typeId, diskHydrated])
   useDraftHydrateAndAutofill(typeId)
   const schemaRev = useTrainConfigStore((s) => s.schemaRev)
   const setType = useTrainConfigStore((s) => s.setType)
   const setValue = useTrainConfigStore((s) => s.setValue)
   const applyValues = useTrainConfigStore((s) => s.applyValues)
-  const replaceDraft = useTrainConfigStore((s) => s.replaceDraft)
   const resetDraft = useTrainConfigStore((s) => s.resetDraft)
   const draft = useDraft()
+  const modelCodeTrust = useModelCodeTrust(typeId, draft)
   const { displayDraft, managedKeys } = useTrainingVramProfile(typeId, draft)
   const navigate = useRouteStore((s) => s.navigate)
 
@@ -190,6 +210,9 @@ export default function TrainPage() {
   const [showPreflight, setShowPreflight] = useState(false)
   const [showSaved, setShowSaved] = useState(false)
   const [igniting, setIgniting] = useState(false)
+  /** 最近一次预检返回的 dataset_validation_bypass 记录;提交时显式带回 /api/run,
+      让旁路证据落到 run 目录的 run_meta/state,而不只留在预检响应里。 */
+  const preflightBypassRef = useRef<Record<string, unknown> | null>(null)
   /** 操作栏「预设」上拉菜单(收纳低频/破坏性操作,与主按钮物理隔离) */
   const [showDraftMenu, setShowDraftMenu] = useState(false)
   const draftMenuRef = useRef<HTMLDivElement>(null)
@@ -258,9 +281,10 @@ export default function TrainPage() {
   }, [managedKeys, markExplicit, setValue])
 
   const applySuggestedValues = useCallback((values: Record<string, unknown>) => {
-    const allowed = Object.fromEntries(Object.entries(values).filter(([key]) => !managedKeys.has(key)))
+    if (useTrainConfigStore.getState().typeId !== typeId) return
+    const allowed = filterIntentSuggestions(values, explicitFieldsByType.current.get(typeId) ?? [], managedKeys)
     if (Object.keys(allowed).length) applyValues(allowed)
-  }, [applyValues, managedKeys])
+  }, [applyValues, managedKeys, typeId])
   const tabs = useMemo(() => getAvailableTabs(typeId, displayDraft), [typeId, displayDraft, schemaRev])
   const activeTab = tabs.some((t) => t.key === tab) ? tab : (tabs[0]?.key ?? 'model')
   const expertMode = !!displayDraft.performance_expert_mode
@@ -307,43 +331,17 @@ export default function TrainPage() {
   const doIgnite = async () => {
     setIgniting(true)
     try {
-      // 提交前把草稿落盘(替代原独立「落盘」按钮;失败不阻断提交,草稿另有 debounce 自动写盘兜底)
-      try {
-        await flushTrainDraftsToDisk()
-      } catch {
-        /* ignore */
+      const submitted = await submitTrainingDraft(
+        (message, name) => window.confirm(message || tt('train.outdir_exists', { name })),
+        preflightBypassRef.current,
+        modelCodeTrust.consume,
+      )
+      if (!submitted) return
+      const label = TRAINING_TYPES.find((t) => t.id === submitted.typeId)?.label ?? submitted.typeId
+      toast.ok(tt('train.submitted', { type: label }), 'IGNITED')
+      for (const notice of submitted.notices) {
+        if (notice.kind !== 'info') toast.warn(notice.messages.join('；'), notice.title)
       }
-      // 输出目录同名产物冲突提示(检查失败不阻断提交)
-      // 用户点「继续」时必须把 output_collision_policy=overwrite 一起发出去:
-      // 后端的提交闸默认 abort,只看这个字段,不看前端弹过什么框。
-      let overwriteAcknowledged = false
-      const dir = String(draft.output_dir ?? '')
-      const saveTo = String(draft.save_to ?? '')
-      const name = String(draft.output_name ?? '')
-      if ((dir || saveTo) && name) {
-        try {
-          const c = unwrap<Record<string, unknown>>(
-            await trainApi.checkOutputConflict(dir, name, {
-              saveTo,
-              resumePath: String(draft.resume_path ?? ''),
-            }),
-          )
-          const conflict = c?.conflict === true || c?.exists === true
-          // blocked=false 的冲突是后端已经放行的(配了续训路径),不该再问一遍。
-          if (conflict && c?.blocked !== false) {
-            const msg = typeof c?.message === 'string' && c.message ? c.message : tt('train.outdir_exists', { name })
-            if (!window.confirm(msg)) return
-            overwriteAcknowledged = true
-          }
-        } catch {
-          /* ignore */
-        }
-      }
-      const payload = buildPayload()
-      if (overwriteAcknowledged) payload.output_collision_policy = 'overwrite'
-      const resp = unwrap(await trainApi.run(payload))
-      addRunRecord(typeId, draftSnapshot(), resp)
-      toast.ok(tt('train.submitted', { type: typeLabel }), 'IGNITED')
       navigate('monitor')
     } catch (e) {
       toast.err((e as Error).message, tt('train.submit_fail'))
@@ -382,14 +380,17 @@ export default function TrainPage() {
         toast.warn(hint, 'LAST')
         return
       }
-      const near = isDraftNearDefault(typeId, draft)
+      const sid = String(last.schemaId || '').trim()
+      const target = knownTrainingType(sid) ? sid : useTrainConfigStore.getState().typeId
+      const near = isDraftNearDefault(target, getTrainDraft(target))
       if (!near) {
-        const target = last.schemaId && knownTrainingType(last.schemaId) ? last.schemaId : typeId
         const label = TRAINING_TYPES.find((t) => t.id === target)?.label ?? target
         if (!window.confirm(tt('train.last_overwrite', { type: label }))) return
       }
-      applyRestorable(last, 'explicit', tt)
-      markExplicit(Object.keys(last.config || {}))
+      applyRestorable(last, target, tt)
+      const fields = explicitFieldsByType.current.get(target) || new Set<string>()
+      for (const key of Object.keys(last.config || {})) fields.add(key)
+      explicitFieldsByType.current.set(target, fields)
       const src = last.source === 'last-training' ? tt('train.last_source') : 'saved_params'
       toast.ok(`${tt('train.restored', { source: src })}${last.runId ? ` · ${last.runId}` : ''}`, 'LAST')
     } catch (e) {
@@ -525,7 +526,7 @@ export default function TrainPage() {
 
           {sections.map((s, i) => (
             <SectionCard
-              key={s.id}
+              key={`${typeId}:${s.id}`}
               section={s}
               idx={i}
               config={displayDraft}
@@ -543,6 +544,8 @@ export default function TrainPage() {
               {tt('train.no_match', { search })}
             </p>
           ) : null}
+
+          {typeId === 'aesthetic-scorer' && <ModelCodeTrustControl trust={modelCodeTrust} disabled={igniting} />}
 
           <div className="lx-cmdline" aria-hidden>
             <span className="lx-cmdline-prompt">$</span>
@@ -607,12 +610,29 @@ export default function TrainPage() {
       </div>
 
       <HelpModal field={helpField} onClose={() => setHelpField(null)} />
-      <PreflightModal open={showPreflight} onClose={() => setShowPreflight(false)} buildPayload={buildPayload} />
+      <PreflightModal
+        open={showPreflight}
+        onClose={() => setShowPreflight(false)}
+        buildPayload={buildPayload}
+        onReport={(report) => {
+          const record = report?.dataset_validation_bypass
+          preflightBypassRef.current =
+            record && typeof record === 'object' ? (record as Record<string, unknown>) : null
+        }}
+      />
       <SavedConfigsModal
         open={showSaved}
         onClose={() => setShowSaved(false)}
         currentDraft={draftSnapshot}
-        onLoad={(config) => { replaceDraft(config); markExplicit(Object.keys(config)) }}
+        onLoad={(bundle) => {
+          const target = applySavedConfigDraft(bundle)
+          if (!target) return false
+          const fields = explicitFieldsByType.current.get(target) || new Set<string>()
+          for (const key of Object.keys(bundle.config)) fields.add(key)
+          explicitFieldsByType.current.set(target, fields)
+          preflightBypassRef.current = null
+          return true
+        }}
       />
     </div>
   )

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
-import { postJson, request } from './transport'
+import { ApiError, postJson, request, unwrap } from './transport'
+import type { CheckpointSaveReport } from '@/lib/runOutcomeNotices'
 
 /* 监控域 API:canonical /train/* 遥测 + /api 硬件状态 */
 
@@ -18,6 +19,9 @@ export interface RunStatePayload {
   config_name?: string
   execution_profile_id?: string
   resolved_attention_backend?: string
+  effective_execution_core?: string
+  turbocore_fallback_reason?: string
+  checkpoint_save_report?: CheckpointSaveReport
   [extra: string]: unknown
 }
 
@@ -39,6 +43,37 @@ export interface LogPayload {
 export interface ChartPayload {
   points?: { step: number; value: number }[]
   series?: string
+}
+
+export interface TrainingPreviewItem {
+  name: string
+  size: number
+  mtime: number
+  step: number
+  epoch: number
+  sample: number
+  timestamp: number
+}
+
+export interface TrainingPreviewRequest {
+  request_id: string
+  status: string
+  error?: string
+  artifacts?: string[]
+}
+
+export interface TrainingPreviewPayload {
+  task_id: string
+  resolved_run_id: string
+  status: string
+  items: TrainingPreviewItem[]
+  cursor: number
+  next_cursor: number
+  has_more: boolean
+  total: number
+  sort: string
+  preview_request?: TrainingPreviewRequest | null
+  pending_cpu_previews?: number
 }
 
 export interface QualityTrend {
@@ -146,6 +181,10 @@ export interface SystemMonitorPayload {
 }
 
 export const monitorApi = {
+  requestPreview: async (taskId: string, signal: AbortSignal) =>
+    unwrap<TrainingPreviewRequest>(await request(`/api/task_preview/${encodeURIComponent(taskId)}`, {
+      method: 'POST', signal, credentials: 'include',
+    })),
   active: () => request<ActivePayload>('/train/active'),
   status: (runId: string) => request<RunStatePayload>(`/train/status/${encodeURIComponent(runId)}`),
   log: (runId: string, offset: number, maxLines = 500) =>
@@ -157,6 +196,23 @@ export const monitorApi = {
       `/train/runs/${encodeURIComponent(runId)}/quality-report`,
       signal ? { signal } : {},
     ),
+  previews: async (taskId: string, cursor = 0, limit = 24, signal?: AbortSignal) =>
+    unwrap<TrainingPreviewPayload>(await request(
+      `/api/task_preview/${encodeURIComponent(taskId)}?cursor=${cursor}&limit=${limit}`,
+      { signal, credentials: 'include' },
+    )),
+  previewFileUrl: (taskId: string, name: string, mtime: number) =>
+    `/api/task_preview/${encodeURIComponent(taskId)}/file?name=${encodeURIComponent(name)}&v=${encodeURIComponent(String(mtime))}`,
+  previewImage: async (taskId: string, name: string, mtime: number, signal: AbortSignal) => {
+    // Use the same fetch transport as JSON requests: the host bridge can resolve
+    // the backend origin and attach auth headers. A native <img src="/api/...">
+    // bypasses that bridge; render a local blob URL instead, never a query token.
+    const response = await fetch(monitorApi.previewFileUrl(taskId, name, mtime), {
+      signal, credentials: 'include',
+    })
+    if (!response.ok) throw new ApiError('Preview image unavailable', response.status)
+    return response.blob()
+  },
   stop: () => postJson('/train/stop', {}),
   // 没有 gpuStatus:/api/gpu_status 的 gpu 部分与 /api/system_monitor 逐字段相同,
   // 留一个零调用的别名只会让人以为有第二条轮询面。显卡表走 /api/graphic_cards。

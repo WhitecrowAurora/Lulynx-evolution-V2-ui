@@ -1,7 +1,9 @@
 {
   "key": "module_offload_backbone_ratio",
   "title": "模块级 Offload 配置",
+  "title_en": "Backbone Offload Ratio",
   "category": "速度 / 显存",
+  "category_en": "Speed / VRAM",
   "appliesTo": [
     "anima-lora"
   ],
@@ -19,9 +21,19 @@
     "whenToUse": "需要精确控制哪些模块 offload 时（比 blocks_to_swap 更细粒度）。高级 VRAM 管理场景。",
     "avoidWhen": "不了解模型各模块结构时，使用更简单的 blocks_to_swap 或 gradient_checkpointing 即可。"
   },
+  "standard_en": {
+    "summary": "Fine-grained module-level CPU offload configuration: selectively offloads particular modules by name pattern or parameter count, which is more precise than offloading everything.",
+    "effect": "backbone_ratio controls the offload ratio for the base model's weights; te_ratio controls it for the text encoder; include/exclude_patterns support regular expressions for exact control.",
+    "whenToUse": "When you need precise control over which modules get offloaded (finer-grained than blocks_to_swap). An advanced VRAM-management scenario.",
+    "avoidWhen": "When you do not know the model's module structure -- the simpler blocks_to_swap or gradient_checkpointing will do."
+  },
   "advanced": {
     "principle": "模块 offload 通过 register_forward_pre_hook 和 register_forward_hook 在每次 forward 前/后执行 to(device) 操作。enhanced 模式增加异步传输和预取优化。min_param_mb 避免对小模块频繁传输（传输开销 > 节省收益）。",
     "tradeoffs": "细粒度 offload 配置灵活但复杂；参数名 pattern 需要与实际模型的 module 命名匹配，建议先用 print(model) 查看模块结构。"
+  },
+  "advanced_en": {
+    "principle": "Module offload performs to(device) before/after each forward via register_forward_pre_hook and register_forward_hook. The enhanced mode adds async transfer and prefetch optimizations. min_param_mb avoids frequently moving tiny modules (transfer cost > savings).",
+    "tradeoffs": "Fine-grained offload configuration is flexible but complex; parameter-name patterns must match the actual model's module naming — print(model) first to inspect the structure."
   },
   "relatedConfigs": [
     "blocks_to_swap",

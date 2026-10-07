@@ -1,0 +1,24 @@
+{
+  "key": "pilot_lr_multiplier_boost",
+  "title": "Pilot 提速倍率",
+  "title_en": "Pilot Boost Multiplier",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "Pilot 判定训练停滞时，学习率倍率要去往的目标值。",
+    "effect": "默认 2.0（翻倍）。必须 > 0。实际移动速度受每步变化上限约束。",
+    "whenToUse": "停滞很顽固时可以调大。",
+    "avoidWhen": "调太大容易把训练推爆。"
+  },
+  "standard_en": {
+    "summary": "The target lr multiplier when the Pilot decides training is stalled.",
+    "effect": "Default 2.0. Must be > 0. Movement toward it is rate-limited per step.",
+    "whenToUse": "Raise it for stubborn stalls.",
+    "avoidWhen": "Too high can blow up the run."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

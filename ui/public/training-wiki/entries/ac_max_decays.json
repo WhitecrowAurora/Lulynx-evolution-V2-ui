@@ -1,7 +1,9 @@
 {
   "key": "ac_max_decays",
   "title": "最大衰减次数",
+  "title_en": "Max decay count",
   "category": "训练 / 自动化",
+  "category_en": "Training / Automation",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "默认 3 适合大多数场景。长训练（>1000 步）可适当增加到 5。",
     "avoidWhen": "不建议设为 0（完全不降）或过大（LR 接近 0 后训练无效）。"
   },
+  "standard_en": {
+    "summary": "How many times smart LR decay may fire before it stops lowering the rate any further. Default 3.",
+    "effect": "Keeps repeated plateaus from driving the LR down towards zero. Three times 0.5 leaves the LR at 12.5% of the original.",
+    "whenToUse": "The default 3 fits most cases. On a long run of over 1000 steps, 5 is reasonable.",
+    "avoidWhen": "Do not set it to 0 -- no decay at all -- and do not set it so high that the LR reaches near zero and training stops doing anything."
+  },
   "advanced": {
     "principle": "计数器在每次触发衰减时递增，达到 max_decays 后停止响应平台期信号。",
     "tradeoffs": "max_decays 与 lr_decay_factor 共同决定 LR 的最终下限。"
+  },
+  "advanced_en": {
+    "principle": "The counter increments on each decay trigger; after max_decays it stops responding to plateau signals.",
+    "tradeoffs": "max_decays and lr_decay_factor together determine the final LR floor."
   },
   "relatedConfigs": [
     "ac_enabled",

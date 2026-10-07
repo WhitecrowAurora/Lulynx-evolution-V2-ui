@@ -1,7 +1,9 @@
 {
   "key": "lr_scheduler_type",
   "title": "自定义调度器类",
+  "title_en": "Custom scheduler class",
   "category": "训练 / 学习率",
+  "category_en": "Training / Learning Rate",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -13,9 +15,19 @@
     "whenToUse": "确实要用下拉以外的调度器，且运行环境里装了对应的包时。",
     "avoidWhen": "下拉里有能满足需求的项时。内置项有参数校验、断点续训和多参数组保护；动态导入这条路只做最基本的检查，类路径写错或包没装会在训练开始时才失败。"
   },
+  "standard_en": {
+    "summary": "Holds the full class path of a third-party scheduler. Every item in the factory dropdown is implemented by the trainer itself and needs nothing here; this field is the channel left open for schedulers outside that dropdown.",
+    "effect": "Once filled in, the backend imports and instantiates the class path dynamically, with its parameters coming from lr_scheduler_args. If the name you write happens to match one of the dropdown items, the backend uses that item directly and does not import a third-party package.",
+    "whenToUse": "When you really do need a scheduler outside the dropdown and the matching package is installed in the runtime environment.",
+    "avoidWhen": "When an item in the dropdown already meets the need. The built-in items come with parameter validation, resume support and multi-parameter-group protection; the dynamic-import path only does the most basic checks, so a wrong class path or a missing package will not fail until training starts."
+  },
   "advanced": {
     "principle": "使用 importlib 动态导入类路径。导入前会先问一次重定向表：出厂支持的调度器都能在表里查到对应实现，只有查不到的名字才真的走动态导入。",
     "tradeoffs": "需要保证类路径在运行环境里可访问，构造参数与该类的签名匹配（用 lr_scheduler_args 传 key=value）。动态导入的调度器按绝对学习率赋值时，会把不同参数组的学习率压成同一个值——训练器给 loss 加权、flow 不确定性等辅助参数配的是另一档学习率，那些组会一起被改掉。"
+  },
+  "advanced_en": {
+    "principle": "Uses importlib to import the class path dynamically. Before importing, a redirect table is consulted once: factory-supported schedulers all resolve in the table, and only unresolvable names actually go through dynamic import.",
+    "tradeoffs": "The class path must be accessible in the runtime environment, and constructor arguments must match that class's signature (pass key=value via lr_scheduler_args). A dynamically imported scheduler that assigns absolute learning rates flattens different param groups' LRs into one value — the trainer gives loss weighting, flow uncertainty, and other auxiliary parameters their own LR tier, and those groups get overwritten too."
   },
   "relatedConfigs": [
     "lr_scheduler",

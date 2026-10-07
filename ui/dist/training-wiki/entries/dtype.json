@@ -1,7 +1,9 @@
 {
   "key": "dtype",
   "title": "计算精度（dtype）",
+  "title_en": "Compute precision",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -15,6 +17,18 @@
       "bf16": "BF16 算。",
       "fp16": "FP16 算。",
       "fp32": "FP32 算，最慢最占。"
+    }
+  },
+  "standard_en": {
+    "summary": "Compute precision (dtype); the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "auto": "Picks the precision automatically.",
+      "bf16": "Computes in BF16.",
+      "fp16": "Computes in FP16.",
+      "fp32": "Computes in FP32: the slowest and most memory-hungry."
     }
   },
   "advanced": {},

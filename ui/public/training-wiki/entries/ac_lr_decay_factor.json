@@ -1,7 +1,9 @@
 {
   "key": "ac_lr_decay_factor",
   "title": "学习率衰减系数",
+  "title_en": "Learning ratedecay",
   "category": "训练 / 自动化",
+  "category_en": "Training / Automation",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "默认 0.5 稳健。若平台期后希望温和调整可改为 0.7~0.8。",
     "avoidWhen": "不建议设为 0 或 1.0。"
   },
+  "standard_en": {
+    "summary": "Factor the learning rate is multiplied by when smart LR decay fires. Default 0.5, i.e. halved.",
+    "effect": "0.5 halves it each time; 0.7 is a gentle 30% cut; 0.3 is an aggressive drop to 30%.",
+    "whenToUse": "The default 0.5 is the robust choice. Use 0.7 to 0.8 if you want a gentler nudge after a plateau.",
+    "avoidWhen": "Do not set it to 0 or to 1.0."
+  },
   "advanced": {
     "principle": "new_lr = current_lr * ac_lr_decay_factor，应用于所有参数组，永久生效。",
     "tradeoffs": "多次触发后 LR 呈指数衰减：3 次 × 0.5 → 原 LR 的 12.5%。"
+  },
+  "advanced_en": {
+    "principle": "new_lr = current_lr * ac_lr_decay_factor, applied to all parameter groups, permanently.",
+    "tradeoffs": "Repeated triggers decay LR exponentially: 3 × 0.5 → 12.5% of the original LR."
   },
   "relatedConfigs": [
     "ac_enabled",

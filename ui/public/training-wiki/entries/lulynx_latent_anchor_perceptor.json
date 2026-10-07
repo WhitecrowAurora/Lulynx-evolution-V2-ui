@@ -1,7 +1,9 @@
 {
   "key": "lulynx_latent_anchor_perceptor",
   "title": "感知锚 Perceptor",
+  "title_en": "Perceptor",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -12,6 +14,15 @@
     "avoidWhen": "未做短测对照前不要同时叠多个激进实验档。",
     "optionDescriptions": {
       "latent_msgrad": "latent 多尺度梯度锚。"
+    }
+  },
+  "standard_en": {
+    "summary": "The perceptual anchor Perceptor: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "latent_msgrad": "The latent multi-scale gradient anchor."
     }
   },
   "advanced": {},

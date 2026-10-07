@@ -1,7 +1,9 @@
 {
   "key": "flux2_model_version",
   "title": "模型版本（flux2_model_version）",
+  "title_en": "Model version",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -12,6 +14,15 @@
     "avoidWhen": "未理解影响前不要叠多个激进档。",
     "optionDescriptions": {
       "klein-base-9b": "FLUX.2 Klein Base 9B。"
+    }
+  },
+  "standard_en": {
+    "summary": "The model version (flux2_model_version); the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "klein-base-9b": "FLUX.2 Klein Base 9B."
     }
   },
   "advanced": {},

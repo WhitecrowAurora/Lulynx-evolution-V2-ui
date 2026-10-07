@@ -1,7 +1,9 @@
 {
   "key": "lr_scheduler_num_cycles",
   "title": "Cosine 重启次数",
+  "title_en": "Restart count",
   "category": "训练 / 学习率",
+  "category_en": "Training / Learning Rate",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -14,9 +16,19 @@
     "whenToUse": "长训练（>500 步）可尝试 num_cycles=2~3，让优化器在末期仍有较高 LR 探索。短训练保持 1。",
     "avoidWhen": "使用非余弦调度器时此参数无效。"
   },
+  "standard_en": {
+    "summary": "The number of restart cycles for the cosine_with_restarts scheduler. The default is 1 (a single cosine decaying from the target LR to near zero).",
+    "effect": "num_cycles=1: the LR falls to about 0, which is the steadiest at the end of training. num_cycles=3: the LR goes from high to low in each cycle, giving the optimizer several chances to escape a local optimum.",
+    "whenToUse": "On a long run (>500 steps) you can try num_cycles=2~3 so the optimizer still has a fairly high LR to explore with late on. Keep it at 1 for short runs.",
+    "avoidWhen": "This parameter has no effect with a non-cosine scheduler."
+  },
   "advanced": {
     "principle": "每个 cycle 长度 = 总步数 / num_cycles，末尾 LR = lr_min（通常接近 0）。多 cycle 相当于多次重新启动探索，但也意味着最终不在 LR 最低点结束。",
     "tradeoffs": "num_cycles > 1 在训练末期 LR 仍较高，可能导致末期权重不稳定；num_cycles=1 末期 LR 接近 0 更稳定，配合 EMA 效果最好。"
+  },
+  "advanced_en": {
+    "principle": "Each cycle's length = total steps / num_cycles, ending at lr_min (usually near 0). Multiple cycles amount to repeated restarts for exploration, but also mean the run does not end at the LR minimum.",
+    "tradeoffs": "num_cycles > 1 leaves LR still high at the end, which can destabilize final weights; num_cycles=1 ends near 0 and is more stable — best paired with EMA."
   },
   "relatedConfigs": [
     "lr_scheduler",

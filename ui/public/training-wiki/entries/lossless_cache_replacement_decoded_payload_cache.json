@@ -1,7 +1,9 @@
 {
   "key": "lossless_cache_replacement_decoded_payload_cache",
   "title": "解码载荷驻留内存",
+  "title_en": "Lossless Cache Replacement Decoded Payload Cache",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Keeps the decoded latent payload resident in CPU memory, cutting repeated disk IO",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "将解码后的 latent 载荷驻留在 CPU 内存，减少重复磁盘 IO（data-bound 场景有效）。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Resident-decodes latent payloads in CPU memory, reducing repeated disk IO (effective in data-bound scenarios).",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

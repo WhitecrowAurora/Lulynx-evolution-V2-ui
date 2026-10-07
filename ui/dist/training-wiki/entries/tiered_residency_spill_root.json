@@ -1,0 +1,17 @@
+{
+  "key": "tiered_residency_spill_root",
+  "title": "落盘目录",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "留空 = 系统临时目录。",
+    "effect": "强烈建议指到 NVMe SSD；机械盘或 U 盘上这条路必然负收益。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

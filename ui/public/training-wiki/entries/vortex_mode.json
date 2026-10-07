@@ -1,7 +1,9 @@
 {
   "key": "vortex_mode",
   "title": "Vortex 模式（vortex_mode）",
+  "title_en": "Vortex mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -16,8 +18,26 @@
       "cache_v0": "缓存 v0。"
     }
   },
+  "standard_en": {
+    "summary": "observe/planner do not change the training tensor path",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "observe": "Observation only.",
+      "planner": "Turns the planner on.",
+      "cache_observe": "Cache-related observation.",
+      "cache_v0": "Cache v0."
+    }
+  },
   "advanced": {
     "principle": "observe/planner 不改变训练 tensor 路径；cache_observe 会接入候选统计；cache_v0 才会按预算尝试 GPU 解码缓存，建议只在监控显示 PCIe 等待明显时手动 。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "observe/planner do not change the training tensor path; cache_observe hooks into candidate statistics; only cache_v0 actually attempts GPU decode caching against a budget — enable it manually only when monitoring shows noticeable PCIe waits.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

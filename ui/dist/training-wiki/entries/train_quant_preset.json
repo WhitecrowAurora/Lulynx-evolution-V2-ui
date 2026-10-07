@@ -1,0 +1,38 @@
+{
+  "key": "train_quant_preset",
+  "title": "训练量化快捷",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-addift",
+    "anima-controlnet",
+    "anima-edit-model",
+    "anima-finetune",
+    "anima-ileco",
+    "anima-lora",
+    "anima-multi-addift",
+    "boogu-edit-lora",
+    "boogu-lora",
+    "concept-edit",
+    "flux-finetune",
+    "flux2-lora",
+    "hunyuan-dit-lora",
+    "krea2-lora",
+    "ltx23-lora",
+    "ltx25-lora",
+    "lumina-finetune",
+    "lumina-lora",
+    "qwen-image-lora",
+    "sd3-lora",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "产品糖：映射到 weight_compression_preset。",
+    "effect": "推荐 stable_backbone_int8；off=不改。与 keep_w8 互斥。",
+    "whenToUse": "默认 off，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

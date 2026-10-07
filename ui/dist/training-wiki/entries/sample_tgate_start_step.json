@@ -1,0 +1,17 @@
+{
+  "key": "sample_tgate_start_step",
+  "title": "T-GATE 起始步",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "T-GATE 起始步。",
+    "effect": "从第几步开始应用 T-GATE（跳过深层 cross-attn）。",
+    "whenToUse": "T-GATE 实验时配置。",
+    "avoidWhen": "探针默认 observe-only。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

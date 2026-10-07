@@ -1,0 +1,17 @@
+{
+  "key": "easy_control_scale",
+  "title": "Legacy 强度",
+  "category": "EasyControl",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "EasyControl Legacy 强度。",
+    "effect": "旧版 easycontrol 路线的注入强度。",
+    "whenToUse": "维护旧配置时使用。",
+    "avoidWhen": "新训练用 v2 字段。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

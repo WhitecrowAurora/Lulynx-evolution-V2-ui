@@ -1,7 +1,9 @@
 {
   "key": "band_timestep_scheduler_enabled",
   "title": "Band Timestep Scheduler（频带时间步调度器）",
+  "title_en": "Band Timestep Scheduler",
   "category": "前沿储备 / 训练",
+  "category_en": "Frontier Reserve / Training",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "数据集高频/低频内容差异较大时（如同时包含线稿和照片）可以尝试，让训练自适应图像内容。实验性功能。",
     "avoidWhen": "默认关闭。内容均匀的数据集（全是同风格图像）使用意义不大。"
   },
+  "standard_en": {
+    "summary": "(Experimental) An adaptive timestep sampler built on wavelet analysis: it measures each training sample's high- and low-frequency energy on the fly and shifts the timestep distribution so that images rich in high-frequency detail get more of the noise steps that correspond to it.",
+    "effect": "Images rich in high frequency (fine texture) get a higher chance of high-noise steps, so the model spends more of that image's training on detail-side denoising; images dominated by low frequency (large flat areas) draw more low-noise steps.",
+    "whenToUse": "Worth trying when the dataset's high- and low-frequency content varies a lot (line art and photographs in one set, say), so the run adapts to image content. An experimental feature.",
+    "avoidWhen": "Off by default. There is little point on a uniform dataset (all images in one style)."
+  },
   "advanced": {
     "principle": "对每张图像的 latent 做 DCT/小波变换，计算高频能量 E_high 和低频能量 E_low，以此调制时间步采样的偏置（类似 P2 weighting 但基于内容感知而非全局统计）。",
     "tradeoffs": "每步额外的小波计算增加约 3~8% 的训练开销；对于 GPU-bound 训练此额外开销相对不明显。"
+  },
+  "advanced_en": {
+    "principle": "Applies a DCT/wavelet transform to each image's latent and computes high-frequency energy E_high vs low-frequency energy E_low, using them to bias timestep sampling (like P2 weighting but content-aware rather than global statistics).",
+    "tradeoffs": "The extra wavelet computation per step adds roughly 3~8% training overhead; relatively imperceptible for GPU-bound training."
   },
   "relatedConfigs": [
     "anima_weighting_scheme",

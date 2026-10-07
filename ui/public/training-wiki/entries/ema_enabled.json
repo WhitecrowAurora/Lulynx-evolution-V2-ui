@@ -1,7 +1,9 @@
 {
   "key": "ema_enabled",
   "title": "EMA（指数滑动平均）",
+  "title_en": "Enable EMA",
   "category": "训练 / 平滑",
+  "category_en": "Training / Smoothing",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -11,11 +13,20 @@
   "layers": [
     "训练控制层"
   ],
+  "layers_en": [
+    "Training control layer"
+  ],
   "standard": {
     "summary": "训练过程中维护一份模型参数的指数滑动平均副本。保存时额外写出 EMA 权重，推理效果通常比最后一步权重更稳定。",
     "effect": "减少训练末期随机波动对最终权重的影响。ema_decay=0.999 时相当于对最近约 1000 步取加权平均。loss 曲线不变，但保存的权重更平滑。",
     "whenToUse": "大多数 LoRA 训练推荐开启，尤其是步数较多或 loss 末期仍有抖动时。",
     "avoidWhen": "极短训练（<100 步）时 EMA 累积不足，意义不大。显存极度紧张时会多占一份参数副本（与主权重等量）。"
+  },
+  "standard_en": {
+    "summary": "Keeps an exponential moving average copy of the model parameters during training. On save, the EMA weights are written out as well, and they usually behave more steadily at inference than the final step's weights.",
+    "effect": "Reduces the influence of late-run random fluctuation on the final weights. At ema_decay=0.999 it is roughly a weighted average of the last 1000 steps. The loss curve is unchanged, but the saved weights are smoother.",
+    "whenToUse": "Recommended for most LoRA training, especially with many steps or when the loss still jitters late in the run.",
+    "avoidWhen": "In a very short run (<100 steps) the EMA has not accumulated enough to matter. It also holds an extra copy of the parameters (the same size as the main weights), which counts when VRAM is very tight."
   },
   "advanced": {
     "principle": "每个优化步后执行 θ_ema = decay × θ_ema + (1-decay) × θ_t。ema_update_after_step 控制从第几步才开始累积，避免早期不稳定权重污染 EMA。",
@@ -24,9 +35,23 @@
     "tradeoffs": "EMA 权重滞后于真实权重，若训练末期需要快速适应某方向，EMA 可能不如最后一步权重激进。",
     "codePath": "core/lulynx_trainer/training_loop.py → EMA 更新 hook → 保存时写出 ema state"
   },
+  "advanced_en": {
+    "principle": "After each optimizer step, θ_ema = decay × θ_ema + (1-decay) × θ_t. ema_update_after_step controls from which step accumulation begins, keeping early unstable weights from polluting the EMA.",
+    "intervention": "Maintains shadow copies of all trainable parameters, excluded from gradient computation. On save, the EMA copy is written with an _ema suffix or as a separate file.",
+    "expectedImpact": "More stable inference quality; no effect on training speed, VRAM grows by roughly one parameter set.",
+    "tradeoffs": "EMA weights lag the true weights; if the end of training needs rapid adaptation in some direction, EMA may be less aggressive than the final-step weights.",
+    "codePath": "core/lulynx_trainer/training_loop.py → EMA update hook → writes ema state on save"
+  },
   "relatedConfigs": [
     "ema_decay",
     "ema_update_every",
     "ema_update_after_step"
+  ],
+  "aliases": [
+    "ema_use_ema",
+    "lulynx_auto_check_every",
+    "lulynx_auto_early_stop_patience",
+    "lulynx_ema_decay",
+    "lulynx_ema_enabled"
   ]
 }

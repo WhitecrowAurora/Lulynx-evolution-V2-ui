@@ -115,7 +115,11 @@ export function mergeCatalogWithLocalResources(items: ResourceCatalogItem[], loc
 
 export function buildSemanticProviderPatch(item: ResourceCatalogItem) {
   if (!item.can_select) throw new Error('只有 ready / direct_semantic 且已安装的资源可以设为当前 provider')
-  return { semantic_region_weighting_enabled: true, semantic_segmentation_provider: item.runtime_provider_id, semantic_segmentation_model_path: item.local_path }
+  return {
+    semantic_region_weighting_enabled: true,
+    semantic_segmentation_provider: item.runtime_provider_id,
+    semantic_segmentation_model_path: item.local_path,
+  }
 }
 
 export function buildCatalogDownloadPayload(item: ResourceCatalogItem, options: { acceptLicense?: boolean; hfToken?: string } = {}) {

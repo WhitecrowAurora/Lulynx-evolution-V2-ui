@@ -1,7 +1,9 @@
 {
   "key": "safeguard_max_nan_count",
   "title": "最大连续 NaN 次数",
+  "title_en": "Max NaN count",
   "category": "训练 / 稳定性",
+  "category_en": "Training / Stability",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -16,9 +18,19 @@
     "whenToUse": "默认 3 适合大多数场景。使用 FP16 且 NaN 偶发概率较高时可提高到 5~10。",
     "avoidWhen": "不建议设为 0（不停止）或过大（掩盖真实崩溃）。"
   },
+  "standard_en": {
+    "summary": "How many consecutive NaN/Inf losses force training to stop. Default 3.",
+    "effect": "1 = stop the moment the first NaN appears (the strictest); 10 = tolerate the occasional NaN and only stop on a sustained run of them.",
+    "whenToUse": "The default 3 suits most cases. With FP16, where the odd NaN is fairly likely, you can raise it to 5~10.",
+    "avoidWhen": "0 is not advisable (never stops), nor is a very large value (it masks a real collapse)."
+  },
   "advanced": {
     "principle": "维护连续 NaN 计数器：正常步归零，触发时递增，超过阈值抛出 SafeGuardException 终止训练。",
     "tradeoffs": "设置过低（=1）可能因混合精度偶发数值噪声误触发；设置过高则真实崩溃时浪费更多 GPU 时间。"
+  },
+  "advanced_en": {
+    "principle": "Maintains a consecutive-NaN counter: reset to zero on normal steps, incremented on trigger; past the threshold it throws SafeGuardException to terminate training.",
+    "tradeoffs": "Too low a setting (=1) can misfire from occasional mixed-precision numerical noise; too high a setting wastes more GPU time when a real crash happens."
   },
   "relatedConfigs": [
     "safeguard_enabled",

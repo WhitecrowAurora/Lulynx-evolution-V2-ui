@@ -1,7 +1,9 @@
 {
   "key": "cpu_offload_checkpointing_mode",
   "title": "CPU Offload Checkpointing 模式",
+  "title_en": "CPU Offload Checkpointing Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -15,8 +17,25 @@
       "full": "绑死，GPU 最省，反向加拷贝最慢。"
     }
   },
+  "standard_en": {
+    "summary": "How gradient checkpointing combines with CPU offload: none = not combined; auto = decided automatically; full = full offload.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "none": "Checkpointing and CPU offload stay unlinked.",
+      "auto": "Decides whether to link them.",
+      "full": "Links them firmly: easiest on the GPU, slowest backward because of the copies."
+    }
+  },
   "advanced": {
     "principle": "梯度检查点与 CPU offload 结合模式：none=不结合；auto=自动选择；full=完整 offload。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "How gradient checkpointing combines with CPU offload: none = no combining; auto = chosen automatically; full = full offload.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

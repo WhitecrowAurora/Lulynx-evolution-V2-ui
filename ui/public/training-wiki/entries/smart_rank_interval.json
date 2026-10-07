@@ -1,0 +1,24 @@
+{
+  "key": "smart_rank_interval",
+  "title": "SmartRank 间隔",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "SmartRank 间隔。",
+    "effect": "SmartRank 每隔多少步重新评估各层 rank 需求。",
+    "whenToUse": "使用 smart rank 时按需调整。",
+    "avoidWhen": "评估有开销，别太频。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

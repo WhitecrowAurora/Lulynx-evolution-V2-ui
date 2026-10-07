@@ -1,0 +1,16 @@
+{
+  "key": "universal_dit_output_selector_json",
+  "title": "模型输出选择 JSON",
+  "category": "Batch / Objective / Forward 契约",
+  "appliesTo": [
+    "universal-dit-lora"
+  ],
+  "standard": {
+    "summary": "多 Tensor 输出必须指定 mapping key、attribute 或 tuple index；运行时不会取第一个 Tensor 猜测。",
+    "effect": "写入训练配置 universal_dit_output_selector_json，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

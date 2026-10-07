@@ -1,0 +1,18 @@
+{
+  "key": "batch_size",
+  "title": "Batch",
+  "category": "LCM / Turbo 蒸馏参数",
+  "appliesTo": [
+    "aesthetic-scorer",
+    "lab-distiller",
+    "sdxl-turbo-lora"
+  ],
+  "standard": {
+    "summary": "蒸馏批量。",
+    "effect": "蒸馏训练的 batch size。",
+    "whenToUse": "按显存调整。",
+    "avoidWhen": "默认 1。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "train_batch_size",
   "title": "批次大小",
+  "title_en": "Train Batch Size",
   "category": "训练 / 批次",
+  "category_en": "Training / Batching",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,6 +15,10 @@
   "layers": [
     "数据层",
     "优化器层"
+  ],
+  "layers_en": [
+    "Data layer",
+    "Optimizer layer"
   ],
   "standard": {
     "summary": "每次前向/反向传播同时处理多少张图片。batch_size 是显存、梯度质量和训练速度三者之间的核心调节旋钮。",
@@ -27,11 +33,31 @@
     "whenToUse": "先确定显存能承受的 batch_size，再用 gradient_accumulation_steps 补足到目标有效 batch。经验法则：LoRA 训练有效 batch=4-8 通常足够；概念学习（角色/风格）batch=1-2 也可以接受。",
     "avoidWhen": "不要为了提高 batch_size 而降低分辨率到 < 512px（SDXL 底模训练在 1024px，太低会丢失信息）。OOM 时优先开 gradient_checkpointing 和 cache_latents，其次降 batch_size，最后才降分辨率。"
   },
+  "standard_en": {
+    "summary": "How many images are processed together in one forward/backward pass. batch_size is the central dial between VRAM, gradient quality and training speed.",
+    "effect": "At batch=1 VRAM is lowest but the gradient is noisiest (each step sees only one image). At batch=4 the gradient is smoother but VRAM is roughly 2.5-3x that of batch=1 (not linear, because activations scale with batch while the weights and optimizer state do not). The real VRAM use is about weights + optimizer_state + activation_per_sample x batch_size.",
+    "whenToUse": "First settle on the batch_size your VRAM can bear, then make up the target effective batch with gradient_accumulation_steps. Rule of thumb: an effective batch of 4-8 is usually enough for LoRA training; for concept learning (a character or style) even 1-2 is acceptable.",
+    "avoidWhen": "Do not drop the resolution below 512px in order to raise batch_size (the SDXL base model trains at 1024px, and too low a resolution loses information). On OOM, first enable gradient_checkpointing and cache_latents, then lower batch_size, and only lower the resolution last.",
+    "recommendedValues": {
+      "sdxl_lora_16gb": "batch=1 (1024px), with gradient_accumulation=4 for an effective_batch of 4",
+      "sdxl_lora_24gb": "batch=2 (1024px), or batch=1 + gradient_accumulation=8",
+      "sd15_lora_8gb": "batch=1 (512px)",
+      "anima_lora_24gb": "batch=1 (1024px); the Anima DiT model uses more VRAM than a UNet",
+      "finetune_sdxl": "batch=1; a finetune's optimizer state is enormous"
+    }
+  },
   "advanced": {
     "principle": "显存组成：(1) 模型权重（冻结）≈ SDXL UNet 3.5B × 2 bytes(BF16) = 7GB；(2) optimizer state ≈ rank × 参数量 × 12 bytes(2 个 fp32 动量 + fp32 主权重)；(3) activation ≈ batch × resolution² × channel × layers × 2 bytes(BF16)。batch_size 只影响 (3) activation 部分。gradient_accumulation_steps 不增加 activation 显存，因为每个 micro-batch 的 activation 在 backward 后就释放了。",
     "intervention": "DataLoader 每步返回 batch_size 个样本，stack 成 (B, C, H, W) tensor 送入 UNet forward。loss 对 batch 维度取 mean 后再 backward()。gradient_accumulation_steps > 1 时，每 N 步才执行 optimizer.step()，中间 N-1 步只累加 .grad。",
     "expectedImpact": "大 batch 降低梯度方差（更稳定的 loss 曲线），但可能陷入尖锐极小值（泛化性差）。小 batch 噪声大但有隐式正则化效果（类似 dropout），有时泛化性更好。LoRA 训练中 batch=1 + grad_accum=4 和 batch=4 + grad_accum=1 最终质量差异通常 < 1%。",
     "tradeoffs": "dataloader_num_workers 控制数据加载并行度。Windows 下默认 0（主进程加载），Linux 下推荐 4。pin_memory=True 让 DataLoader 使用 CUDA pinned memory，加速 CPU→GPU tensor 传输。prefetch_factor 控制每个 worker 预加载多少个 batch。cached_dataloader_auto_policy 在使用 latent cache 时自动调优这些参数。",
+    "codePath": "training_loop.py:_build_dataloader() → DataLoader(batch_size=..., num_workers=..., pin_memory=...) → training_step()"
+  },
+  "advanced_en": {
+    "principle": "VRAM composition: (1) model weights (frozen) ≈ SDXL UNet 3.5B × 2 bytes (BF16) = 7GB; (2) optimizer state ≈ rank × parameter count × 12 bytes (2 fp32 momentums + fp32 master weights); (3) activations ≈ batch × resolution² × channel × layers × 2 bytes (BF16). batch_size only affects (3), the activation part. gradient_accumulation_steps adds no activation VRAM, because each micro-batch's activations are freed after backward.",
+    "intervention": "The DataLoader returns batch_size samples per step, stacks them into a (B, C, H, W) tensor, and feeds the UNet forward. The loss takes the mean over the batch dimension before backward(). With gradient_accumulation_steps > 1, optimizer.step() runs only every N steps; the intermediate N-1 steps only accumulate .grad.",
+    "expectedImpact": "Large batches reduce gradient variance (a more stable loss curve) but can fall into sharp minima (worse generalization). Small batches are noisier but have an implicit regularization effect (similar to dropout), sometimes generalizing better. In LoRA training, batch=1 + grad_accum=4 versus batch=4 + grad_accum=1 usually differ by < 1% in final quality.",
+    "tradeoffs": "dataloader_num_workers controls data-loading parallelism: on Windows the default is 0 (main process loads), on Linux 4 is recommended. pin_memory=True makes the DataLoader use CUDA pinned memory, speeding up CPU→GPU tensor transfers. prefetch_factor controls how many batches each worker preloads. cached_dataloader_auto_policy auto-tunes these parameters when using the latent cache.",
     "codePath": "training_loop.py:_build_dataloader() → DataLoader(batch_size=..., num_workers=..., pin_memory=...) → training_step()"
   },
   "relatedConfigs": [

@@ -1,0 +1,17 @@
+{
+  "key": "sample_spectrum_flex_window",
+  "title": "Spectrum 柔性窗口",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "Spectrum 柔性窗口。",
+    "effect": "窗口的柔性比例。",
+    "whenToUse": "探针参数，保持默认。",
+    "avoidWhen": "不影响训练。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "activation_compression_enabled",
   "title": "激活压缩",
+  "title_en": "Activation Compression Enabled",
   "category": "显存优化 / 激活",
+  "category_en": "VRAM Optimization / Activations",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,17 +14,33 @@
   "layers": [
     "显存层"
   ],
+  "layers_en": [
+    "VRAM layer"
+  ],
   "standard": {
     "summary": "将 autograd 保存的激活张量在 GPU 上压缩为低精度，减少反向传播时的激活内存占用。",
     "effect": "activation_compression_dtype 选择压缩格式（fp16/bf16/fp8_e4m3）。activation_compression_min_tensor_mb 设置最小压缩阈值。",
     "whenToUse": "激活内存成为瓶颈时（不用 gradient_checkpointing 但显存不够）。",
     "avoidWhen": "已启用 gradient_checkpointing 时不需要（GC 已经大幅减少激活）。压缩可能引入精度损失。"
   },
+  "standard_en": {
+    "summary": "Compresses the activation tensors saved by autograd to a lower precision on the GPU, cutting the activation memory needed for the backward pass.",
+    "effect": "activation_compression_dtype picks the format (fp16 / bf16 / fp8_e4m3). activation_compression_min_tensor_mb sets the minimum size that gets compressed.",
+    "whenToUse": "When activation memory is the bottleneck -- you are not using gradient_checkpointing and still run out of VRAM.",
+    "avoidWhen": "Unnecessary once gradient_checkpointing is on, since GC has already cut activations drastically. Compression can also introduce precision loss."
+  },
   "advanced": {
     "principle": "PyTorch autograd 在 forward 时保存中间激活用于 backward 计算。这些激活通常是 FP32/BF16 且占用大量显存。activation_compression 拦截 save_for_backward，将激活转换为低精度（FP16/BF16/FP8），backward 时自动反量化。fp8_e4m3 可将激活显存减少 75%（FP32→FP8），但精度损失更大。min_tensor_mb 避免压缩太小的张量（开销不划算）。",
     "intervention": "hook autograd save_for_backward → dtype cast to lower precision → dequantize on backward access。",
     "expectedImpact": "激活显存减少 50-75%。对训练质量的影响取决于 dtype 和模型。",
     "tradeoffs": "FP8 压缩可能影响梯度质量。建议先用 FP16/BF16。",
+    "codePath": "training_loop.py:activation_compression → save_for_backward hook → dtype cast → dequantize on backward"
+  },
+  "advanced_en": {
+    "principle": "PyTorch autograd saves intermediate activations during forward for backward computation. These activations are usually FP32/BF16 and consume a lot of VRAM. activation_compression intercepts save_for_backward, casting activations to lower precision (FP16/BF16/FP8), with automatic dequantization on backward access. fp8_e4m3 can cut activation VRAM by 75% (FP32→FP8) at a larger precision cost. min_tensor_mb avoids compressing tensors too small to be worth it.",
+    "intervention": "hook autograd save_for_backward → dtype cast to lower precision → dequantize on backward access.",
+    "expectedImpact": "Activation VRAM reduced 50-75%. Impact on training quality depends on dtype and model.",
+    "tradeoffs": "FP8 compression can affect gradient quality. Start with FP16/BF16.",
     "codePath": "training_loop.py:activation_compression → save_for_backward hook → dtype cast → dequantize on backward"
   },
   "relatedConfigs": [

@@ -1,0 +1,24 @@
+{
+  "key": "sfad_drop_strength",
+  "title": "SFAD 丢弃强度",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "SFAD 丢弃强度。",
+    "effect": "SFAD（rank 重要性流式评估）对低重要性 rank 的丢弃强度。",
+    "whenToUse": "结构化稀疏实验时使用。",
+    "avoidWhen": "默认 1；属前沿储备。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "attn_mode",
   "title": "注意力模式",
+  "title_en": "Attention implementation",
   "category": "速度 / 注意力",
+  "category_en": "Speed / Attention",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -15,9 +17,19 @@
     "whenToUse": "优先使用 flash（已安装 flash-attention）或 sdpa（未安装 flash 时默认）。",
     "avoidWhen": "vanilla 只用于调试；experimental_attention_profile 是性能分析工具，正式训练不需要。"
   },
+  "standard_en": {
+    "summary": "Picks the attention implementation: sdpa (default, built into PyTorch) / flash (FlashAttention) / sage (SageAttention) / xformers / vanilla (plain PyTorch, slowest).",
+    "effect": "flash and sage are the fastest and most memory-efficient; sdpa is the robust general choice; vanilla is the slowest implementation and exists for debugging. cross_attn_fused_kv fuses the K/V projections of cross-attention to cut kernel launches.",
+    "whenToUse": "Prefer flash (when flash-attention is installed) or sdpa (the default when it is not).",
+    "avoidWhen": "vanilla is for debugging only; experimental_attention_profile is a profiling tool that a real run does not need."
+  },
   "advanced": {
     "principle": "FlashAttention：IO-aware 分块计算，将 Q/K/V 分块加载到 SRAM，避免 n² 注意力矩阵 HBM 读写；SageAttention 进一步量化 QK 计算到 INT8，提升吞吐。fused_projection_memory_mode 控制 QKV 投影的内存布局（通道优先 vs 批量优先），影响 GPU L2 缓存命中率。",
     "tradeoffs": "flash/sage 的加速主要来自长序列（高分辨率 latent，token 数 >256），短序列优势不明显。anima native runtime 的注意力实现在 Rust 侧（Python 是 shape-only stub），此参数影响 Python 侧的注意力（如 TE cross-attention）。"
+  },
+  "advanced_en": {
+    "principle": "FlashAttention: IO-aware tiled computation that loads Q/K/V in chunks into SRAM, avoiding n² attention-matrix HBM reads/writes; SageAttention further quantizes the QK computation to INT8 for throughput. fused_projection_memory_mode controls the QKV projection's memory layout (channel-first vs batch-first), affecting GPU L2 cache hit rate.",
+    "tradeoffs": "flash/sage speedups come mainly from long sequences (high-resolution latents, >256 tokens) and are marginal for short ones. The anima native runtime's attention lives on the Rust side (Python is a shape-only stub), so this parameter affects Python-side attention (e.g. TE cross-attention)."
   },
   "relatedConfigs": [
     "xformers",

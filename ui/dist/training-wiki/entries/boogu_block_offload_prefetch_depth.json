@@ -1,0 +1,18 @@
+{
+  "key": "boogu_block_offload_prefetch_depth",
+  "title": "Block Offload 预取深度",
+  "category": "Boogu Block Offload",
+  "appliesTo": [
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora"
+  ],
+  "standard": {
+    "summary": "Boogu Block Offload 预取深度。",
+    "effect": "Boogu 块卸载的预取深度。",
+    "whenToUse": "同通用预取逻辑。",
+    "avoidWhen": "默认 2。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

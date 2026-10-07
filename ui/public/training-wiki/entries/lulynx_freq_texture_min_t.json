@@ -1,0 +1,24 @@
+{
+  "key": "lulynx_freq_texture_min_t",
+  "title": "频域纹理最小 σ",
+  "category": "感知锚/频域纹理损失",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "仅 raw σ≥该值时计入",
+    "effect": "写入训练配置 lulynx_freq_texture_min_t，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

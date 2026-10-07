@@ -1,7 +1,9 @@
 {
   "key": "p2_weighting_mode",
-  "title": "P2 / lulynx 感知加权模式",
+  "title": "感知加权模式",
+  "title_en": "Perceptual Weighting Mode",
   "category": "正则 / Loss",
+  "category_en": "Regularization / Loss",
   "appliesTo": [
     "sdxl-lora",
     "anima-lora",
@@ -10,11 +12,20 @@
   "layers": [
     "Loss 层"
   ],
+  "layers_en": [
+    "Loss layer"
+  ],
   "standard": {
-    "summary": "提供论文 P2 与 lulynx 工程权重两条模式：p2 使用 w=(k+SNR)^(-gamma)；off 为恒等权重；lulynx_structure/detail 保留本仓饱和式结构/细节偏置。",
+    "summary": "p2 用 w=(k+SNR)^(-gamma)；off 为恒等权重；lulynx_structure/lulynx_detail 是本仓的饱和式结构/细节偏置。上游 P2 (arXiv:2204.00227) 就是 (k+SNR)^(-gamma)；本仓两个 lulynx 档是指数 tanh 饱和权重、不可化为该式，且 lulynx_detail 方向与论文相反 ⇒ 不等价。",
     "effect": "off 或 strength=0 时与不开完全一致（parity）；structure 让构图、姿态等大结构的 timestep 获得更大梯度；detail 让纹理、质感等低噪声 timestep 获得更大梯度。",
     "whenToUse": "需要论文 P2 语义时选 p2；确认本仓结构/细节偏置更适合数据集时选 lulynx_structure 或 lulynx_detail。",
     "avoidWhen": "已经用 min_snr_gamma、wavelet 2D 调度等多个 loss 加权时不建议叠太多层，权重相乘后难以归因；默认 off 保持基线。"
+  },
+  "standard_en": {
+    "summary": "p2 uses w=(k+SNR)^(-gamma); off is identity weighting; lulynx_structure/lulynx_detail are this repository's saturating structure/detail biases. Upstream P2 (arXiv:2204.00227) is exactly (k+SNR)^(-gamma); this repository's two lulynx gears are exponential tanh saturating weights that cannot be reduced to that form, and lulynx_detail runs opposite to the paper's direction => they are not equivalent.",
+    "effect": "With off, or with strength=0, it is exactly the same as not enabling it (parity); structure gives more gradient to the timesteps that carry large structure such as composition and pose; detail gives more gradient to the low-noise timesteps that carry texture and material.",
+    "whenToUse": "Choose p2 when you need the paper's P2 semantics; choose lulynx_structure or lulynx_detail once you have confirmed this repository's structure/detail bias suits your dataset better.",
+    "avoidWhen": "Stacking too many layers is inadvisable when you already use several loss weightings such as min_snr_gamma or the wavelet 2D schedule -- once the weights multiply, attribution is hard; the default off keeps the baseline."
   },
   "advanced": {
     "principle": "mode=p2 使用 SNR=((1-sigma)/sigma)^2 与 w=(k+SNR)^(-gamma)；lulynx_structure/detail 使用 exp(±strength*tanh(log(SNR)/tau)) 的本仓饱和工程权重。两者不是同一公式。",
@@ -23,10 +34,22 @@
     "tradeoffs": "strength 过大（>1.0）会明显牺牲另一端（结构↔细节此消彼长）；scale_guidance 预设（detail/style/composition 模式）会自动写入本键，手动值可能被预设覆盖或冲突。",
     "codePath": "training_step_loss_execution_core.py——loss = loss * p2_perception_weight(sigmas, mode, strength)；p2_weighting.py；scale_guidance.py 预设注入"
   },
+  "advanced_en": {
+    "principle": "mode=p2 uses SNR=((1-sigma)/sigma)^2 with w=(k+SNR)^(-gamma); lulynx_structure/detail uses the repo's own saturating engineering weight exp(±strength*tanh(log(SNR)/tau)). The two are not the same formula.",
+    "intervention": "training_step_loss_execution_core.py: after the main loss computation and before the other reweighting (memory-gap, HNM), when p2_mode != off it calls p2_weighting.p2_perception_weight(sigmas, mode, strength) to get per-sample weights and multiplies.",
+    "expectedImpact": "Gains must be A/B-verified with the same model, data, seed, and step count; do not extrapolate the paper's P2 results to the lulynx modes.",
+    "tradeoffs": "Too large a strength (>1.0) visibly sacrifices the other end (structure vs detail is a trade-off); scale_guidance presets (detail/style/composition modes) write this key automatically and manual values may be overwritten by or conflict with a preset.",
+    "codePath": "training_step_loss_execution_core.py — loss = loss * p2_perception_weight(sigmas, mode, strength); p2_weighting.py; scale_guidance.py preset injection"
+  },
   "relatedConfigs": [
     "p2_weighting_strength",
     "min_snr_gamma",
     "wavelet_loss_enabled",
     "scale_guidance_mode"
+  ],
+  "aliases": [
+    "p2_weighting_enabled",
+    "p2_weighting_gamma",
+    "p2_weighting_k"
   ]
 }

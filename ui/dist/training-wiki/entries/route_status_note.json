@@ -1,7 +1,9 @@
 {
   "key": "route_status_note",
   "title": "链路状态（route_status_note）",
+  "title_en": "Route status",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "${familyName} is currently only a lightweight selection entry point; the training core is not deeply wired in yet",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "${familyName} 当前只是轻量选择入口，训练核心尚未深度接入；可以保存配置，暂不能直接启动训练。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "${familyName} is currently only a lightweight selection entry; the training core is not deeply wired in yet. Configs can be saved, but training cannot be launched directly from here yet.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

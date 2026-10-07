@@ -1,7 +1,9 @@
 {
   "key": "stochastic_depth_enabled",
   "title": "随机深度训练",
+  "title_en": "Depth Training",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Randomly skips some DiT blocks during training, which speeds training up and acts as a regulariser.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "训练时随机跳过部分 DiT block 以加速训练并提供正则化效果。预期加速 5-10%。仅适用于 DiT 架构（Anima/Flux）。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Randomly skips some DiT blocks during training to speed it up and provide regularization. Expected 5-10% speedup. DiT architectures only (Anima/Flux).",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

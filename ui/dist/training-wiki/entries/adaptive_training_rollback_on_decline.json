@@ -1,0 +1,16 @@
+{
+  "key": "adaptive_training_rollback_on_decline",
+  "title": "质量下降时允许撤销",
+  "category": "渐进式 / 分阶段训练",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "自适应训练策略的 质量下降时允许撤销，默认 默认开启。",
+    "effect": "自适应训练按训练证据自动调整学习率/区域权重等目标，质量下降时允许撤销 控制调整幅度、频率或证据门槛。",
+    "whenToUse": "长训想自动化超参微调时使用。",
+    "avoidWhen": "调参实验阶段关闭，避免干扰归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

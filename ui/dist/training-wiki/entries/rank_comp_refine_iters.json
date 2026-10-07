@@ -1,0 +1,17 @@
+{
+  "key": "rank_comp_refine_iters",
+  "title": "交替精化轮数",
+  "category": "精度 / 量化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "低秩与量化残差交替拟合的轮数；2 轮后收益递减",
+    "effect": "写入训练配置 rank_comp_refine_iters，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 2，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

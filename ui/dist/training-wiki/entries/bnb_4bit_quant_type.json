@@ -1,7 +1,9 @@
 {
   "key": "bnb_4bit_quant_type",
   "title": "bnb 4bit 量化类型",
+  "title_en": "Bnb 4bit",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "nf4": "NF4 网格。",
       "fp4": "FP4 网格。"
+    }
+  },
+  "standard_en": {
+    "summary": "bnb 4-bit quantisation type: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "nf4": "The NF4 grid.",
+      "fp4": "The FP4 grid."
     }
   },
   "advanced": {},

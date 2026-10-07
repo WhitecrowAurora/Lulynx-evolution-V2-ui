@@ -1,0 +1,17 @@
+{
+  "key": "easycontrol_v2_text_cache_dir",
+  "title": "文本缓存目录",
+  "category": "EasyControl",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "EasyControl 文本缓存目录。",
+    "effect": "文本条件编码缓存位置。",
+    "whenToUse": "同条件缓存。",
+    "avoidWhen": "留空不缓存。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,18 @@
+{
+  "key": "adaln_guidance_init_scale",
+  "title": "AdaLN 偏置初始值",
+  "category": "Anima 高级配置",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-finetune",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "初始填充值；默认 0 保持启用前的模型输出，偏置仍可学习。",
+    "effect": "非零值会立即改变 shift/scale；此值不是训练时的持续倍率。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

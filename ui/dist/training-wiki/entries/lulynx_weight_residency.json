@@ -1,7 +1,9 @@
 {
   "key": "lulynx_weight_residency",
   "title": "Layer-level Residency",
+  "title_en": "Weight Residency",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -15,8 +17,25 @@
       "linear_conv_cpu_pinned": "Linear 和 Conv 都 pinned，更省更慢。"
     }
   },
+  "standard_en": {
+    "summary": "Controls the frozen base for native SDXL",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "resident": "The frozen base weights stay resident on the GPU.",
+      "linear_cpu_pinned": "Linear layers sit in CPU pinned memory and stream across.",
+      "linear_conv_cpu_pinned": "Both Linear and Conv are pinned: saves more, runs slower."
+    }
+  },
   "advanced": {
     "principle": "控制 native SDXL 冻结 base 权重的驻留策略。显存足够选常驻 GPU；显存紧张可选 CPU pinned，Conv2d 模式更省显存但可能略慢。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Controls the residency policy for native SDXL frozen base weights. Choose GPU-resident when VRAM suffices; when VRAM is tight choose CPU pinned — the Conv2d mode saves more VRAM but may be slightly slower.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

@@ -1,0 +1,24 @@
+{
+  "key": "ant_warmup_updates",
+  "title": "ANT 预热更新数",
+  "category": "采样与优化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "前 N 次 update 返回 uniform（统计未稳）。",
+    "effect": "写入训练配置 ant_warmup_updates，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 30，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

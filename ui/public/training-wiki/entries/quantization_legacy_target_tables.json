@@ -1,0 +1,17 @@
+{
+  "key": "quantization_legacy_target_tables",
+  "title": "沿用旧版量化目标表",
+  "category": "精度 / 量化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "退回覆盖率修正之前的后缀表，只为复现旧产物；新训练不要开（anima 少量化 56 个百分点的参数，newbie 等于没量化）",
+    "effect": "写入训练配置 quantization_legacy_target_tables，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

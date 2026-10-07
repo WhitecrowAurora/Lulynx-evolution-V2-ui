@@ -1,7 +1,9 @@
 {
   "key": "cooldown_minutes",
   "title": "GPU 温控冷却",
+  "title_en": "Cooldown Minutes",
   "category": "速度 / GPU 管理",
+  "category_en": "Speed / GPU Management",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -16,9 +18,19 @@
     "whenToUse": "GPU 温度经常超过 85°C 的训练环境（散热不良、超频显卡）推荐设置保护。",
     "avoidWhen": "GPU 温度正常（<80°C）或有良好散热时无需设置，徒增训练时间。"
   },
+  "standard_en": {
+    "summary": "Pauses for N minutes when the GPU temperature crosses a threshold, waiting for it to cool so sustained heat does not damage the card.",
+    "effect": "cooldown_until_temp_c = resume only once it drops to this temperature; poll_seconds = how often the temperature is checked; minutes = the maximum wait (after which the run continues regardless).",
+    "whenToUse": "Recommended as protection in environments where the GPU regularly exceeds 85C (poor cooling, an overclocked card).",
+    "avoidWhen": "Unnecessary when temperatures are normal (<80C) or cooling is good -- it only lengthens the run."
+  },
   "advanced": {
     "principle": "通过 nvidia-smi 轮询 GPU 温度，超过阈值时调用 time.sleep 暂停训练步骤。cooldown_until_temp_c 比 cooldown_minutes 更精准（基于实际温度），两者可以一起设置（哪个条件先满足就继续）。",
     "tradeoffs": "频繁冷却暂停会显著延长总训练时间；建议先改善散热条件（清灰、增加机箱风扇）再依赖软件温控。"
+  },
+  "advanced_en": {
+    "principle": "Polls GPU temperature via nvidia-smi and calls time.sleep to pause training steps above the threshold. cooldown_until_temp_c is more precise than cooldown_minutes (based on actual temperature); both can be set (whichever condition is met first resumes).",
+    "tradeoffs": "Frequent cooling pauses significantly lengthen total training time; improve cooling first (dust cleaning, case fans) before relying on software thermal control."
   },
   "relatedConfigs": [
     "gpu_lock_clocks_mhz",

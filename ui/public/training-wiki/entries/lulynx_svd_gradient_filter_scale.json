@@ -1,0 +1,24 @@
+{
+  "key": "lulynx_svd_gradient_filter_scale",
+  "title": "SVD 过滤缩放",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "SVD 梯度过滤缩放。",
+    "effect": "过滤后成分的缩放系数。",
+    "whenToUse": "配合 rank 使用。",
+    "avoidWhen": "默认 1。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

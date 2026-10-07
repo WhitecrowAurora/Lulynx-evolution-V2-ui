@@ -1,0 +1,20 @@
+{
+  "key": "tc_lora_hidden_dim",
+  "title": "TC-LoRA hidden",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "共享 hypernetwork 隐层宽度。",
+    "effect": "写入训练配置 tc_lora_hidden_dim，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 128，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

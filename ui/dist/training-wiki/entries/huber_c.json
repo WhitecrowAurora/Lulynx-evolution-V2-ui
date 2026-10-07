@@ -1,7 +1,9 @@
 {
   "key": "huber_c",
   "title": "Huber 损失阈值 c / delta",
+  "title_en": "Huber c / delta",
   "category": "正则 / Loss",
+  "category_en": "Regularization / Loss",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,11 +14,20 @@
   "layers": [
     "Loss 层"
   ],
+  "layers_en": [
+    "Loss layer"
+  ],
   "standard": {
     "summary": "huber / smooth_l1 / pseudo_huber 损失的阈值参数（delta）：残差小于阈值时按 L2 处理，大于阈值时按 L1 处理。",
     "effect": "loss_type 选了 Huber 家族时生效。阈值越小，越早进入 L1 区、对离群样本越不敏感；越大越接近纯 MSE 行为。默认 0.1。",
     "whenToUse": "数据集里有少量脏样本/极端样本、MSE 下 loss 偶发尖峰把训练带偏时，配合 loss_type=huber 使用。",
     "avoidWhen": "loss_type 仍是默认 L2/MSE 时此项不参与计算；数据干净时把阈值调得过小会普遍钝化梯度、拖慢收敛。"
+  },
+  "standard_en": {
+    "summary": "The threshold parameter (delta) of the huber / smooth_l1 / pseudo_huber losses: residuals below it are treated as L2, residuals above it as L1.",
+    "effect": "Active when loss_type is one of the Huber family. A smaller threshold enters the L1 region sooner and is less sensitive to outliers; a larger one behaves more like plain MSE. Default 0.1.",
+    "whenToUse": "With loss_type=huber, when the dataset holds a few dirty or extreme samples and occasional loss spikes under MSE pull training off course.",
+    "avoidWhen": "It plays no part while loss_type is still the default L2/MSE, and on clean data too small a threshold dulls gradients across the board and slows convergence."
   },
   "advanced": {
     "principle": "Huber 损失在 |残差| ≤ delta 区间为二次型（梯度与残差成正比），超过后变线性（梯度饱和为常数），从而限制单个大残差样本对总梯度的贡献。实际生效阈值为 huber_c × huber_scale，下限被夹在 1e-6。",
@@ -24,6 +35,13 @@
     "expectedImpact": "对离群样本的鲁棒性提升，loss 曲线尖峰减少；细节保真度可能略降（大残差方向学习被压制）。",
     "tradeoffs": "阈值是与残差量纲绑定的绝对值，换分辨率/换模型族后合适区间会变；建议配合 huber_schedule=auto 让后端按分位数自适应。",
     "codePath": "training_loop_loss_mixin.py:_huber 阈值解析（base=max(huber_c,1e-6)，×huber_scale）；concept_edit_loss.py 同公式"
+  },
+  "advanced_en": {
+    "principle": "Huber loss is quadratic while |residual| ≤ delta (gradient proportional to residual) and linear beyond it (gradient saturates to a constant), capping any single large-residual sample's contribution to the total gradient. The effective threshold is huber_c × huber_scale, floored at 1e-6.",
+    "intervention": "training_loop_loss_mixin.py's threshold resolver produces a scalar or per-sample delta per huber_schedule: constant uses huber_c directly; exponential/snr modulate by timestep; auto estimates from batch residual quantiles. The concept-edit route parses with the same formula in concept_edit_loss.py.",
+    "expectedImpact": "Improves robustness to outlier samples and reduces loss-curve spikes; detail fidelity may drop slightly (large-residual directions are suppressed).",
+    "tradeoffs": "The threshold is an absolute value bound to the residual's magnitude — the right range changes with resolution or model family; prefer huber_schedule=auto so the backend adapts by percentile.",
+    "codePath": "training_loop_loss_mixin.py:_huber threshold resolution (base=max(huber_c,1e-6), ×huber_scale); concept_edit_loss.py same formula"
   },
   "relatedConfigs": [
     "huber_schedule",

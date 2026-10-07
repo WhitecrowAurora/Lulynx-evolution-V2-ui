@@ -1,0 +1,17 @@
+{
+  "key": "sample_smoothcache_warmup_steps",
+  "title": "误差引导缓存预热步",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "误差引导缓存预热步。",
+    "effect": "SmoothCache 误差引导缓存启动前的预热步数。",
+    "whenToUse": "采样缓存实验使用。",
+    "avoidWhen": "默认 2。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

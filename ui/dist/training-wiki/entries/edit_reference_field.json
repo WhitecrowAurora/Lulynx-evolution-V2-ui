@@ -1,7 +1,9 @@
 {
   "key": "edit_reference_field",
   "title": "参考 Latent 字段",
+  "title_en": "Latent field",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "The name of the field in the training batch that holds the source image's reference latent.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "训练 batch 中作为源图参考 latent 的字段名。正式配对数据默认 source_latents。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "The batch field name used as the source-image reference latent. Properly paired data defaults to source_latents.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

@@ -1,0 +1,16 @@
+{
+  "key": "ema_power",
+  "title": "EMA Warmup 幂次",
+  "category": "其他设置",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "EMA 幂次。",
+    "effect": "EMA 衰减的幂次参数，控制历史权重的影响曲线形状。",
+    "whenToUse": "使用 EMA 且默认衰减不合适时调整。",
+    "avoidWhen": "未启用 EMA 不生效。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "text_encoder_outputs_cache_disk_dtype",
   "title": "文本编码器输出磁盘精度",
+  "title_en": "Output",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "float16": "文本缓存 fp16。",
       "bfloat16": "文本缓存 bf16。",
       "float32": "文本缓存 fp32。"
+    }
+  },
+  "standard_en": {
+    "summary": "The on-disk precision of the text encoder outputs: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "float16": "Text cache in fp16.",
+      "bfloat16": "Text cache in bf16.",
+      "float32": "Text cache in fp32."
     }
   },
   "advanced": {},

@@ -1,0 +1,17 @@
+{
+  "key": "concept_direction_timestep_range",
+  "title": "采样时间步范围",
+  "category": "概念方向训练 · Concept Direction",
+  "appliesTo": [
+    "sd-lora",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "留空使用全部时间步；输入“起点,终点”，如 200,800，包含起点、不包含终点。",
+    "effect": "写入训练配置 concept_direction_timestep_range，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

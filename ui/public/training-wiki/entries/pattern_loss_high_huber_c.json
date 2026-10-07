@@ -1,0 +1,17 @@
+{
+  "key": "pattern_loss_high_huber_c",
+  "title": "高频 Huber c",
+  "category": "正则 / Loss",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "Pattern 高频 Huber c。",
+    "effect": "高频子带用 Huber loss 的转折点，越小对离群越鲁棒。",
+    "whenToUse": "高频 loss 尖峰多时调小。",
+    "avoidWhen": "默认 0.1。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

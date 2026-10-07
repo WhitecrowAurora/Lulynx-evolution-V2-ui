@@ -1,7 +1,9 @@
 {
   "key": "compile_inductor_tuning",
   "title": "Inductor 融合调优",
+  "title_en": "Inductor Tuning",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -16,12 +18,26 @@
       "aggressive": "融合和调优再冲一档。"
     }
   },
+  "standard_en": {
+    "summary": "The torch.compile inductor fusion and autotuning policy.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "off": "Leaves inductor at its defaults.",
+      "epilogue": "Folds pointwise ops into the tail of the matmul where it can.",
+      "max_autotune": "Benchmarks several kernels before choosing; the first run takes a long time.",
+      "aggressive": "Pushes fusion and tuning one gear further."
+    }
+  },
   "advanced": {
     "principle": "调整 torch.compile inductor 的算子融合与自动调优策略。off=不改 inductor 默认；epilogue=保证 epilogue fusion（pointwise 融入 matmul 尾部，现代 torch 已默认但此项明确锁定）；max_autotune=额外 benchmark 选最优 GEMM kernel（首次编译变慢，稳态提速）；aggressive=再加 coordinate descent 搜索（编译最慢，稳态最优）。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Adjusts torch.compile inductor op-fusion and autotuning strategy. off = leave inductor defaults untouched; epilogue = guarantee epilogue fusion (pointwise ops fused into matmul tails — modern torch already defaults to this, but this option pins it explicitly); max_autotune = extra benchmarking to pick the best GEMM kernel (slower first compile, faster steady state); aggressive = adds coordinate-descent search on top (slowest compile, best steady state)."
   },
   "relatedConfigs": []
 }

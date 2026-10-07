@@ -1,0 +1,24 @@
+{
+  "key": "reft_target_modules",
+  "title": "ReFT 目标模块",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "ReFT 目标模块。",
+    "effect": "ReFT 干预向量注入的模块名（如 to_q、to_v），逗号分隔；留空用默认集。",
+    "whenToUse": "想控制干预面时手动指定。",
+    "avoidWhen": "留空适合多数场景。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

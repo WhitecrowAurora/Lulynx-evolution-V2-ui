@@ -1,7 +1,9 @@
 {
   "key": "opt_adan_no_prox",
   "title": "Adan no_prox",
+  "title_en": "Adan no_prox",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Disables the proximal update (weight decay does not go through Adan's proximal operator).",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "禁用近端更新（weight decay 的处理方式）。通常保持默认 False。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Disables the proximal update (how weight decay is handled). Usually keep the default False.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

@@ -6,9 +6,12 @@ import { Topbar } from './Topbar'
 import { PageHost } from './PageHost'
 import { ToastHost } from '@/components/overlay'
 import { useRouteStore } from '@/stores/routeStore'
+import { subscribeLauncherTheme } from '@/stores/themeStore'
 
 export function AppShell() {
   const syncFromHash = useRouteStore((s) => s.syncFromHash)
+
+  useEffect(subscribeLauncherTheme, [])
 
   useEffect(() => {
     const onHash = () => syncFromHash()

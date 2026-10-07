@@ -1,0 +1,17 @@
+{
+  "key": "ip_num_tokens",
+  "title": "图像 Token 数",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "sd-ip-adapter",
+    "sdxl-ip-adapter"
+  ],
+  "standard": {
+    "summary": "注入 UNet 的 IP-Adapter token 数。",
+    "effect": "写入训练配置 ip_num_tokens，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 4，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

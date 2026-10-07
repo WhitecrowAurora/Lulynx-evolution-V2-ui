@@ -1,0 +1,16 @@
+{
+  "key": "lcm_target_stride",
+  "title": "LCM 目标跨度",
+  "category": "LCM / Turbo 蒸馏参数",
+  "appliesTo": [
+    "sdxl-turbo-lora"
+  ],
+  "standard": {
+    "summary": "teacher target 使用 t 到 t-stride 的一致性跨度。",
+    "effect": "写入训练配置 lcm_target_stride，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 80，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

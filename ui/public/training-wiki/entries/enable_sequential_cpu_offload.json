@@ -1,7 +1,9 @@
 {
   "key": "enable_sequential_cpu_offload",
   "title": "启用顺序 CPU Offload",
+  "title_en": "Sequential CPU Offload",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Offloads the model components to the CPU in sequence and loads each back only when needed",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "将模型组件顺序 offload 到 CPU，仅在需要时加载到 GPU。大幅减少显存占用，但会增加延迟。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Sequentially offloads model components to CPU, loading them to GPU only when needed. Drastically reduces VRAM usage at the cost of added latency.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

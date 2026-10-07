@@ -1,7 +1,9 @@
 {
   "key": "dpo_enabled",
   "title": "DPO（直接偏好优化）",
+  "title_en": "DPO / Flow-DPO",
   "category": "前沿储备 / 训练",
+  "category_en": "Frontier Reserve / Training",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -18,9 +20,19 @@
     "whenToUse": "实验性功能。有高质量偏好对数据集时可以使用，适合微调已收敛 LoRA 的\"偏好方向\"。",
     "avoidWhen": "没有偏好对数据时无法使用。DPO 对数据质量非常敏感，低质量偏好对会导致训练崩溃。"
   },
+  "standard_en": {
+    "summary": "(Experimental) DPO (Direct Preference Optimization): trains the LoRA on preference pairs (preferred / rejected image pairs) so output matches human preference rather than merely minimising reconstruction loss.",
+    "effect": "Once on, the dataset must contain preference pairs (a preferred and a rejected version of each image), and the loss becomes maximising the log-likelihood gap between the preferred and rejected images.",
+    "whenToUse": "An experimental feature. Usable with a high-quality preference-pair dataset, and well suited to nudging the preference direction of a LoRA that has already converged.",
+    "avoidWhen": "Unusable without preference-pair data. DPO is very sensitive to data quality, and poor pairs make training collapse."
+  },
   "advanced": {
     "principle": "DPO loss = -log σ(β × (log π_θ(y_w|x) - log π_ref(y_w|x)) - β × (log π_θ(y_l|x) - log π_ref(y_l|x)))，其中 y_w 是偏好图，y_l 是拒绝图，β 是温度系数。需要参考模型 π_ref（通常是训练前的基础模型）。",
     "tradeoffs": "DPO 需要两次 forward（参考模型 + 当前模型），显存和计算量约翻倍。dpo_beta 控制 KL 散度惩罚强度：β 过大会过度约束使模型偏向参考模型；过小则不约束，可能走捷径。"
+  },
+  "advanced_en": {
+    "principle": "DPO loss = -log σ(β × (log π_θ(y_w|x) - log π_ref(y_w|x)) - β × (log π_θ(y_l|x) - log π_ref(y_l|x))), where y_w is the preferred image, y_l the rejected image, and β the temperature coefficient. Requires a reference model π_ref (usually the pre-training base model).",
+    "tradeoffs": "DPO needs two forwards (reference model + current model), roughly doubling VRAM and compute. dpo_beta controls the KL-divergence penalty strength: too large over-constrains toward the reference model; too small imposes no constraint and may take shortcuts."
   },
   "relatedConfigs": [
     "ema_enabled",

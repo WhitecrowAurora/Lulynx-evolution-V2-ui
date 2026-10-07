@@ -1,0 +1,32 @@
+{
+  "key": "turbocore_data_pipeline_enabled",
+  "title": "TurboCore 原生数据管线",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "sd-addift",
+    "sd-controlnet",
+    "sd-dreambooth",
+    "sd-ileco",
+    "sd-ip-adapter",
+    "sd-lora",
+    "sd-multi-addift",
+    "sd-textual-inversion",
+    "sdxl-addift",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ileco",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-multi-addift",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "SDXL/SD1.5 可选 Rust/native 图像解码与预取路径；遇到不兼容的数据集行为会回退现有 Python DataLoader。",
+    "effect": "写入训练配置 turbocore_data_pipeline_enabled，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

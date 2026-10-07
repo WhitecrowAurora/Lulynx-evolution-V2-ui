@@ -1,0 +1,19 @@
+{
+  "key": "ltx23_block_offload_gpu_slots",
+  "title": "Block Offload GPU 槽位",
+  "category": "LTX-2.x Block Offload",
+  "appliesTo": [
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora"
+  ],
+  "standard": {
+    "summary": "LTX Block Offload GPU 槽位。",
+    "effect": "GPU 上为换入 block 预留的槽位数。",
+    "whenToUse": "显存与吞吐的折衷。",
+    "avoidWhen": "默认 2。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

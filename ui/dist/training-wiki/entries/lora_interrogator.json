@@ -1,7 +1,9 @@
 {
   "key": "lora_interrogator",
   "title": "输出路径",
+  "title_en": "Output Path",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Detects a LoRA network's training information.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "检测 LoRA 网络的训练信息。底模必须是对应的 SD 1.5 模型。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Detects the training information of a LoRA network. The base model must be the corresponding SD 1.5 model.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

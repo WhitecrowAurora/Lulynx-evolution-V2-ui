@@ -1,12 +1,14 @@
 {
   "key": "reslora_mode",
-  "title": "ResLoRA 模式",
+  "title": "lulynx 残差 LoRA 模式",
+  "title_en": "lulynx Residual LoRA Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
   "standard": {
-    "summary": "ResLoRA 模式：下列可选值说明含换档影响。",
+    "summary": "残差 shortcut 的合并模式：下列可选值说明含换档影响。基于 ResLoRA (arXiv:2402.18039)，本仓另加：按运行时 adapter 调用顺序解析 shortcut 图（上游要显式 Transformer block 契约），并按 (in,out) 形状分残差链。",
     "effect": "不同枚举会改变算法目标、资源占用或导出兼容性。",
     "whenToUse": "先默认，再按显存/质量/兼容目标换档。",
     "avoidWhen": "未做短测对照前不要同时叠多个激进实验档。",
@@ -14,6 +16,17 @@
       "block_shortcut": "block 之间抄近路，梯度好穿，导出要注意拓扑。",
       "input_shortcut": "从输入侧短路，浅层信息留得多。",
       "middle_shortcut": "中段短路。"
+    }
+  },
+  "standard_en": {
+    "summary": "How the residual shortcut is combined: the values below include what changing gear does. Based on ResLoRA (arXiv:2402.18039), with this repository adding: the shortcut graph is resolved from the runtime adapter call order (upstream requires an explicit Transformer block contract), and the residual chains are split by (in,out) shape.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "block_shortcut": "Takes a shortcut between blocks: gradients pass through well, but mind the topology on export.",
+      "input_shortcut": "Shortcuts from the input side, keeping more shallow-layer information.",
+      "middle_shortcut": "Shortcuts through the middle."
     }
   },
   "advanced": {},

@@ -1,0 +1,17 @@
+{
+  "key": "adaptive_caching_ema_momentum",
+  "title": "EMA 动量",
+  "category": "DiT / 训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "自适应缓存 EMA 动量。",
+    "effect": "块输出变化量统计的 EMA 平滑系数。",
+    "whenToUse": "统计抖动大时调高。",
+    "avoidWhen": "默认 0.9。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

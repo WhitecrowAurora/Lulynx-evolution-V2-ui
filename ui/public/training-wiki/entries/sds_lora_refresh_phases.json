@@ -1,0 +1,24 @@
+{
+  "key": "sds_lora_refresh_phases",
+  "title": "SDS-LoRA QR 刷新阶段",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "SDS-LoRA QR 刷新阶段数。",
+    "effect": "SDS-LoRA 训练中 QR 分解刷新的阶段数量。",
+    "whenToUse": "使用 SDS-LoRA 时按稳定性调整。",
+    "avoidWhen": "属蒸馏路线专用。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

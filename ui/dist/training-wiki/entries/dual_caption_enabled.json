@@ -1,7 +1,9 @@
 {
   "key": "dual_caption_enabled",
   "title": "双 Caption 训练",
+  "title_en": "Caption (/)",
   "category": "Caption / 高级",
+  "category_en": "Caption / Advanced",
   "appliesTo": [
     "sdxl-lora",
     "anima-lora",
@@ -12,17 +14,34 @@
     "数据层",
     "Caption 层"
   ],
+  "layers_en": [
+    "Data layer",
+    "Caption layer"
+  ],
   "standard": {
     "summary": "每张图使用两种 caption（如短描述 + 长描述）交替或混合训练。让模型同时学习精确触发和泛化描述。",
     "effect": "短 caption（如触发词）绑定概念身份，长 caption（自然语言描述）绑定视觉属性。dual_caption_short_key 和 dual_caption_long_key 指定 JSON sidecar 中的键名。",
     "whenToUse": "数据有 JSON sidecar 且同时包含短标签和长描述时。想让模型既能被精确触发又能响应自然语言时。",
     "avoidWhen": "只有纯 .txt caption 且没有结构化数据时。"
   },
+  "standard_en": {
+    "summary": "Trains on two captions per image (a short description plus a long one), alternating or mixing them, so the model learns both a precise trigger and a general description.",
+    "effect": "The short caption (a trigger word) binds the concept's identity, while the long caption (a natural-language description) binds its visual attributes. dual_caption_short_key and dual_caption_long_key name the keys in the JSON sidecar.",
+    "whenToUse": "When the data has a JSON sidecar holding both short tags and a long description, and you want the model both precisely triggerable and responsive to natural language.",
+    "avoidWhen": "When you only have plain .txt captions and no structured data."
+  },
   "advanced": {
     "principle": "每步从短/长 caption 中按比例选择一种作为当前 batch 的文本条件。可以理解为 caption 层面的 dropout——有时只给触发词（强化身份绑定），有时给完整描述（强化视觉属性学习）。",
     "intervention": "DataLoader 读取 JSON sidecar 时提取 short/long 字段，按比例选择。",
     "expectedImpact": "在同时需要精确触发和自然语言控制的场景下改善 5-10%。",
     "tradeoffs": "与 caption_source_mix_enabled 互斥——两者都做多路 caption 采样。",
+    "codePath": "dataset/elements.py:dual_caption_loader() → select short/long by ratio"
+  },
+  "advanced_en": {
+    "principle": "Each step picks one of short/long captions by ratio as the batch's text condition. Think of it as dropout at the caption level — sometimes only the trigger word (reinforcing identity binding), sometimes the full description (reinforcing visual-attribute learning).",
+    "intervention": "The DataLoader extracts short/long fields when reading the JSON sidecar and selects by ratio.",
+    "expectedImpact": "5-10% improvement in scenarios needing both precise triggering and natural-language control.",
+    "tradeoffs": "Mutually exclusive with caption_source_mix_enabled — both do multi-way caption sampling.",
     "codePath": "dataset/elements.py:dual_caption_loader() → select short/long by ratio"
   },
   "relatedConfigs": [

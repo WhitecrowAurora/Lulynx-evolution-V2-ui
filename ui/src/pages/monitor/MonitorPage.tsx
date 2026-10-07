@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { usePageEntrance } from '@/motion/useEntrance'
 import { PageHead, Panel } from '@/components/layout'
 import { Badge, Bar, Button, Dot, Empty, Kpi } from '@/components/primitives'
@@ -13,8 +13,12 @@ import { applyConfigBag, extractRunRestorable } from '@/lib/applyConfigBag'
 import { findRunRecord } from '@/stores/historyStore'
 import { LossChart } from './LossChart'
 import { TrainingQualityReportPanel } from './TrainingQualityReportPanel'
+import { TrainingPreviewPanel } from './TrainingPreviewPanel'
+import { RunOutcomeNotices } from './RunOutcomeNotices'
+import { runOutcomeStatus } from '@/lib/runOutcomeNotices'
 import './monitor.css'
 import { useI18n } from '@/i18n/useI18n'
+import { overlayMonitorLine } from '@/lib/consoleLogOverlay'
 
 /* 训练监控页:状态横幅 + 硬件 + loss/lr 曲线 + 日志终端 */
 
@@ -39,7 +43,7 @@ function StatusBanner({ run, etaText, stepsPerSec, stopping }: {
   stopping: boolean
 }) {
   const { t } = useI18n()
-  const status = String(run.status ?? 'unknown')
+  const status = runOutcomeStatus(run)
   const running = status.toLowerCase() === 'running'
   const step = Number(run.current_step ?? 0)
   const total = Number(run.total_steps ?? 0)
@@ -148,6 +152,7 @@ function StatusBanner({ run, etaText, stepsPerSec, stopping }: {
           <span className="lx-num">{pct.toFixed(1)}%</span>
         </div>
         {run.error ? <p style={{ flexBasis: '100%', color: 'var(--lx-danger)', fontSize: 12.5 }}>{String(run.error)}</p> : null}
+        <RunOutcomeNotices run={run} />
       </div>
     </Panel>
   )
@@ -195,11 +200,17 @@ function HwStrip() {
 }
 
 function LogTerminal() {
-  const { t } = useI18n()
+  const { t, language } = useI18n()
   const lines = useMonitorStore((s) => s.logLines)
   const follow = useMonitorStore((s) => s.logFollow)
   const setFollow = useMonitorStore((s) => s.setLogFollow)
   const boxRef = useRef<HTMLDivElement | null>(null)
+
+  // Display-only zh overlay; store keeps raw English for copy/export.
+  const displayText = useMemo(
+    () => lines.map((line) => overlayMonitorLine(line, { language })).join('\n'),
+    [lines, language],
+  )
 
   useEffect(() => {
     const el = boxRef.current
@@ -223,7 +234,7 @@ function LogTerminal() {
     >
       <div className="lx-logwrap">
         <div ref={boxRef} className="lx-log-terminal" onScroll={onScroll}>
-          {lines.length ? lines.join('\n') : <span className="dim">{t('monitor.wait_logs')}</span>}
+          {lines.length ? displayText : <span className="dim">{t('monitor.wait_logs')}</span>}
         </div>
         {!follow ? (
           <Button size="sm" className="lx-log-follow" onClick={() => setFollow(true)}>
@@ -282,6 +293,7 @@ export default function MonitorPage() {
             )}
           </Panel>
           <TrainingQualityReportPanel runId={runId} runStatus={String(run.status ?? '')} />
+          <TrainingPreviewPanel key={runId} taskId={runId} runStatus={String(run.status ?? '')} />
           <LogTerminal />
         </>
       ) : (

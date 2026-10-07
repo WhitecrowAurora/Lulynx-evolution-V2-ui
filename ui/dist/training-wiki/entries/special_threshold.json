@@ -1,0 +1,16 @@
+{
+  "key": "special_threshold",
+  "title": "特殊样本阈值",
+  "category": "训练参数",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "特殊样本阈值。",
+    "effect": "scorer 中特殊样本（如 NSFW 桶）的判定阈值。",
+    "whenToUse": "按业务标准调整。",
+    "avoidWhen": "默认 0.5。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

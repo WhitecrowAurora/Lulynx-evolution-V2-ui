@@ -1,0 +1,17 @@
+{
+  "key": "concept_geometry_embedding_cache_dir",
+  "title": "Embedding 缓存目录",
+  "category": "Concept Geometry",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "概念 Embedding 缓存目录。",
+    "effect": "embedding 结果缓存位置，重复训练免重算。",
+    "whenToUse": "数据集大时建议配置。",
+    "avoidWhen": "留空不缓存。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

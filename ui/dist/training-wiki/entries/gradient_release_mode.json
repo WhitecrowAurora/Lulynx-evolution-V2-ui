@@ -1,11 +1,13 @@
 {
   "key": "gradient_release_mode",
   "title": "梯度释放模式",
+  "title_en": "Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "compatible=支持梯度累积的安全档（详见 ?）",
+    "summary": "compatible=支持梯度累积的安全档；full=立即释放（更省显存，不兼容 accum/clip/fp16）；post_step=基线。",
     "effect": "",
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。",
@@ -15,8 +17,25 @@
       "post_step": "step 完再放，省得最少，当对照。（本选择器里没有：它是后端自动降级的落点之一，由后端按优化器与并行配置决定，不由用户直接指定。）"
     }
   },
+  "standard_en": {
+    "summary": "compatible = the safe gear that supports gradient accumulation; full = frees immediately (saves more VRAM, incompatible with accum/clip/fp16); post_step = the baseline.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "compatible": "Moderately aggressive freeing that works with most optimizers.",
+      "full": "Frees harder and saves more VRAM, though a few optimizer and accumulation combinations get awkward. (Not in this selector: it is mutually exclusive with gradient accumulation, gradient clipping and fp16, so the backend downgrades automatically according to the actual config and writes the reason into the gradient-release downgrade reason. Hence it is not offered as a manual choice.)",
+      "post_step": "Frees after the step: saves the least, and serves as the control. (Not in this selector: it is one of the landing points of the backend's automatic downgrade, decided by the backend from the optimizer and parallel configuration rather than specified by the user.)"
+    }
+  },
   "advanced": {
     "principle": "compatible=支持梯度累积的安全档；full=立即释放（更省显存，不兼容 accum/clip/fp16）；post_step=基线。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "compatible = safe tier that supports gradient accumulation; full = release immediately (saves more VRAM, incompatible with accum/clip/fp16); post_step = baseline.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

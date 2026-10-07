@@ -1,0 +1,16 @@
+{
+  "key": "validation_loss_only",
+  "title": "验证仅计算 Loss",
+  "category": "验证设置",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "验证只算 loss。",
+    "effect": "验证阶段只计算 loss 不跑完整指标，速度快。",
+    "whenToUse": "只关心泛化 loss 时开启。",
+    "avoidWhen": "需要完整指标时关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

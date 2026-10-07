@@ -1,7 +1,9 @@
 {
   "key": "cached_collate_mode",
   "title": "缓存数据 Collate",
+  "title_en": "Cache Data Collate",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -15,12 +17,25 @@
       "legacy": "旧预分配循环，对照用。"
     }
   },
+  "standard_en": {
+    "summary": "Affects the Anima/Newbie cache-first datasets only.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "auto": "Picks the collate for cache-first datasets automatically.",
+      "pad_sequence": "Joins variable lengths with pad_sequence.",
+      "legacy": "The old pre-allocating loop, kept for comparison."
+    }
+  },
   "advanced": {
     "principle": "仅影响 Anima/Newbie cache-first 数据集。auto/pad_sequence 使用 PyTorch 原生序列 padding；legacy 保留旧预分配循环路径，用于对照或兼容排查。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Only affects Anima/Newbie cache-first datasets. auto/pad_sequence uses PyTorch native sequence padding; legacy keeps the old preallocated-loop path for comparison or compatibility debugging."
   },
   "relatedConfigs": []
 }

@@ -1,12 +1,17 @@
 {
   "key": "concept_edit_base_model",
   "title": "概念编辑底座模型族",
+  "title_en": "Concept Edit Base Model",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "concept-edit"
   ],
   "layers": [
     "模型层"
+  ],
+  "layers_en": [
+    "Model layer"
   ],
   "standard": {
     "summary": "概念编辑（concept-edit）训练所基于的模型家族：anima（默认）/ sdxl / sd15 / newbie / flux。决定加载哪套模型组件与训练路线。",
@@ -14,12 +19,25 @@
     "whenToUse": "根据你要编辑的目标模型选择：给 Anima 模型做概念擦除/差分选 anima，给 SDXL 生态用选 sdxl，以此类推。",
     "avoidWhen": "选的家族与实际提供的模型权重路径不匹配时会加载失败；训练出的概念编辑 LoRA 不能跨家族使用。"
   },
+  "standard_en": {
+    "summary": "The model family that concept-edit training is built on: anima (default) / sdxl / sd15 / newbie / flux. It decides which model components load and which training route runs.",
+    "effect": "The config conversion stage infers model_type from this value, and at runtime the corresponding family's base model, VAE and text encoders load, along with the matching concept-edit branch implementation.",
+    "whenToUse": "Choose according to the model you mean to edit: anima for concept erasure or differencing on an Anima model, sdxl for the SDXL ecosystem, and so on.",
+    "avoidWhen": "Loading fails when the chosen family does not match the model weights you supplied, and a concept-edit LoRA cannot be used across families."
+  },
   "advanced": {
     "principle": "概念编辑（iLECO/ADDifT）的核心算法与模型族解耦，但前向、噪声调度、条件编码都依赖具体家族；该键是路由开关，让统一的 concept-edit 训练类型分发到家族特化实现。",
     "intervention": "config_adapter_conversion_core.py：training_type=concept-edit 时读取本键推断 model_type；trainer_side_train_runtime.py：运行时 base_model = config.concept_edit_base_model（默认 anima）选择训练分支。",
     "expectedImpact": "决定显存、速度与可用的辅助功能（如 Anima 路线支持的 timestep 课程）。",
     "tradeoffs": "各家族的成熟度不同：anima 路线功能最全，其余家族按各自 mixin 的实现覆盖度提供。",
     "codePath": "trainer_side_train_runtime.py：base_model 解析与分支；config_adapter_conversion_core.py：由 concept_edit_base_model 推断 model_type；configs_anima.py 定义"
+  },
+  "advanced_en": {
+    "principle": "The core concept-edit (iLECO/ADDifT) algorithms are decoupled from model families, but the forward pass, noise schedule, and condition encoding all depend on the specific family; this key is the routing switch that dispatches the unified concept-edit training type to family-specialized implementations.",
+    "intervention": "config_adapter_conversion_core.py: when training_type=concept-edit, this key is read to infer model_type; trainer_side_train_runtime.py: at runtime base_model = config.concept_edit_base_model (default anima) selects the training branch.",
+    "expectedImpact": "Determines VRAM, speed, and which auxiliary features are available (e.g. the timestep curriculum supported by the Anima route).",
+    "tradeoffs": "Family maturity differs: the anima route is the most feature-complete; the other families provide whatever their own mixins implement.",
+    "codePath": "trainer_side_train_runtime.py: base_model resolution and branching; config_adapter_conversion_core.py: infers model_type from concept_edit_base_model; defined in configs_anima.py"
   },
   "relatedConfigs": [
     "concept_edit_method",

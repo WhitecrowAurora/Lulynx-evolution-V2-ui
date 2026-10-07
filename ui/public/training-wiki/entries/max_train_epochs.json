@@ -1,7 +1,9 @@
 {
   "key": "max_train_epochs",
   "title": "训练轮数 / 步数",
+  "title_en": "Max training epochs",
   "category": "训练 / 控制",
+  "category_en": "Training / Control",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,17 +15,33 @@
   "layers": [
     "训练控制层"
   ],
+  "layers_en": [
+    "Training control layer"
+  ],
   "standard": {
     "summary": "控制训练的总时长。max_train_epochs 按数据集遍历次数计；max_train_steps 按优化器更新次数计。两者设一个即可，另一个设为 0。",
     "effect": "1 epoch = 遍历整个数据集一次。步数 = epoch × (数据集大小 / effective_batch)。",
     "whenToUse": "小数据集（<50 张）通常 10-30 epochs。大数据集通常 1-5 epochs。用 max_train_steps 更精确。",
     "avoidWhen": "不要同时设两者（max_train_steps > 0 会覆盖 epochs）。epoch 过多会过拟合。"
   },
+  "standard_en": {
+    "summary": "Controls the total length of training. max_train_epochs counts passes over the dataset; max_train_steps counts optimizer updates. Set one of them and leave the other at 0.",
+    "effect": "1 epoch = one pass over the whole dataset. Steps = epochs x (dataset size / effective_batch).",
+    "whenToUse": "A small dataset (<50 images) usually wants 10-30 epochs. A large one usually wants 1-5. max_train_steps is more precise.",
+    "avoidWhen": "Do not set both (max_train_steps > 0 overrides epochs). Too many epochs overfits."
+  },
   "advanced": {
     "principle": "每 epoch 数据集被完整遍历一次（考虑 bucket 和 shuffle）。DataLoader 每 epoch 重新 shuffle。total_steps = epochs × ceil(dataset_size / effective_batch)。initial_epoch 和 initial_step 用于 resume 时跳过已完成的步数。",
     "intervention": "training_loop 在 epoch/step 到达上限时退出循环。",
     "expectedImpact": "直接决定训练的计算预算。不足则欠拟合，过多则过拟合。",
     "tradeoffs": "save_every_n_epochs 和 validation_every_n_epochs 基于 epoch 触发。",
+    "codePath": "training_loop.py:for epoch in range(initial_epoch, max_train_epochs): → for step in dataloader:"
+  },
+  "advanced_en": {
+    "principle": "Each epoch traverses the dataset once fully (accounting for buckets and shuffle). The DataLoader re-shuffles each epoch. total_steps = epochs × ceil(dataset_size / effective_batch). initial_epoch and initial_step let resume skip completed steps.",
+    "intervention": "training_loop exits the loop when epoch/step reaches the limit.",
+    "expectedImpact": "Directly decides the training compute budget. Too little underfits; too much overfits.",
+    "tradeoffs": "save_every_n_epochs and validation_every_n_epochs trigger based on epochs.",
     "codePath": "training_loop.py:for epoch in range(initial_epoch, max_train_epochs): → for step in dataloader:"
   },
   "relatedConfigs": [

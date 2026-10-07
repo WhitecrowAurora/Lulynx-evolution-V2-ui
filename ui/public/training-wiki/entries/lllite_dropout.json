@@ -1,0 +1,16 @@
+{
+  "key": "lllite_dropout",
+  "title": "条件 Dropout (UNet)",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "sdxl-controlnet-lllite"
+  ],
+  "standard": {
+    "summary": "UNet adapter 路径 dropout。",
+    "effect": "写入训练配置 lllite_dropout，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

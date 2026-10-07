@@ -1,7 +1,9 @@
 {
   "key": "output_name",
   "title": "输出文件名",
+  "title_en": "Output name",
   "category": "训练 / 输出",
+  "category_en": "Training / Output",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -14,9 +16,19 @@
     "whenToUse": "每次实验设置描述性名称，包含角色/风格名称和版本号。",
     "avoidWhen": "名称中避免使用空格或特殊字符，部分系统（A1111、ComfyUI）对文件名有限制。"
   },
+  "standard_en": {
+    "summary": "The base name of the LoRA file (without the extension). The final filename is {output_name}.safetensors.",
+    "effect": "A meaningful name helps tell experiments apart (character_v1, style_watercolor and so on).",
+    "whenToUse": "Set a descriptive name for each experiment, including the character or style name and a version number.",
+    "avoidWhen": "Avoid spaces and special characters in the name; some systems (A1111, ComfyUI) restrict filenames."
+  },
   "advanced": {
     "principle": "中间 checkpoint 命名：{output_name}-{step}.safetensors；最终文件：{output_name}.safetensors。EMA 副本：{output_name}_ema.safetensors。",
     "tradeoffs": "若文件名已存在，默认覆盖（不会添加序号）。建议每次修改参数时更新版本号。"
+  },
+  "advanced_en": {
+    "principle": "Intermediate checkpoint naming: {output_name}-{step}.safetensors; final file: {output_name}.safetensors. EMA copy: {output_name}_ema.safetensors.",
+    "tradeoffs": "If the filename already exists it is overwritten by default (no sequence number is appended). Update the version number whenever you change parameters."
   },
   "relatedConfigs": [
     "output_dir"

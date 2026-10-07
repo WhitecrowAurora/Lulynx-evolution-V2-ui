@@ -1,7 +1,9 @@
 {
   "key": "quality_evaluation_suite_id",
   "title": "质量评估验证套件 ID",
+  "title_en": "Validation Suite ID",
   "category": "质量评估",
+  "category_en": "Quality Assessment",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,11 +13,20 @@
   "layers": [
     "评估层"
   ],
+  "layers_en": [
+    "Evaluation layer"
+  ],
   "standard": {
     "summary": "固定验证清单（prompts × seeds × 指标）的稳定标识符，用于跨 checkpoint、跨训练任务对比评估结果。默认 \"default\"。",
     "effect": "评估产物会带上该 ID；相同 ID 意味着同一套验证条件，不同训练之间的分数才有可比性。空值回落为 default。",
     "whenToUse": "维护多套验证清单（如「角色一致性套件」「风格保真套件」）并希望历史评估结果能按套件归档对比时。",
     "avoidWhen": "quality_evaluation_enabled 关闭时无效；只跑一次性评估、不做纵向对比时保持默认即可。"
+  },
+  "standard_en": {
+    "summary": "A stable identifier for a fixed validation list (prompts x seeds x metrics), used to compare evaluation results across checkpoints and across training jobs. Default \"default\".",
+    "effect": "The evaluation artefacts carry this ID; the same ID means the same set of validation conditions, which is what makes scores comparable between runs. An empty value falls back to default.",
+    "whenToUse": "When you maintain several validation lists (a character-consistency suite, a style-fidelity suite) and want historical evaluation results filed and compared per suite.",
+    "avoidWhen": "No effect while quality_evaluation_enabled is off; the default is fine for a one-off evaluation with no longitudinal comparison."
   },
   "advanced": {
     "principle": "评估分数只有在验证条件（prompt、seed、采样参数、指标权重）完全一致时才可比；suite_id 把这组条件命名为稳定标识，避免「改了 prompts 还在对比旧分数」的错误结论。",
@@ -23,6 +34,13 @@
     "expectedImpact": "评估结果可追溯、可横向对比；对训练本身无影响。",
     "tradeoffs": "改了 prompts/seeds 却沿用旧 ID 会污染对比语义——修改清单内容时应同步换 ID。",
     "codePath": "quality/validation_suite.py：suite_id=quality_evaluation_suite_id 组装套件；configs_validators.py 归一化"
+  },
+  "advanced_en": {
+    "principle": "Evaluation scores are only comparable when the validation conditions (prompts, seeds, sampling parameters, metric weights) are fully identical; suite_id names that set of conditions as a stable identifier, avoiding wrong conclusions like \"comparing against old scores after changing the prompts\".",
+    "intervention": "configs_validators.py supports normalizing suite_id from the quality_evaluation config block; quality/validation_suite.py:build_validation_suite assembles the validation checklist (prompts, seeds, metrics, negatives, sampling parameters, compare_base) under suite_id.",
+    "expectedImpact": "Evaluation results become traceable and horizontally comparable; no effect on training itself.",
+    "tradeoffs": "Changing prompts/seeds while keeping the old ID pollutes the comparison semantics — change the ID whenever the checklist content changes.",
+    "codePath": "quality/validation_suite.py: suite_id=quality_evaluation_suite_id assembles the suite; configs_validators.py normalization"
   },
   "relatedConfigs": [
     "quality_evaluation_enabled",

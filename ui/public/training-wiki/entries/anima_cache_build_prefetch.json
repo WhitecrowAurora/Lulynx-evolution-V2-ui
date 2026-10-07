@@ -1,0 +1,19 @@
+{
+  "key": "anima_cache_build_prefetch",
+  "title": "缓存构建 CPU 预取",
+  "category": "数据集 / 图说",
+  "appliesTo": [
+    "anima-controlnet",
+    "anima-edit-model",
+    "anima-finetune",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "首轮缓存构建时在 CPU 线程预解码下一批图像，与 GPU 编码重叠。",
+    "effect": "写入训练配置 anima_cache_build_prefetch，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

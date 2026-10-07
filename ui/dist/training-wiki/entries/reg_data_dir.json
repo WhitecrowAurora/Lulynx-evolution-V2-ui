@@ -1,7 +1,9 @@
 {
   "key": "reg_data_dir",
   "title": "正则化数据集路径（reg_data_dir）",
+  "title_en": "Regularization dataset path",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "The path to the regularisation dataset. Blank by default, meaning no regularisation images are used.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "正则化数据集路径。默认留空，不使用正则化图像。适用于全量训练，轻量 LoRA 可忽略",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Regularization dataset path. Leave empty by default to not use regularization images. Relevant for full fine-tuning; lightweight LoRA can ignore it.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

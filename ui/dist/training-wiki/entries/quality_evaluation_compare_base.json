@@ -1,7 +1,9 @@
 {
   "key": "quality_evaluation_compare_base",
   "title": "质量评估对比基础模型",
+  "title_en": "Compare Base Model",
   "category": "质量评估",
+  "category_en": "Quality Assessment",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,11 +13,20 @@
   "layers": [
     "评估层"
   ],
+  "layers_en": [
+    "Evaluation layer"
+  ],
   "standard": {
     "summary": "质量评估时用 LoRA 权重 0 与 1 各生成一组样本（同 prompt 同 seed），产出「底模 vs 训练产物」的成对增量证据。默认开启。",
     "effect": "每个验证用例生成两份图：一份关闭 LoRA（权重 0）、一份开启（权重 1），指标分别计算，报告能回答「LoRA 究竟带来了多少变化」。",
     "whenToUse": "想确认训练真的产生了预期改变、而不是把底模本来就会的东西归功于 LoRA 时；写训练报告需要 before/after 证据时。",
     "avoidWhen": "评估时间预算紧张时可关闭（采样量减半）；quality_evaluation_enabled 关闭时无效。"
+  },
+  "standard_en": {
+    "summary": "During quality evaluation it generates one set of samples at LoRA weight 0 and one at weight 1 (same prompt, same seed), producing paired before-and-after evidence of the base model against the trained artefact. On by default.",
+    "effect": "Each validation case produces two images: one with the LoRA off (weight 0) and one with it on (weight 1), with the metrics computed separately, so the report can answer how much the LoRA actually changed.",
+    "whenToUse": "When you want to confirm that training really produced the change you expected rather than crediting the LoRA with what the base model could already do; when a training report needs before/after evidence.",
+    "avoidWhen": "Turn it off when the evaluation time budget is tight (it halves the sampling); it has no effect while quality_evaluation_enabled is off."
   },
   "advanced": {
     "principle": "绝对分数受底模水平主导，无法区分「LoRA 的贡献」与「底模的底子」；固定 prompt/seed 下的成对对照消去了底模与采样随机性两个混杂变量，是最小成本的因果证据。",
@@ -23,6 +34,13 @@
     "expectedImpact": "评估采样成本翻倍；报告增加逐用例的增量维度。",
     "tradeoffs": "权重 0/1 的两点对照不覆盖中间权重的行为；如需权重扫描请配合 XY 网格功能。",
     "codePath": "quality/validation_suite.py：compare_base 读取；configs_validators.py：quality_evaluation 块 compare_base 归一化"
+  },
+  "advanced_en": {
+    "principle": "Absolute scores are dominated by the base model's level and cannot separate \"the LoRA's contribution\" from \"the base model's foundation\"; a paired comparison at fixed prompt/seed removes both confounders — base model and sampling randomness — and is the cheapest causal evidence.",
+    "intervention": "quality/validation_suite.py: compare_base=bool(quality_evaluation_compare_base) enters the suite definition, and evaluation samples twice at LoRA scale 0/1.",
+    "expectedImpact": "Evaluation sampling cost doubles; the report gains a per-case delta dimension.",
+    "tradeoffs": "The two-point scale 0/1 comparison does not cover intermediate-weight behavior; use the XY grid feature for a weight sweep.",
+    "codePath": "quality/validation_suite.py: compare_base read; configs_validators.py: quality_evaluation block compare_base normalization"
   },
   "relatedConfigs": [
     "quality_evaluation_enabled",

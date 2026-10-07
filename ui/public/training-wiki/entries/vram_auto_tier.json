@@ -1,0 +1,24 @@
+{
+  "key": "vram_auto_tier",
+  "title": "低显存自动档",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "按显存/架构启发式写入压缩与伴生 knobs；T3 需强制。",
+    "effect": "KPI=能训不 OOM。",
+    "whenToUse": "默认 off，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "torch_compile_mode",
   "title": "torch.compile 模式",
+  "title_en": "Torch.compile Mode",
   "category": "速度 / 编译",
+  "category_en": "Speed / Compilation",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -22,9 +24,24 @@
       "max-autotune": "autotune 拉满：第一次最久，后面稳态往往最快。"
     }
   },
+  "standard_en": {
+    "summary": "torch.compile's compilation mode: default (balanced) / reduce-overhead (minimises Python overhead) / max-autotune (maximum tuning but the slowest to compile).",
+    "effect": "default = a robust balance; reduce-overhead = focused on cutting CPU overhead (more effective for small models or high batch sizes); max-autotune = exhaustively searches every kernel variant for the best one (5~30 minutes of compilation, only worth it for very long training runs).",
+    "whenToUse": "default suits most training. reduce-overhead suits the case where GPU utilisation is already high but the CPU is the bottleneck. Only consider max-autotune above 1000 training steps when you are chasing the last of the performance.",
+    "avoidWhen": "max-autotune takes extremely long to compile, which does not pay off on a short run.",
+    "optionDescriptions": {
+      "default": "A moderate compilation effort, and the first pass is not too extreme either.",
+      "reduce-overhead": "Squeezes launch and scheduling overhead specifically; the gain is large with small steps and fragmented kernels.",
+      "max-autotune": "Autotune at full strength: the slowest first pass, and often the fastest steady state afterwards."
+    }
+  },
   "advanced": {
     "principle": "torch_compile_fullgraph=True 要求无 graph break（全图编译），可能失败；dynamic=True 允许动态形状（生成更多 guard，略慢但更兼容）；scope 控制编译范围（forward only / forward+backward）。",
     "tradeoffs": "fullgraph=True 不兼容含有 Python 控制流的代码（如 LoRA 的条件 hook）；dynamic=True 比 static 更慢但对变长序列更友好。"
+  },
+  "advanced_en": {
+    "principle": "torch_compile_fullgraph=True requires no graph breaks (whole-graph compilation) and may fail; dynamic=True allows dynamic shapes (generating more guards, slightly slower but more compatible); scope controls the compile scope (forward only / forward+backward).",
+    "tradeoffs": "fullgraph=True is incompatible with code containing Python control flow (e.g. LoRA's conditional hooks); dynamic=True is slower than static but friendlier to variable-length sequences."
   },
   "relatedConfigs": [
     "torch_compile",

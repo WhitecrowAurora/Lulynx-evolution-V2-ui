@@ -1,7 +1,9 @@
 {
   "key": "lulynx_precision_swap_strategy",
   "title": "Precision Swap 策略",
+  "title_en": "Precision Swap Strategy",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -15,8 +17,25 @@
       "aggressive": "更多 block 纳入，赚和风险都大。"
     }
   },
+  "standard_en": {
+    "summary": "balanced favours the high-payoff output/mid blocks",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "off": "No precision-swap planning.",
+      "balanced": "Swaps precision on the output/mid blocks that pay off most, first.",
+      "aggressive": "Takes in more blocks: both the payoff and the risk are larger."
+    }
+  },
   "advanced": {
     "principle": "balanced 优先 output/mid 高收益 block；aggressive 会选择更多候选 block",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "balanced prioritizes high-yield output/mid blocks; aggressive selects more candidate blocks.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

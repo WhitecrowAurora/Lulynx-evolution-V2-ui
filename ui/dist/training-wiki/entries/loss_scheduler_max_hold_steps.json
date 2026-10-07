@@ -1,7 +1,9 @@
 {
   "key": "loss_scheduler_max_hold_steps",
   "title": "最长锁定步数",
+  "title_en": "Steps",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "The maximum number of consecutive steps the cosine phase may be held back.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "连续不推进余弦相位的最大步数。0 表示自动保护上限（约 5% 有效训练步，最多 200 步），避免训练 loss 形成负反馈循环。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Maximum number of consecutive steps without advancing the cosine phase. 0 = automatic guard cap (about 5% of effective training steps, at most 200), preventing a negative feedback loop in training loss.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

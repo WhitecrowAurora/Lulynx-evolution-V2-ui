@@ -1,0 +1,24 @@
+{
+  "key": "dora_use_scalar_magnitude",
+  "title": "DoRA 标量幅度",
+  "title_en": "DoRA Scalar Magnitude",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "经典 DoRA 每行权重有自己可学的幅度向量。打开后改成整层共享一个可学标量，骑在冻结的初始行范数上。",
+    "effect": "默认关 = 经典 DoRA。打开后可学参数大幅减少（每层 1 个代替每行 1 个），表达力也降低；初始行为不变。",
+    "whenToUse": "想让 DoRA 的幅度部分几乎不占训练预算、只做轻微整体伸缩时。",
+    "avoidWhen": "想完整复刻论文行为或追求最好质量时不要开。"
+  },
+  "standard_en": {
+    "summary": "Classic DoRA learns a magnitude vector per output row. Enabling this replaces it with a single learnable scalar per layer, riding on the frozen initial row norms.",
+    "effect": "Default off = classic DoRA. On, the trainable magnitude shrinks to one parameter per layer instead of one per row, with lower expressiveness; initial behaviour is unchanged.",
+    "whenToUse": "When you want the magnitude side to cost almost nothing and only apply a light global scaling.",
+    "avoidWhen": "Do not enable when you need faithful paper behaviour or maximum quality."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

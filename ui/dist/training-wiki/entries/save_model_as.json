@@ -1,7 +1,9 @@
 {
   "key": "save_model_as",
   "title": "保存格式",
+  "title_en": "Save format",
   "category": "训练 / 保存",
+  "category_en": "Training / Saving",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -26,9 +28,25 @@
       "pth": "pth 后缀，跟 pt 一类。"
     }
   },
+  "standard_en": {
+    "summary": "The format the LoRA weight file is saved in: safetensors (recommended: fast to load, no security risk) / pt (PyTorch's original format) / ckpt (the old format, not recommended).",
+    "effect": "safetensors = the most widely compatible (natively supported by A1111/ComfyUI); pt = PyTorch native, better supported by some tools; ckpt = the old format, which contains a Python pickle and carries a security risk.",
+    "whenToUse": "safetensors is recommended (the safest and the most compatible).",
+    "avoidWhen": "The ckpt format carries a code-execution risk because of the Python pickle, so it is inadvisable for distribution (as the format you hand to other people).",
+    "optionDescriptions": {
+      "safetensors": "safetensors, the most common today, and without the pickle risks.",
+      "pt": "The old-style .pt, which some old scripts only accept.",
+      "ckpt": "The ckpt extension, still the same torch format underneath.",
+      "pth": "The pth extension, in the same family as pt."
+    }
+  },
   "advanced": {
     "principle": "safetensors 是 HuggingFace 设计的安全格式：只存储 tensor 数据（无 Python 对象），并发安全（mmap 读取）。pt 通过 pickle 序列化完整 Python 对象，功能更全但有安全风险。",
     "tradeoffs": "save_last_n_steps_state 控制是否同时保存优化器状态（用于恢复训练），状态文件约为 LoRA 文件的 2~4×（优化器 m/v 动量）。"
+  },
+  "advanced_en": {
+    "principle": "safetensors is HuggingFace's safe format: it stores only tensor data (no Python objects) and is concurrency-safe (mmap reads). pt serializes full Python objects via pickle — more capable but with security risk.",
+    "tradeoffs": "save_last_n_steps_state controls whether optimizer state is also saved (for resuming); a state file is about 2~4x the LoRA file (optimizer m/v momentum)."
   },
   "relatedConfigs": [
     "save_every_n_steps",

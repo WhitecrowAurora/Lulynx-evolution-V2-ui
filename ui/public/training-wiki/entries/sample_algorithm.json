@@ -1,0 +1,25 @@
+{
+  "key": "sample_algorithm",
+  "title": "预览求解器",
+  "category": "预览 / 采样",
+  "appliesTo": [
+    "anima-addift",
+    "anima-controlnet",
+    "anima-edit-model",
+    "anima-few-step-lora",
+    "anima-finetune",
+    "anima-ileco",
+    "anima-lora",
+    "anima-multi-addift",
+    "newbie-few-step-lora",
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "sde = ER-SDE-Solver-3（随机，细节更丰富）；ode = 确定性 Euler（同种子可复现）。",
+    "effect": "写入训练配置 sample_algorithm，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 sde，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

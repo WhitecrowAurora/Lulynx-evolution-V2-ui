@@ -1,7 +1,9 @@
 {
   "key": "anima_cross_attn_lr",
   "title": "Anima Cross-Attn 学习率",
+  "title_en": "Cross-Attention Learning Rate",
   "category": "训练 / Anima 专用",
+  "category_en": "Training / Anima-specific",
   "appliesTo": [
     "anima-lora"
   ],
@@ -14,9 +16,19 @@
     "whenToUse": "有明确的训练目标（如只改文本响应 → 提高 cross-attn LR，降低 self-attn 和 MLP LR）时使用。高级调参场景。",
     "avoidWhen": "初学或不确定各模块分工时，保持各部分 LR 相同（或只设 global learning_rate）更安全。"
   },
+  "standard_en": {
+    "summary": "Sets a separate learning rate for each Anima attention type (cross-attn / self-attn / mlp / modulation), for fine-grained differentiated control.",
+    "effect": "Lets modules with different jobs use different rates: cross-attn governs text-image alignment and usually wants a higher LR; self-attn governs internal image structure and wants a moderate one; MLP governs local transforms and can usually take a low LR.",
+    "whenToUse": "When you have an explicit goal -- for instance changing only the text response, so raise the cross-attn LR and lower the self-attn and MLP ones. An advanced tuning scenario.",
+    "avoidWhen": "If you are new to this or unsure what each module does, keeping the rates equal, or setting only the global learning_rate, is safer."
+  },
   "advanced": {
     "principle": "Anima 的 DiT block 分为几类参数组：cross-attn（文本条件输入）/ self-attn（图像自注意力）/ MLP（前馈网络）/ modulation（时间步条件调制），各自对训练的不同方面有独立影响。分别设置 LR 等价于 block weight 的 LR 版本。",
     "tradeoffs": "差异化 LR 需要对模型行为有深入理解；设置不当可能导致某部分过训练（如 cross-attn LR 过高导致文本绑定过强，生成失去灵活性）。"
+  },
+  "advanced_en": {
+    "principle": "Anima's DiT blocks split into several parameter groups: cross-attn (text conditioning input) / self-attn (image self-attention) / MLP (feed-forward) / modulation (timestep conditioning modulation), each independently influencing a different aspect of training. Setting LRs separately is the LR version of block weights.",
+    "tradeoffs": "Differentiated LRs require deep understanding of model behavior; a poor setting can over-train one part (e.g. cross-attn LR too high over-binds text, sapping generation flexibility)."
   },
   "relatedConfigs": [
     "learning_rate",

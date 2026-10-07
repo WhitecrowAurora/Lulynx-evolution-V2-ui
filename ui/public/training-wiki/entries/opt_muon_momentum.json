@@ -1,0 +1,55 @@
+{
+  "key": "opt_muon_momentum",
+  "title": "Muon + 新型优化器",
+  "title_en": "Muon and Recent Optimizers",
+  "category": "优化器 / 新型",
+  "category_en": "Optimizer / Recent",
+  "appliesTo": [
+    "sdxl-lora",
+    "sd-lora",
+    "anima-lora",
+    "newbie-lora",
+    "finetune"
+  ],
+  "layers": [
+    "优化器层"
+  ],
+  "layers_en": [
+    "Optimizer layer"
+  ],
+  "standard": {
+    "summary": "Muon、Riemannion、Rose、Aurora、ADOPT、SOAP、MARS 等 frontier 优化器处于 release-hold 内部研究状态，不进入常规 optimizer_type 下拉。",
+    "effect": "这些优化器仅保留 参考实现、治理 scorecard 或内部 smoke。常规训练请求会被 release-hold guard 拦截，直到 owner/release 审批解除。",
+    "whenToUse": "当前不要在产品训练配置中选择这些优化器；只在内部 frontier provider smoke 或 owner review 证据链中验证。",
+    "avoidWhen": "任何常规 WebUI、request adapter、训练入口或插件桥接路径都不应暴露或启用 held frontier optimizer。"
+  },
+  "standard_en": {
+    "summary": "The frontier optimizers Muon, Riemannion, Rose, Aurora, ADOPT, SOAP and MARS are in a release-hold internal research state and do not appear in the ordinary optimizer_type dropdown.",
+    "effect": "All that is kept for them is a reference implementation, a governance scorecard or an internal smoke. An ordinary training request is intercepted by the release-hold guard until the owner/release approval is lifted.",
+    "whenToUse": "Do not select these optimizers in a product training config for now; validate them only in the internal frontier provider smoke or in an owner-review evidence chain.",
+    "avoidWhen": "No ordinary WebUI, request adapter, training entry point or plugin bridge path should expose or enable a held frontier optimizer."
+  },
+  "advanced": {
+    "principle": "frontier provenance 路线只允许基于论文/数学定义/本地 spec 的独立参考验证，不复制第三方实现，也不通过常规训练入口启用。",
+    "intervention": "无产品侧操作。若需要研究验证，走 backend/core/lulynx_trainer/frontier/frontier_optimizer_provider.py 的内部 smoke 路线。",
+    "expectedImpact": "尚未产品承诺；需要真实短训或工具 fixture、owner approval、release-hold clearance 后才能讨论暴露。",
+    "tradeoffs": "提前暴露会破坏 默认关闭、runtime/request 边界和 provenance 审计链。",
+    "codePath": "backend/core/lulynx_trainer/frontier_* governance + frontier_optimizer_provider.py internal-only"
+  },
+  "advanced_en": {
+    "principle": "The frontier provenance route only allows independent reference verification based on papers/mathematical definitions/local specs — no copying third-party implementations and no enabling through regular training entry points.",
+    "intervention": "No product-side operation. For research verification, use the internal smoke route at backend/core/lulynx_trainer/frontier/frontier_optimizer_provider.py.",
+    "expectedImpact": "No product commitment yet; exposure can only be discussed after real short runs or tool fixtures, owner approval, and release-hold clearance.",
+    "tradeoffs": "Premature exposure would break default-off, the runtime/request boundary, and the provenance audit chain.",
+    "codePath": "backend/core/lulynx_trainer/frontier_* governance + frontier_optimizer_provider.py internal-only"
+  },
+  "relatedConfigs": [
+    "muon_momentum",
+    "muon_ns_steps",
+    "muon_lr_ratio",
+    "optimizer_type"
+  ],
+  "aliases": [
+    "muon_momentum"
+  ]
+}

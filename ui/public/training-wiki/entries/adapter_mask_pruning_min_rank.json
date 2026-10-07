@@ -1,0 +1,20 @@
+{
+  "key": "adapter_mask_pruning_min_rank",
+  "title": "Mask 最小 Rank",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "适配器 mask 剪枝的 Mask 最小 Rank，默认 1。",
+    "effect": "训练中按重要性逐步剪掉不重要的 rank 通道（结构化稀疏），Mask 最小 Rank 控制目标比例、节奏与 EMA 平滑。",
+    "whenToUse": "想要更小体积、更强正则的产出时使用。",
+    "avoidWhen": "需要完整 rank 精度时不要开。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

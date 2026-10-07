@@ -1,7 +1,9 @@
 {
   "key": "ac_loss_plateau_window",
   "title": "损失平台检测窗口",
+  "title_en": "Window",
   "category": "训练 / 自动化",
+  "category_en": "Training / Automation",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "默认 50 适合大多数 LoRA 训练。总步数较短时可减小到 20；长训练可增大到 100。",
     "avoidWhen": "不建议设为 <10（统计意义太弱）或 >总步数的 20%（永远检测不到平台期）。"
   },
+  "standard_en": {
+    "summary": "Sliding-window size, in steps, used to decide whether the loss has plateaued. Default 50.",
+    "effect": "A larger window makes the plateau verdict steadier and less sensitive to brief swings; a smaller one reacts faster but misjudges more often.",
+    "whenToUse": "The default 50 fits most LoRA training. Drop it to 20 for a short total step count, or raise it to 100 for a long run.",
+    "avoidWhen": "Do not go below 10 -- too little statistical meaning -- and do not exceed 20% of the total steps, or a plateau will never be detected."
+  },
   "advanced": {
     "principle": "维护一个长度为 plateau_window 的 loss 队列，计算趋势斜率，斜率接近 0 则判定为平台期。",
     "tradeoffs": "与 ac_early_stopping_patience 组合决定总容忍步数：window=50, patience=5 → 250 步无改善才早停。"
+  },
+  "advanced_en": {
+    "principle": "Maintains a loss queue of length plateau_window and computes the trend slope; a slope near 0 is judged a plateau.",
+    "tradeoffs": "Combined with ac_early_stopping_patience it determines total tolerance: window=50, patience=5 → early stop only after 250 steps without improvement."
   },
   "relatedConfigs": [
     "ac_enabled",

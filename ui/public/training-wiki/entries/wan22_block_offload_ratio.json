@@ -1,0 +1,18 @@
+{
+  "key": "wan22_block_offload_ratio",
+  "title": "Block Offload 比例 %",
+  "category": "Wan2.2 Block Offload",
+  "appliesTo": [
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora"
+  ],
+  "standard": {
+    "summary": "参与 offload 的 block 比例（0-100）。",
+    "effect": "写入训练配置 wan22_block_offload_ratio，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 100，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

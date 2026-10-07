@@ -1,0 +1,16 @@
+{
+  "key": "contrastive_latent_temperature",
+  "title": "contrastive_latent_temperature",
+  "category": "图像质量增强",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "contrastive_latent_temperature。默认 0.07",
+    "effect": "写入训练配置 contrastive_latent_temperature，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0.07，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

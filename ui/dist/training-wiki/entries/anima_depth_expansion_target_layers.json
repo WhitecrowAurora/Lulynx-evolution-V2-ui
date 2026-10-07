@@ -1,12 +1,17 @@
 {
   "key": "anima_depth_expansion_target_layers",
   "title": "扩层目标层数",
+  "title_en": "Target Layer Count",
   "category": "Anima / 高级",
+  "category_en": "Anima / Advanced",
   "appliesTo": [
     "anima-finetune"
   ],
   "layers": [
     "模型结构层"
+  ],
+  "layers_en": [
+    "Model structure layer"
   ],
   "standard": {
     "summary": "Anima 扩层后的 DiT 总层数，必须大于底座实际层数。Anima Base 28 层常见扩到 40。默认 40。",
@@ -14,12 +19,25 @@
     "whenToUse": "跟随验证过的配方（28→40）最稳妥；小步扩层（28→32）适合显存有限的探索。",
     "avoidWhen": "anima_depth_expansion_enabled 关闭时无效；设成小于等于底座层数没有意义（无层可扩）。"
   },
+  "standard_en": {
+    "summary": "The total DiT layer count after Anima expansion; it must exceed the base's actual layer count. Anima Base has 28 layers and 40 is the common target. Default 40.",
+    "effect": "Determines how many interleaved copies get inserted and the final model depth; an input below 2 is normalised back to the default 40.",
+    "whenToUse": "Following a validated recipe (28 to 40) is the safest. A small step (28 to 32) suits exploration when VRAM is limited.",
+    "avoidWhen": "No effect while anima_depth_expansion_enabled is off. Setting it at or below the base layer count is meaningless, since there is nothing to expand."
+  },
   "advanced": {
     "principle": "扩层数决定新容量的规模：新增层数 = 目标 - 原层数，交错分布在原有层之间保持信息流均匀。扩得越多初始「恒等冗余」越多，需要更多训练量把冗余变成有效容量。",
     "intervention": "config_adapter_conversion_context.py：target 归一化（>=2 否则回 40）；anima_depth_expansion_runtime.py：按目标层数计算复制方案；anima_full_finetune.py：resume 时与 checkpoint 实际层数比对。",
     "expectedImpact": "显存、每步耗时、产物体积都随层数近似线性增长。",
     "tradeoffs": "一旦以某层数训练并保存，后续 resume 与推理都锁定该层数。",
     "codePath": "config_adapter_conversion_context.py：anima_depth_expansion_target_layers 归一化；anima_depth_expansion_runtime.py"
+  },
+  "advanced_en": {
+    "principle": "The expansion count sets the scale of new capacity: new layers = target - original, interleaved among the original layers to keep information flow even. The more you expand, the more initial \"identity redundancy\" there is, requiring more training to convert redundancy into effective capacity.",
+    "intervention": "config_adapter_conversion_context.py: target normalization (>=2, else falls back to 40); anima_depth_expansion_runtime.py: computes the duplication plan from the target; anima_full_finetune.py: compares against the checkpoint's actual layer count on resume.",
+    "expectedImpact": "VRAM, per-step time, and artifact size all grow roughly linearly with layer count.",
+    "tradeoffs": "Once trained and saved at a given layer count, later resumes and inference are locked to it.",
+    "codePath": "config_adapter_conversion_context.py: anima_depth_expansion_target_layers normalization; anima_depth_expansion_runtime.py"
   },
   "relatedConfigs": [
     "anima_depth_expansion_enabled",

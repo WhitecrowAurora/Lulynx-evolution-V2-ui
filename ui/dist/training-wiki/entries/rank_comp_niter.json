@@ -1,0 +1,17 @@
+{
+  "key": "rank_comp_niter",
+  "title": "rSVD 幂迭代",
+  "category": "精度 / 量化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "rSVD 幂迭代次数。",
+    "effect": "随机 SVD 的幂迭代次数，越多越准越慢。",
+    "whenToUse": "校准精度不够时加大。",
+    "avoidWhen": "默认 4。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

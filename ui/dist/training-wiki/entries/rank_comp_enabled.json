@@ -1,0 +1,17 @@
+{
+  "key": "rank_comp_enabled",
+  "title": "低秩精度回补",
+  "category": "精度 / 量化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "4bit 量化误差用冻结低秩分支补回；显存代价 r16 约 0.4% 主干",
+    "effect": "写入训练配置 rank_comp_enabled，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "fg_lora_rank_map_json",
   "title": "FIM 逐层 Rank 映射",
+  "title_en": "FIM layer Rank map",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "An exact per-layer rank map written back by the FIM scanner in one click (JSON: {full layer path: rank}).",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "由 FIM 扫描器一键写回的逐层精确 rank 映射（JSON：{完整层路径: rank}）。仅当 Rank 分配策略=fim_profile 时生效。一般不需要手动编辑。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Per-layer exact rank mapping written back by the FIM scanner in one click (JSON: {full layer path: rank}). Only takes effect when Rank allocation policy = fim_profile. Manual editing is normally unnecessary.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

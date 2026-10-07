@@ -1,0 +1,17 @@
+{
+  "key": "easycontrol_v2_control_image_dir",
+  "title": "控制图目录",
+  "category": "EasyControl",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "EasyControl 控制图目录。",
+    "effect": "控制图像（成对数据中的条件侧）所在目录。",
+    "whenToUse": "数据集按目录组织控制图时配置。",
+    "avoidWhen": "无控制图路线不需要。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

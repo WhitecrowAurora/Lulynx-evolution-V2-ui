@@ -17,6 +17,13 @@
 .lx-task-progress .lx-bar { flex: 1; }
 .lx-task-progress .lx-num { font-size: 10px; color: var(--lx-dim); }
 .lx-task-actions { display: flex; gap: 6px; flex: none; }
+.lx-queue-workbench-row { align-items: center; }
+.lx-queue-position { width: 24px; height: 24px; display: grid; place-items: center; flex: none; border: 1px solid var(--lx-border); color: var(--lx-accent); font: 700 11px var(--lx-font-mono); }
+.lx-queue-order-actions { display: flex; gap: 4px; flex: none; }
+.lx-queue-edit-note { color: var(--lx-dim); font-size: 12px; line-height: 1.5; margin-bottom: 10px; }
+.lx-queue-config-editor { display: block; width: 100%; min-height: 360px; resize: vertical; padding: 12px; border: 1px solid var(--lx-border); border-radius: var(--lx-radius); background: var(--lx-field-bg); color: var(--lx-text); font: 12px/1.5 var(--lx-font-mono); }
+.lx-queue-config-editor:focus { outline: none; border-color: var(--lx-accent); }
+.lx-queue-modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
 
 .lx-filter-btn {
   font: 600 10px var(--lx-font-mono); letter-spacing: 0.08em; text-transform: uppercase;

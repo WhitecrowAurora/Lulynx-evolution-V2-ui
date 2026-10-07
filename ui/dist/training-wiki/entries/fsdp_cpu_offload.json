@@ -1,0 +1,54 @@
+{
+  "key": "fsdp_cpu_offload",
+  "title": "FSDP CPU Offload",
+  "title_en": "FSDP CPU Offload",
+  "category": "训练 / 分布式",
+  "category_en": "Training / Distributed",
+  "appliesTo": [
+    "sdxl-lora",
+    "sd-lora",
+    "anima-lora",
+    "flux-lora",
+    "finetune"
+  ],
+  "layers": [
+    "并行层",
+    "显存层"
+  ],
+  "layers_en": [
+    "Parallelism layer",
+    "VRAM layer"
+  ],
+  "standard": {
+    "summary": "FSDP2 分片时把参数与梯度 offload 到主机内存。默认关闭，只在 distributed_strategy=fsdp2 时有意义。",
+    "effect": "给每次 fully_shard 调用带上 offload_policy=CPUOffloadPolicy()，分片后的参数副本与梯度落在主机内存，用到时再搬回显存。",
+    "whenToUse": "已经选了 fsdp2、分片后仍然装不下时再开。这是显存换带宽的最后一档。",
+    "avoidWhen": "显存够用时不要开 —— 每步多一轮主机与显存之间的往返，步时代价明显。torch 构建里没有 CPUOffloadPolicy 时会直接报错而不是静默忽略，所以看到报错说明这个键真的被读到了。"
+  },
+  "standard_en": {
+    "summary": "Offloads parameters and gradients to host memory while FSDP2 shards. Off by default, and meaningful only with distributed_strategy=fsdp2.",
+    "effect": "Adds offload_policy=CPUOffloadPolicy() to every fully_shard call, so the sharded parameter copies and gradients live in host memory and move back to VRAM when needed.",
+    "whenToUse": "Turn it on when you have already chosen fsdp2 and still cannot fit after sharding. It is the last gear that trades bandwidth for VRAM.",
+    "avoidWhen": "Do not turn it on when VRAM suffices -- each step adds a host-to-device round trip and the step-time cost is clear. A torch build without CPUOffloadPolicy errors out rather than silently ignoring the flag, so an error here confirms the key really is being read."
+  },
+  "advanced": {
+    "principle": "FSDP2 的 offload_policy 决定分片副本存放位置。CPUOffloadPolicy 把 shard 与梯度放在 pinned host memory，前向/反向前按需搬入显存、用完搬出，等于把参数与梯度的常驻显存换成每步的 PCIe 传输。",
+    "intervention": "distributed_fsdp_policy.py:build_fsdp2_shard_kwargs 把这个键翻成 offload_policy kwarg，distributed_runtime.py:_wrap_fsdp2 在两处 fully_shard 调用上一起带上。默认关闭时这个函数返回空 dict，也就是与接线前逐字节相同的 fully_shard(module) 调用 —— default-off parity 由 fsdp2_shard_policy_contract_smoke.py 钉住。",
+    "expectedImpact": "显存下降幅度取决于分片后参数与梯度的占比；步时上升取决于 PCIe 带宽与每步搬运量，通常是数十个百分点量级。",
+    "tradeoffs": "与 block swap、模块 offload 一类显存优化机制重叠，叠加只会重复搬运。CPUOffloadPolicy 不可用时本实现选择报错，理由是「要了 offload 却没给」比慢更危险。",
+    "codePath": "configs_base.py:fsdp_cpu_offload 声明；distributed_fsdp_policy.py:build_fsdp2_shard_kwargs 归一化；distributed_runtime.py:_wrap_fsdp2 两处 fully_shard 消费；判据 backend/smoke/functional/runtime/fsdp2_shard_policy_contract_smoke.py"
+  },
+  "advanced_en": {
+    "principle": "FSDP2's offload_policy decides where shard replicas live. CPUOffloadPolicy puts shards and gradients in pinned host memory, moving them into VRAM before forward/backward as needed and out after use — trading resident parameter/gradient VRAM for per-step PCIe transfers.",
+    "intervention": "distributed_fsdp_policy.py:build_fsdp2_shard_kwargs translates this key into the offload_policy kwarg, and distributed_runtime.py:_wrap_fsdp2 carries it on both fully_shard call sites. When off by default the function returns an empty dict — i.e. a fully_shard(module) call byte-identical to pre-wiring; the default-off parity is pinned by fsdp2_shard_policy_contract_smoke.py.",
+    "expectedImpact": "The VRAM drop depends on the post-shard share of parameters and gradients; the step-time rise depends on PCIe bandwidth and per-step transfer volume — usually tens of percent.",
+    "tradeoffs": "Overlaps with VRAM-optimization mechanisms like block swap and module offload; stacking only duplicates transfers. When CPUOffloadPolicy is unavailable this implementation errors out — \"asked for offload but didn't get it\" is more dangerous than slow.",
+    "codePath": "configs_base.py:fsdp_cpu_offload declaration; distributed_fsdp_policy.py:build_fsdp2_shard_kwargs normalization; distributed_runtime.py:_wrap_fsdp2 two fully_shard consumers; criterion backend/smoke/functional/runtime/fsdp2_shard_policy_contract_smoke.py"
+  },
+  "relatedConfigs": [
+    "distributed_strategy",
+    "fsdp_auto_wrap_policy",
+    "fsdp_state_dict_type",
+    "enable_distributed_training"
+  ]
+}

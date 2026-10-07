@@ -1,6 +1,7 @@
 {
   "ae": {
-    "lumina-finetune": "AE Path (ae)"
+    "lumina-finetune": "AE Path (ae)",
+    "flux-finetune": "AE Path (ae)"
   },
   "anima_auto_scan_folder": {
     "concept-edit": "🔍 Auto-detect Anima folder"
@@ -46,12 +47,14 @@
     "sdxl-controlnet-lllite": "Tag file extension",
     "sdxl-finetune": "Tag file extension",
     "sdxl-lora": "Tag file extension",
-    "sdxl-textual-inversion": "Tag file extension"
+    "sdxl-textual-inversion": "Tag file extension",
+    "flux-finetune": "Tag file extension"
   },
   "experimental_attention_profile_window": {
     "anima-edit-model": "Window size",
     "anima-lora": "Window size",
-    "newbie-lora": "Window size"
+    "newbie-lora": "Window size",
+    "flux-finetune": "Window size"
   },
   "flow_logit_mean": {
     "sd-lora": "RF Logit Mean",
@@ -194,7 +197,8 @@
     "wan22-ti2v-lora": "Wan2.2 model folder",
     "yolo": "YOLO model weights",
     "zimage-finetune": "Z-Image model folder",
-    "zimage-lora": "Z-Image model folder"
+    "zimage-lora": "Z-Image model folder",
+    "flux-finetune": "FLUX model path"
   },
   "resolution": {
     "sdxl-turbo-lora": "Smoke-test resolution"

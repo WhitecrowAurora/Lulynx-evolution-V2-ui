@@ -1,0 +1,17 @@
+{
+  "key": "layersync_weight",
+  "title": "LayerSync 权重",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "aux 权重；真正生效需 weight>0（建议试 0.2）。",
+    "effect": "写入训练配置 layersync_weight，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

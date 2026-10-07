@@ -1,7 +1,9 @@
 {
   "key": "keep_tokens_separator",
   "title": "保留 Token 输出分隔符",
+  "title_en": "Token",
   "category": "数据集 / 图说",
+  "category_en": "Dataset / Captions",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -20,9 +22,19 @@
     "whenToUse": "需要在固定前缀与可打乱部分之间显式插入标记时使用。",
     "avoidWhen": "若目标是「标注里已有 |||，只 drop/shuffle 后半段」，请用 caption_tag_mutate_scope=after_separator，不要依赖本字段解析保护区。"
   },
+  "standard_en": {
+    "summary": "The output separator inserted between the keep_tokens prefix and the remaining tags. It inserts into the output; it does not define a parsed protection boundary.",
+    "effect": "With keep_tokens=1 and keep_tokens_separator=\"|||\", the output looks like \"trigger, |||, tag2, tag3\". The separator itself is inserted into the list as a token.",
+    "whenToUse": "When you need an explicit marker between the fixed prefix and the shufflable part.",
+    "avoidWhen": "If your goal is \"the caption already contains |||, drop and shuffle only the second half\", use caption_tag_mutate_scope=after_separator rather than relying on this field to define a protected region."
+  },
   "advanced": {
     "principle": "代码路径：先按 keep_tokens 切前缀/后缀，再可选插入 keep_tokens_separator，再 join。不会用该分隔符去解析原始 caption 的保护区。真正的解析保护区是 caption_tag_mutate_scope + caption_tag_scope_separator。",
     "tradeoffs": "与 caption_tag_mutate_scope 语义不同；混用时务必分清「输出插入」与「解析保护」。"
+  },
+  "advanced_en": {
+    "principle": "Code path: split prefix/suffix by keep_tokens, optionally insert keep_tokens_separator, then join. The separator is never used to parse the original caption's protected zone. The real parsing protection is caption_tag_mutate_scope + caption_tag_scope_separator.",
+    "tradeoffs": "Semantically different from caption_tag_mutate_scope; when mixing them, be clear about \"output insertion\" vs \"parsing protection\"."
   },
   "relatedConfigs": [
     "keep_tokens",

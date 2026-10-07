@@ -1,7 +1,9 @@
 {
   "key": "validation_split",
   "title": "验证集划分",
+  "title_en": "Validation Ratio",
   "category": "训练 / 验证",
+  "category_en": "Training / Validation",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,17 +15,33 @@
   "layers": [
     "训练控制层"
   ],
+  "layers_en": [
+    "Training control layer"
+  ],
   "standard": {
     "summary": "从训练数据中划分一部分作为验证集，每 N 个 epoch 计算一次验证 loss。帮助检测过拟合。",
     "effect": "validation_split=0.1 表示 10% 的数据用于验证。验证 loss 不下降而训练 loss 继续下降是过拟合的标志。",
     "whenToUse": "数据量充足（>100 张）时推荐开启。想监控过拟合时。",
     "avoidWhen": "数据极少（<30 张）时验证集太小统计不可靠。"
   },
+  "standard_en": {
+    "summary": "Splits part of the training data off as a validation set and computes a validation loss every N epochs. It helps detect overfitting.",
+    "effect": "validation_split=0.1 means 10% of the data is used for validation. A validation loss that stops falling while the training loss keeps falling is the sign of overfitting.",
+    "whenToUse": "Recommended when there is plenty of data (>100 images). When you want to watch for overfitting.",
+    "avoidWhen": "With very little data (<30 images) the validation set is too small to be statistically reliable."
+  },
   "advanced": {
     "principle": "训练前按 validation_split 比例随机划分数据集。验证集不参与梯度更新，只用于计算 loss。validation_every_n_epochs 控制验证频率。validation_loss_only=True 时只计算 loss（不生成样本）。eval_data_dir 可以使用独立的验证数据集。",
     "intervention": "DataLoader 划分后，每 N epoch 在验证集上 forward 计算 loss。",
     "expectedImpact": "提供过拟合的早期预警。不直接影响训练质量。",
     "tradeoffs": "validation_seed 控制划分的随机性。max_validation_steps 限制验证步数。",
+    "codePath": "training_loop.py:validation_split → subset dataset → per-epoch validation loss"
+  },
+  "advanced_en": {
+    "principle": "Before training, the dataset is randomly split by the validation_split ratio. The validation set takes no part in gradient updates and is used only to compute loss. validation_every_n_epochs controls validation frequency. With validation_loss_only=True only the loss is computed (no samples generated). eval_data_dir can use a separate validation dataset.",
+    "intervention": "After the DataLoader split, every N epochs a forward computes the loss on the validation set.",
+    "expectedImpact": "Provides early warning of overfitting. Does not directly affect training quality.",
+    "tradeoffs": "validation_seed controls the split's randomness. max_validation_steps limits the number of validation steps.",
     "codePath": "training_loop.py:validation_split → subset dataset → per-epoch validation loss"
   },
   "relatedConfigs": [

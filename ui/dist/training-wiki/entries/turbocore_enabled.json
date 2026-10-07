@@ -1,0 +1,16 @@
+{
+  "key": "turbocore_enabled",
+  "title": "turbocore_enabled",
+  "category": "TurboCore 内核优化",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "turbocore_enabled。默认关闭",
+    "effect": "写入训练配置 turbocore_enabled，由训练后端在相应阶段消费。",
+    "whenToUse": "默认关闭，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

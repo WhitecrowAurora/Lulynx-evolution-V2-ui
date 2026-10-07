@@ -1,0 +1,24 @@
+{
+  "key": "smart_rank_min",
+  "title": "SmartRank 最小 rank",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "SmartRank 最小 rank。",
+    "effect": "动态 rank 的下界。",
+    "whenToUse": "保证关键层最低容量。",
+    "avoidWhen": "默认 4。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

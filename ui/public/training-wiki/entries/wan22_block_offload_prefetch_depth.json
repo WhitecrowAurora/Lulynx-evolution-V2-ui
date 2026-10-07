@@ -1,0 +1,18 @@
+{
+  "key": "wan22_block_offload_prefetch_depth",
+  "title": "Block Offload 预取深度",
+  "category": "Wan2.2 Block Offload",
+  "appliesTo": [
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora"
+  ],
+  "standard": {
+    "summary": "Wan2.2 Block Offload 预取深度。",
+    "effect": "Wan2.2 块卸载的预取深度。",
+    "whenToUse": "视频模型块更大，预取收益更明显。",
+    "avoidWhen": "默认 2。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

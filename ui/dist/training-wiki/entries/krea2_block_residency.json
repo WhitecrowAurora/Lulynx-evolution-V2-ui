@@ -1,11 +1,13 @@
 {
   "key": "krea2_block_residency",
   "title": "Krea2 Block 驻留",
+  "title_en": "Krea2 Block",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "resident=全 GPU（详见 ?）",
+    "summary": "resident=全 GPU；block_offload=按 block LRU；layer_offload=按层 offload。",
     "effect": "",
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。",
@@ -15,8 +17,25 @@
       "layer_offload": "按层卸，更细更慢。"
     }
   },
+  "standard_en": {
+    "summary": "resident = everything on the GPU; block_offload = per-block LRU; layer_offload = offload by layer.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "resident": "Everything on the GPU.",
+      "block_offload": "Offloads block by block.",
+      "layer_offload": "Offloads layer by layer: finer and slower."
+    }
+  },
   "advanced": {
     "principle": "resident=全 GPU；block_offload=按 block LRU；layer_offload=按层 offload。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "resident = all-GPU; block_offload = per-block LRU; layer_offload = per-layer offload.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

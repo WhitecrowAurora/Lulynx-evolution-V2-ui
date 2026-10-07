@@ -1,0 +1,16 @@
+{
+  "key": "anima_require_explicit_components",
+  "title": "组件必须显式指定",
+  "category": "训练用模型",
+  "appliesTo": [
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "开启后：上面的 VAE / Qwen3 / T5 tokenizer 路径留空不再自动扫描模型目录，直接停下并点名缺哪个字段。",
+    "effect": "适合模型目录里放了多个同类权重、不希望训练器替你挑的情况。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

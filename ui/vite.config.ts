@@ -29,6 +29,23 @@ export default defineConfig({
       output: {
         manualChunks(id: string) {
           if (id.includes('vite/preload-helper')) return 'preload-helper'
+          // Keep the synchronous schema facade while splitting its large data
+          // families into bounded chunks for the lazy training route.
+          if (id.includes('/src/schema/')) {
+            const familyChunks = [
+              ['sdxlSchema', 'schema-sdxl'],
+              ['animaSchema', 'schema-anima'],
+              ['otherSchemas', 'schema-other'],
+              ['otherDitSchemas', 'schema-dit'],
+              ['experimentalTrainingSchemas', 'schema-experimental'],
+              ['conceptEditUnifiedSchema', 'schema-concept-edit'],
+              ['universalDitFields', 'schema-universal-dit'],
+              ['minimaxH3Schema', 'schema-minimax-h3'],
+            ] as const
+            for (const [file, chunk] of familyChunks) {
+              if (id.includes(`/${file}.js`)) return chunk
+            }
+          }
           if (id.includes('node_modules')) {
             if (/[\\/]node_modules[\\/](echarts|zrender)[\\/]/.test(id)) return 'vendor-echarts'
             return 'vendor'

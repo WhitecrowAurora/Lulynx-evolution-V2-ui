@@ -1,0 +1,17 @@
+{
+  "key": "zimage_block_offload_pin_memory",
+  "title": "Block Offload Pin Memory",
+  "category": "Z-Image Block Offload",
+  "appliesTo": [
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "CPU 侧 pinned 缓存，加速 H2D。",
+    "effect": "写入训练配置 zimage_block_offload_pin_memory，由训练后端在相应阶段消费。",
+    "whenToUse": "默认开启，适合大多数场景。",
+    "avoidWhen": "排查问题想回到原始行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

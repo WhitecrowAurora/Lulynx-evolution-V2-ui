@@ -1,7 +1,9 @@
 {
   "key": "newbie_cache_build_prefetch",
   "title": "缓存构建 CPU 预取（newbie_cache_build_prefetch）",
+  "title_en": "Cache build CPU prefetch",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "During the first-pass cache build, pre-decodes the next batch of images on a CPU thread, and with the GPU",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "首轮缓存构建时在 CPU 线程预解码下一批图像，与 GPU 编码重叠。仅批大小 > 1 时生效。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "During the first cache build, pre-decodes the next batch of images on CPU threads, overlapping with GPU encoding. Only effective when batch size > 1.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

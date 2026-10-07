@@ -1,0 +1,16 @@
+{
+  "key": "lllite_mlp_dim",
+  "title": "MLP 瓶颈维 (UNet)",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "sdxl-controlnet-lllite"
+  ],
+  "standard": {
+    "summary": "LLLite MLP 瓶颈维。",
+    "effect": "ControlNet-LLLite 条件侧 MLP 的瓶颈宽度。",
+    "whenToUse": "控制信号复杂时加大。",
+    "avoidWhen": "默认 64。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

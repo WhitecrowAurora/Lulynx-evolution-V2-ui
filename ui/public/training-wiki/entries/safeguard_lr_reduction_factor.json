@@ -1,7 +1,9 @@
 {
   "key": "safeguard_lr_reduction_factor",
   "title": "降学习率倍率",
+  "title_en": "Learning Rate",
   "category": "训练 / 稳定性",
+  "category_en": "Training / Stability",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -16,9 +18,19 @@
     "whenToUse": "默认 0.5 是稳健选择。若 loss 波动频繁但不严重，可改 0.8 避免 LR 衰减过快。",
     "avoidWhen": "不建议设为 0（LR 清零，训练停滞）或 1.0（等于不降）。"
   },
+  "standard_en": {
+    "summary": "The factor the learning rate is multiplied by each time SafeGuard lowers it automatically. Default 0.5 (halved).",
+    "effect": "0.5 = halved on each trigger; 0.8 = a gentle 20% reduction; 0.1 = an aggressive drop to 10%.",
+    "whenToUse": "The default 0.5 is a robust choice. If the loss fluctuates often but not badly, 0.8 avoids decaying the LR too fast.",
+    "avoidWhen": "0 is not advisable (the LR goes to zero and training stalls), nor is 1.0 (the same as no reduction)."
+  },
   "advanced": {
     "principle": "new_lr = current_lr * lr_reduction_factor，应用于所有 param_groups。多次触发累乘，属于永久性降低，不会自动恢复。",
     "tradeoffs": "若误触发多次会导致 LR 过低，建议同时调高 spike_threshold 减少误触发频率。"
+  },
+  "advanced_en": {
+    "principle": "new_lr = current_lr * lr_reduction_factor, applied to all param_groups. Multiple triggers multiply cumulatively; the reduction is permanent and does not recover automatically.",
+    "tradeoffs": "If it misfires several times the LR can end up too low; raise spike_threshold at the same time to reduce misfire frequency."
   },
   "relatedConfigs": [
     "safeguard_enabled",

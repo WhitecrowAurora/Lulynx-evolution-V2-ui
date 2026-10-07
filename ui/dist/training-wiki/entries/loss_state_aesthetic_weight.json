@@ -1,0 +1,41 @@
+{
+  "key": "loss_state_aesthetic_weight",
+  "title": "审美融合强度",
+  "category": "渐进式 / 分阶段训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "hunyuan-dit-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "lumina-finetune",
+    "lumina-lora",
+    "newbie-lora",
+    "qwen-image-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "审美融合强度。",
+    "effect": "审美分在状态机判定中的权重，0 = 不参与。",
+    "whenToUse": "有审美打分接入且希望影响状态判定时调大。",
+    "avoidWhen": "默认 0 不参与。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

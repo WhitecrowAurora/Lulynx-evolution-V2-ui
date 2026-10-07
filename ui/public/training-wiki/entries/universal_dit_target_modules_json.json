@@ -1,0 +1,16 @@
+{
+  "key": "universal_dit_target_modules_json",
+  "title": "显式 Target 路径 JSON",
+  "category": "Batch / Objective / Forward 契约",
+  "appliesTo": [
+    "universal-dit-lora"
+  ],
+  "standard": {
+    "summary": "explicit 策略必填。",
+    "effect": "路径必须精确存在且是 nn.Linear。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

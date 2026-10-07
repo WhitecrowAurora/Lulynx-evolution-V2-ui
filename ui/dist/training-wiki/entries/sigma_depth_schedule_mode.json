@@ -1,0 +1,16 @@
+{
+  "key": "sigma_depth_schedule_mode",
+  "title": "σ 深度模式",
+  "category": "σ 深度调度",
+  "appliesTo": [
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "hard_depth=按 σ 决定最大深度；soft_prob=深度边界后软概率跳过。",
+    "effect": "写入训练配置 sigma_depth_schedule_mode，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 hard_depth，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,16 @@
+{
+  "key": "waifu_v3_head_path",
+  "title": "Waifu v3 head 路径",
+  "category": "特征提取器设置",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "Waifu Scorer v3 head 权重路径。",
+    "effect": "写入训练配置 waifu_v3_head_path，由训练后端在相应阶段消费。",
+    "whenToUse": "路径留空时走默认解析/该功能不启用。",
+    "avoidWhen": "填错路径会在预检或启动时报错，注意路径有效性。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

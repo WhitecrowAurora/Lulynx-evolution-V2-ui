@@ -1,0 +1,16 @@
+{
+  "key": "newbie_dataloader_workers",
+  "title": "Newbie DataLoader 线程数",
+  "category": "数据集设置",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "auto 或显式整数。",
+    "effect": "auto = 按平台保守值（Windows ≥8 核给 2，其它给 min(4, 核数/2)）；填整数则覆盖通用 cached_dataloader_workers 与 dataloader_num_workers。这里以前出厂填 4，而表单每次都把它发给后端，等于所有人都在「显式选了 4」，缓存路的专用 worker 设置永远赢不了。",
+    "whenToUse": "默认 auto，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

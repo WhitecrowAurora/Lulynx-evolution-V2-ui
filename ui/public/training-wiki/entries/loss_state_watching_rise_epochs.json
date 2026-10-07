@@ -1,0 +1,41 @@
+{
+  "key": "loss_state_watching_rise_epochs",
+  "title": "观察确认 Epoch",
+  "category": "渐进式 / 分阶段训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "hunyuan-dit-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "lumina-finetune",
+    "lumina-lora",
+    "newbie-lora",
+    "qwen-image-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "Loss 状态机的 观察确认 Epoch，默认 1。",
+    "effect": "loss_state 用时间步分桶的 loss 残差统计判定训练处于健康/观察/退化/卡死哪一档，并联动学习率调整，观察确认 Epoch 是判定阈值或窗口。",
+    "whenToUse": "长训练希望自动化处理 loss 平台/退化时使用。",
+    "avoidWhen": "短训或调参试验阶段，状态机介入会让归因变难，保持默认关闭/低介入。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

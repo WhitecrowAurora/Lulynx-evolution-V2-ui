@@ -1,0 +1,17 @@
+{
+  "key": "rank_comp_oversample",
+  "title": "rSVD 过采样",
+  "category": "精度 / 量化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "随机 SVD 的额外采样列数，提高小奇异值精度",
+    "effect": "写入训练配置 rank_comp_oversample，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 8，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

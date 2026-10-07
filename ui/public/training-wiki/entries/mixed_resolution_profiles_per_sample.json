@@ -1,12 +1,17 @@
 {
   "key": "mixed_resolution_profiles_per_sample",
   "title": "每样本分辨率档位数",
+  "title_en": "Resolution Profiles per Sample",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "anima-lora"
   ],
   "layers": [
     "数据层"
+  ],
+  "layers_en": [
+    "Data layer"
   ],
   "standard": {
     "summary": "within_epoch_free_fit 模式下，每个样本可参与训练的分辨率 profile 数量。默认 2，取值被夹在 [2, 活跃 profile 总数]。",
@@ -14,12 +19,25 @@
     "whenToUse": "多尺度泛化是目标（如同一 LoRA 要在 512~1536 都表现好）时调到 3~4；默认 2 已能兼顾成本与覆盖。",
     "avoidWhen": "mixed_resolution_strategy 不是 within_epoch_free_fit 时无效；活跃 profile 少于 2 个时 free-fit 本身无法启用（后端报错）。"
   },
+  "standard_en": {
+    "summary": "In within_epoch_free_fit mode, how many resolution profiles each sample may be trained at. The default is 2, and the value is clamped to [2, the total number of active profiles].",
+    "effect": "The larger the value, the more different resolutions the same sample gets trained at and the fuller the multi-scale coverage; the backend clamps the requested value to the number of profiles actually available, so it cannot be over-provisioned.",
+    "whenToUse": "Raise it to 3~4 when multi-scale generalisation is the goal (one LoRA that has to perform from 512 to 1536, say); the default 2 already balances cost against coverage.",
+    "avoidWhen": "It has no effect unless mixed_resolution_strategy is within_epoch_free_fit; with fewer than 2 active profiles free-fit cannot be enabled at all (the backend errors out)."
+  },
   "advanced": {
     "principle": "free-fit 缓存为每个样本预编码多个分辨率 profile 的 latent；本键决定训练时每样本轮换使用的档位子集大小，等价于按样本粒度做多尺度数据增强，epoch 有效样本量随之放大。",
     "intervention": "anima_free_fit_epoch.py:resolve_profiles_per_sample——requested = int(config.mixed_resolution_profiles_per_sample or 2)，返回 min(max(requested, 2), profile_count)。",
     "expectedImpact": "档位数越多每 epoch 遍历成本越高（同一样本多次出现）；多尺度一致性提升。",
     "tradeoffs": "缓存体积随 profile 数增长；档位过多时单一分辨率的有效步数被稀释。",
     "codePath": "anima_free_fit_epoch.py:resolve_profiles_per_sample（clamp 到 [2, 活跃 profile 数]）"
+  },
+  "advanced_en": {
+    "principle": "The free-fit cache pre-encodes latents at multiple resolution profiles per sample; this key decides how large a subset of profiles each sample cycles through during training — effectively multi-scale data augmentation at per-sample granularity, amplifying the epoch's effective sample count.",
+    "intervention": "anima_free_fit_epoch.py:resolve_profiles_per_sample — requested = int(config.mixed_resolution_profiles_per_sample or 2), returns min(max(requested, 2), profile_count).",
+    "expectedImpact": "More profiles raise per-epoch traversal cost (the same sample appears multiple times); multi-scale consistency improves.",
+    "tradeoffs": "Cache size grows with the profile count; too many profiles dilute the effective step count at any single resolution.",
+    "codePath": "anima_free_fit_epoch.py:resolve_profiles_per_sample (clamped to [2, active profile count])"
   },
   "relatedConfigs": [
     "mixed_resolution_strategy",

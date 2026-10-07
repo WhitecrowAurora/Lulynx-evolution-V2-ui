@@ -1,7 +1,9 @@
 {
   "key": "quality_evaluation_metric_weights",
   "title": "质量评估多目标指标权重",
+  "title_en": "Metric Weights",
   "category": "质量评估",
+  "category_en": "Quality Assessment",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,11 +13,20 @@
   "layers": [
     "评估层"
   ],
+  "layers_en": [
+    "Evaluation layer"
+  ],
   "standard": {
     "summary": "各评估指标聚合为综合分时的权重，JSON 对象格式如 {\"clip_score\":1,\"fid\":0.5}。缺失的指标不会被伪造为 0 分参与聚合。",
     "effect": "综合评分按权重加权；某指标因缺少依赖（如 FID 缺真图目录）被跳过时，该项从聚合中剔除而非按 0 计入，避免误导性总分。",
     "whenToUse": "多指标（fid、clip_score、lpips）同时开启且各指标对你的目标重要性不同时；想把综合分用于自动化对比/选型时。",
     "avoidWhen": "只开一个指标时无需配置；权重语义未想清楚前直接看分项指标更靠谱。"
+  },
+  "standard_en": {
+    "summary": "The weights used when the evaluation metrics are aggregated into an overall score, as a JSON object such as {\"clip_score\":1,\"fid\":0.5}. A missing metric is not faked as a 0 and pulled into the aggregate.",
+    "effect": "The overall score is a weighted sum; when a metric is skipped for want of a dependency (FID with no real-image directory, say) it is dropped from the aggregate rather than counted as 0, which avoids a misleading total.",
+    "whenToUse": "When several metrics (fid, clip_score, lpips) are on at once and they matter differently for your goal; when you want the overall score for automated comparison or selection.",
+    "avoidWhen": "No configuration is needed with only one metric on; before you have thought the weighting through, reading the individual metrics is more reliable."
   },
   "advanced": {
     "principle": "不同指标量纲与方向不同（FID 越低越好、CLIP Score 越高越好），聚合前需按指标语义归一；权重表达业务侧的重要性排序。「缺失不伪造 0」是防止「没测到」被当成「测得差」的报告完整性约束。",
@@ -23,6 +34,13 @@
     "expectedImpact": "只影响综合分呈现，不影响训练与分项指标本身。",
     "tradeoffs": "权重是主观先验，跨套件比较时必须保持权重一致（建议连同 suite_id 一起管理）。",
     "codePath": "configs_validators.py：metric_weights JSON 解析；quality/validation_suite.py：metric_weights 传参"
+  },
+  "advanced_en": {
+    "principle": "Different metrics have different scales and directions (lower FID is better, higher CLIP Score is better), so they must be normalized per metric semantics before aggregation; the weights express the business-side importance ranking. \"A missing measurement is never faked as 0\" is a report-integrity constraint preventing \"not measured\" from being read as \"measured badly\".",
+    "intervention": "configs_validators.py: supports both a config block (metric_weights) and a flat JSON string, parsed into dict[str,float]; quality/validation_suite.py passes the weights into suite construction.",
+    "expectedImpact": "Affects only the composite score presentation, not training or the individual metrics themselves.",
+    "tradeoffs": "Weights are a subjective prior; cross-suite comparisons must keep the weights identical (recommend managing them together with suite_id).",
+    "codePath": "configs_validators.py: metric_weights JSON parsing; quality/validation_suite.py: metric_weights passed in"
   },
   "relatedConfigs": [
     "quality_evaluation_metrics",

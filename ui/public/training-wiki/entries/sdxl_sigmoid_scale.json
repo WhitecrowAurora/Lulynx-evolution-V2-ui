@@ -1,0 +1,30 @@
+{
+  "key": "sdxl_sigmoid_scale",
+  "title": "Flow Sigmoid Scale",
+  "category": "Anima 专用参数",
+  "appliesTo": [
+    "anima-addift",
+    "anima-controlnet",
+    "anima-edit-model",
+    "anima-finetune",
+    "anima-ileco",
+    "anima-lora",
+    "anima-multi-addift",
+    "concept-edit",
+    "flux-finetune",
+    "flux-lora",
+    "hunyuan-dit-lora",
+    "lumina-finetune",
+    "lumina-lora",
+    "qwen-image-lora",
+    "sd3-lora"
+  ],
+  "standard": {
+    "summary": "Flow Sigmoid Scale (SDXL)。",
+    "effect": "SDXL 路线的 sigmoid timestep 采样缩放。",
+    "whenToUse": "同 sigmoid_scale，作用于 SDXL 专属字段。",
+    "avoidWhen": "默认 1。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

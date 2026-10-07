@@ -1,0 +1,16 @@
+{
+  "key": "edit_preserve_mask_field",
+  "title": "保留 Mask 字段",
+  "category": "Edit 训练",
+  "appliesTo": [
+    "anima-edit-model"
+  ],
+  "standard": {
+    "summary": "可选。",
+    "effect": "需要保持区域的 mask 字段名。",
+    "whenToUse": "默认 preserve_mask，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

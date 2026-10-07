@@ -1,0 +1,18 @@
+{
+  "key": "boogu_load_mllm",
+  "title": "加载 MLLM",
+  "category": "训练用模型",
+  "appliesTo": [
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora"
+  ],
+  "standard": {
+    "summary": "默认关闭以复用文本缓存；仅在构建缓存或实时文本编码时开启，会显著增加内存/显存占用。",
+    "effect": "写入训练配置 boogu_load_mllm，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

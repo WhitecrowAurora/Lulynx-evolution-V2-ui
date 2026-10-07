@@ -1,0 +1,16 @@
+{
+  "key": "batch",
+  "title": "批量大小",
+  "category": "训练参数",
+  "appliesTo": [
+    "yolo"
+  ],
+  "standard": {
+    "summary": "批量大小（scorer）。",
+    "effect": "scorer 训练 batch。",
+    "whenToUse": "按显存调整。",
+    "avoidWhen": "默认 16。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

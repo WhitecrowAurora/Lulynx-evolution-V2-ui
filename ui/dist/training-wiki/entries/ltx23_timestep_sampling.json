@@ -1,7 +1,9 @@
 {
   "key": "ltx23_timestep_sampling",
   "title": "时间步采样（ltx23_timestep_sampling）",
+  "title_en": "Timestep sampling",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "shift": "shift。",
       "uniform": "均匀。",
       "sigma": "按 σ。"
+    }
+  },
+  "standard_en": {
+    "summary": "Timestep sampling (ltx23_timestep_sampling); the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "shift": "shift.",
+      "uniform": "Uniform.",
+      "sigma": "By sigma."
     }
   },
   "advanced": {},

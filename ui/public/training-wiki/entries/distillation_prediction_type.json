@@ -1,7 +1,9 @@
 {
   "key": "distillation_prediction_type",
   "title": "蒸馏预测类型",
+  "title_en": "Distillation Prediction Type",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "velocity": "学生预测速度场。",
       "epsilon": "学生预测噪声。",
       "sample": "学生预测样本。"
+    }
+  },
+  "standard_en": {
+    "summary": "The values available for the distillation prediction type (auto-generated skeleton, still open to polish).",
+    "effect": "Switching between the enum values changes training behaviour or resource use; see the individual entries.",
+    "whenToUse": "Choose by task and hardware; when unsure use the product default.",
+    "avoidWhen": "Do not pick an experimental or aggressive gear blindly before you understand what the entries mean.",
+    "optionDescriptions": {
+      "velocity": "The student predicts the velocity field.",
+      "epsilon": "The student predicts the noise.",
+      "sample": "The student predicts the sample."
     }
   },
   "advanced": {},

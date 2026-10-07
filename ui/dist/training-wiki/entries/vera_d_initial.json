@@ -1,0 +1,20 @@
+{
+  "key": "vera_d_initial",
+  "title": "VeRA d 初值",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "VeRA 共享 d 向量初值。",
+    "effect": "VeRA 用共享随机矩阵 + 可训练缩放向量，d 是缩放向量的初始幅值。",
+    "whenToUse": "使用 VeRA 时按初始化规模调整。",
+    "avoidWhen": "未使用 VeRA 时不生效。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

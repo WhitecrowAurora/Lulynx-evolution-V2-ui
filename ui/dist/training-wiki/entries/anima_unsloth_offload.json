@@ -1,7 +1,9 @@
 {
   "key": "anima_unsloth_offload",
   "title": "Unsloth 梯度卸载",
+  "title_en": "Unsloth Gradient Offload",
   "category": "速度 / Anima 专用",
+  "category_en": "Speed / Anima-specific",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "开启 gradient_checkpointing 和 block_prefetch 仍然 OOM 时的最后手段。",
     "avoidWhen": "显存充足时不建议使用（额外的 CPU-GPU 数据传输会降低训练速度）。"
   },
+  "standard_en": {
+    "summary": "Uses Unsloth-style gradient offloading: during backward, non-essential intermediate activations move to the CPU, pushing peak VRAM down further.",
+    "effect": "Frees more VRAM, which can make a higher resolution or a larger batch fit, at the cost of slightly slower training.",
+    "whenToUse": "As a last resort when gradient_checkpointing and block_prefetch are both on and you still OOM.",
+    "avoidWhen": "Not recommended when VRAM is plentiful -- the extra CPU-GPU traffic only slows the run down."
+  },
   "advanced": {
     "principle": "Unsloth 方法在 backward 时主动将已完成 backward 的 block 权重卸载到 CPU，并在下一个 block 需要前预取回来，与计算重叠。等效于更细粒度的 gradient checkpointing + offload 组合。",
     "tradeoffs": "实现复杂，与某些 LoRA 实现可能有兼容性问题；建议先用官方 gradient_checkpointing 方案，确认不够用后再尝试此选项。"
+  },
+  "advanced_en": {
+    "principle": "The Unsloth method proactively offloads blocks whose backward has completed to CPU during backward and prefetches them back before the next block needs them, overlapping with compute. Equivalent to a finer-grained gradient-checkpointing + offload combination.",
+    "tradeoffs": "Complex to implement and possibly incompatible with some LoRA implementations; try the official gradient_checkpointing first and only reach for this once it proves insufficient."
   },
   "relatedConfigs": [
     "gradient_checkpointing",

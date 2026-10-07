@@ -1,0 +1,24 @@
+{
+  "key": "lulynx_svd_gradient_filter_warmup_steps",
+  "title": "SVD 过滤预热",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "前 N 个优化器 step 保持原梯度，之后启用过滤。",
+    "effect": "写入训练配置 lulynx_svd_gradient_filter_warmup_steps，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

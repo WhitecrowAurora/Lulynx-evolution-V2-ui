@@ -1,0 +1,16 @@
+{
+  "key": "newbie_clip_max_token_length",
+  "title": "CLIP 最大 Token",
+  "category": "DiT / 缓存",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "CLIP 最大 Token。",
+    "effect": "Newbie 的 CLIP 编码器截断长度。",
+    "whenToUse": "同上。",
+    "avoidWhen": "默认 2048（CLIP 上限 77 时按实现截断）。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,17 @@
+{
+  "key": "h3_tokenizer_path",
+  "title": "Qwen3-VL Processor 目录",
+  "category": "H3 音视频数据",
+  "appliesTo": [
+    "minimax-h3-finetune",
+    "minimax-h3-lora"
+  ],
+  "standard": {
+    "summary": "MiniMax H3 的 Qwen3-VL Processor 目录，默认 {default}。",
+    "effect": "H3 音视频训练管线的 Qwen3-VL Processor 目录，覆盖 VAE 路径、帧率、缓存与低显存运行时。",
+    "whenToUse": "训练 H3 音视频 LoRA 时按素材规格配置。",
+    "avoidWhen": "图像训练路线不涉及。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

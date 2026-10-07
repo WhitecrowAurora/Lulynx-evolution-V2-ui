@@ -1,7 +1,9 @@
 {
   "key": "module_offload_prefetch_mode",
   "title": "Offload 预取模式",
+  "title_en": "Offload Prefetch Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -11,6 +13,12 @@
     "whenToUse": "默认优先，短测后再换。",
     "avoidWhen": "未理解影响前不要叠多个激进档。",
     "optionDescriptions": {}
+  },
+  "standard_en": {
+    "summary": "The offload prefetch mode; the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect."
   },
   "advanced": {},
   "relatedConfigs": []

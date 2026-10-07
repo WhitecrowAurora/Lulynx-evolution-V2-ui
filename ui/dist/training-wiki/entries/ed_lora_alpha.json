@@ -1,0 +1,16 @@
+{
+  "key": "ed_lora_alpha",
+  "title": "ED-LoRA Alpha",
+  "category": "LoRA 结构变体",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "V_class 缩放因子 (推荐 1.0)。",
+    "effect": "写入训练配置 ed_lora_alpha，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 1，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

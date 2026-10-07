@@ -1,7 +1,9 @@
 {
   "key": "turbocore_native_update_dispatch_enabled",
   "title": "TurboCore Native 更新调度",
+  "title_en": "TurboCore Native Update Dispatch",
   "category": "速度 / TurboCore",
+  "category_en": "Speed / TurboCore",
   "appliesTo": [
     "anima-lora"
   ],
@@ -21,9 +23,19 @@
     "whenToUse": "所有 TurboCore 组件默认 off（实验性）。逐步开启验证稳定性后再开启更多组件。fused_backward 是最稳定的组件，可优先试用。",
     "avoidWhen": "调试训练问题时建议关闭所有 TurboCore 组件（回归到标准路径）。Windows 上 Triton 支持有限，kernel_autotune 效果可能不明显。"
   },
+  "standard_en": {
+    "summary": "TurboCore is the Lulynx trainer's performance optimisation engine, combining several CUDA-kernel-level accelerations: fused backward, native update dispatch, kernel autotune and more.",
+    "effect": "fused_backward: merges several backward kernels, cutting kernel-launch overhead by roughly 15%~20% (from the gradient release manager); kernel_autotune: tunes CUDA kernel parameters automatically (measured at 1.14x); native_update_dispatch: optimises the weight update path.",
+    "whenToUse": "Every TurboCore component is off by default (experimental). Enable them one at a time, verifying stability before enabling more. fused_backward is the most stable component and the one to try first.",
+    "avoidWhen": "When debugging a training problem it is advisable to turn every TurboCore component off (back to the standard path). Triton support on Windows is limited, so kernel_autotune may show little effect."
+  },
   "advanced": {
     "principle": "fused_backward 通过 GradientReleaseManager 将多个参数的 backward 合并（full 档：全量合并，compatible 档：分组合并），减少 CUDA kernel 发射次数。kernel_autotune 通过 NVRTC 生成变体 kernel，自动选择最快配置并缓存。native_update_dispatch 优化 LoRA 权重更新的 CUDA 调度路径。",
     "tradeoffs": "fused_backward 与某些优化器（如 Prodigy 的特殊 step 逻辑）可能不完全兼容（有 compatible 降级档）。kernel_autotune 首次运行需要额外时间（约 1~3 分钟）进行 profiling，之后缓存加速。"
+  },
+  "advanced_en": {
+    "principle": "fused_backward merges backwards of multiple parameters through GradientReleaseManager (full tier: merge everything; compatible tier: group merging), reducing CUDA kernel launch count. kernel_autotune generates variant kernels via NVRTC, automatically picking the fastest configuration and caching it. native_update_dispatch optimizes the CUDA dispatch path for LoRA weight updates.",
+    "tradeoffs": "fused_backward may not be fully compatible with some optimizers (e.g. Prodigy's special step logic) — there is a compatible downgrade tier. kernel_autotune needs extra time on first run (about 1~3 minutes) for profiling, then the cache speeds it up."
   },
   "relatedConfigs": [
     "optimizer_backend",

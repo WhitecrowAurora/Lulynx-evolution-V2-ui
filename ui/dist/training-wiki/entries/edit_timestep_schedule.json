@@ -1,7 +1,9 @@
 {
   "key": "edit_timestep_schedule",
   "title": "Edit Timestep Schedule",
+  "title_en": "Scheduler",
   "category": "Edit-LoRA / 时间步",
+  "category_en": "Edit-LoRA / Timesteps",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -10,6 +12,10 @@
   "layers": [
     "Edit runtime",
     "噪声调度"
+  ],
+  "layers_en": [
+    "Edit runtime",
+    "Noise schedule"
   ],
   "standard": {
     "summary": "控制 reference strength 随 denoising 时间变化。off 关闭调度；early_lock 在高噪声阶段更强；mid_edit 在中段更强；mask_preserve 保留低噪声尾部约束。",
@@ -23,11 +29,30 @@
       "mask_preserve": "低噪声尾巴还拽着，细节不易漂，改幅也可能变小。"
     }
   },
+  "standard_en": {
+    "summary": "Varies the reference strength over denoising time. off disables the schedule; early_lock is stronger at high noise; mid_edit is stronger in the middle; mask_preserve keeps a constraint on the low-noise tail.",
+    "effect": "The early high-noise stage affects composition and pose most, the later low-noise stage texture and detail. A schedule avoids both strong injection throughout (which defeats the edit) and no injection at all (which lets things drift).",
+    "whenToUse": "When training an Edit-LoRA and you want the source structure kept while the target instruction changes local content or style.",
+    "avoidWhen": "Keep it off for ordinary LoRA training or when there is no reference latent.",
+    "optionDescriptions": {
+      "off": "Reference strength does not vary with time.",
+      "early_lock": "Stronger reference at high noise (while structure forms), locking layout and identity firmly.",
+      "mid_edit": "Stronger reference in the middle, so the edit lands in the semantic stage.",
+      "mask_preserve": "Still pulling at the low-noise tail: detail drifts less, and the extent of change may shrink too."
+    }
+  },
   "advanced": {
     "principle": "runtime 将 timestep/sigma/flow 值归一为 0..1 phase。phase=1 表示高噪声结构阶段，phase=0 表示低噪声细节阶段。",
     "intervention": "edit_injection_strategy 消费 schedule 输出，而不是直接读取 raw timestep。",
     "expectedImpact": "让保结构和可编辑之间有可控切换，减少 copy source 或大幅漂移两种极端。",
     "tradeoffs": "不同模型族的 timestep 方向可能不同；需要 adapter 级校准后再做质量声明。",
+    "codePath": "core/lulynx_trainer/edit_timestep_schedule.py"
+  },
+  "advanced_en": {
+    "principle": "The runtime normalizes timestep/sigma/flow values into a 0..1 phase. phase=1 is the high-noise structure stage; phase=0 the low-noise detail stage.",
+    "intervention": "edit_injection_strategy consumes the schedule's output rather than reading raw timesteps.",
+    "expectedImpact": "Gives controllable switching between structure preservation and editability, avoiding the two extremes of photocopying the source or drifting wildly.",
+    "tradeoffs": "Timestep direction may differ across model families; calibrate at the adapter level before making quality claims.",
     "codePath": "core/lulynx_trainer/edit_timestep_schedule.py"
   },
   "relatedConfigs": [

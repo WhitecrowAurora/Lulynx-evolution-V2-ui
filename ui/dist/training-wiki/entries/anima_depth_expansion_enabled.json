@@ -1,12 +1,17 @@
 {
   "key": "anima_depth_expansion_enabled",
   "title": "Anima 模型扩层（Depth Up-Scaling）",
+  "title_en": "Enable Model Depth Expansion",
   "category": "Anima / 高级",
+  "category_en": "Anima / Advanced",
   "appliesTo": [
     "anima-finetune"
   ],
   "layers": [
     "模型结构层"
+  ],
+  "layers_en": [
+    "Model structure layer"
   ],
   "standard": {
     "summary": "训练加载时把 Anima DiT 交错复制相邻层扩到更多层数，新层的输出投影归零（恒等残差），得到一个更深的可训练底座。仅支持 Anima 全参微调。",
@@ -14,12 +19,25 @@
     "whenToUse": "想以较低成本扩大模型容量（Depth Up-Scaling 路线）、在原模型能力基础上继续拉伸上限时；准备做扩层后长期微调的项目。",
     "avoidWhen": "LoRA 训练不支持；显存按扩层后的层数计费，16GB 级显卡谨慎评估；从扩层 checkpoint 恢复训练时必须保持相同的扩层配置（层数不匹配后端会明确报错）。"
   },
+  "standard_en": {
+    "summary": "At load time it interleaves copies of neighbouring Anima DiT layers up to a larger layer count, zeroing the new layers' output projections (identity residual), which yields a deeper trainable base. Anima full-parameter finetuning only.",
+    "effect": "The model is rebuilt to the deeper structure given by anima_depth_expansion_target_layers -- 28 layers to 40, say -- and behaves identically to the original at the start because the new layers' outputs are zero-initialised. What trains is controlled by anima_depth_expansion_train_scope, and the saved artefact is the complete expanded base.",
+    "whenToUse": "When you want to grow model capacity cheaply (the Depth Up-Scaling route) and push the ceiling further on top of the original model's ability; a project that plans to finetune the expanded base long-term.",
+    "avoidWhen": "Not supported for LoRA training. VRAM is billed at the expanded layer count, so evaluate carefully on a 16GB-class card. Resuming from an expanded checkpoint requires the same expansion configuration -- the backend reports an explicit error on a layer-count mismatch."
+  },
   "advanced": {
     "principle": "Depth Up-Scaling（如 SOLAR 的做法）：交错复制已有 transformer 层构造更深网络，把新层的输出投影零初始化使残差路径退化为恒等，保证扩层瞬间模型输出不变，训练从「无损起点」开始学习新增容量。",
     "intervention": "config_adapter_conversion_context.py：归一化 enabled/target_layers/train_scope（scope 非法且 enabled 时直接抛错）；anima_depth_expansion_runtime.py：加载时执行交错复制与零投影；anima_full_finetune.py：resume 时校验 checkpoint 层数与配置一致，不一致给出修复指引。",
     "expectedImpact": "参数量与显存按层数比例上升；扩层容量需要足够数据与步数才能兑现为质量收益。",
     "tradeoffs": "产物是完整底座（体积大，非 LoRA）；扩层模型的推理成本永久上升；训练范围选 all 时成本最高、选 new_layers 最接近标准 DUS 配方。",
     "codePath": "anima_depth_expansion_runtime.py：扩层执行；config_adapter_conversion_context.py：配置归一化；anima_full_finetune.py：resume 层数校验"
+  },
+  "advanced_en": {
+    "principle": "Depth Up-Scaling (as in SOLAR): interleaves and duplicates existing transformer layers to build a deeper network, zero-initializing the new layers' output projections so the residual path degrades to identity — the model's output is unchanged at the instant of expansion, and training learns the new capacity from a lossless starting point.",
+    "intervention": "config_adapter_conversion_context.py: normalizes enabled/target_layers/train_scope (illegal scope with enabled raises immediately); anima_depth_expansion_runtime.py: performs interleaved duplication and zero projection at load; anima_full_finetune.py: on resume, validates that the checkpoint's layer count matches the config, with repair guidance on mismatch.",
+    "expectedImpact": "Parameters and VRAM rise proportionally with layer count; the expanded capacity needs enough data and steps to convert into quality gains.",
+    "tradeoffs": "The artifact is a full base model (large, not a LoRA); inference cost of the expanded model rises permanently; train_scope=all is the most expensive and new_layers is closest to the standard DUS recipe.",
+    "codePath": "anima_depth_expansion_runtime.py: expansion execution; config_adapter_conversion_context.py: config normalization; anima_full_finetune.py: resume layer-count validation"
   },
   "relatedConfigs": [
     "anima_depth_expansion_target_layers",

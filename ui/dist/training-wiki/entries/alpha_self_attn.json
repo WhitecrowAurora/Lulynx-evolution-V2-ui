@@ -1,0 +1,17 @@
+{
+  "key": "alpha_self_attn",
+  "title": "Self Attention Alpha",
+  "category": "LoRA / 分层",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "Self-Attention 层 Alpha。",
+    "effect": "分层权重中 self-attn 层的缩放系数。",
+    "whenToUse": "想按层类型差异化强度时使用。",
+    "avoidWhen": "留空=用全局 alpha。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

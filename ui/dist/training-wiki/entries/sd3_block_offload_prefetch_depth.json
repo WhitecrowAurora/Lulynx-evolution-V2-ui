@@ -1,0 +1,16 @@
+{
+  "key": "sd3_block_offload_prefetch_depth",
+  "title": "Block Offload 预取深度",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "sd3-lora"
+  ],
+  "standard": {
+    "summary": "SD3 Block Offload 预取深度。",
+    "effect": "SD3 块卸载的预取深度。",
+    "whenToUse": "同 Krea2 预取逻辑。",
+    "avoidWhen": "默认 1。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

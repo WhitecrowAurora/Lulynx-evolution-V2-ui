@@ -1,12 +1,17 @@
 {
   "key": "h3_preserve_lora_master_dtype",
   "title": "H3 FP32 LoRA Master 权重",
+  "title_en": "H3 FP32 LoRA Master Weights",
   "category": "优化器 / 进阶",
+  "category_en": "Optimizer / Advanced",
   "appliesTo": [
     "minimax-h3-lora"
   ],
   "layers": [
     "优化器层"
+  ],
+  "layers_en": [
+    "Optimizer layer"
   ],
   "standard": {
     "summary": "保持 H3 LoRA 参数为 FP32 master 权重，避免 BF16 表示下小学习率更新被量化吞掉；主干仍为 BF16/INT8。默认开启。",
@@ -14,12 +19,25 @@
     "whenToUse": "保持默认开启，尤其是低学习率（1e-5 量级）训练——H3 默认学习率正是 1e-5，BF16 的 8 位尾数在该量级更新下丢失明显。",
     "avoidWhen": "几乎没有关闭的理由；LoRA 参数量小，FP32 副本的显存开销可忽略。"
   },
+  "standard_en": {
+    "summary": "Keeps the H3 LoRA parameters as FP32 master weights so small-learning-rate updates are not quantised away under BF16; the backbone stays BF16/INT8. On by default.",
+    "effect": "The trainable LoRA parameters are stored and updated in FP32 and cast down as needed for the forward pass; off, the LoRA shares the backbone's low precision and very small updates can be lost for want of mantissa bits.",
+    "whenToUse": "Keep the default of on, especially at low learning rates (around 1e-5) -- H3's default learning rate is exactly 1e-5, and BF16's 8-bit mantissa loses a lot at that scale.",
+    "avoidWhen": "There is hardly a reason to turn it off; LoRA parameters are few and the FP32 copy's memory cost is negligible."
+  },
   "advanced": {
     "principle": "BF16 在数值 1.0 附近的分辨率约 0.008，学习率 1e-5 的单步更新远小于半个 ulp，直接以 BF16 累积会被舍入归零（更新饥饿）。FP32 master + 低精度计算副本是混合精度训练的标准解法，此处按 H3 的 INT8/BF16 主干场景显式提供开关。",
     "intervention": "trainer_prepare_mixin.py：config.preserve_lora_master_dtype = h3_preserve_lora_master_dtype，传给通用的 LoRA 参数 dtype 管理；configs_h3.py 默认 True。",
     "expectedImpact": "小学习率下 LoRA 实际学得动；显存增量 = LoRA 参数量 × 2 字节，通常几十 MB 内。",
     "tradeoffs": "前向多一次 dtype 转换（开销可忽略）；与随机舍入（stochastic_rounding）是解决同一问题的两条路，FP32 master 更彻底。",
     "codePath": "trainer_prepare_mixin.py：h3_preserve_lora_master_dtype → preserve_lora_master_dtype；configs_h3.py 定义"
+  },
+  "advanced_en": {
+    "principle": "BF16's resolution near 1.0 is about 0.008; a single update at lr 1e-5 is far below half an ulp, so accumulating directly in BF16 gets rounded to zero (update starvation). FP32 master + low-precision compute copies is the standard mixed-precision solution; this switch exposes it explicitly for H3's INT8/BF16 backbone scenario.",
+    "intervention": "trainer_prepare_mixin.py: config.preserve_lora_master_dtype = h3_preserve_lora_master_dtype, passed to the generic LoRA parameter dtype management; configs_h3.py defaults to True.",
+    "expectedImpact": "At small learning rates the LoRA actually learns; VRAM increase = LoRA parameter count × 2 bytes, usually within a few dozen MB.",
+    "tradeoffs": "One extra dtype conversion per forward (negligible); stochastic rounding is the other road to the same problem — FP32 master is the more thorough one.",
+    "codePath": "trainer_prepare_mixin.py: h3_preserve_lora_master_dtype → preserve_lora_master_dtype; defined in configs_h3.py"
   },
   "relatedConfigs": [
     "stochastic_rounding",

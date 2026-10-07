@@ -1,0 +1,17 @@
+{
+  "key": "concept_geometry_embedding_api_base",
+  "title": "Embedding API Base",
+  "category": "Concept Geometry",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "provider=api 时的 endpoint。",
+    "effect": "写入训练配置 concept_geometry_embedding_api_base，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

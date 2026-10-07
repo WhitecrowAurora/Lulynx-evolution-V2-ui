@@ -1,21 +1,18 @@
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
 import { useEffect, useState } from 'react'
-import { ROUTES, useRouteStore } from '@/stores/routeStore'
+import { PrimaryNavigation } from './PrimaryNavigation'
 import { THEME_META, useThemeStore } from '@/stores/themeStore'
 import type { MotionMode, ThemeId } from '@/stores/themeStore'
 import { Dot } from '@/components/primitives'
 import { useI18n } from '@/i18n/useI18n'
 import { useLocaleStore } from '@/stores/localeStore'
 import { usePerfModeStore } from '@/stores/perfModeStore'
-import { useTrainConfigStore } from '@/stores/configStore'
 
 type Health = 'unknown' | 'ok' | 'down'
 
 export function Topbar() {
   const { t, language } = useI18n()
   const setLanguage = useLocaleStore((s) => s.setLanguage)
-  const route = useRouteStore((s) => s.route)
-  const navigate = useRouteStore((s) => s.navigate)
   const theme = useThemeStore((s) => s.theme)
   const setTheme = useThemeStore((s) => s.setTheme)
   const motionMode = useThemeStore((s) => s.motionMode)
@@ -30,20 +27,6 @@ export function Topbar() {
   const turbocore = usePerfModeStore((s) => s.turbocore)
   const setLulynxOptimization = usePerfModeStore((s) => s.setLulynxOptimization)
   const setTurbocore = usePerfModeStore((s) => s.setTurbocore)
-  const typeId = useTrainConfigStore((s) => s.typeId)
-  const diskHydrated = useTrainConfigStore((s) => s.diskHydrated)
-
-  // 顶栏开关是全局的,草稿按训练类型分份:把全局状态写进当前草稿,
-  // 使 schema visibleWhen 互斥(TurboCore vs Lulynx Triton)即时反应,
-  // 且 payload/JSON 预览与顶栏一致。类型切换与磁盘 hydrate 后需要重刷,
-  // 否则会被旧草稿里的陈旧值盖回去。
-  useEffect(() => {
-    const { setValue } = useTrainConfigStore.getState()
-    setValue('lulynx_optimization_enabled', lulynxOpt)
-    setValue('turbocore_enabled', turbocore)
-    if (turbocore) setValue('turbocore_optimizer_mode', 'off')
-  }, [lulynxOpt, turbocore, typeId, diskHydrated])
-
   useEffect(() => {
     let alive = true
     const ping = async () => {
@@ -78,14 +61,7 @@ export function Topbar() {
         <span className="lx-brand-name">LULYNX</span>
         <span className="lx-brand-sub">TRAINER</span>
       </div>
-      <nav className="lx-nav">
-        {ROUTES.map((r) => (
-          <a key={r.id} className={route === r.id ? 'on' : ''} onClick={() => navigate(r.id)}>
-            <i>{r.idx}</i>
-            <span>{language === 'en' ? r.en : r.zh}</span>
-          </a>
-        ))}
-      </nav>
+      <PrimaryNavigation />
       <div className="lx-topbar-right">
         <div className="lx-status-pills">
           <button

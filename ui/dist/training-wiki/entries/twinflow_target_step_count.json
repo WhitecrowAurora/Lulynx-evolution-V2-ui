@@ -1,0 +1,24 @@
+{
+  "key": "twinflow_target_step_count",
+  "title": "目标少步数",
+  "category": "采样与优化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "1–4 叙事元数据；本包不替换产品采样器。",
+    "effect": "写入训练配置 twinflow_target_step_count，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 2，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

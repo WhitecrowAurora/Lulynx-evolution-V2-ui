@@ -1,7 +1,9 @@
 {
   "key": "concept_edit_mode",
   "title": "Concept Edit 模式",
+  "title_en": "Concept-Edit Mode",
   "category": "训练 / 概念编辑",
+  "category_en": "Training / Concept Editing",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -18,9 +20,19 @@
     "whenToUse": "实验性高级功能。需要精确编辑现有概念（而非简单添加新概念）时使用。",
     "avoidWhen": "普通 LoRA 训练（添加新角色/风格）不需要使用概念编辑模式，复杂度高收益有限。"
   },
+  "standard_en": {
+    "summary": "Concept-edit training mode: modifies or replaces a specific concept in a targeted way (changing a particular character's appearance, removing a stylistic tendency) while leaving the model's other abilities intact.",
+    "effect": "concept_edit_mode picks the editing strategy: diff_mask = change only the region where the concepts differ; fixed_timestep = train the concept at a fixed timestep. The geometry parameters govern 3D/geometry-aware concept editing using depth and normal map information.",
+    "whenToUse": "An experimental advanced feature, for precisely editing an existing concept rather than simply adding a new one.",
+    "avoidWhen": "Ordinary LoRA training (adding a new character or style) has no need for concept-edit mode -- high complexity for limited benefit."
+  },
   "advanced": {
     "principle": "概念编辑通过构建\"原始概念\"和\"目标概念\"的对比损失，引导模型在保留其他语义的同时，只修改目标概念方向的表征。geometry_path 提供 3D/几何先验（如深度图），使编辑更符合 3D 一致性。",
     "tradeoffs": "概念编辑需要精心准备原始/目标对比数据集；geometry 功能需要额外的深度/法线图数据，准备工作量较大。"
+  },
+  "advanced_en": {
+    "principle": "Concept editing builds a contrastive loss between \"original concept\" and \"target concept\", guiding the model to modify only the target concept's representation while preserving other semantics. geometry_path provides 3D/geometric priors (e.g. depth maps) for more 3D-consistent edits.",
+    "tradeoffs": "Concept editing needs carefully prepared original/target contrast datasets; the geometry feature needs extra depth/normal map data — significant prep work."
   },
   "relatedConfigs": [
     "network_dim",

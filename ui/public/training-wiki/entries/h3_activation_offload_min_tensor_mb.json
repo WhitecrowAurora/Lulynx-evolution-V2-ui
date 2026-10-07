@@ -1,0 +1,17 @@
+{
+  "key": "h3_activation_offload_min_tensor_mb",
+  "title": "激活卸载阈值 (MB)",
+  "category": "H3 低显存运行时",
+  "appliesTo": [
+    "minimax-h3-finetune",
+    "minimax-h3-lora"
+  ],
+  "standard": {
+    "summary": "H3 激活卸载阈值 MB。",
+    "effect": "H3 低显存路线激活卸载的最小张量体积。",
+    "whenToUse": "视频激活大，调大更省显存。",
+    "avoidWhen": "默认 10MB。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

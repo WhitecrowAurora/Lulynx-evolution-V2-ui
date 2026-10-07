@@ -1,7 +1,9 @@
 {
   "key": "caption_extension",
   "title": "图说文件扩展名",
+  "title_en": "Tag file extension",
   "category": "数据集 / 图说",
+  "category_en": "Dataset / Captions",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -14,9 +16,19 @@
     "whenToUse": "根据图说文件的实际格式设置。大多数工具（WD tagger、BLIP等）输出 .txt 格式。",
     "avoidWhen": "不需要修改，保持与图说文件的实际扩展名一致即可。"
   },
+  "standard_en": {
+    "summary": "The extension of the caption files in the training dataset. The trainer looks for a same-named caption file beside each image.",
+    "effect": ".txt = plain-text captions (one tag per line, or a natural-language description); .caption = the format ComfyUI commonly uses (functionally identical).",
+    "whenToUse": "Set it to whatever your caption files actually use. Most tools (WD tagger, BLIP and so on) write .txt.",
+    "avoidWhen": "No change is needed -- just keep it matching the real extension of the caption files."
+  },
   "advanced": {
     "principle": "训练器遍历数据集目录时，对每张图像寻找同名 + 指定扩展名的文件作为其图说。若找不到，使用空图说或触发词（取决于其他设置）。",
     "tradeoffs": "同一目录下混用 .txt 和 .caption 时，只会识别 caption_extension 指定的格式，另一种被忽略。"
+  },
+  "advanced_en": {
+    "principle": "When traversing the dataset directory, the trainer looks for a file with the same name plus the given extension as each image's caption. If none is found, an empty caption or trigger word is used (depending on other settings).",
+    "tradeoffs": "When .txt and .caption are mixed in one directory, only the format named by caption_extension is recognized and the other is ignored."
   },
   "relatedConfigs": [
     "caption_source_tag_ratio",

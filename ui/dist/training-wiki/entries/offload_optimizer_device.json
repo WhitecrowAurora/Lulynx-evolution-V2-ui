@@ -1,7 +1,9 @@
 {
   "key": "offload_optimizer_device",
   "title": "优化器状态卸载",
+  "title_en": "Optimizer-State Offload",
   "category": "速度 / 显存",
+  "category_en": "Speed / VRAM",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -17,9 +19,19 @@
     "whenToUse": "极低显存场景（<8GB）的保命选项，配合 gradient_checkpointing 和 xformers 使用。优先考虑 AdamW8bit 省显存（速度更好）。",
     "avoidWhen": "显存足够的情况下，卸载优化器会显著拖慢训练速度（尤其是磁盘卸载，每步需要读写大量数据）。"
   },
+  "standard_en": {
+    "summary": "Offloads the optimizer state (Adam's m/v momenta) to CPU or disk to save GPU VRAM. The saving is roughly the parameter count in size (Adam stores momenta worth 2x the parameters).",
+    "effect": "CPU offload: the optimizer step runs on the CPU, saving roughly 2x the model's parameter size in VRAM; disk offload: goes further, to NVMe, saving more VRAM but running slower.",
+    "whenToUse": "A survival option for extremely low VRAM (<8GB), used together with gradient_checkpointing and xformers. Consider AdamW8bit for VRAM savings first (it is faster).",
+    "avoidWhen": "When VRAM is sufficient, offloading the optimizer slows training down markedly (especially disk offload, which reads and writes a lot of data every step)."
+  },
   "advanced": {
     "principle": "CPU offload：每步 optimizer.step 前将梯度传到 CPU，在 CPU 上执行 AdamW 更新，再将新参数传回 GPU。增加约 2× CPU-GPU 数据传输。disk offload：更进一步将动量存储在 NVMe，仅在更新时读取。",
     "tradeoffs": "卸载的速度代价：CPU offload ≈ 2-5× 慢（取决于 PCIe 带宽）；disk offload ≈ 5-20× 慢（取决于 SSD 速度）。但对于原本显存不足无法训练的场景，这是唯一选择。"
+  },
+  "advanced_en": {
+    "principle": "CPU offload: before each optimizer.step, gradients move to CPU, the AdamW update runs on CPU, and the new parameters move back to GPU. Adds roughly 2× CPU-GPU transfer. Disk offload goes further, storing momenta on NVMe and reading them only at update.",
+    "tradeoffs": "Offload's speed cost: CPU offload ≈ 2-5× slower (PCIe-bound); disk offload ≈ 5-20× slower (SSD-bound). But for setups that cannot train due to VRAM shortage, it is the only option."
   },
   "relatedConfigs": [
     "gradient_checkpointing",

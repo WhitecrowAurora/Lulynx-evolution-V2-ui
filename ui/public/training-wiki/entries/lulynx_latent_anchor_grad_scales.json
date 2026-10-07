@@ -1,0 +1,24 @@
+{
+  "key": "lulynx_latent_anchor_grad_scales",
+  "title": "感知锚多尺度层数",
+  "category": "感知锚/频域纹理损失",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "多尺度梯度匹配金字塔深度",
+    "effect": "写入训练配置 lulynx_latent_anchor_grad_scales，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 3，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

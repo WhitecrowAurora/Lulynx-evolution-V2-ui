@@ -1,0 +1,27 @@
+{
+  "key": "region_focus_enabled",
+  "title": "区域聚焦配方",
+  "category": "语义区域加权",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "在语义区域权重上叠加聚焦强度×步程衰减（不新建第三套 loss 控制器）。",
+    "effect": "开启时自动启用语义区域加权。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

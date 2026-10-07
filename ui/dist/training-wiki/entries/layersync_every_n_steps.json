@@ -1,0 +1,17 @@
+{
+  "key": "layersync_every_n_steps",
+  "title": "LayerSync 间隔步",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "每 N 步算一次以控税。",
+    "effect": "默认 1=每步。",
+    "whenToUse": "默认 1，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,16 @@
+{
+  "key": "newbie_gemma_max_token_length",
+  "title": "Gemma 最大 Token",
+  "category": "DiT / 缓存",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "Gemma 最大 Token。",
+    "effect": "Newbie 的 Gemma 文本编码器截断长度。",
+    "whenToUse": "caption 很长时加大。",
+    "avoidWhen": "默认 512 覆盖多数场景。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

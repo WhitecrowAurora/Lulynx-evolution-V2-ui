@@ -1,7 +1,9 @@
 {
   "key": "timestep_sampling",
   "title": "时间步采样策略",
+  "title_en": "Timestep Sampling",
   "category": "训练 / 时间步",
+  "category_en": "Training / Timesteps",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -27,9 +29,31 @@
       "lcm": "LCM 相关设定。"
     }
   },
+  "standard_en": {
+    "summary": "Controls how the noise timestep is sampled during training: uniform / logit_normal (recommended) / sigma_sqrt (square-root weighted) / mode (peak sampling).",
+    "effect": "logit_normal concentrates sampling on mid-noise steps (the most common choice); uniform gives every timestep equal probability (the standard implementation); sigma_sqrt leans towards high-noise steps (learning global structure); mode samples around a particular peak (paired with mode_scale).",
+    "whenToUse": "logit_normal is the recommended choice for newer architectures such as Flux and Anima, and trains more efficiently than uniform. SD1.5/SDXL usually stay on uniform.",
+    "avoidWhen": "Take care when clipping the timestep range with min_timestep/max_timestep: cutting the high-noise steps (>900) affects global structure learning, and cutting the low-noise steps (<100) affects detail learning.",
+    "optionDescriptions": {
+      "sigma": "Samples the timestep by sigma.",
+      "uniform": "Uniform.",
+      "sigmoid": "Twists the distribution with a sigmoid.",
+      "shift": "The general shift.",
+      "flux_shift": "FLUX's own shift.",
+      "logit_normal": "logit-normal.",
+      "qwen_shift": "The Qwen-related shift.",
+      "ideogram4_shift": "The Ideogram4-related shift.",
+      "logsnr": "By log-SNR.",
+      "lcm": "The LCM-related setting."
+    }
+  },
   "advanced": {
     "principle": "训练 loss 在不同时间步（噪声级别）的信息量分布不均：中等噪声步包含最多语义信息（高 SNR）。logit_normal 通过非均匀采样将更多训练资源集中在信息量最大的区域。bypass_mode 在特定实现中跳过时间步嵌入，直接使用原始 sigma 值（适合某些特殊架构）。timestep_segments 将时间步空间分段，允许对每段设置不同采样权重。",
     "tradeoffs": "logit_normal 的 sigma_scale 参数影响集中程度（见 anima_sigmoid_scale）；与 P2 weighting / scale_guidance 存在功能重叠，避免多种时间步加权机制叠加使用。"
+  },
+  "advanced_en": {
+    "principle": "Training loss information is unevenly distributed across timesteps (noise levels): mid-noise steps contain the most semantic information (high SNR). logit_normal concentrates more training resources on the most informative region via non-uniform sampling. bypass_mode, in specific implementations, skips timestep embedding and uses the raw sigma value directly (suited to some special architectures). timestep_segments splits the timestep space into segments, allowing a different sampling weight per segment.",
+    "tradeoffs": "logit_normal's sigma_scale parameter affects the concentration degree (see anima_sigmoid_scale); it overlaps functionally with P2 weighting / scale_guidance — avoid stacking multiple timestep-weighting mechanisms."
   },
   "relatedConfigs": [
     "anima_weighting_scheme",

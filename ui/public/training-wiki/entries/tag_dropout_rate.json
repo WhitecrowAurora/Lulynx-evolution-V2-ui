@@ -1,0 +1,16 @@
+{
+  "key": "tag_dropout_rate",
+  "title": "按标签丢弃概率",
+  "category": "Caption 选项",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "按标签丢弃概率。",
+    "effect": "对指定逗号分隔标签以该概率随机丢弃（与均匀 dropout 不同，只作用于点名标签）。",
+    "whenToUse": "特定 tag 干扰训练时定向丢弃。",
+    "avoidWhen": "默认 0 关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

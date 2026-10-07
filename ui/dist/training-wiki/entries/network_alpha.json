@@ -1,7 +1,9 @@
 {
   "key": "network_alpha",
   "title": "LoRA Alpha（缩放系数）",
+  "title_en": "Network Alpha",
   "category": "LoRA / 网络结构",
+  "category_en": "LoRA / Network Structure",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -18,9 +20,19 @@
     "whenToUse": "推荐 alpha = rank 或 rank/2（如 rank=16，alpha=8~16）。使用高 rank 时为了稳定性可降低 alpha/rank 比值。",
     "avoidWhen": "alpha > rank（缩放 > 1）会放大 LoRA 更新，训练初期可能不稳定。alpha=0 则 LoRA 永远输出 0，训练无效。"
   },
+  "standard_en": {
+    "summary": "The scaling coefficient on the LoRA's output. The effective learning-rate scale = lr x alpha / rank. It is usually set to half the rank or equal to the rank.",
+    "effect": "alpha=rank: the scale is 1 and the LoRA weights take effect at their original magnitude; alpha=rank/2: the scale is 0.5, more conservative; alpha=1: with rank=16 the effective scale is 1/16, equivalent to an extremely small LR.",
+    "whenToUse": "alpha = rank or rank/2 is recommended (with rank=16, alpha=8~16). At a high rank you can lower the alpha/rank ratio for stability.",
+    "avoidWhen": "alpha > rank (a scale above 1) amplifies the LoRA update and may be unstable early in training. With alpha=0 the LoRA always outputs 0 and training does nothing."
+  },
   "advanced": {
     "principle": "ΔW = (alpha/rank) × B × A。alpha/rank 等价于对 LoRA 输出的全局乘法缩放，与 lr 正交但效果相似。维持 alpha/rank 常数时改变 rank 不影响收敛速度。",
     "tradeoffs": "实际上 alpha 和 lr 是高度冗余的：lr × (alpha/rank) 才是有效步长。常见做法是固定 alpha=rank（缩放=1），只调 lr。"
+  },
+  "advanced_en": {
+    "principle": "ΔW = (alpha/rank) × B × A. alpha/rank is a global multiplicative scaling of the LoRA output — orthogonal to lr but similar in effect. Holding alpha/rank constant, changing rank does not affect convergence speed.",
+    "tradeoffs": "In practice alpha and lr are highly redundant: lr × (alpha/rank) is the effective step size. The common practice is fixing alpha=rank (scaling=1) and only tuning lr."
   },
   "relatedConfigs": [
     "network_dim",

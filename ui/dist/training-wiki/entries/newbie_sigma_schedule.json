@@ -1,12 +1,17 @@
 {
   "key": "newbie_sigma_schedule",
   "title": "σ 分布（newbie_sigma_schedule）",
+  "title_en": "Sigma Distribution",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "newbie-lora"
   ],
   "layers": [
     "噪声/时间步层"
+  ],
+  "layers_en": [
+    "Noise / timestep layer"
   ],
   "standard": {
     "summary": "训练时 σ（噪声档位）的抽样分布：两档都是 logit-normal(0,1) 再按分辨率向高噪声一侧弯折，差别在弯折的力度。标准 = 这个架构本身训练时用的力度；lulynx 优化 = 更缓的一条线。",
@@ -18,12 +23,29 @@
       "lulynx": "同一个式子、更缓的一条线（512px shift 1.714 / 0.63，1024px shift 2.001 / 0.67）。"
     }
   },
+  "standard_en": {
+    "summary": "The sampling distribution of sigma (the noise level) during training: both gears are logit-normal(0,1) bent towards the high-noise side by resolution, and they differ in how hard they bend. Standard = the strength this architecture itself was trained with; lulynx optimised = a gentler curve.",
+    "effect": "Standard: a median of 0.65 at 512px and 0.76 at 1024px. lulynx optimised: 0.63 at 512px and 0.67 at 1024px. The higher the resolution the further apart the two gears sit (at 1024px the shift is 3.16 against 2.00). The preview sampling table follows this setting, so the preview's level distribution is aligned with the training distribution.",
+    "whenToUse": "Use standard by default -- it is the distribution these weights were trained under, and the gear to pick when reproducing someone else's newbie result. Choose lulynx optimised when you want the sampling budget spread more evenly and less concentrated in the high-noise range; at small resolutions (<=512px) the two barely differ.",
+    "avoidWhen": "When reproducing an earlier newbie training result -- this switch did not exist then and the run actually took the uniform-distribution fallback branch, which neither gear can reproduce (you need to set ddpm_timestep_sampling explicitly).",
+    "optionDescriptions": {
+      "standard": "The bend strength this architecture was trained with (512px shift 1.878 / median 0.65, 1024px shift 3.158 / 0.76).",
+      "lulynx": "The same formula on a gentler curve (512px shift 1.714 / 0.63, 1024px shift 2.001 / 0.67)."
+    }
+  },
   "advanced": {
     "principle": "两档都走 sigmoid(N(0,1)) 这一次抽样，再以 σ' = s·σ / (1 + (s−1)·σ) 单调弯折——这个式子把 (0,1) 映回 (0,1) 且保序，所以只重分配密度、不改值域。shift s 由 token 数（2×2 patch 后的序列长度）线性插值出 μ 再取 e^μ，两档的区别只是那条线的端点：标准取 (256 token → 0.5, 4096 → 1.15)，lulynx 取 (256 → 0.5, 8192 → 0.9)。两条线在 256 token 处重合，之后标准那条更陡，所以真实分辨率下标准的弯折总是更强。关键是训练侧与预览侧施加同一个式子、同一个 shift，因此预览采样表的中点恰好落在训练分布的中位数上（两档实测相差 7.8e-05~8.1e-04，即判据自身的抽样噪声）。",
     "intervention": "配置层把此项桥接到共享的 ddpm_timestep_sampling 接缝（standard→nextdit_shift，lulynx→qwen_shift）；显式写过 ddpm_timestep_sampling 或开了 FasterDiT 时，两者都保持权威，此项不覆盖。预览侧由采样器把同一分辨率下的 shift 传给 discrete_flow_shift。",
     "expectedImpact": "此前 newbie 无开关、实际取均匀分布兜底分支，两档相对它都是收敛行为的变化而非微调。两档之间：1024px 下中位数 0.76 对 0.67，标准把更多步数预算放在构图成型的高噪声段。",
     "tradeoffs": "shift 由分辨率决定而非固定常数，所以换分辨率训练时分布会跟着变；这是有意的（token 数变了，同一 σ 的实际难度也变了），但也意味着两次不同分辨率的运行不是同分布。此项只对 newbie 生效，其它族的时间步抽样不受影响。",
     "codePath": "core/lulynx_trainer/newbie_sigma_schedule.py → configs.py::_apply_newbie_sigma_schedule → ddpm_timestep_sampling → flow_timestep_sampling.py::sample_transport_flow_t；预览侧 sampler_family_generation.py → newbie_sampler_schedule.py::build_sigma_schedule"
+  },
+  "advanced_en": {
+    "principle": "Both tiers sample sigmoid(N(0,1)) once, then apply the monotone bend σ' = s·σ / (1 + (s−1)·σ) — this map sends (0,1) back onto (0,1) order-preservingly, so it only redistributes density without changing the value range. The shift s is derived from token count (sequence length after 2×2 patching) by linearly interpolating μ then taking e^μ; the two tiers differ only in that line's endpoints: standard uses (256 tokens → 0.5, 4096 → 1.15), lulynx uses (256 → 0.5, 8192 → 0.9). The two lines coincide at 256 tokens, after which standard is steeper, so at real resolutions standard always bends more strongly. Crucially, training and preview apply the same formula and the same shift, so the preview sampling grid's midpoint lands exactly on the training distribution's median (measured gap between tiers 7.8e-05~8.1e-04, i.e. the criterion's own sampling noise).",
+    "intervention": "The config layer bridges this key onto the shared ddpm_timestep_sampling seam (standard→nextdit_shift, lulynx→qwen_shift); when ddpm_timestep_sampling is written explicitly or FasterDiT is on, both keep authority and this key does not override them. On the preview side the sampler passes the same resolution's shift to discrete_flow_shift.",
+    "expectedImpact": "Previously newbie had no switch and actually took the uniform-distribution fallback branch, so both tiers change convergence behavior relative to it rather than fine-tuning it. Between the two: at 1024px the median is 0.76 vs 0.67 — standard puts more of the step budget in the high-noise region where composition forms.",
+    "tradeoffs": "The shift depends on resolution rather than being a fixed constant, so the distribution changes when training at a different resolution; this is intentional (token count changed, so the same σ has different effective difficulty), but it also means two runs at different resolutions are not same-distribution. This key only affects newbie; other families' timestep sampling is untouched.",
+    "codePath": "core/lulynx_trainer/newbie_sigma_schedule.py → configs.py::_apply_newbie_sigma_schedule → ddpm_timestep_sampling → flow_timestep_sampling.py::sample_transport_flow_t; preview side sampler_family_generation.py → newbie_sampler_schedule.py::build_sigma_schedule"
   },
   "relatedConfigs": [
     "ddpm_timestep_sampling",

@@ -1,0 +1,16 @@
+{
+  "key": "adaptive_rank_max_rank",
+  "title": "模块最大 Rank",
+  "category": "渐进式 / 分阶段训练",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "模块级自适应 Rank 的 模块最大 Rank，默认 64。",
+    "effect": "按模块敏感度在固定总预算内动态分配各模块的 Rank，模块最大 Rank 控制分配策略或节奏。",
+    "whenToUse": "想精确控制各层容量时使用。",
+    "avoidWhen": "默认关闭（统一 Rank）；开启后 rank 分配随训练演化，对比实验不可控。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

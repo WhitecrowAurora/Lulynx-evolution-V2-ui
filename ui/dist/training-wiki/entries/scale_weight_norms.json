@@ -1,7 +1,9 @@
 {
   "key": "scale_weight_norms",
   "title": "权重范数缩放",
+  "title_en": "Max",
   "category": "LoRA / 训练控制",
+  "category_en": "LoRA / Training Control",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -18,9 +20,19 @@
     "whenToUse": "训练后期 LoRA 权重范数持续增大时（通过 advanced_stats 监控）可以开启。",
     "avoidWhen": "与 weight_decay 同时使用时有功能重叠，通常选一种即可。"
   },
+  "standard_en": {
+    "summary": "A soft constraint on the Frobenius norm of the LoRA weight matrices (max-norm regularisation), which stops the weights from growing without bound. Complementary to weight_decay.",
+    "effect": "Set to a positive number (1.0, say), a weight matrix whose norm exceeds that value is scaled down proportionally. It helps against overfitting, though less systematically than weight_decay.",
+    "whenToUse": "Worth turning on when the LoRA weight norms keep growing late in training (watch them through advanced_stats).",
+    "avoidWhen": "It overlaps in purpose with weight_decay, so one of the two is usually enough."
+  },
   "advanced": {
     "principle": "Max Norm：对每个权重矩阵 W，若 ‖W‖_F > scale_weight_norms，则 W = W × (scale / ‖W‖_F)。等价于投影到范数球内。与 weight_decay（每步乘以 1-lr×wd 的硬约束）相比，max norm 是软约束（只在超出时才生效）。down/mid/up_lr_weight 是 SDXL/SD UNet 各段的学习率权重（与 lulynx_block_weight 类似但直接命名）。disable_mmap_load_safetensors 关闭 safetensors 的 mmap 加载（某些 NFS 挂载或 Windows 兼容性问题时需要）。no_metadata 不在输出文件中写入训练元数据（隐私场景）。training_comment 写入到输出文件的元数据注释字段。",
     "tradeoffs": "Max Norm 对全精度（fp32）权重效果更显著；在混合精度训练中，只有主权重（fp32 copy）受约束，fp16 副本由 GradScaler 管理。"
+  },
+  "advanced_en": {
+    "principle": "Max Norm: for each weight matrix W, if ‖W‖_F > scale_weight_norms, then W = W × (scale / ‖W‖_F) — a projection into the norm ball. Compared with weight_decay (a hard constraint multiplying by 1-lr×wd each step), max norm is soft (it only applies when exceeded). down/mid/up_lr_weight are the learning rate weights for each UNet section on SDXL/SD (similar to lulynx_block_weight but directly named). disable_mmap_load_safetensors disables safetensors mmap loading (needed for some NFS mounts or Windows compatibility issues). no_metadata omits training metadata from the output file (privacy scenarios). training_comment is written into the output file's metadata comment field.",
+    "tradeoffs": "Max Norm is more effective on full-precision (fp32) weights; in mixed-precision training only the master weights (fp32 copy) are constrained, while the fp16 copies are managed by GradScaler."
   },
   "relatedConfigs": [
     "weight_decay",

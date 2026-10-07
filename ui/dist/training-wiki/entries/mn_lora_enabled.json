@@ -1,7 +1,9 @@
 {
   "key": "mn_lora_enabled",
   "title": "MN-LoRA (矩阵归一化 LoRA)",
+  "title_en": "MN-LoRA (Matrix-Normalized LoRA)",
   "category": "训练 / MN-LoRA",
+  "category_en": "Training / MN-LoRA",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,6 +13,10 @@
   "layers": [
     "优化器层",
     "适配器层"
+  ],
+  "layers_en": [
+    "Optimizer layer",
+    "Adapter layer"
   ],
   "standard": {
     "summary": "MN-LoRA 是 Lulynx 的旗舰训练特性——通过矩阵归一化、梯度子空间投影（GSP）和训练梯度方向加权（TG-WD）等技术，在不增加 rank 的情况下显著提升 LoRA 训练质量。",
@@ -24,11 +30,30 @@
     "whenToUse": "追求比标准 LoRA 更好质量时。数据量中等（50-500 张）时收益最大。rank 较低（16-32）但想要更高有效容量时。",
     "avoidWhen": "极短训练（<100 步）时子模块还没充分预热。显存极度紧张时（MN-LoRA 有额外 state 开销）。"
   },
+  "standard_en": {
+    "summary": "MN-LoRA is Lulynx's flagship training feature -- matrix normalisation, gradient subspace projection (GSP), training-gradient direction weighting (TG-WD) and related techniques lift LoRA training quality markedly without raising the rank.",
+    "effect": "mn_lora_preset offers four tiers: slim (the least overhead), fast (quick convergence), balanced, and quality (the highest quality). balanced usually gives 5-15% more quality than a standard LoRA.",
+    "whenToUse": "When you want better quality than a standard LoRA. The gain is largest with a medium amount of data (50-500 images). When the rank is low (16-32) but you want more effective capacity.",
+    "avoidWhen": "On an extremely short run (<100 steps) the submodules have not warmed up enough. When VRAM is extremely tight (MN-LoRA carries extra state).",
+    "recommendedValues": {
+      "slim": "The least overhead, enabling only the basic GSP and TG-WD",
+      "fast": "Faster convergence, adding adaptive sparsity and a trust region",
+      "balanced": "The recommended default, balancing quality and speed",
+      "quality": "The highest quality, enabling every submodule including KFAC-Lite and Fisher EWC"
+    }
+  },
   "advanced": {
     "principle": "MN-LoRA 核心思想：(1) GSP 将梯度投影到 LoRA 权重当前 SVD 子空间中，确保更新方向与已学到的子空间一致；(2) TG-WD 通过有限差分估算每个参数方向的 loss 曲率，对梯度做方向加权；(3) 自适应稀疏只更新活跃的 LoRA 层（hot layers），跳过冷层节省计算。mn_lora_k_ratio 控制 GSP 的子空间维度比例。mn_lora_update_interval 控制 GSP 基的重算频率。",
     "intervention": "替换标准 optimizer.step() 为 MN-LoRA 的多阶段更新：GSP projection → TG-WD weighting → trust region clip → param update。",
     "expectedImpact": "balanced 预设比标准 LoRA FID 改善约 5-15%。quality 预设可进一步改善 2-5%。训练速度开销约 10-25%（取决于预设）。",
     "tradeoffs": "mn_lora_plus_plus 是 MN-LoRA 的增强版，额外增加自适应 rank 调整和模块级学习率适配。mn_lora_kfac_lite 引入 KFAC 预条件器进一步加速。mn_lora_trust_region 限制每步更新幅度防止过大跳跃。",
+    "codePath": "core/training_components/mn_lora/ → GSP + TG-WD + adaptive sparse + trust region → optimizer step"
+  },
+  "advanced_en": {
+    "principle": "MN-LoRA's core ideas: (1) GSP projects gradients onto the LoRA weights' current SVD subspace, keeping update directions consistent with the learned subspace; (2) TG-WD estimates each parameter direction's loss curvature via finite differences and weights gradients by direction; (3) adaptive sparsity updates only active LoRA layers (hot layers), skipping cold ones to save compute. mn_lora_k_ratio controls GSP's subspace dimension ratio. mn_lora_update_interval controls GSP basis recomputation frequency.",
+    "intervention": "Replaces the standard optimizer.step() with MN-LoRA's multi-stage update: GSP projection → TG-WD weighting → trust-region clip → parameter update.",
+    "expectedImpact": "The balanced preset improves FID about 5-15% over standard LoRA; the quality preset another 2-5%. Training-speed overhead about 10-25% (preset dependent).",
+    "tradeoffs": "mn_lora_plus_plus is MN-LoRA's enhanced version, additionally adding adaptive rank adjustment and module-level LR adaptation. mn_lora_kfac_lite adds a KFAC preconditioner for further acceleration. mn_lora_trust_region caps per-step update magnitude to prevent overly large jumps.",
     "codePath": "core/training_components/mn_lora/ → GSP + TG-WD + adaptive sparse + trust region → optimizer step"
   },
   "relatedConfigs": [

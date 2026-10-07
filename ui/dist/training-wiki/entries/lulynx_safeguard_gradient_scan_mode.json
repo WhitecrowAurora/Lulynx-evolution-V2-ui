@@ -1,7 +1,9 @@
 {
   "key": "lulynx_safeguard_gradient_scan_mode",
   "title": "SafeGuard 梯度扫描模式",
+  "title_en": "Safe Guard",
   "category": "训练 / 稳定性",
+  "category_en": "Training / Stability",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -18,9 +20,25 @@
       "off": "不扫。"
     }
   },
+  "standard_en": {
+    "summary": "Controls the CUDA synchronisation strategy of SafeGuard's gradient-anomaly scan: batched (checks in bulk, the fewest syncs) / foreach (checks by iteration) / legacy (per parameter, the most syncs) / off (gradient scanning disabled).",
+    "effect": "batched syncs CUDA the fewest times (roughly 1~2 per step) and has the lowest overhead; legacy syncs once per parameter and has the best compatibility with old cards; off skips the gradient-norm check entirely.",
+    "whenToUse": "The default batched suits modern cards (Ampere and later). Switch to legacy if an old card (Maxwell/Pascal) errors out on batched.",
+    "avoidWhen": "off is not recommended (with it off, gradient-explosion detection stops working).",
+    "optionDescriptions": {
+      "batched": "Gradients are checked for NaN/Inf as one batch, with the fewest syncs.",
+      "foreach": "Scans with foreach, a moderate number of syncs.",
+      "legacy": "Scans one parameter at a time, the slowest.",
+      "off": "No scanning."
+    }
+  },
   "advanced": {
     "principle": "batched = 将所有参数梯度 concat 后一次性检查 NaN/Inf（一次 CUDA 同步）；foreach = 使用 torch._foreach_* 向量化遍历（约 2~3 次同步）；legacy = for 循环逐参数检查（参数量次同步）。",
     "tradeoffs": "batched 需要暂时将所有梯度 concat（额外显存峰值）；legacy 同步多但不需要额外内存。"
+  },
+  "advanced_en": {
+    "principle": "batched = concatenates all parameters' gradients and checks NaN/Inf in one shot (one CUDA sync); foreach = vectorized traversal via torch._foreach_* (about 2~3 syncs); legacy = a for-loop checking parameter by parameter (one sync per parameter).",
+    "tradeoffs": "batched needs to temporarily concat all gradients (extra VRAM peak); legacy syncs a lot but needs no extra memory."
   },
   "relatedConfigs": [
     "safeguard_enabled",

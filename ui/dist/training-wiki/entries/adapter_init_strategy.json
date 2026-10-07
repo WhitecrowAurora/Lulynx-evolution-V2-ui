@@ -1,7 +1,9 @@
 {
   "key": "adapter_init_strategy",
   "title": "适配器初始化策略",
+  "title_en": "LoRA Init Strategy",
   "category": "LoRA / 初始化",
+  "category_en": "LoRA / Initialization",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -10,6 +12,9 @@
   ],
   "layers": [
     "适配器层"
+  ],
+  "layers_en": [
+    "Adapter layer"
   ],
   "standard": {
     "summary": "控制 LoRA 权重的初始化方式。default 使用 Kaiming 随机初始化；PiSSA 用 SVD 分解底模权重来初始化；OLoRA 用正交初始化；LoftQ 用量化感知初始化。",
@@ -23,11 +28,30 @@
       "loftq": "对着量化底座做的初始化。"
     }
   },
+  "standard_en": {
+    "summary": "Controls how the LoRA weights are initialised. default uses Kaiming random init; PiSSA initialises from an SVD of the base weights; OLoRA uses an orthogonal init; LoftQ uses a quantisation-aware init.",
+    "effect": "A good initialisation speeds up convergence and can raise final quality. PiSSA captures the base model's principal directions through SVD and usually converges faster than a random init.",
+    "whenToUse": "default fits most cases. PiSSA has an edge on finetunes and large datasets. OLoRA reduces concept interference in multi-concept training.",
+    "avoidWhen": "PiSSA has to compute an SVD, which can take minutes on a large model. LoftQ needs the quantisation dependencies.",
+    "optionDescriptions": {
+      "default": "The default initialisation, with the widest compatibility.",
+      "pissa": "Starts from the principal singular directions, often reaching a useful subspace sooner.",
+      "olora": "An orthogonal / decomposition-style start.",
+      "loftq": "An initialisation built against a quantised base."
+    }
+  },
   "advanced": {
     "principle": "PiSSA: 对底模权重 W 做 SVD 分解 W ≈ U·S·V^T，取前 r 个奇异值初始化 A = V[:r]·√S[:r]，B = √S[:r]·U[:r]^T。这使得 LoRA 初始状态就捕获了底模最重要的方向。pissa_svd_algo 控制 SVD 算法（rsvd 随机 SVD 更快）。OLoRA 使用 QR 分解生成正交初始化。LoftQ 在量化底模上做 LoRA 初始化。",
     "intervention": "在 LoRA 注入阶段替换默认的 nn.init.kaiming_uniform_ 为 SVD/QR/量化感知初始化。",
     "expectedImpact": "PiSSA 在前 100 步的 loss 比 default 低约 10-20%，最终质量改善约 2-5%。",
     "tradeoffs": "pissa_cache_mode 控制是否在 checkpoint 中保存 PiSSA 状态。adapter_init_export_mode 控制导出时的格式。",
+    "codePath": "core/lulynx/pissa_injector.py → SVD decomposition → LoRA initialization"
+  },
+  "advanced_en": {
+    "principle": "PiSSA: SVD-decomposes the base weight W ≈ U·S·V^T and takes the top r singular values to initialize A = V[:r]·√S[:r], B = √S[:r]·U[:r]^T, so the LoRA's initial state already captures the base model's most important directions. pissa_svd_algo selects the SVD algorithm (rsvd randomized SVD is faster). OLoRA uses QR decomposition for orthogonal initialization. LoftQ performs LoRA initialization on a quantized base model.",
+    "intervention": "Replaces the default nn.init.kaiming_uniform_ at the LoRA injection stage with SVD/QR/quantization-aware initialization.",
+    "expectedImpact": "PiSSA's loss over the first 100 steps is roughly 10-20% lower than default; final quality improves about 2-5%.",
+    "tradeoffs": "pissa_cache_mode controls whether PiSSA state is saved in checkpoints. adapter_init_export_mode controls the export format.",
     "codePath": "core/lulynx/pissa_injector.py → SVD decomposition → LoRA initialization"
   },
   "relatedConfigs": [

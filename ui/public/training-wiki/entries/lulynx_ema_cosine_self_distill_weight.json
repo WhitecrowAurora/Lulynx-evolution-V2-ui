@@ -1,0 +1,17 @@
+{
+  "key": "lulynx_ema_cosine_self_distill_weight",
+  "title": "EMA 特征对齐权重",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "EMA 自蒸馏的 EMA 特征对齐权重，默认 0。",
+    "effect": "用 EMA 副本作为teacher对当前权重做余弦特征对齐，抑制训练噪声，EMA 特征对齐权重 控制对齐权重与 EMA 衰减。",
+    "whenToUse": "小 batch / 高噪声训练路线想平滑收敛时使用。",
+    "avoidWhen": "权重 0 时功能关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

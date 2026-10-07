@@ -1,7 +1,9 @@
 {
   "key": "warmup_ratio",
   "title": "预热比例",
+  "title_en": "Warmup Ratio",
   "category": "优化器 / 学习率",
+  "category_en": "Optimizer / Learning Rate",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,18 +14,34 @@
   "layers": [
     "优化器层"
   ],
+  "layers_en": [
+    "Optimizer layer"
+  ],
   "standard": {
-    "summary": "按总训练步数的比例自动计算学习率预热（warmup）步数，替代手填固定的 lr_warmup_steps。",
-    "effect": "调度器创建时按 warmup_steps = 总步数 × warmup_ratio 计算，并被夹在 [0, 总步数-1] 内。例如总共 2000 步、比例 0.05，则前 100 步学习率从 0 线性爬升到目标值。",
+    "summary": "未指定正数 lr_warmup_steps 时，按总训练步数的比例自动计算学习率预热（warmup）步数。",
+    "effect": "lr_warmup_steps 为 0 时，按 warmup_steps = int(总步数 × warmup_ratio) 计算，并被夹在 [0, 总步数-1] 内。例如总共 2000 步、比例 0.05，则预热 100 步；起始学习率由调度器决定。",
     "whenToUse": "总步数经常变（改 epoch、改数据量）又想保持预热占比稳定时；不确定 warmup 步数该填多少时，0.03~0.1 是常见区间。",
-    "avoidWhen": "已经明确用 lr_warmup_steps 指定了固定步数时不要两个都设，调度器优先按比例解析，固定步数会被覆盖；极短训练（几十步）预热意义不大。"
+    "avoidWhen": "正数 lr_warmup_steps 优先于此比例；关闭预热需将两者都设为 0。不支持预热的调度器忽略此参数，极短训练可减少预热。"
+  },
+  "standard_en": {
+    "summary": "Computes warmup steps as a proportion of total training steps when no positive lr_warmup_steps value is specified.",
+    "effect": "When lr_warmup_steps is 0, the scheduler uses warmup_steps = int(total steps * warmup_ratio), clamped into [0, total steps - 1]. With 2000 total steps and a ratio of 0.05, warmup lasts 100 steps; the starting learning rate depends on the scheduler.",
+    "whenToUse": "When the total step count changes often (changing epochs or the amount of data) but you want the warmup proportion to stay steady; when you are unsure what warmup step count to enter, 0.03~0.1 is the usual range.",
+    "avoidWhen": "A positive lr_warmup_steps value takes precedence over this ratio. Set both values to 0 to disable warmup. Schedulers without warmup support ignore this parameter; short runs may need less warmup."
   },
   "advanced": {
-    "principle": "warmup 阶段学习率从 0 线性上升，避免训练初期梯度统计（如 Adam 二阶矩）尚未稳定时大步长更新破坏预训练权重。按比例表达可让预热长度随总步数自动伸缩。",
-    "intervention": "调度器工厂在构造 LR scheduler 前计算：warmup_steps = max(min(int(total_steps × warmup_ratio), total_steps - 1), 0)，随后传给所选调度器（cosine、linear 等）。",
+    "principle": "warmup 阶段学习率从较低值上升，降低训练初期梯度统计（如 Adam 二阶矩）尚未稳定时大步长更新的风险。cosine 默认从目标学习率的 1% 开始；按比例表达可让预热长度随总步数自动伸缩。",
+    "intervention": "调度器工厂先使用正数 lr_warmup_steps，否则计算 int(total_steps × warmup_ratio)，再夹到 [0, total_steps-1]。结果传给支持预热的调度器，如 cosine、constant_with_warmup；普通 linear 不使用此值。",
     "expectedImpact": "训练前期 loss 曲线更平滑，减少初期发散或「先坏后好」现象；对最终质量影响温和。",
     "tradeoffs": "预热占比过大（>0.2）会浪费有效训练步数；过小则失去保护作用。与 Prodigy 等自适应学习率优化器同用时预热收益减弱。",
-    "codePath": "trainer_scheduler_factory.py:_create_scheduler——warmup_steps = int(total_steps * config.warmup_ratio) 后夹取范围"
+    "codePath": "trainer/trainer_scheduler_warmup.py:resolve_scheduler_warmup_steps，由 trainer_scheduler_factory.py 和 trainer_execution_optimizer_phase.py 共用"
+  },
+  "advanced_en": {
+    "principle": "During warmup the learning rate rises from a lower value, reducing the risk of large-step updates early in training while gradient statistics (such as Adam's second moment) are not yet stable. cosine starts by default at 1% of the target learning rate; expressing warmup as a ratio lets its length scale automatically with total steps.",
+    "intervention": "The scheduler factory uses a positive lr_warmup_steps first, otherwise computes int(total_steps × warmup_ratio), then clamps to [0, total_steps-1]. The result is passed to schedulers that support warmup, such as cosine and constant_with_warmup; plain linear does not use this value.",
+    "expectedImpact": "A smoother loss curve early in training, reducing early divergence or \"worse before better\" behavior; a mild effect on final quality.",
+    "tradeoffs": "Too large a warmup fraction (>0.2) wastes effective training steps; too small loses the protection. With adaptive-LR optimizers like Prodigy the warmup benefit is diminished.",
+    "codePath": "trainer/trainer_scheduler_warmup.py:resolve_scheduler_warmup_steps, shared by trainer_scheduler_factory.py and trainer_execution_optimizer_phase.py"
   },
   "relatedConfigs": [
     "lr_warmup_steps",

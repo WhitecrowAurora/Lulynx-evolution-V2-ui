@@ -1,0 +1,16 @@
+{
+  "key": "train_t5xxl",
+  "title": "训练T5XXL",
+  "category": "FLUX 专用参数",
+  "appliesTo": [
+    "flux-lora"
+  ],
+  "standard": {
+    "summary": "训练 T5-XXL 文本编码器（不推荐，显存开销极大）",
+    "effect": "写入训练配置 train_t5xxl，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

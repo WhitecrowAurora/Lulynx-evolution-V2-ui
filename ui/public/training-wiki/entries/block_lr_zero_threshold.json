@@ -1,7 +1,9 @@
 {
   "key": "block_lr_zero_threshold",
   "title": "Block LR 零化阈值",
+  "title_en": "Layer threshold",
   "category": "训练 / Block 权重",
+  "category_en": "Training / Block Weights",
   "appliesTo": [
     "sdxl-lora",
     "anima-lora"
@@ -12,9 +14,19 @@
     "whenToUse": "配合 block weight 差异化设置使用。权重设为 0.01 的 block 不一定需要完全不训练，但若设为 0 则此阈值会让其 LR 清零。",
     "avoidWhen": "所有 block 权重相等时此阈值无意义（没有低权重 block 需要清零）。"
   },
+  "standard_en": {
+    "summary": "When a block's weight falls below this threshold, its learning rate is set to 0 -- in effect that block's LoRA is not trained.",
+    "effect": "Gives you sparse block training: unimportant blocks stop updating entirely, which cuts parameter count and overfitting risk.",
+    "whenToUse": "Alongside differentiated block weights. A block weighted 0.01 does not necessarily need to stop training, but once its weight is 0 this threshold zeroes its LR.",
+    "avoidWhen": "The threshold is meaningless when every block weight is equal (there is no low-weight block to zero)."
+  },
   "advanced": {
     "principle": "block_lr = base_lr × block_weight；若 block_lr < zero_threshold，则 block_lr = 0。本质是稀疏选择参与训练的 block。",
     "tradeoffs": "阈值设置过大会意外清零本应参与训练的 block；过小则稀疏效果不明显。"
+  },
+  "advanced_en": {
+    "principle": "block_lr = base_lr × block_weight; if block_lr < zero_threshold then block_lr = 0. Essentially sparse selection of the blocks that participate in training.",
+    "tradeoffs": "Too large a threshold unexpectedly zeroes blocks that should train; too small and the sparsification is barely visible."
   },
   "relatedConfigs": [
     "block_weight_preset",

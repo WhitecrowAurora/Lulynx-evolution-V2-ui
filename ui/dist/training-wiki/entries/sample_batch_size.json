@@ -1,0 +1,17 @@
+{
+  "key": "sample_batch_size",
+  "title": "预览图采样批量",
+  "category": "Lumina 专用参数",
+  "appliesTo": [
+    "lumina-finetune",
+    "lumina-lora"
+  ],
+  "standard": {
+    "summary": "预览采样批量。",
+    "effect": "预览图一次采样的批量。",
+    "whenToUse": "预览耗时敏感时调整。",
+    "avoidWhen": "默认按配置。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,27 @@
+{
+  "key": "semantic_region_weighting_enabled",
+  "title": "启用语义区域加权",
+  "category": "语义区域加权",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "按固定语义区域为训练 loss 应用随进度变化的空间权重。",
+    "effect": "未配置区域保持 1.0。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,16 @@
+{
+  "key": "anima_controlnet_cond_resblocks",
+  "title": "条件 ResBlock 数",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "anima-controlnet"
+  ],
+  "standard": {
+    "summary": "Anima ControlNet ResBlock 数。",
+    "effect": "条件主干的 ResBlock 深度。",
+    "whenToUse": "加深提容量。",
+    "avoidWhen": "默认 1。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

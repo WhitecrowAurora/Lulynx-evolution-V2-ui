@@ -1,0 +1,17 @@
+{
+  "key": "h3_fps",
+  "title": "训练 FPS",
+  "category": "H3 音视频数据",
+  "appliesTo": [
+    "minimax-h3-finetune",
+    "minimax-h3-lora"
+  ],
+  "standard": {
+    "summary": "H3 训练 FPS。",
+    "effect": "视频采样帧率，决定 latent 时间轴密度。",
+    "whenToUse": "与素材原始帧率匹配。",
+    "avoidWhen": "默认 24。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

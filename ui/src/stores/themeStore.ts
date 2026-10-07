@@ -30,6 +30,37 @@ function writeLS(key: string, value: string) {
   }
 }
 
+function fromLauncherTheme(theme: unknown): ThemeId | null {
+  if (theme === 'light') return 'stitch-light'
+  if (theme === 'dark') return 'stitch-dark'
+  return null
+}
+
+function trustedParentOrigin(): string | null {
+  try {
+    const referrer = document.referrer
+    if (referrer) {
+      const origin = new URL(referrer).origin
+      return origin === 'null' ? null : origin
+    }
+  } catch {
+    return null
+  }
+
+  // Same-origin embeds have no useful referrer in some hosts. This fallback
+  // remains restrictive and never broadens the channel to arbitrary origins.
+  return window.location.origin === 'null' ? null : window.location.origin
+}
+
+function initialTheme(): ThemeId {
+  if (window.parent !== window) {
+    const embeddedTheme = fromLauncherTheme(new URLSearchParams(window.location.search).get('launcher_theme'))
+    if (embeddedTheme) return embeddedTheme
+  }
+  const saved = readLS(THEME_KEY, 'stitch-dark')
+  return THEMES.includes(saved as ThemeId) ? saved as ThemeId : 'stitch-dark'
+}
+
 interface ThemeState {
   theme: ThemeId
   motionMode: MotionMode
@@ -49,9 +80,7 @@ function applyToDom(theme: ThemeId, mode: MotionMode, trainingActive: boolean) {
 }
 
 export const useThemeStore = create<ThemeState>((set, get) => ({
-  theme: (THEMES as string[]).includes(readLS(THEME_KEY, 'stitch-dark'))
-    ? (readLS(THEME_KEY, 'stitch-dark') as ThemeId)
-    : 'stitch-dark',
+  theme: initialTheme(),
   motionMode: (MODES as string[]).includes(readLS(MOTION_KEY, 'auto'))
     ? (readLS(MOTION_KEY, 'auto') as MotionMode)
     : 'auto',
@@ -72,6 +101,29 @@ export const useThemeStore = create<ThemeState>((set, get) => ({
     applyToDom(get().theme, get().motionMode, trainingActive)
   },
 }))
+
+export function subscribeLauncherTheme() {
+  if (window.parent === window) return
+  const parentOrigin = trustedParentOrigin()
+  if (!parentOrigin) return
+  const onMessage = (event: MessageEvent) => {
+    if (
+      event.source !== window.parent ||
+      event.origin !== parentOrigin ||
+      event.data?.type !== 'launcher:theme-change'
+    ) return
+    const theme = fromLauncherTheme(event.data.theme)
+    if (!theme) return
+    // Host updates affect this embedded view without overwriting the standalone preference.
+    useThemeStore.setState({ theme })
+    const state = useThemeStore.getState()
+    applyToDom(theme, state.motionMode, state.trainingActive)
+  }
+  window.addEventListener('message', onMessage)
+  // Request the latest value after subscribing; iframe load can precede React effects.
+  window.parent.postMessage({ type: 'webui:theme-ready' }, parentOrigin)
+  return () => window.removeEventListener('message', onMessage)
+}
 
 /** React 挂载前同步应用,避免主题闪烁 */
 export function initTheme() {

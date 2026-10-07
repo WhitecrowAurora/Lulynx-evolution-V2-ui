@@ -1,7 +1,9 @@
 {
   "key": "log_with",
   "title": "日志后端",
+  "title_en": "Logging module",
   "category": "训练 / 日志",
+  "category_en": "Training / Logging",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,6 +15,9 @@
   "layers": [
     "训练控制层"
   ],
+  "layers_en": [
+    "Training control layer"
+  ],
   "standard": {
     "summary": "选择实验日志的记录后端。tensorboard 在本地记录训练曲线；wandb 上传到 Weights & Biases 云端。",
     "effect": "tensorboard 生成本地事件文件，可通过 TensorBoard UI 查看。wandb 提供云端 dashboard、超参搜索和团队协作。",
@@ -23,11 +28,28 @@
       "wandb": "传到 W&B，要账号和 key。"
     }
   },
+  "standard_en": {
+    "summary": "Picks the experiment logging backend. tensorboard records the training curves locally; wandb uploads them to Weights & Biases.",
+    "effect": "tensorboard writes local event files you can open in the TensorBoard UI. wandb provides a cloud dashboard, hyperparameter sweeps and team collaboration.",
+    "whenToUse": "tensorboard is the lightest choice. wandb suits remote monitoring or working in a team.",
+    "avoidWhen": "wandb needs network access and an API key. Use tensorboard when you would rather not upload anything.",
+    "optionDescriptions": {
+      "tensorboard": "View the curves in local TensorBoard.",
+      "wandb": "Uploads to W&B; needs an account and a key."
+    }
+  },
   "advanced": {
     "principle": "Lulynx 通过 Accelerate 的 tracker 接口集成日志后端。tensorboard 写入 logging_dir 下的事件文件。wandb 通过 wandb_api_key 认证并上传到 wandb.ai。adaptive_step_logging 自动调整日志频率——当 step 日志耗时超过阈值时降低频率。",
     "intervention": "训练启动时初始化 tracker，每步记录 loss/lr/epoch 等指标。",
     "expectedImpact": "不影响训练质量。tensorboard_flush_interval_steps 控制写入频率。",
     "tradeoffs": "layer_monitor_enabled 额外记录每层的梯度/权重统计（用于调试）。wandb_run_name 设置运行名称。",
+    "codePath": "training_loop.py:log_with → Accelerate tracker → per-step logging"
+  },
+  "advanced_en": {
+    "principle": "Lulynx integrates logging backends through Accelerate's tracker interface. tensorboard writes event files under logging_dir. wandb authenticates via wandb_api_key and uploads to wandb.ai. adaptive_step_logging auto-adjusts logging frequency — lowering it when step-logging time exceeds a threshold.",
+    "intervention": "Initializes the tracker at training start and records loss/lr/epoch metrics per step.",
+    "expectedImpact": "Does not affect training quality. tensorboard_flush_interval_steps controls write frequency.",
+    "tradeoffs": "layer_monitor_enabled additionally records per-layer gradient/weight statistics (for debugging). wandb_run_name sets the run name.",
     "codePath": "training_loop.py:log_with → Accelerate tracker → per-step logging"
   },
   "relatedConfigs": [

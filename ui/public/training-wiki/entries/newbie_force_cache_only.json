@@ -1,0 +1,16 @@
+{
+  "key": "newbie_force_cache_only",
+  "title": "仅缓存完备样本参与训练",
+  "category": "DiT / 缓存",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "仅缓存完备样本参与训练。",
+    "effect": "只让 latent+文本缓存齐全的样本进训练，缺缓存的直接排除。",
+    "whenToUse": "默认开启保证批次一致性。",
+    "avoidWhen": "想边训边补缓存时关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

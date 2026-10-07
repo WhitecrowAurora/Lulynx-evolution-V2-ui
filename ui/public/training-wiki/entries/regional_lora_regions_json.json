@@ -1,7 +1,9 @@
 {
   "key": "regional_lora_regions_json",
   "title": "区域多 LoRA（分区域布局）",
+  "title_en": "Regional Multi-LoRA (Per-Region Layout)",
   "category": "推理参数",
+  "category_en": "Inference Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,11 +12,24 @@
     "whenToUse": "一张图里要同时出现两个及以上各自训练过的角色或概念，直接叠加多个 LoRA 会互相污染时。",
     "avoidWhen": "只有一个 LoRA，或各概念本来就不需要固定位置时。区域会带来每步一次额外前向的开销。"
   },
+  "standard_en": {
+    "summary": "Divides the canvas into regions and binds a LoRA and a local prompt to each one.",
+    "effect": "Each region's LoRA residual acts only inside its own box and is exactly zero outside it; at the same time, attention is pulled towards each box at every sampling step. Leave it blank to disable, in which case rendering is bit-for-bit identical to not enabling it.",
+    "whenToUse": "When two or more separately trained characters or concepts have to appear in one image and simply stacking several LoRAs contaminates them.",
+    "avoidWhen": "When there is only one LoRA, or when the concepts do not need fixed positions anyway. Regions cost one extra forward pass per step."
+  },
   "advanced": {
     "principle": "区域感知的多 LoRA 组合（arXiv:2403.11627）。布局由归一化到 [0,1] 的框给出，框在 patchified token 网格上栅格化成掩码，用于门控该区域 LoRA 的残差；每一步再按 Eq. 10 用注意力约束损失的梯度修正 latent，把概念约束在框内。",
     "intervention": "填入 JSON 数组，每项形如 {\"box\": [x1, y1, x2, y2], \"lora\": \"路径\", \"prompt\": \"局部提示词\", \"token_index\": 1}。坐标必须是 [0,1] 归一化值，像素坐标会被直接拒绝。出图页的画框工具会替你生成这段 JSON。",
     "expectedImpact": "各概念留在自己的区域内，不再互相串味。",
     "tradeoffs": "约束需要对 latent 求梯度，每个采样步多一次前向，步时约 2 倍。",
+    "codePath": "backend/core/lulynx_trainer/regional_lora_binding.py, backend/core/lulynx_trainer/anima/regional_lora_constraint.py"
+  },
+  "advanced_en": {
+    "principle": "Region-aware multi-LoRA composition (arXiv:2403.11627). The layout is given by boxes normalized to [0,1], rasterized into masks on the patchified token grid to gate that region's LoRA residual; each step then corrects the latents with gradients of an attention-constraint loss per Eq. 10, confining concepts to their boxes.",
+    "intervention": "Fill in a JSON array, each item shaped like {\"box\": [x1, y1, x2, y2], \"lora\": \"path\", \"prompt\": \"local prompt\", \"token_index\": 1}. Coordinates must be [0,1]-normalized values; pixel coordinates are rejected outright. The bounding-box tool on the image page generates this JSON for you.",
+    "expectedImpact": "Each concept stays in its own region instead of bleeding into the others.",
+    "tradeoffs": "The constraint needs gradients against the latents, one extra forward per sampling step, roughly doubling step time.",
     "codePath": "backend/core/lulynx_trainer/regional_lora_binding.py, backend/core/lulynx_trainer/anima/regional_lora_constraint.py"
   },
   "relatedConfigs": [

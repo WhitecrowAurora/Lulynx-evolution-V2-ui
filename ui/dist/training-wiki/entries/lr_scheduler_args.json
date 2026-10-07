@@ -1,7 +1,9 @@
 {
   "key": "lr_scheduler_args",
   "title": "自定义调度器参数",
+  "title_en": "Custom Scheduler Args",
   "category": "训练 / 学习率",
+  "category_en": "Training / Learning Rate",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -13,9 +15,19 @@
     "whenToUse": "配合 lr_scheduler_type 使用，如：T_max=500\\neta_min=1e-6。",
     "avoidWhen": "使用内置调度器时无需填写。"
   },
+  "standard_en": {
+    "summary": "Parameters passed to a custom scheduler in key=value form, one per line.",
+    "effect": "Each line is parsed as one constructor argument, with numeric types converted automatically (int/float) and strings left as they are.",
+    "whenToUse": "Together with lr_scheduler_type, for example: T_max=500\\neta_min=1e-6.",
+    "avoidWhen": "There is no need to fill this in when you are using a built-in scheduler."
+  },
   "advanced": {
     "principle": "参数解析：按行分割 → 按 = 分割 → 尝试 int/float 转换 → 作为 kwargs 传入调度器构造函数。",
     "tradeoffs": "参数名必须与调度器的 __init__ 签名完全匹配，否则会抛出 TypeError。"
+  },
+  "advanced_en": {
+    "principle": "Argument parsing: split by line → split by = → attempt int/float conversion → passed as kwargs into the scheduler constructor.",
+    "tradeoffs": "Argument names must exactly match the scheduler's __init__ signature, otherwise a TypeError is raised."
   },
   "relatedConfigs": [
     "lr_scheduler_type",

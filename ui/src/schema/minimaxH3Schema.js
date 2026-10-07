@@ -1,6 +1,7 @@
 // MiniMax H3 keeps its audio/video and guidance-preserving contract separate
 // from the image-only DiT schemas so unsupported distillation fields cannot leak in.
 import { sec, when } from './schemaCommon.js';
+import { H3_REFERENCE_FIELDS, H3_REFERENCE_TEACHER_FIELDS, h3PreviewFields } from './minimaxH3ReferenceFields.js';
 import {
   S_LR_DIT,
   S_LR_FT_DIT,
@@ -134,6 +135,10 @@ const common = (typeId, finetune) => [
   sec('model-settings', 'model', finetune ? 'MiniMax H3 全参微调' : 'MiniMax H3 模型', finetune ? '训练完整 H3 Transformer，或扩展深度后只训练新增层。' : 'H3 FL2VA 音视频 LoRA 所需的四个组件。', [...modelFields(typeId), ...(finetune ? expansionFields : [])]),
   sec('h3-flow-settings', 'training', 'H3 CFG 保真目标', '保持原生引导蒸馏能力，不加载 training adapter。', flowFields),
   sec('dataset-settings', 'dataset', 'H3 音视频数据', '优先使用预缓存的 latent 与文本编码器输出。', datasetFields),
+  sec('h3-reference-settings', 'dataset', 'Ref2VA 图像参考', '使用显式参考清单建立训练缓存。', H3_REFERENCE_FIELDS),
+  ...(finetune ? [] : [sec('h3-reference-teacher', 'training', 'Ref2VA Teacher',
+    '使用额外图像参考指导 LoRA 训练。', H3_REFERENCE_TEACHER_FIELDS)]),
+  sec('h3-preview-settings', 'training', 'Ref2VA 训练预览', '参考条件与尺寸跟随选中的训练缓存样本。', h3PreviewFields(finetune)),
   ...(finetune ? [] : [sec('adapter-settings', 'network', 'H3 LoRA', '仅训练 H3 主干注意力与前馈投影，不修改原生蒸馏适配器。', adapterFields)]),
   sec('optimizer-settings', 'optimizer', '学习率与优化器', '', finetune ? S_LR_FT_DIT : H3_LR_FIELDS),
   sec('training-settings', 'training', '训练参数', '', H3_TRAIN_FIELDS),

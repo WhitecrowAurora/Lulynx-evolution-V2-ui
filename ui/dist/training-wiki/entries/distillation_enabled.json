@@ -1,7 +1,9 @@
 {
   "key": "distillation_enabled",
   "title": "知识蒸馏",
+  "title_en": "Distillation (DP-DMD / AnyFlow)",
   "category": "前沿储备 / 训练",
+  "category_en": "Frontier Reserve / Training",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -11,6 +13,12 @@
     "effect": "distillation_mode 控制蒸馏策略（feature / logit / score）：feature = 中间特征对齐；logit = 最终预测对齐；score = 分数函数对齐（Consistency Distillation 等）。",
     "whenToUse": "实验性功能。有更大基础模型可作为教师时可以尝试提升 LoRA 训练效率。",
     "avoidWhen": "默认关闭。蒸馏需要同时运行教师模型（显存约翻倍），大多数 LoRA 训练不适用。"
+  },
+  "standard_en": {
+    "summary": "(Experimental) Knowledge distillation: uses a large teacher model's output to guide LoRA training, replacing or supplementing the standard diffusion loss to learn more efficiently.",
+    "effect": "distillation_mode picks the strategy (feature / logit / score): feature = align intermediate features; logit = align the final prediction; score = align the score function (as in Consistency Distillation).",
+    "whenToUse": "An experimental feature. Worth trying when you have a larger base model to act as teacher and want more efficient LoRA training.",
+    "avoidWhen": "Off by default. Distillation runs the teacher model alongside (roughly doubling VRAM), which does not suit most LoRA training."
   },
   "relatedConfigs": [
     "anima_ema_feat_align_enabled",

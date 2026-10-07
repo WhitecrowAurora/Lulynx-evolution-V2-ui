@@ -1,0 +1,17 @@
+{
+  "key": "ip_adapter_scale",
+  "title": "IP-Adapter 缩放",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "IP-Adapter 缩放。",
+    "effect": "图像条件注入强度。",
+    "whenToUse": "图像条件过强压过文本时调低。",
+    "avoidWhen": "默认 1。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

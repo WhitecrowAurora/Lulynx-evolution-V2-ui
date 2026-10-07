@@ -1,7 +1,9 @@
 {
   "key": "random_triggers_position",
   "title": "触发词注入位置",
+  "title_en": "Random Triggers Position",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "prepend": "触发词接在 caption 前面。",
       "append": "接在后面。"
+    }
+  },
+  "standard_en": {
+    "summary": "The values available for where trigger words are injected.",
+    "effect": "Switching the enum changes the corresponding subsystem's behaviour.",
+    "whenToUse": "Choose as the task requires.",
+    "avoidWhen": "Keep the default when unsure.",
+    "optionDescriptions": {
+      "prepend": "The trigger words go in front of the caption.",
+      "append": "They go after it."
     }
   },
   "advanced": {},

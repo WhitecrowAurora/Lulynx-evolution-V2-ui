@@ -1,7 +1,9 @@
 {
   "key": "ltx23_block_residency",
   "title": "LTX-2.3 Block 驻留",
+  "title_en": "LTX-2.3 block residency",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "resident": "常驻。",
       "block_offload": "block 卸。"
+    }
+  },
+  "standard_en": {
+    "summary": "LTX-2.3 block residency; the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "resident": "Resident.",
+      "block_offload": "Offload by block."
     }
   },
   "advanced": {},

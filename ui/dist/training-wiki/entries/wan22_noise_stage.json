@@ -1,7 +1,9 @@
 {
   "key": "wan22_noise_stage",
   "title": "A14B 噪声塔（wan22_noise_stage）",
+  "title_en": "A14B noise tower",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -14,8 +16,24 @@
       "low": "只挂低噪塔，偏修细节。"
     }
   },
+  "standard_en": {
+    "summary": "t2v-a14b only: a high/low single tower",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "high": "Attaches only to A14B's high-noise tower, which leans towards structure and large motion, and saves one tower's worth of VRAM.",
+      "low": "Attaches only to the low-noise tower, which leans towards refining detail."
+    }
+  },
   "advanced": {
     "principle": "仅 t2v-a14b：每次训练选择 high 或 low 单塔；当前产品不提供 both 双塔训练。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "t2v-a14b only: each training run picks a single high or low tower; the product currently offers no both dual-tower training.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

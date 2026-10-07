@@ -1,7 +1,9 @@
 {
   "key": "pissa_init",
   "title": "PiSSA 初始化",
+  "title_en": "Enable PiSSA initialization",
   "category": "LoRA 变体 / PiSSA",
+  "category_en": "LoRA Variants / PiSSA",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -16,9 +18,19 @@
     "whenToUse": "步数较少时（<200步）PiSSA 的快速收敛优势最明显。长训练时优势逐渐减弱。",
     "avoidWhen": "pissa 初始化需要对每个目标层做 SVD（较慢的初始化步骤）；SVD 分解本身对大型权重矩阵耗时较长。"
   },
+  "standard_en": {
+    "summary": "PiSSA (Principal Singular values and Singular vectors Adaptation): initialises the LoRA's A/B matrices by SVD so the initial LoRA aligns with the pretrained weights' principal singular directions, which converges faster.",
+    "effect": "Compared with random initialisation, PiSSA's initialisation reaches a similar loss level in fewer steps (roughly 2~3x faster); and because B x A's initial output is non-zero (aligned with the principal singular directions) it remembers a new concept faster than a standard LoRA.",
+    "whenToUse": "PiSSA's fast-convergence advantage shows most at low step counts (<200 steps). It fades away on a long run.",
+    "avoidWhen": "pissa initialisation needs an SVD per target layer (a slow initialisation step); the SVD itself takes a long time on a large weight matrix."
+  },
   "advanced": {
     "principle": "PiSSA 对预训练权重 W 做 SVD：W = UΣV^T，取前 rank 个奇异值/向量初始化 B = U[:, :rank] × Σ[:rank, :rank]^(1/2) / scale，A = Σ[:rank, :rank]^(1/2) × V[:rank, :]^T / scale。初始 ΔW = B×A ≈ 主成分方向的 W，与 W 最近的低秩近似。",
     "tradeoffs": "PiSSA 的 export_mode（full_weight 或 lora_weight）影响输出文件：full_weight 模式导出 W_original - B×A + B_new×A_new（合并修改），pissa 推理时等效于标准 LoRA 推理。"
+  },
+  "advanced_en": {
+    "principle": "PiSSA SVD-decomposes the pretrained weight W: W = UΣV^T, taking the top rank singular values/vectors to initialize B = U[:, :rank] × Σ[:rank, :rank]^(1/2) / scale and A = Σ[:rank, :rank]^(1/2) × V[:rank, :]^T / scale. The initial ΔW = B×A ≈ W's principal-component directions, the closest low-rank approximation to W.",
+    "tradeoffs": "PiSSA's export_mode (full_weight or lora_weight) affects the output file: full_weight mode exports W_original - B×A + B_new×A_new (merged modification), where pissa inference is equivalent to standard LoRA inference."
   },
   "relatedConfigs": [
     "network_dim",

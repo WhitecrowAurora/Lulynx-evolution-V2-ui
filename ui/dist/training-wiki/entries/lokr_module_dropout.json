@@ -1,0 +1,16 @@
+{
+  "key": "lokr_module_dropout",
+  "title": "LoKr Module Dropout",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "LoKr Module Dropout。",
+    "effect": "以概率整体跳过某层的 LoKr 更新。",
+    "whenToUse": "层间正则。",
+    "avoidWhen": "默认 0。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

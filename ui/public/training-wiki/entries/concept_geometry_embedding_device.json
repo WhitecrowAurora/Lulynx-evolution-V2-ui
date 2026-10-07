@@ -1,7 +1,9 @@
 {
   "key": "concept_geometry_embedding_device",
   "title": "Embedding 设备",
+  "title_en": "Embedding",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "cpu": "embedding 在 CPU。",
       "cuda": "embedding 在 GPU。"
+    }
+  },
+  "standard_en": {
+    "summary": "Embedding device; the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "cpu": "Embeddings on the CPU.",
+      "cuda": "Embeddings on the GPU."
     }
   },
   "advanced": {},

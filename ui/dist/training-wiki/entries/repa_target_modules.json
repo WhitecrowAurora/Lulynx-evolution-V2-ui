@@ -1,7 +1,9 @@
 {
   "key": "repa_target_modules",
   "title": "REPA 目标模块",
+  "title_en": "REPA targetblock",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Comma-separated module names. Empty, plus the auto below turned on -> the backend picks a single mid layer by family",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
-    "principle": "逗号分隔模块名。空 + 下方 auto 开 → 后端按族选单层 mid（anima=net.blocks.",
+    "principle": "逗号分隔模块名。空 + 下方 auto 开 → 后端按族选单层 mid（省 hook 税）。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Comma-separated module names. Empty + auto on above → the backend picks a single mid layer per family (saves hook overhead).",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

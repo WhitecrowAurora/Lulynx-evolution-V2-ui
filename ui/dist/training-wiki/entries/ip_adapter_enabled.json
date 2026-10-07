@@ -1,7 +1,9 @@
 {
   "key": "ip_adapter_enabled",
   "title": "IP-Adapter (图像提示适配)",
+  "title_en": "Ip LoRA Enabled",
   "category": "训练 / 适配器",
+  "category_en": "Training / Adapters",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -9,17 +11,33 @@
   "layers": [
     "适配器层"
   ],
+  "layers_en": [
+    "Adapter layer"
+  ],
   "standard": {
     "summary": "IP-Adapter 允许用参考图像作为额外条件输入训练。模型学习从图像特征中提取风格/内容信息，实现图像驱动的生成控制。",
     "effect": "ip_adapter_scale 控制图像条件的强度。ip_adapter_num_image_tokens 控制图像特征注入的 token 数量。ip_adapter_cond_mode 控制注入方式（concat/cross-attn）。",
     "whenToUse": "想训练图像驱动的风格迁移或参考图生成时。",
     "avoidWhen": "增加训练复杂度和显存开销。推理时需要提供图像条件。"
   },
+  "standard_en": {
+    "summary": "IP-Adapter lets a reference image serve as an extra conditioning input during training. The model learns to extract style and content information from image features, giving image-driven control over generation.",
+    "effect": "ip_adapter_scale sets the image condition's strength. ip_adapter_num_image_tokens sets how many tokens the image features are injected as. ip_adapter_cond_mode sets how they are injected (concat / cross-attn).",
+    "whenToUse": "When training image-driven style transfer or reference-image generation.",
+    "avoidWhen": "It adds complexity and VRAM cost, and inference requires an image condition to be supplied."
+  },
   "advanced": {
     "principle": "IP-Adapter 使用 CLIP image encoder 提取参考图像的特征向量，通过 cross-attention 或 concat 方式注入 UNet。ip_image_encoder_path 指定 image encoder 模型。ip_num_tokens 控制注入的 image token 数量（SD1.5 默认 4，SDXL 默认 16）。",
     "intervention": "在 UNet 中添加 IP-Adapter cross-attention 层。训练时同时优化 LoRA 和 IP-Adapter 权重。",
     "expectedImpact": "实现图像条件的生成控制。需要专门的推理管线。",
     "tradeoffs": "easy_control_enabled 是更简单的图像条件方案。",
+    "codePath": "core/lulynx_trainer/ip_adapter_trainer.py → CLIP image encoder + cross-attention injection"
+  },
+  "advanced_en": {
+    "principle": "IP-Adapter uses a CLIP image encoder to extract the reference image's feature vector, injected into the UNet via cross-attention or concat. ip_image_encoder_path specifies the image-encoder model. ip_num_tokens controls the number of injected image tokens (SD1.5 default 4, SDXL default 16).",
+    "intervention": "Adds IP-Adapter cross-attention layers to the UNet. Training optimizes LoRA and IP-Adapter weights together.",
+    "expectedImpact": "Enables image-conditioned generation control. Needs a dedicated inference pipeline.",
+    "tradeoffs": "easy_control_enabled is the simpler image-conditioning scheme.",
     "codePath": "core/lulynx_trainer/ip_adapter_trainer.py → CLIP image encoder + cross-attention injection"
   },
   "relatedConfigs": [

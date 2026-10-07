@@ -1,0 +1,24 @@
+{
+  "key": "dora_normalize_magnitude",
+  "title": "DoRA 归一化方式",
+  "title_en": "DoRA Normalization Mode",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "DoRA 每步把权重除以行范数。真（默认）用当前合并权重的活范数；假用训练开始时冻结的基础权重范数。",
+    "effect": "默认真 = 论文标准做法。设假 = 分母固定，等于关掉每步再归一，行为更接近普通 LoRA 但保留幅度参数。",
+    "whenToUse": "默认真。想减少每步归一化带来的方向漂移、行为更稳时试假。",
+    "avoidWhen": "想严格复现 DoRA 论文时不要改。"
+  },
+  "standard_en": {
+    "summary": "DoRA divides the weight by row norms each step. True (default) uses the live norm of the merged weight; False uses the base weight's row norms frozen at the start of training.",
+    "effect": "Default true = the paper's standard behaviour. False pins the denominator, removing the per-step re-normalisation so behaviour sits closer to plain LoRA while keeping the magnitude parameter.",
+    "whenToUse": "Keep true. Try false when per-step normalisation feels unstable and you want steadier behaviour.",
+    "avoidWhen": "Do not change it when you need a faithful DoRA reproduction."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

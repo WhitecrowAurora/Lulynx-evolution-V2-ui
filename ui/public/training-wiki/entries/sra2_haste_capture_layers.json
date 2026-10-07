@@ -1,0 +1,16 @@
+{
+  "key": "sra2_haste_capture_layers",
+  "title": "捕获层后缀",
+  "category": "表征对齐",
+  "appliesTo": [
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "逗号分隔的 module-name 后缀。",
+    "effect": "写入训练配置 sra2_haste_capture_layers，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

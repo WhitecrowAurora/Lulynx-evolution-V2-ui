@@ -1,7 +1,9 @@
 {
   "key": "ac_enable_smart_early_stopping",
   "title": "智能早停",
+  "title_en": "Smart early stopping",
   "category": "训练 / 自动化",
+  "category_en": "Training / Automation",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "长步数训练或不确定最佳步数时开启。可防止过拟合继续。",
     "avoidWhen": "loss 曲线有明显振荡但整体在下降时，早停可能误判平台期。"
   },
+  "standard_en": {
+    "summary": "Stops training automatically when the loss has stopped falling for a long time, so you do not spend hours overfitting or burning steps for nothing.",
+    "effect": "If the loss improves by less than ac_early_stopping_threshold across ac_early_stopping_patience evaluation windows, training stops on its own.",
+    "whenToUse": "On long runs, or when you are not sure what the right step count is. It keeps overfitting from continuing.",
+    "avoidWhen": "When the loss curve oscillates visibly while still trending down -- early stopping may read that as a plateau."
+  },
   "advanced": {
     "principle": "维护最近 ac_early_stopping_patience 个评估窗口的 best loss，若当前 best 相比历史 best 改善 < threshold，触发停止。",
     "tradeoffs": "patience 设置过小（<3）容易误触发；过大（>20）则失去保护意义。"
+  },
+  "advanced_en": {
+    "principle": "Tracks the best loss across the last ac_early_stopping_patience evaluation windows; if the current best improves on the historical best by less than threshold, triggers a stop.",
+    "tradeoffs": "Patience too small (<3) false-triggers easily; too large (>20) loses the protective value."
   },
   "relatedConfigs": [
     "ac_enabled",

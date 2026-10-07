@@ -1,0 +1,17 @@
+{
+  "key": "easycontrol_v2_cond_cache_dir",
+  "title": "条件缓存目录",
+  "category": "EasyControl",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "EasyControl 条件缓存目录。",
+    "effect": "条件输入（控制图编码结果）的缓存位置。",
+    "whenToUse": "控制图固定且数据量大时配置加速复用。",
+    "avoidWhen": "留空不缓存。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

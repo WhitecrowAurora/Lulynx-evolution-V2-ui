@@ -1,0 +1,32 @@
+{
+  "key": "training_intent",
+  "title": "训练用途",
+  "category": "训练用途建议",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-few-step-lora",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-lora",
+    "hunyuan-dit-lora",
+    "krea2-lora",
+    "lumina-lora",
+    "newbie-few-step-lora",
+    "newbie-lora",
+    "qwen-image-lora",
+    "sd-lora",
+    "sdxl-lora",
+    "sdxl-turbo-lora",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "选择用途后先预览建议；只有点击“应用未设置项”才会写入草稿，已明确修改的字段不会被覆盖。",
+    "effect": "写入训练配置 training_intent，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 normal，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

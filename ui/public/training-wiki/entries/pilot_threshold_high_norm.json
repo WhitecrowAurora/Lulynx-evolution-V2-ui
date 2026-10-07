@@ -1,0 +1,24 @@
+{
+  "key": "pilot_threshold_high_norm",
+  "title": "Pilot 离群层倍数",
+  "title_en": "Pilot Outlier Factor",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "population 策略专用：某个参数的梯度范数超过“全体平均值 x 这个倍数”就算离群层，压学习率。",
+    "effect": "默认 2.0。必须 >= 1.0，否则启动报错。heuristic 策略完全不用这个字段。",
+    "whenToUse": "怀疑个别层梯度异常拖累整体时配合 population 用。",
+    "avoidWhen": "调太小会让大多数层都被当成离群。"
+  },
+  "standard_en": {
+    "summary": "population-only: a parameter whose gradient norm exceeds this factor times the per-param mean counts as an outlier layer and cools the lr.",
+    "effect": "Default 2.0. Must be >= 1.0 or startup fails. The heuristic strategy never reads it.",
+    "whenToUse": "Use with population when a few layers look pathological.",
+    "avoidWhen": "Too small a value flags most layers as outliers."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

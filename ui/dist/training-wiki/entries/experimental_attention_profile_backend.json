@@ -1,7 +1,9 @@
 {
   "key": "experimental_attention_profile_backend",
   "title": "窗口注意力后端",
+  "title_en": "Window Backend",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -16,8 +18,26 @@
       "torch_fallback": "纯 torch 兜底。"
     }
   },
+  "standard_en": {
+    "summary": "auto prefers the attention parameters passed in by the launcher or preflight",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "auto": "Follows the launcher's or preflight's attention.",
+      "flex": "FlexAttention.",
+      "sdpa_masked": "SDPA with a mask.",
+      "torch_fallback": "A plain torch fallback."
+    }
+  },
   "advanced": {
     "principle": "auto 优先使用启动器/预检传入的 attention 参数；FlexAttention 需要 CUDA 与对应 PyTorch 支持。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "auto prefers the attention parameters passed in by the launcher/preflight; FlexAttention requires CUDA and matching PyTorch support.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

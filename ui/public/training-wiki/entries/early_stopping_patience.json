@@ -1,0 +1,16 @@
+{
+  "key": "early_stopping_patience",
+  "title": "早停耐心轮数",
+  "category": "训练参数",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "验证损失连续多少轮无改善后停止，0 表示关闭。",
+    "effect": "写入训练配置 early_stopping_patience，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

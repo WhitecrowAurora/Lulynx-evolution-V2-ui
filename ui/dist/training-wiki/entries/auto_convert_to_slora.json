@@ -1,0 +1,16 @@
+{
+  "key": "auto_convert_to_slora",
+  "title": "保存时自动转 SLoRA",
+  "category": "保存设置",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "保存时自动转 SLoRA。",
+    "effect": "PiSSA/LoftQ 等初始化策略训练完成后，保存时自动转换为标准 LoRA 兼容格式。",
+    "whenToUse": "下游只支持标准 LoRA 时保持默认开启。",
+    "avoidWhen": "想保留 PiSSA/LoftQ 原生结构时关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,24 @@
+{
+  "key": "distillation_guidance_scale",
+  "title": "蒸馏 CFG",
+  "category": "采样与优化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "teacher target bake 的 CFG 强度（非推理加速）。",
+    "effect": "DP-DMD 家族据此推导是否 bake：≠1.0 即开启；AnyFlow 用它下面的独立 CFG bake 开关。",
+    "whenToUse": "默认 1，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

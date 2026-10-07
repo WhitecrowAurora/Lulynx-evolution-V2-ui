@@ -1,7 +1,9 @@
 {
   "key": "blockwise_fused_optimizers",
   "title": "融合优化器 (Block-Fused)",
+  "title_en": "Blockwise optimizer-state paging",
   "category": "优化器 / 融合",
+  "category_en": "Optimizer / Fusion",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -14,11 +16,21 @@
     "优化器层",
     "性能层"
   ],
+  "layers_en": [
+    "Optimizer layer",
+    "Performance layer"
+  ],
   "standard": {
     "summary": "将 AdamW 更新分解为多个融合的 CUDA kernel，减少 kernel launch 开销和中间显存分配。",
     "effect": "blockwise_fused_optimizers 将 momentum update、variance update、param update 融合为单个 kernel 调用。减少 kernel launch 次数（从 3 次减到 1 次）和显存中间分配。",
     "whenToUse": "追求极致训练速度时。optimizer 更新是瓶颈时。",
     "avoidWhen": "训练稳定时不需要。增加代码复杂度。"
+  },
+  "standard_en": {
+    "summary": "Breaks the AdamW update into several fused CUDA kernels, cutting kernel-launch overhead and intermediate allocations.",
+    "effect": "blockwise_fused_optimizers fuses the momentum update, the variance update and the parameter update into a single kernel call, taking launches from three down to one and removing the intermediate allocations.",
+    "whenToUse": "When chasing maximum training speed, or when the optimizer update is the bottleneck.",
+    "avoidWhen": "Not needed once training is stable; it does add code complexity."
   },
   "advanced": {
     "principle": "标准 AdamW 需要 3 次 kernel 调用：1) 计算 momentum（m = β₁·m + (1-β₁)·g），2) 计算 variance（v = β₂·v + (1-β₂)·g²），3) 更新参数（θ = θ - lr·m/√v）。融合版本将这 3 步合并为 1 个 kernel 调用，减少 2/3 的 kernel launch 开销和显存中间分配。",
@@ -27,8 +39,18 @@
     "tradeoffs": "需要 CUDA 环境支持。实现复杂度高。",
     "codePath": "core/lulynx/ → fused AdamW kernel → single-call optimizer update"
   },
+  "advanced_en": {
+    "principle": "Standard AdamW needs 3 kernel calls: 1) momentum (m = β₁·m + (1-β₁)·g), 2) variance (v = β₂·v + (1-β₂)·g²), 3) parameter update (θ = θ - lr·m/√v). The fused version merges all 3 into 1 kernel call, cutting kernel-launch overhead and intermediate memory allocations by 2/3.",
+    "intervention": "Replaces optimizer.step() with fused_adamw_step(), a single kernel call.",
+    "expectedImpact": "Training speed up roughly 10-20% (fewer kernel launches and memory allocations).",
+    "tradeoffs": "Requires a CUDA environment. High implementation complexity.",
+    "codePath": "core/lulynx/ → fused AdamW kernel → single-call optimizer update"
+  },
   "relatedConfigs": [
     "fused_optimizer",
     "blockwise_fused_optimizers"
+  ],
+  "aliases": [
+    "fused_optimizer"
   ]
 }

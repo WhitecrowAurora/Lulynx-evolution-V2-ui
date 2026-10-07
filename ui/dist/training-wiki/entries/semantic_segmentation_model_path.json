@@ -1,0 +1,27 @@
+{
+  "key": "semantic_segmentation_model_path",
+  "title": "分割模型路径",
+  "category": "语义区域加权",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "本地 Hugging Face 语义分割模型目录；不会自动下载。",
+    "effect": "写入训练配置 semantic_segmentation_model_path，由训练后端在相应阶段消费。",
+    "whenToUse": "路径留空时走默认解析/该功能不启用。",
+    "avoidWhen": "填错路径会在预检或启动时报错，注意路径有效性。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

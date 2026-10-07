@@ -1,7 +1,9 @@
 {
   "key": "fim_scan_tool",
   "title": "FIM Rank 扫描器（实验性）",
+  "title_en": "FIM Rank scanner",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Before training, scans each layer's sensitivity to the task with empirical Fisher information and proposes suggested layers plus",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "训练前用经验 Fisher 信息扫描各层对任务的敏感度，自动给出\"建议层 + 逐层 rank\"水填分配。扫描完成后可一键写回到上面的 Rank 分配策略（fim_profile 模式，逐层精确 rank）。这是独立的预扫描工具，不进入训练主链。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Scans each layer's task sensitivity with the empirical Fisher information before training and automatically allocates \"recommended layers + per-layer rank\". Once the scan finishes, it can be written back to the Rank allocation policy above in one click (fim_profile mode with exact per-layer ranks). A standalone pre-scan tool; not part of the main training chain.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

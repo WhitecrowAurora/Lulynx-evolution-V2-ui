@@ -1,7 +1,9 @@
 {
   "key": "anima_fixed_visual_tokens",
   "title": "Anima 固定视觉 Token 数",
+  "title_en": "Token",
   "category": "训练 / Anima 专用",
+  "category_en": "Training / Anima-specific",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "开启 torch.compile 时推荐同时固定 token 数以获得稳定的编译加速。",
     "avoidWhen": "数据集图像尺寸差异极大时，固定 token 数会浪费 padding 显存（对最大图像外的其他图像）。"
   },
+  "standard_en": {
+    "summary": "Fixes the length of the trained visual token sequence (the image patch sequence) to a given value, avoiding the recompile cost of variable-length sequences when images in a batch differ in size.",
+    "effect": "Once fixed, every batch uses the same sequence length -- shorter ones are padded -- so torch.compile can work steadily instead of recompiling constantly.",
+    "whenToUse": "Recommended alongside torch.compile: fixing the token count is what makes the compiled speed-up stable.",
+    "avoidWhen": "When image sizes in the dataset vary enormously, a fixed token count wastes padding VRAM on every image but the largest."
+  },
   "advanced": {
     "principle": "Anima DiT 的 forward 接受变长 token 序列；固定后统一填充到 max_len，Dynamo 可以编译固定形状的计算图，避免每个新形状触发重编译（graph break）。",
     "tradeoffs": "固定到最大尺寸会浪费小图的计算（padding 位置的计算是无效的），但配合 attention mask 可以避免 padding 影响结果。"
+  },
+  "advanced_en": {
+    "principle": "Anima DiT's forward accepts variable-length token sequences; fixing them pads everything to max_len so Dynamo can compile a fixed-shape graph, avoiding recompilation (graph breaks) on every new shape.",
+    "tradeoffs": "Fixing at the maximum size wastes compute on small images (padding positions compute nothing useful), but with an attention mask padding does not affect results."
   },
   "relatedConfigs": [
     "torch_compile",

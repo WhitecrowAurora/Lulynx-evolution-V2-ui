@@ -1,0 +1,20 @@
+{
+  "key": "lulynx_gradient_norm_rescale_threshold",
+  "title": "lulynx rescale threshold",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "梯度 rescale 触发阈值。",
+    "effect": "梯度范数超过该阈值才触发 rescale，作为异常梯度的软限幅。",
+    "whenToUse": "偶发梯度尖峰想软压而不是硬裁时使用。",
+    "avoidWhen": "已有 gradient_guard 时功能重叠，二选一。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

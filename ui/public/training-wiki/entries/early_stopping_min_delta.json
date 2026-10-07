@@ -1,0 +1,16 @@
+{
+  "key": "early_stopping_min_delta",
+  "title": "早停最小改善",
+  "category": "训练参数",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "早停最小改善。",
+    "effect": "验证指标改善小于该值时计入早停计数。",
+    "whenToUse": "指标噪声大时调大防止早停误触发。",
+    "avoidWhen": "默认 0。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

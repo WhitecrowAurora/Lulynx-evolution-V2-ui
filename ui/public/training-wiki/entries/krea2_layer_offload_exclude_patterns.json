@@ -1,0 +1,17 @@
+{
+  "key": "krea2_layer_offload_exclude_patterns",
+  "title": "Layer Offload 排除模式",
+  "category": "Krea2 Block/Layer Offload",
+  "appliesTo": [
+    "krea2-finetune",
+    "krea2-lora"
+  ],
+  "standard": {
+    "summary": "Krea2 Layer Offload 排除模式。",
+    "effect": "按名称模式排除不卸载的层。",
+    "whenToUse": "敏感层（如 embedding 层）想常驻时配置。",
+    "avoidWhen": "留空不排除。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

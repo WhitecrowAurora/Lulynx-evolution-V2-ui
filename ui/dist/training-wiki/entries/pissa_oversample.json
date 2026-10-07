@@ -1,7 +1,9 @@
 {
   "key": "pissa_oversample",
   "title": "PiSSA 过采样",
+  "title_en": "PiSSA oversampling dimension",
   "category": "LoRA 变体 / PiSSA",
+  "category_en": "LoRA Variants / PiSSA",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -11,6 +13,12 @@
     "effect": "开启后 SVD 初始化使用随机化 SVD 方法（RSVD）而非完整 SVD，通过过采样获得近似主奇异方向，速度更快但精度略低。",
     "whenToUse": "大型权重矩阵（如 d_in × d_out > 10000²）的 PiSSA 初始化时，标准 SVD 过慢，可用过采样 RSVD 加速。",
     "avoidWhen": "小矩阵（如 LoRA 常见的 1024×1024）用标准 SVD 即可，无需过采样。"
+  },
+  "standard_en": {
+    "summary": "(Experimental) PiSSA's oversampling option: it oversamples the singular values during the initialisation SVD for a more accurate estimate of the principal directions, which helps most on a large matrix.",
+    "effect": "With this on, the SVD initialisation uses randomised SVD (RSVD) rather than a full SVD, obtaining approximate principal singular directions through oversampling: faster, with slightly lower accuracy.",
+    "whenToUse": "For PiSSA initialisation of a large weight matrix (d_in x d_out > 10000^2, say), where a standard SVD is too slow, oversampled RSVD speeds it up.",
+    "avoidWhen": "A small matrix (the 1024x1024 common in LoRA) is fine with a standard SVD and needs no oversampling."
   },
   "relatedConfigs": [
     "pissa_init",

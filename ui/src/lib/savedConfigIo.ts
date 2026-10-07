@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
 /* 命名预设 JSON import/export（纯前端，不经训练入口） */
 import { translate } from '@/i18n/useI18n'
+import { stripModelCodePermission } from '@/lib/modelCodePermission'
 
 export const SAVED_CONFIG_IO_MAX_BYTES = 2 * 1024 * 1024
 
@@ -38,7 +39,7 @@ export function buildExportBundle(opts: {
     name: String(opts.name || 'preset').trim() || 'preset',
     schema_id: opts.schemaId || undefined,
     typeId: opts.schemaId || undefined,
-    config: { ...(opts.config || {}) },
+    config: stripModelCodePermission({ ...(opts.config || {}) }),
     exported_at: Date.now(),
     source: 'lulynx-webui',
   }
@@ -59,7 +60,13 @@ export function downloadJsonFile(filename: string, payload: unknown): void {
 }
 
 export function exportBundleToDownload(bundle: SavedConfigBundle): void {
-  downloadJsonFile(`${safeFileStem(bundle.name)}.json`, bundle)
+  downloadJsonFile(`${safeFileStem(bundle.name)}.json`, stripModelCodePermission(bundle))
+}
+
+/** 沿用后端/legacy 的扁平保存格式，只附带已有 schema 身份字段。 */
+export function savedConfigPayload(bundle: SavedConfigBundle): Record<string, unknown> {
+  const schemaId = bundle.schema_id || bundle.typeId
+  return { ...stripModelCodePermission(bundle.config), ...(schemaId ? { schema_id: schemaId, typeId: schemaId } : {}) }
 }
 
 /** 解析导入 JSON；非法 / 过大 / 非 object → throw Error 消息 */
@@ -76,43 +83,32 @@ export function parseSavedConfigImport(text: string, byteLength?: number): Saved
   } catch {
     throw new Error(translate('io.invalid_json'))
   }
+  return normalizeSavedConfigBundle(raw)
+}
+
+/** 文件与命名预设共用解析边界，兼容 flat/config/data 包且不把身份混进草稿。 */
+export function normalizeSavedConfigBundle(raw: unknown): SavedConfigBundle {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
     throw new Error(translate('io.root_must_object'))
   }
   const root = raw as Record<string, unknown>
-  // 兼容 { name, config } / 直接 config 扁平 / { data: { config } }
-  const nested =
-    root.config && typeof root.config === 'object' && !Array.isArray(root.config)
-      ? (root.config as Record<string, unknown>)
-      : root.data && typeof root.data === 'object' && !Array.isArray(root.data)
-        ? ((root.data as Record<string, unknown>).config &&
-          typeof (root.data as Record<string, unknown>).config === 'object'
-            ? ((root.data as Record<string, unknown>).config as Record<string, unknown>)
-            : (root.data as Record<string, unknown>))
-        : null
-
-  let config: Record<string, unknown>
-  let name = String(root.name ?? root.id ?? '').trim()
-  const schemaId = String(root.schema_id ?? root.schemaId ?? root.typeId ?? root.type_id ?? '').trim()
-
-  if (nested && Object.keys(nested).length) {
-    config = { ...nested }
-    if (!name) name = String((root as { title?: string }).title || 'imported').trim()
-  } else if (!('config' in root) && Object.keys(root).length) {
-    // 扁平 config（无 name 包一层）
-    const skip = new Set(['name', 'schema_id', 'schemaId', 'typeId', 'type_id', 'exported_at', 'source', 'version'])
-    config = {}
-    for (const [k, v] of Object.entries(root)) {
-      if (!skip.has(k)) config[k] = v
-    }
-    if (!Object.keys(config).length) throw new Error(translate('io.no_config_field'))
-    if (!name) name = 'imported'
-  } else {
+  const body = !('config' in root) && root.data && typeof root.data === 'object' && !Array.isArray(root.data)
+    ? root.data as Record<string, unknown> : root
+  const wrapped = 'config' in body
+  const value = wrapped ? body.config : body
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error(translate('io.no_usable_config'))
   }
-
+  const fields = value as Record<string, unknown>
+  const identityKeys = ['schema_id', 'schemaId', 'typeId', 'type_id']
+  const schemaId = String([body, root, fields]
+    .flatMap((source) => identityKeys.map((key) => source[key]))
+    .find((id) => typeof id === 'string' && id.trim()) || '').trim()
+  const skip = new Set(wrapped ? identityKeys : [...identityKeys, 'name', 'exported_at', 'source', 'version'])
+  const config = stripModelCodePermission(Object.fromEntries(Object.entries(fields).filter(([key]) => !skip.has(key))))
+  if (!Object.keys(config).length) throw new Error(translate('io.no_usable_config'))
   return {
-    name: name || 'imported',
+    name: String(body.name ?? root.name ?? body.id ?? body.title ?? 'imported').trim() || 'imported',
     schema_id: schemaId || undefined,
     typeId: schemaId || undefined,
     config,

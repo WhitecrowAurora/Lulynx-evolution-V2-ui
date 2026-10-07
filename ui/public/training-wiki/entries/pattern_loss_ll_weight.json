@@ -1,0 +1,17 @@
+{
+  "key": "pattern_loss_ll_weight",
+  "title": "低频 (LL) 权重",
+  "category": "正则 / Loss",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "Pattern 低频 (LL) 权重。",
+    "effect": "低频子带（全局结构）的 loss 权重。",
+    "whenToUse": "结构塌陷时调大。",
+    "avoidWhen": "默认 1。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

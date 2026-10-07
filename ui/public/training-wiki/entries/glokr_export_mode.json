@@ -1,7 +1,9 @@
 {
   "key": "glokr_export_mode",
   "title": "GLoKr 导出模式",
+  "title_en": "GLoKr Export Mode",
   "category": "LoRA 变体 / Kronecker",
+  "category_en": "LoRA Variants / Kronecker",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -9,11 +11,20 @@
   "layers": [
     "导出层"
   ],
+  "layers_en": [
+    "Export layer"
+  ],
   "standard": {
     "summary": "GLoKr（Kronecker 参数化广义适配器）训练完成后的保存格式：lora_compatible（默认）导出为 ComfyUI/A1111 可读的标准 LoRA；native 保留 Kronecker 原生布局。",
     "effect": "lora_compatible 把 Kronecker 分解的 delta 权重展开/折算为 lora_up/lora_down；native 保存原始因子矩阵，仅本训练器可加载。",
     "whenToUse": "产物面向通用推理生态时保持默认；需要继续训练 GLoKr 或研究其因子结构时选 native。",
     "avoidWhen": "lycoris_algo 不是 glokr 时不参与；native 产物无法在第三方推理端使用。"
+  },
+  "standard_en": {
+    "summary": "The save format after GLoKr (a Kronecker-parameterised generalised adapter) finishes training: lora_compatible (the default) exports a standard LoRA that ComfyUI and A1111 can read; native keeps the Kronecker layout.",
+    "effect": "lora_compatible expands or folds the Kronecker-factorised delta weights into lora_up/lora_down; native saves the original factor matrices, loadable only by this trainer.",
+    "whenToUse": "Keep the default when the artefact is for the general inference ecosystem; choose native when you will keep training the GLoKr or want to study its factor structure.",
+    "avoidWhen": "It does not apply unless lycoris_algo is glokr, and a native artefact cannot be used by third-party inference."
   },
   "advanced": {
     "principle": "GLoKr 用 Kronecker 积参数化 ΔW，参数量远小于同表达力的低秩分解；导出为 LoRA 格式需要把 Kronecker 因子乘开为稠密 delta 再做低秩表示，兼容性与文件体积/保真度之间取舍。",
@@ -21,6 +32,13 @@
     "expectedImpact": "lora_compatible 即插即用；native 更小、保真、可续训。",
     "tradeoffs": "与 glora_export_mode 相同：归一化的非法值回落是 native，与 UI 默认 lora_compatible 不一致，配置来源不规范时可能意外得到原生导出。",
     "codePath": "trainer_artifact_export.py：glokr 导出分支；config_adapter_normalizers.py / config_adapter_conversion_runtime.py 归一化"
+  },
+  "advanced_en": {
+    "principle": "GLoKr parameterizes ΔW with Kronecker products, far fewer parameters than a same-capacity low-rank factorization; exporting to LoRA format requires multiplying the Kronecker factors out into a dense delta and then a low-rank representation — a trade-off between compatibility and file size/fidelity.",
+    "intervention": "trainer_artifact_export.py branches on export_mode at export; the config_adapter family normalizes values (illegal values fall back to native).",
+    "expectedImpact": "lora_compatible is plug-and-play; native is smaller, faithful, and resumable.",
+    "tradeoffs": "Same as glora_export_mode: the normalization fallback for illegal values is native, while the UI default is lora_compatible — sloppy config sources can silently yield native export.",
+    "codePath": "trainer_artifact_export.py: glokr export branch; normalized in config_adapter_normalizers.py / config_adapter_conversion_runtime.py"
   },
   "relatedConfigs": [
     "lycoris_algo",

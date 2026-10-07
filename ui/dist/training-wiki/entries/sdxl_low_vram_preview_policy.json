@@ -1,7 +1,9 @@
 {
   "key": "sdxl_low_vram_preview_policy",
   "title": "预览策略",
+  "title_en": "Preview Strategy",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "every_2_epochs": "每 2 个 epoch 预览一次，反馈勤。",
       "every_4_epochs": "每 4 个 epoch 一次。",
       "disable": "不预览。"
+    }
+  },
+  "standard_en": {
+    "summary": "Preview policy; the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "every_2_epochs": "A preview every 2 epochs, so feedback is frequent.",
+      "every_4_epochs": "Once every 4 epochs.",
+      "disable": "No previews."
     }
   },
   "advanced": {},

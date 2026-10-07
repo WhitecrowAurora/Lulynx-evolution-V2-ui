@@ -1,0 +1,24 @@
+{
+  "key": "lookahead_k",
+  "title": "Lookahead 步长 k",
+  "title_en": "Lookahead k",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "每隔 k 步做一次慢权重同步。",
+    "effect": "默认 5（论文推荐）。越大同步越少、越省心但反应越慢；必须 >= 1，否则启动报错。",
+    "whenToUse": "一般保持 5。训练极不稳定时可以试更小。",
+    "avoidWhen": "设 0 或负数会直接报错拒绝启动。"
+  },
+  "standard_en": {
+    "summary": "Sync slow weights every k steps.",
+    "effect": "Default 5 (paper recommendation). Larger = fewer syncs, slower reaction; must be >= 1 or startup fails.",
+    "whenToUse": "Keep 5. Try smaller values only for very unstable runs.",
+    "avoidWhen": "0 or negative fails closed with an error at startup."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

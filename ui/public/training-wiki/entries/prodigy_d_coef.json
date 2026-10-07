@@ -1,7 +1,9 @@
 {
   "key": "prodigy_d_coef",
   "title": "Prodigy d 系数",
+  "title_en": "Prodigy d_coef",
   "category": "训练 / 优化器",
+  "category_en": "Training / Optimizer",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -12,9 +14,19 @@
     "whenToUse": "Prodigy 配合大 d_coef（2.0~3.0）可实现较快收敛。若发现 loss 震荡，可降至 1.0~1.5。",
     "avoidWhen": "d_coef > 5 容易导致训练不稳定。"
   },
+  "standard_en": {
+    "summary": "Prodigy / ProdigyPlus's d coefficient, which affects how much the adaptive learning rate is amplified. Default 2.0.",
+    "effect": "The larger the value, the larger the effective step size Prodigy infers (equivalent to raising the learning rate); the smaller it is, the more conservative.",
+    "whenToUse": "Prodigy with a large d_coef (2.0~3.0) can converge quite fast. Lower it to 1.0~1.5 if you see the loss oscillate.",
+    "avoidWhen": "d_coef > 5 easily makes training unstable."
+  },
   "advanced": {
     "principle": "d_coef 缩放 Prodigy 的步长估计：effective_lr ≈ d₀ × d_coef × (gradient geometry estimation)。",
     "tradeoffs": "Prodigy 配合 cosine scheduler 时的效果依赖于 d_coef 的校准，不同任务的最优值差异较大。"
+  },
+  "advanced_en": {
+    "principle": "d_coef scales Prodigy's step-size estimate: effective_lr ≈ d₀ × d_coef × (gradient geometry estimation).",
+    "tradeoffs": "Prodigy's performance with a cosine scheduler depends on d_coef calibration, and the optimal value varies a lot across tasks."
   },
   "relatedConfigs": [
     "optimizer_type",

@@ -1,7 +1,9 @@
 {
   "key": "teacher_lora_scope",
   "title": "Teacher LoRA 加载范围（teacher_lora_scope）",
+  "title_en": "Teacher LoRA scope",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "unet_only": "教师只上 UNet LoRA。",
       "unet_and_text_encoder_experimental": "UNet 加 TE，实验向。"
+    }
+  },
+  "standard_en": {
+    "summary": "Teacher LoRA loading scope (teacher_lora_scope); the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "unet_only": "The teacher gets a UNet LoRA only.",
+      "unet_and_text_encoder_experimental": "UNet plus TE, experimental."
     }
   },
   "advanced": {},

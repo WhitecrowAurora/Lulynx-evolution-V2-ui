@@ -1,0 +1,16 @@
+{
+  "key": "val_fraction",
+  "title": "验证集比例",
+  "category": "数据集 / 图说",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "未使用 split 时按比例随机切分验证集。",
+    "effect": "写入训练配置 val_fraction，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0.2，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

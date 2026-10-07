@@ -1,7 +1,9 @@
 {
   "key": "timestep_sampling_mode",
   "title": "时间步采样模式",
+  "title_en": "Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -15,8 +17,25 @@
       "advanced": "分段自己定权重，高噪/低噪可以故意偏科。"
     }
   },
+  "standard_en": {
+    "summary": "disabled = uniform sampling over the whole range (the default, and traditional training); simple = restricted to a range you set; advanced = custom per-segment weighted sampling. Uses: a style LoRA can concentrate on the high-noise stage (500-1000), a detail-repair LoRA on the low-noise stage (0-300).",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "disabled": "Samples normally across the whole range, covering every noise band.",
+      "simple": "Pinned inside the t range you set; the narrower the range, the more specialised.",
+      "advanced": "You set the per-segment weights yourself, so high or low noise can be deliberately favoured."
+    }
+  },
   "advanced": {
     "principle": "disabled=全范围均匀采样(默认，传统训练)；simple=限制到指定范围；advanced=自定义分段权重采样。用途：风格 LoRA 可集中训练高噪声阶段(500-1000)，细节修复 LoRA 可集中训练低噪声阶段(0-300)。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "disabled = uniform sampling over the full range (default, traditional training); simple = restrict to a specified range; advanced = custom per-segment weighted sampling. Use cases: style LoRA can concentrate on the high-noise phase (500-1000), detail-repair LoRA on the low-noise phase (0-300).",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

@@ -1,7 +1,9 @@
 {
   "key": "softrepa_enabled",
   "title": "SoftREPA（软文本对齐正则化）",
+  "title_en": "SoftREPA (Soft Representation Alignment)",
   "category": "前沿储备 / 训练",
+  "category_en": "Frontier Reserve / Training",
   "appliesTo": [
     "anima-lora"
   ],
@@ -15,9 +17,19 @@
     "whenToUse": "实验性功能。担心 LoRA 训练破坏原始文本响应能力时可以尝试。",
     "avoidWhen": "默认关闭。对齐正则化会限制 LoRA 的学习自由度，可能减慢概念学习速度。"
   },
+  "standard_en": {
+    "summary": "(Experimental) SoftREPA: a soft constraint that keeps the LoRA output aligned with the pretrained text representation, which stops the LoRA drifting too far out of the text-image alignment space.",
+    "effect": "It adds a text-image alignment regulariser to the training loss, whose weight moves dynamically between min_weight and max_weight (based on the current alignment deviation).",
+    "whenToUse": "An experimental feature. Worth trying when you are worried that LoRA training is damaging the original text responsiveness.",
+    "avoidWhen": "Off by default. Alignment regularisation limits the LoRA's freedom to learn, and may slow down concept learning."
+  },
   "advanced": {
     "principle": "REPA（Representation Alignment）是一种在潜在空间对齐表征的方法。SoftREPA 是其软化版本：通过动态权重（在 min/max 之间线性插值）避免过度约束。当前对齐很好时用低权重（自由学习），偏差大时用高权重（拉回对齐）。",
     "tradeoffs": "对齐约束的强度（权重范围）需要根据具体任务调整；太强会阻止 LoRA 学习新概念，太弱则失去正则化效果。"
+  },
+  "advanced_en": {
+    "principle": "REPA (Representation Alignment) is a method that aligns representations in latent space. SoftREPA is its softened version: dynamic weights (linearly interpolated between min/max) avoid over-constraining. When alignment is already good it uses a low weight (free learning); when deviation is large it uses a high weight (pulling back to alignment).",
+    "tradeoffs": "The strength of the alignment constraint (the weight range) needs tuning per task; too strong blocks the LoRA from learning new concepts, too weak loses the regularization effect."
   },
   "relatedConfigs": [
     "perceptual_anchor_loss_enabled",

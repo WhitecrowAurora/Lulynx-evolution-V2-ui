@@ -1,7 +1,9 @@
 {
   "key": "torch_compile_block_indices",
   "title": "Compile Block 索引子集",
+  "title_en": "Compile Block Indices",
   "category": "性能 / 加速",
+  "category_en": "Performance / Acceleration",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -10,11 +12,20 @@
   "layers": [
     "前向层"
   ],
+  "layers_en": [
+    "Forward layer"
+  ],
   "standard": {
     "summary": "torch_compile_scope=per_block 模式下只编译指定索引的 block，格式如 \"0,3,5-8\"；留空 = 编译全部 block。",
     "effect": "缩小编译范围：只有列出的 block 走 compile 路径，其余保持 eager。解析失败或选不出任何 block 时会告警并「一个都不编译」，而不是静默编译全部。",
     "whenToUse": "编译耗时过长想先验证收益时只编译少数几个热点 block；排查某个 block 的 compile 数值/崩溃问题时二分定位。",
     "avoidWhen": "torch_compile_scope 不是 per_block 时无效；正常生产训练留空让全部 block 受益即可。"
+  },
+  "standard_en": {
+    "summary": "In torch_compile_scope=per_block mode, compiles only the blocks at the given indices, in a format such as \"0,3,5-8\"; left blank = compile every block.",
+    "effect": "It narrows the compilation surface: only the listed blocks go through the compile path and the rest stay eager. If parsing fails or no block can be selected, it warns and compiles none at all, rather than silently compiling everything.",
+    "whenToUse": "When compilation takes too long and you want to verify the gain first by compiling only a few hot blocks; when bisecting a numerical or crash problem down to one block's compilation.",
+    "avoidWhen": "Ineffective when torch_compile_scope is not per_block; for normal production training just leave it blank so every block benefits."
   },
   "advanced": {
     "principle": "逐块编译把大图拆成 N 个小图，索引子集进一步允许 eager 与 compiled block 混跑：编译时间与缓存体积随选中块数线性下降，也让「哪个 block 编译出问题」可以二分。",
@@ -22,6 +33,13 @@
     "expectedImpact": "编译预热时间和编译缓存占用下降；只编译部分 block 时整体加速比例也按比例缩水。",
     "tradeoffs": "失败语义是「宁可全不编译」——填错格式会导致整个 per_block 编译静默失去加速（有 warning），排查时先看编译报告里的 block_selection。",
     "codePath": "runtime_optimizations_attention_compile.py：解析与告警；model_compile_registry.py:resolve_compile_block_selection；configs_performance.py 定义"
+  },
+  "advanced_en": {
+    "principle": "Per-block compilation splits one large graph into N small graphs, and an index subset further allows eager and compiled blocks to run mixed: compile time and cache size fall linearly with the number of selected blocks, and it also makes \"which block has a compile problem\" bisectable.",
+    "intervention": "runtime_optimizations_attention_compile.py parses the string (supporting commas and hyphen ranges); on a parse error it writes plan.warnings and returns an empty selection; model_compile_registry.py:resolve_compile_block_selection provides the parsing semantics; the compile report records requested_block_indices versus the actual block_selection.",
+    "expectedImpact": "Compile warmup time and cache footprint drop; with only some blocks compiled the overall speedup also shrinks proportionally.",
+    "tradeoffs": "The failure semantics are \"prefer compiling nothing\" — a malformed string silently loses the whole per_block speedup (with a warning); when troubleshooting, check block_selection in the compile report first.",
+    "codePath": "runtime_optimizations_attention_compile.py: parsing and warnings; model_compile_registry.py:resolve_compile_block_selection; defined in configs_performance.py"
   },
   "relatedConfigs": [
     "torch_compile_scope",

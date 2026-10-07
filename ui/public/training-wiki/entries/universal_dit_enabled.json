@@ -1,12 +1,17 @@
 {
   "key": "universal_dit_enabled",
   "title": "Universal DiT 通用训练开关",
+  "title_en": "Enable Universal DiT LoRA fallback",
   "category": "DiT / 实验性",
+  "category_en": "DiT / Experimental",
   "appliesTo": [
     "universal-dit"
   ],
   "layers": [
     "模型层"
+  ],
+  "layers_en": [
+    "Model layer"
   ],
   "standard": {
     "summary": "启用通用 DiT 训练路线：对没有专属训练类型的 DiT 模型做探测式适配（自动识别目标模块与训练目标）。选择 universal_dit 模型类型时必须显式开启。",
@@ -14,12 +19,25 @@
     "whenToUse": "想训练的 DiT 模型不在内置家族列表（SDXL/Anima/Flux/…）里、又有 HuggingFace 格式权重时的实验性路线。",
     "avoidWhen": "模型已有专属训练类型时永远优先专属路线（默认关闭正是为了防止专属家族误走通用路线）；生产级训练需求（通用路线的功能覆盖与验证深度都低于专属路线）。"
   },
+  "standard_en": {
+    "summary": "Enables the universal DiT training route: a probe-based adaptation for DiT models that have no dedicated training type (it identifies the target modules and the training objective automatically). It has to be enabled explicitly when the universal_dit model type is selected.",
+    "effect": "Once enabled it probes the model structure according to universal_dit_probe_mode, chooses injection modules according to universal_dit_target_policy, and decides the training objective according to universal_dit_objective_template; when off, model_type=universal_dit raises outright (to keep you off an unverified route by accident).",
+    "whenToUse": "An experimental route for when the DiT model you want to train is not in the built-in family list (SDXL/Anima/Flux/...) but you do have HuggingFace-format weights.",
+    "avoidWhen": "Always prefer the dedicated route when the model already has a dedicated training type (being off by default is exactly what stops a dedicated family taking the universal route by mistake); production-grade training needs (the universal route has both less feature coverage and less verification depth than a dedicated one)."
+  },
   "advanced": {
     "principle": "把「适配一个新 DiT」拆成可探测的三要素：结构（哪些是 attention/MLP 线性层）、目标（flow/epsilon 等训练目标模板）、输入契约（probe inputs）；用运行时探测代替逐模型手写适配器，换取覆盖面、牺牲专属优化。",
     "intervention": "trainer_prepare_mixin.py：model_arch=universal_dit 时强制校验本开关；training_capabilities/universal_dit.py:build 读取 enabled/probe_mode/target_policy 组装 profile；universal_dit/runtime.py 按 policy 与 target_modules_json 解析注入点；services/training/prepare_context.py 在路由阶段读取。",
     "expectedImpact": "解锁任意 DiT 的 LoRA 化训练尝试；显存/速度优化（block swap、编译等）按通用能力集提供，弱于专属家族。",
     "tradeoffs": "探测失败或目标模板不匹配时训练目标可能错误；allow_remote_download/trust_remote_code 等配套开关有安全含义，默认都关。",
     "codePath": "trainer_prepare_mixin.py：universal_dit_enabled 强制校验；training_capabilities/universal_dit.py：profile 组装；universal_dit/runtime.py：目标模块解析"
+  },
+  "advanced_en": {
+    "principle": "Splits \"adapting a new DiT\" into three probeable elements: structure (which linears are attention/MLP), objective (training-target templates such as flow/epsilon), and input contract (probe inputs); runtime probing replaces hand-written per-model adapters, trading bespoke optimizations for coverage.",
+    "intervention": "trainer_prepare_mixin.py: when model_arch=universal_dit this switch is force-validated; training_capabilities/universal_dit.py:build reads enabled/probe_mode/target_policy to assemble the profile; universal_dit/runtime.py resolves injection points by policy and target_modules_json; services/training/prepare_context.py reads it at the routing stage.",
+    "expectedImpact": "Unlocks LoRA-training attempts on arbitrary DiTs; VRAM/speed optimizations (block swap, compile, etc.) are provided per the generic capability set, weaker than the dedicated families.",
+    "tradeoffs": "On probe failure or target-template mismatch the training objective may be wrong; companion switches like allow_remote_download/trust_remote_code have security implications and are all off by default.",
+    "codePath": "trainer_prepare_mixin.py: universal_dit_enabled force-validation; training_capabilities/universal_dit.py: profile assembly; universal_dit/runtime.py: target module resolution"
   },
   "relatedConfigs": [
     "universal_dit_probe_mode",

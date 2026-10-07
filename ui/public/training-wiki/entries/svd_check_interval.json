@@ -1,0 +1,24 @@
+{
+  "key": "svd_check_interval",
+  "title": "SVD 检查间隔",
+  "title_en": "SVD Check Interval",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "每隔多少步算一次 SVD。",
+    "effect": "默认 500。设小于 1 的值启动直接报错。",
+    "whenToUse": "默认够用；想更细的曲线就调小（开销增大）。",
+    "avoidWhen": "调太小时会拖慢训练。"
+  },
+  "standard_en": {
+    "summary": "Steps between SVD computations.",
+    "effect": "Default 500. Values below 1 fail closed at startup.",
+    "whenToUse": "Default is fine; lower it for finer curves (more overhead).",
+    "avoidWhen": "Very small values slow training down."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

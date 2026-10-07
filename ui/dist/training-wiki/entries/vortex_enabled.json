@@ -1,7 +1,9 @@
 {
   "key": "vortex_enabled",
   "title": "Vortex Memory (显存涡流管理)",
+  "title_en": "Vortex VRAM management",
   "category": "显存优化 / 实验性",
+  "category_en": "VRAM Optimization / Experimental",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,17 +14,33 @@
   "layers": [
     "显存层"
   ],
+  "layers_en": [
+    "VRAM layer"
+  ],
   "standard": {
     "summary": "Vortex 是 R&D 级的显存管理策略，通过智能调度 GPU 和 CPU 之间的数据流动来优化显存利用率。",
     "effect": "vortex_strategy 控制调度策略（standard）。vortex_profile 控制激进度（standard/low_vram/extreme）。",
     "whenToUse": "标准显存优化手段都不够时的最后选择。R&D 特性，稳定性待验证。",
     "avoidWhen": "生产训练中不建议使用。可能影响训练结果的可复现性。"
   },
+  "standard_en": {
+    "summary": "Vortex is an R&D-grade VRAM management strategy that optimises memory use by scheduling the data flow between GPU and CPU intelligently.",
+    "effect": "vortex_strategy controls the scheduling strategy (standard). vortex_profile controls how aggressive it is (standard/low_vram/extreme).",
+    "whenToUse": "The last resort when none of the standard VRAM optimisations is enough. An R&D feature, with stability yet to be confirmed.",
+    "avoidWhen": "Inadvisable in production training. It may affect the reproducibility of training results."
+  },
   "advanced": {
     "principle": "Vortex 动态分析模型各部分的显存使用模式（计算密集 vs 内存密集），自动决定哪些部分应该常驻 GPU、哪些应该流式交换。low_vram profile 更激进的交换，extreme profile 可能导致性能大幅下降但显存需求最低。",
     "intervention": "在训练循环中注入显存管理调度器，动态调整数据驻留策略。",
     "expectedImpact": "extreme profile 可将显存需求降低 40-60%，但速度损失 30-50%。",
     "tradeoffs": "vortex_profile 选择决定显存/速度的权衡。",
+    "codePath": "core/vortex/ → memory usage pattern analysis → dynamic residency scheduling"
+  },
+  "advanced_en": {
+    "principle": "Vortex dynamically analyzes each model part's VRAM usage pattern (compute-intensive vs memory-intensive) and automatically decides which parts should stay resident on GPU and which should be streamed/swapped. The low_vram profile swaps more aggressively; the extreme profile may hurt performance substantially but has the lowest VRAM requirement.",
+    "intervention": "Injects a VRAM management scheduler into the training loop, dynamically adjusting data residency strategy.",
+    "expectedImpact": "The extreme profile can lower VRAM needs by 40-60% at a 30-50% speed cost.",
+    "tradeoffs": "The vortex_profile choice is the VRAM/speed trade-off.",
     "codePath": "core/vortex/ → memory usage pattern analysis → dynamic residency scheduling"
   },
   "relatedConfigs": [

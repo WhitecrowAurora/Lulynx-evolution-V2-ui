@@ -1,0 +1,52 @@
+{
+  "key": "nccl_proto",
+  "title": "NCCL 协议",
+  "title_en": "NCCL Protocol",
+  "category": "训练 / 分布式",
+  "category_en": "Training / Distributed",
+  "appliesTo": [
+    "sdxl-lora",
+    "sd-lora",
+    "anima-lora",
+    "flux-lora",
+    "finetune"
+  ],
+  "layers": [
+    "并行层"
+  ],
+  "layers_en": [
+    "Parallelism layer"
+  ],
+  "standard": {
+    "summary": "指定 NCCL 集合通信协议（NCCL_PROTO）。留空=让 NCCL 自动选择；可选 LL / LL128 / Simple。",
+    "effect": "作为环境变量注入本进程，影响这个进程里所有 NCCL 通信 —— 不只是张量并行，DDP 的梯度 all-reduce 同样受影响。只有后端确实是 NCCL 时才有意义：Windows 上进程组会降级到 gloo，这个键那时不起作用。 逐取值:留空=留空＝不设 NCCL_PROTO，由 NCCL 自己按拓扑挑。默认就该是这个；LL=低延迟协议，小消息快，带宽利用率低。小模型多卡、消息偏小时可能有收益；LL128=低延迟 128 字节协议，延迟和带宽折中；NVLink 拓扑上常见的选择；Simple=简单协议，大消息带宽最高、延迟最大。大张量 all-reduce 为主时可以试。",
+    "whenToUse": "多卡吞吐不理想、怀疑瓶颈在集合通信时，拿 LL128 与 Simple 各跑一遍同样步数对照。没有测过就不要填。",
+    "avoidWhen": "单卡训练、gloo 后端、以及没有对照读数的情况下都不要填 —— 没有哪个取值是普遍更快的，填错只会把默认的自动选择挡掉。"
+  },
+  "standard_en": {
+    "summary": "Specifies the NCCL collective communication protocol (NCCL_PROTO). Blank = let NCCL choose; the options are LL / LL128 / Simple.",
+    "effect": "It is injected as an environment variable into this process and affects every NCCL communication inside it -- not just tensor parallelism, but DDP's gradient all-reduce as well. It only means anything when the backend really is NCCL: on Windows the process group falls back to gloo and the key then does nothing. Value by value: blank = blank means NCCL_PROTO is not set and NCCL picks by topology itself, which is what the default should be; LL = the low-latency protocol, fast on small messages, poor at using bandwidth, and possibly worthwhile for a small model on several cards with small messages; LL128 = the low-latency 128-byte protocol, a compromise between latency and bandwidth, and a common choice on an NVLink topology; Simple = the simple protocol, the highest bandwidth on large messages and the highest latency, worth trying when large-tensor all-reduce dominates.",
+    "whenToUse": "When multi-card throughput disappoints and you suspect the bottleneck is in collective communication, run LL128 and Simple over the same step count and compare. Do not fill it in without having measured.",
+    "avoidWhen": "Leave it blank for single-card training, for the gloo backend, and whenever you have no comparison readings -- no single value is universally faster, and a wrong one only blocks the default automatic choice."
+  },
+  "advanced": {
+    "principle": "NCCL 有三种数据传输协议：LL（low latency，用 8 字节 flag 做同步，延迟最低但有效带宽最低）、LL128（128 字节粒度，NVLink 上兼顾延迟与带宽）、Simple（不做 flag 同步，大消息带宽最高、小消息延迟最高）。留空时 NCCL 按消息大小与拓扑自己在三者之间切换，阈值由它的调优表决定。",
+    "intervention": "训练进程启动时按这个键设置 NCCL_PROTO 环境变量；因为是环境变量，作用域是整个进程而不是某一条通信路径。",
+    "expectedImpact": "视拓扑与消息大小而定，没有通用结论。NVLink 机器上 LL128 常见有利；PCIe / V100 一类机器上要与 Simple 实测对照才能判断。",
+    "tradeoffs": "写死一个协议会挡掉 NCCL 按消息大小自动切换的能力：某个尺寸上快了，另一个尺寸上就可能更慢。",
+    "codePath": "configs_base.py 声明 nccl_proto；分布式进程组初始化时注入 NCCL_PROTO 环境变量；三分叉 schemaFieldGroups.js 的 S_DISTRIBUTED 暴露"
+  },
+  "advanced_en": {
+    "principle": "NCCL has three data-transfer protocols: LL (low latency, 8-byte flag sync — lowest latency but lowest effective bandwidth), LL128 (128-byte granularity, balancing latency and bandwidth on NVLink), and Simple (no flag sync — highest bandwidth for large messages, highest latency for small ones). When unset, NCCL switches among the three itself based on message size and topology, with thresholds from its tuning tables.",
+    "intervention": "Sets the NCCL_PROTO environment variable from this key at training-process start; being an environment variable, its scope is the whole process rather than any single communication path.",
+    "expectedImpact": "Depends on topology and message size — no universal answer. On NVLink machines LL128 is often favorable; on PCIe / V100-class machines compare against Simple empirically.",
+    "tradeoffs": "Pinning one protocol disables NCCL's auto-switching by message size: faster at one size, possibly slower at another.",
+    "codePath": "configs_base.py declares nccl_proto; injected as the NCCL_PROTO env var at distributed process-group initialization; exposed in the three-way schemaFieldGroups.js S_DISTRIBUTED"
+  },
+  "relatedConfigs": [
+    "enable_distributed_training",
+    "distributed_strategy",
+    "nccl_socket_ifname",
+    "gloo_socket_ifname"
+  ]
+}

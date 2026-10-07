@@ -1,0 +1,20 @@
+{
+  "key": "flow_uniform_shift",
+  "title": "RF 分辨率偏移",
+  "category": "训练 / 噪声控制",
+  "appliesTo": [
+    "sd-ip-adapter",
+    "sd-lora",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "RF 分辨率偏移。",
+    "effect": "Rectified Flow 训练中按分辨率调整 timestep 采样偏移，使不同分辨率样本的 SNR 分布更均匀。",
+    "whenToUse": "混合分辨率 RF 训练（Flux 系）时开启。",
+    "avoidWhen": "统一分辨率时无收益。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

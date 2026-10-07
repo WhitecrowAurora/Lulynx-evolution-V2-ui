@@ -51,7 +51,7 @@ export const SD15_LORA_SECTIONS = [
     { key: 'model_train_type', type: 'hidden', defaultValue: 'sd-lora' },
     { key: 'pretrained_model_name_or_path', type: 'file', pickerType: 'model-file', label: 'SD1.5 底模路径', title: 'pretrained_model_name_or_path', desc: '底模文件路径', defaultValue: '' },
     { key: 'resume', type: 'file', pickerType: 'output-model-file', allowModelDirectory: true, label: '继续训练路径', title: 'resume', desc: '从某个 save_state / 检查点继续训练：可选择检查点文件，或选择存档目录自动取最新', defaultValue: '' },
-    { key: 'vae', type: 'file', pickerType: 'model-file', label: 'VAE 路径', title: 'vae', desc: 'VAE 路径', defaultValue: '' },
+    { key: 'vae', type: 'file', pickerType: 'model-file', label: 'VAE 路径', title: 'vae', desc: '底模配套 VAE 权重路径，留空使用底模内置 VAE。', defaultValue: '' },
     { key: 'network_weights', type: 'file', pickerType: 'output-model-file', label: '继续训练 LoRA', title: 'network_weights', desc: '从已有的 LoRA 模型上继续训练，填写路径', defaultValue: '' },
     { key: 'v2', type: 'boolean', label: 'SD 2.x 模型', title: 'v2', desc: '使用 SD 2.x 模型', defaultValue: false },
   ]),
@@ -79,6 +79,7 @@ export const SD15_LORA_SECTIONS = [
   sec('advanced-settings', 'advanced', '其他设置', '', [...S_ADV]),
   sec('thermal-settings', 'training', '散热与功耗', '训练期间冷却与功率管理。', [...S_THERMAL]),
   sec('distributed-settings', 'advanced', '分布式训练', '多 GPU / 多机分布式训练配置。', [...S_DISTRIBUTED]),
+  sec('diagnostics-settings', 'frontier', '诊断监控', '', [...S_DIAGNOSTICS_MONITORING], { expert: true }),
 ];
 
 // ---- SD 1.5 概念编辑(iLECO / ADDifT / Multi-ADDifT) ----
@@ -208,7 +209,7 @@ export const YOLO_SECTIONS = [
   ]),
   sec('dataset-settings', 'dataset', '数据集设置', 'YOLO 数据集目录与类别。', [
     { key: 'yolo_data_config_path', type: 'file', pickerType: 'model-file', label: '自定义数据集 yaml', title: 'yolo_data_config_path', desc: '可选。自定义 YOLO 数据集 yaml。', defaultValue: '' },
-    { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图像目录', title: 'train_data_dir', desc: '训练图像目录', defaultValue: './datasets/images/train' },
+    { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图像目录', title: 'train_data_dir', desc: '训练图像所在目录，子目录名可作为概念名。', defaultValue: './datasets/images/train' },
     { key: 'val_data_dir', type: 'folder', pickerType: 'folder', label: '验证图像目录', title: 'val_data_dir', desc: '验证图像目录。留空时回退为训练目录', defaultValue: './datasets/images/val' },
     { key: 'class_names', type: 'textarea', label: '类别名称', title: 'class_names', desc: '类别名称，一行一个', defaultValue: 'class0' },
   ]),
@@ -223,7 +224,7 @@ export const YOLO_SECTIONS = [
     { key: 'imgsz', type: 'number', label: '输入分辨率', title: 'imgsz', desc: '训练输入分辨率', defaultValue: 640, min: 32 },
     { key: 'workers', type: 'number', label: '数据加载 Worker', title: 'workers', desc: '数据加载 worker 数量', defaultValue: 8, min: 0 },
     { key: 'device', type: 'string', label: '设备', title: 'device', desc: '手动指定设备，如 0、0,1、cpu。留空自动检测', defaultValue: '' },
-    { key: 'seed', type: 'number', label: '随机种子', title: 'seed', desc: '随机种子', defaultValue: 8888 },
+    { key: 'seed', type: 'number', label: '随机种子', title: 'seed', desc: '随机种子，固定后训练完全可复现。', defaultValue: 8888 },
   ]),
 ];
 
@@ -231,7 +232,7 @@ export const YOLO_SECTIONS = [
 export const AESTHETIC_SCORER_SECTIONS = [
   sec('output-settings', 'model', '输出设置', '模型输出配置。', [
     { key: 'model_train_type', type: 'hidden', defaultValue: 'aesthetic-scorer' },
-    { key: 'output_name', type: 'string', label: '模型保存名称', title: 'output_name', desc: '模型保存名称', defaultValue: 'aesthetic-scorer-best' },
+    { key: 'output_name', type: 'string', label: '模型保存名称', title: 'output_name', desc: '输出文件名（不含扩展名），中间 checkpoint 自动追加 -步数 后缀。', defaultValue: 'aesthetic-scorer-best' },
     { key: 'output_dir', type: 'folder', pickerType: 'folder', label: '输出目录', title: 'output_dir', desc: '模型输出目录', defaultValue: './output/aesthetic-scorer' },
     { key: 'save_model_as', type: 'select', label: '保存格式', title: 'save_model_as', desc: '模型保存格式', defaultValue: 'safetensors', options: ['safetensors', 'pt', 'pth', 'ckpt'] },
   ]),
@@ -246,13 +247,16 @@ export const AESTHETIC_SCORER_SECTIONS = [
   sec('training-settings', 'training', '训练参数', '', [
     { key: 'batch_size', type: 'number', label: '批量大小', title: 'batch_size', desc: '训练 batch size', defaultValue: 8, min: 1 },
     { key: 'num_workers', type: 'number', label: 'DataLoader Worker', desc: 'DataLoader worker 数', defaultValue: 4, min: 0 },
-    { key: 'epochs', type: 'number', label: '训练轮数', title: 'epochs', desc: '训练轮数', defaultValue: 10, min: 1 },
-    { key: 'learning_rate', type: 'string', label: '学习率', title: 'learning_rate', desc: '学习率', defaultValue: '3e-4' },
-    { key: 'weight_decay', type: 'string', label: '权重衰减', title: 'weight_decay', desc: '权重衰减', defaultValue: '1e-4' },
+    { key: 'epochs', type: 'number', label: '训练轮数', title: 'epochs', desc: '整个数据集的训练遍数。', defaultValue: 10, min: 1 },
+    { key: 'early_stopping_patience', type: 'number', label: '早停耐心轮数', title: 'early_stopping_patience', desc: '验证损失连续多少轮无改善后停止，0 表示关闭', defaultValue: 0, min: 0 },
+    { key: 'early_stopping_min_delta', type: 'number', label: '早停最小改善', title: 'early_stopping_min_delta', desc: '判定验证损失改善所需的最小幅度', defaultValue: 0, min: 0, step: 0.0001 },
+    { key: 'resume_from', type: 'file', pickerType: 'model-file', label: '续训 checkpoint', title: 'resume_from', desc: '可选。加载 scorer_checkpoint.pt 或 scorer_checkpoint_latest.pt 继续训练', defaultValue: '' },
+    { key: 'learning_rate', type: 'string', label: '学习率', title: 'learning_rate', desc: '参数更新的步长基准，LoRA 常用 1e-4 量级。', defaultValue: '3e-4' },
+    { key: 'weight_decay', type: 'string', label: '权重衰减', title: 'weight_decay', desc: 'AdamW 权重衰减系数，抑制过拟合；LoRA 参数少，影响比全参温和。', defaultValue: '1e-4' },
     { key: 'loss', type: 'select', label: '损失函数', title: 'loss', desc: '回归损失函数', defaultValue: 'mse', options: ['mse', 'smooth_l1'] },
     { key: 'cls_loss_weight', type: 'number', label: '分类损失权重', title: 'cls_loss_weight', desc: 'in_domain 二分类损失权重', defaultValue: 1.0, min: 0, step: 0.1 },
     { key: 'cls_pos_weight', type: 'string', label: '正样本权重', title: 'cls_pos_weight', desc: '分类正样本权重。留空不额外加权', defaultValue: '' },
-    { key: 'seed', type: 'number', label: '随机种子', title: 'seed', desc: '随机种子', defaultValue: 42 },
+    { key: 'seed', type: 'number', label: '随机种子', title: 'seed', desc: '随机种子，固定后训练完全可复现。', defaultValue: 42 },
     { key: 'device', type: 'string', label: '设备', title: 'device', desc: 'cuda、cuda:0、cpu', defaultValue: 'cuda' },
   ]),
   sec('head-settings', 'network', '融合头设置', 'Fusion head 参数。', [
@@ -262,11 +266,13 @@ export const AESTHETIC_SCORER_SECTIONS = [
     { key: 'include_waifu_score', type: 'boolean', label: '启用 Waifu 分支', title: 'include_waifu_score', desc: '启用 Waifu Scorer v3 额外分支特征', defaultValue: true },
   ]),
   sec('extractor-settings', 'advanced', '特征提取器设置', '', [
+    { key: 'jtp3_model_path', type: 'folder', pickerType: 'folder', label: 'JTP-3 本地目录', title: 'jtp3_model_path', desc: '可选。选择包含 models/jtp-3-hydra.safetensors 的 JTP-3 仓库目录。模型及许可证由用户自行核验。', defaultValue: '' },
     { key: 'jtp3_model_id', type: 'string', label: 'JTP-3 模型 ID', title: 'jtp3_model_id', desc: 'JTP-3 模型 ID 或本地目录', defaultValue: 'RedRocket/JTP-3' },
     { key: 'jtp3_fallback_model_id', type: 'string', label: 'JTP-3 回退模型', title: 'jtp3_fallback_model_id', desc: 'JTP-3 加载失败时的回退模型 ID', defaultValue: '' },
     { key: 'hf_token_env', type: 'string', label: 'HF Token 环境变量', title: 'hf_token_env', desc: '读取 HuggingFace Token 的环境变量名', defaultValue: 'HF_TOKEN' },
+    { key: 'waifu_model_path', type: 'file', pickerType: 'model-file', label: 'Waifu/CLIP TorchScript 路径', title: 'waifu_model_path', desc: '可选的用户 TorchScript 图像编码器。', defaultValue: '' },
     { key: 'waifu_clip_model_name', type: 'string',label: 'Waifu CLIP 模型', title: 'waifu_clip_model_name', desc: 'Waifu CLIP 模型名称', defaultValue: 'ViT-L-14' },
     { key: 'waifu_clip_pretrained', type: 'string', label: 'CLIP 预训练', title: 'waifu_clip_pretrained', desc: 'Waifu CLIP 预训练权重名称', defaultValue: 'openai' },
-    { key: 'wv3_head_path', type: 'file', pickerType: 'model-file', label: 'Waifu v3 头部路径', title: 'wv3_head_path', desc: 'Waifu Scorer v3 头部权重路径。留空时自动尝试内置路径', defaultValue: '' },
+    { key: 'waifu_v3_head_path', type: 'file', pickerType: 'model-file', label: 'Waifu v3 头部路径', title: 'waifu_v3_head_path', desc: 'Waifu Scorer v3 头部权重路径。模型及许可证由用户自行核验。', defaultValue: '' },
   ]),
 ];

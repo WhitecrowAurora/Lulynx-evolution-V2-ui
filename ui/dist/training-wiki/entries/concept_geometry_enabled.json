@@ -1,7 +1,9 @@
 {
   "key": "concept_geometry_enabled",
   "title": "概念几何采样",
+  "title_en": "Concept Geometry",
   "category": "数据集 / 采样",
+  "category_en": "Dataset / Sampling",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,17 +15,33 @@
     "数据层",
     "采样层"
   ],
+  "layers_en": [
+    "Data layer",
+    "Sampling layer"
+  ],
   "standard": {
     "summary": "分析训练数据中概念/标签之间的几何关系（密度、冲突、层级），用于更智能地采样和加权。",
     "effect": "开启后在训练前生成 concept_geometry.json，训练时按概念密度调整采样概率和 loss 权重。",
     "whenToUse": "数据集中有多个概念/角色/风格，且各概念样本量不均衡时强烈推荐。",
     "avoidWhen": "单角色/单概念的简单数据集不需要；会略增加训练前的预处理时间。"
   },
+  "standard_en": {
+    "summary": "Analyses the geometric relationships between concepts and tags in the training data (density, conflict, hierarchy) to sample and weight more intelligently.",
+    "effect": "Once on, concept_geometry.json is generated before training, and during the run sampling probability and loss weight are adjusted by concept density.",
+    "whenToUse": "Strongly recommended when the dataset holds several concepts, characters or styles with unequal sample counts.",
+    "avoidWhen": "Not needed for a simple single-character or single-concept dataset; it does add a little pre-processing time before the run."
+  },
   "advanced": {
     "principle": "将每个样本的 caption/tag 解析为概念空间中的点，计算概念密度、共现矩阵和冲突检测。高密度概念被降权采样（curriculum），低密度概念被提升，实现训练均衡。",
     "intervention": "替换默认的随机采样器为概念感知的 WeightedBatchSampler。",
     "expectedImpact": "显著改善多概念训练中的概念均衡性；减少高频概念过拟合和低频概念欠拟合。",
     "tradeoffs": "concept_geometry_loss_weighting 进一步在 loss 层面加权，但可能导致低频概念过学；需要短测确认。"
+  },
+  "advanced_en": {
+    "principle": "Parses each sample's caption/tags into points in concept space, computing concept density, co-occurrence matrices, and conflict detection. High-density concepts are down-weighted in sampling (curriculum) and low-density ones promoted, balancing training.",
+    "intervention": "Replaces the default random sampler with the concept-aware WeightedBatchSampler.",
+    "expectedImpact": "Markedly improves concept balance in multi-concept training; reduces overfitting on frequent concepts and underfitting on rare ones.",
+    "tradeoffs": "concept_geometry_loss_weighting further weights at the loss level but can over-learn rare concepts; short-test to confirm."
   },
   "relatedConfigs": [
     "concept_geometry_sampler_mode",

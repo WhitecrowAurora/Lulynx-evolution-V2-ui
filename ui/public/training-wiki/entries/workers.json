@@ -1,0 +1,16 @@
+{
+  "key": "workers",
+  "title": "数据加载 Worker",
+  "category": "训练参数",
+  "appliesTo": [
+    "yolo"
+  ],
+  "standard": {
+    "summary": "数据加载 Worker（scorer）。",
+    "effect": "scorer 数据加载进程数。",
+    "whenToUse": "IO 瓶颈时加大。",
+    "avoidWhen": "默认 8。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

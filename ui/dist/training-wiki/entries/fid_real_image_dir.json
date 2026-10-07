@@ -1,7 +1,9 @@
 {
   "key": "fid_real_image_dir",
   "title": "FID 真实图像目录",
+  "title_en": "FID Directory",
   "category": "质量评估",
+  "category_en": "Quality Assessment",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,11 +13,20 @@
   "layers": [
     "评估层"
   ],
+  "layers_en": [
+    "Evaluation layer"
+  ],
   "standard": {
     "summary": "FID / LPIPS 指标使用的真实参照图片目录。留空时这两个指标会被跳过（日志告警），不会伪造分数。",
     "effect": "FID 用该目录的真实分布与生成分布计算距离；LPIPS 按文件名把真实图与生成图一一配对计算感知距离。目录缺失或为空 → 对应指标 skip。",
     "whenToUse": "评估指标包含 fid 或 lpips 时必填；通常指向训练集或同分布的高质量参照集。",
     "avoidWhen": "只用 clip_score 等无参照指标时不需要；参照集与训练目标分布不一致时 FID 数值失去解释力。"
+  },
+  "standard_en": {
+    "summary": "The directory of real reference images used by the FID and LPIPS metrics. Left blank, both metrics are skipped (with a log warning) rather than given fabricated scores.",
+    "effect": "FID measures the distance between this directory's real distribution and the generated one; LPIPS pairs real and generated images by filename and measures perceptual distance. A missing or empty directory skips the corresponding metric.",
+    "whenToUse": "Required whenever the evaluation metrics include fid or lpips; it usually points at the training set or a high-quality reference set from the same distribution.",
+    "avoidWhen": "Not needed with reference-free metrics such as clip_score; and FID loses interpretive value when the reference set's distribution does not match the training target."
   },
   "advanced": {
     "principle": "FID 是两组图像在 Inception 特征空间的 Fréchet 距离，需要足够数量的真实样本估计协方差（几十张以上才有统计意义）；LPIPS 是逐对感知距离，依赖文件名匹配建立真实-生成对应关系。",
@@ -23,6 +34,13 @@
     "expectedImpact": "补齐参照后 FID/LPIPS 可用；评估耗时增加（真实集特征提取）。",
     "tradeoffs": "小参照集（<50 张）的 FID 波动大；LPIPS 的文件名匹配约定要求生成侧命名与真实侧对应。",
     "codePath": "quality/quality_evaluation_metrics.py：fid_real_image_dir 判空跳过 + _match_real_images；trainer_quality_runtime.py 读取"
+  },
+  "advanced_en": {
+    "principle": "FID is the Fréchet distance between two image sets in Inception feature space and needs enough real samples to estimate covariance (only statistically meaningful above a few dozen); LPIPS is a pairwise perceptual distance relying on filename matching to pair real and generated images.",
+    "intervention": "Read in by trainer_quality_runtime.py; quality/quality_evaluation_metrics.py: _match_real_images does real-image matching, and the FID/LPIPS branches warn + return None when the directory is empty (the caller records skipped).",
+    "expectedImpact": "With a reference set supplied, FID/LPIPS become usable; evaluation takes longer (real-set feature extraction).",
+    "tradeoffs": "FID on small reference sets (<50 images) fluctuates heavily; LPIPS's filename-matching convention requires generated-side names to correspond to the real side.",
+    "codePath": "quality/quality_evaluation_metrics.py: fid_real_image_dir empty-check skip + _match_real_images; read by trainer_quality_runtime.py"
   },
   "relatedConfigs": [
     "quality_evaluation_metrics",

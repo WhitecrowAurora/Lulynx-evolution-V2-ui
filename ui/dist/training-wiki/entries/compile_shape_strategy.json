@@ -1,7 +1,9 @@
 {
   "key": "compile_shape_strategy",
   "title": "Compile Shape 策略",
+  "title_en": "Compile Shape Strategy",
   "category": "速度 / 编译",
+  "category_en": "Speed / Compilation",
   "appliesTo": [
     "anima-lora"
   ],
@@ -17,9 +19,25 @@
       "native": "走模型自己的 shape 约定。"
     }
   },
+  "standard_en": {
+    "summary": "How torch.compile handles input shapes: auto / token_flatten (sequence flattening, suited to native token buckets) / fixed_pad (fixed padding).",
+    "effect": "On the Anima/Newbie native token bucket route, token_flatten flattens variable-length sequences to cut recompilation caused by shape changes; a non-native DiT falls back to fixed_pad automatically.",
+    "whenToUse": "For long Anima LoRA runs, token_flatten plus compile_cache is the recommended combination.",
+    "avoidWhen": "On a non-native DiT route (SDXL, say) token_flatten falls back anyway, so leaving it on auto is fine.",
+    "optionDescriptions": {
+      "auto": "Picks the shape strategy automatically.",
+      "fixed_pad": "Pads to a fixed shape: less recompilation, possibly wasted work on the padding.",
+      "token_flatten": "Flattens tokens, leaving fewer dynamic dimensions; friendly to native buckets.",
+      "native": "Follows the model's own shape conventions."
+    }
+  },
   "advanced": {
     "principle": "token_flatten 将 [B, H, W, C] 或 [B, T, C] 展平为 [B×T, C]，确保序列维度合并后形状稳定，减少 Dynamo guard 触发重编译。",
     "tradeoffs": "token_flatten 需要模型支持展平后的输入形状，不兼容的层会自动回退。"
+  },
+  "advanced_en": {
+    "principle": "token_flatten flattens [B, H, W, C] or [B, T, C] into [B×T, C], ensuring stable shapes after sequence-dimension merging and reducing Dynamo-guard recompiles.",
+    "tradeoffs": "token_flatten requires the model to accept the flattened input shape; incompatible layers fall back automatically."
   },
   "relatedConfigs": [
     "compile_runtime",

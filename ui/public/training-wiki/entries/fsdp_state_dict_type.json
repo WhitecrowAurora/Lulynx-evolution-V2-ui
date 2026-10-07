@@ -1,0 +1,62 @@
+{
+  "key": "fsdp_state_dict_type",
+  "title": "FSDP State Dict 类型",
+  "title_en": "FSDP state dict type",
+  "category": "训练 / 分布式",
+  "category_en": "Training / Distributed",
+  "appliesTo": [
+    "sdxl-lora",
+    "sd-lora",
+    "anima-lora",
+    "flux-lora",
+    "finetune"
+  ],
+  "layers": [
+    "并行层",
+    "存储层"
+  ],
+  "layers_en": [
+    "Parallelism layer",
+    "Storage layer"
+  ],
+  "standard": {
+    "summary": "FSDP2 下保存/加载 state 的形式：full（默认，聚合成一份完整 state）或 sharded（每张卡各存自己那片）。",
+    "effect": "决定 StateDictOptions(full_state_dict=) 的取值。full 由 rank0 聚合出与单卡训练同形状的完整 state；sharded 每个 rank 各存各的分片，体积小、保存快，但只有 DCP（torch.distributed.checkpoint）加载器读得懂。",
+    "whenToUse": "默认 full。除非确定后续加载走 DCP、且卡数不变，否则不要选 sharded。",
+    "avoidWhen": "要把产物拿去单卡推理、或用普通 torch.load 读，就必须是 full。sharded 产物换了卡数就对不上。",
+    "optionDescriptions": {
+      "full": "保存前把分片聚合成完整 state dict（默认）。这是普通检查点加载器唯一读得懂的形式。",
+      "sharded": "每个 rank 各存自己那片。省内存峰值，但产物只有 DCP 那套接口读得回来。"
+    }
+  },
+  "standard_en": {
+    "summary": "The form in which state is saved and loaded under FSDP2: full (the default, gathered into one complete state) or sharded (each card storing its own shard).",
+    "effect": "It sets StateDictOptions(full_state_dict=). full has rank0 gather a complete state with the same shape as single-GPU training; sharded has each rank store its own shard, which is smaller and faster to save but readable only by the DCP (torch.distributed.checkpoint) loader.",
+    "whenToUse": "full by default. Do not choose sharded unless you are certain the load side will use DCP and the card count will not change.",
+    "avoidWhen": "It has to be full when the artefact will go to single-GPU inference or be read with ordinary torch.load. A sharded artefact no longer lines up once the card count changes.",
+    "optionDescriptions": {
+      "full": "Gathers the shards into a complete state dict before saving (the default). The only form ordinary checkpoint loaders understand.",
+      "sharded": "Each rank stores its own shard. Lower memory peak, but the artefact can only be read back through the DCP interface."
+    }
+  },
+  "advanced": {
+    "principle": "被 fully_shard 包过的模块，其 state_dict 里是 DTensor 而不是普通张量。full_state_dict=True 时 torch 的 get_model_state_dict 会做一次 all-gather 把它们还原成完整张量（默认还带 cpu_offload 落到主机内存）；False 时原样保留分片。broadcast_from_rank0 只在 full 下成立，sharded 下同时要求广播会被直接拒绝并说明原因。",
+    "intervention": "distributed_runtime.py:_wrap_fsdp2 解析后写到 runtime.fsdp_state_dict_type 上；distributed_state.py 的四个 *_for_runtime 收集器从这个句柄上读，所以四条路径不改签名就一起跟着变。声明默认值在 2026-09-05 由 sharded 改成 full：这个键此前零读点，而所有实际跑过的代码路径都写死 full_state_dict=True —— 保留原声明会让这个键「一上线就把没动过设置的人静默切到分片产物」。",
+    "expectedImpact": "full：保存时多一次 all-gather，产物与单卡同形状。sharded：保存快、单卡写入量小，产物只能被 DCP 读，且与卡数绑定。",
+    "tradeoffs": "distributed_state.py 这四个收集器目前只有判据在调用，正式 checkpoint 路径走的是各家族自己的 state_dict_getter —— 也就是这个键在 FSDP2 状态收集 API 上已经活了，但主保存路径接上它是另一件待办。这条如实记在这里，而不是靠措辞含糊掩掉。",
+    "codePath": "configs_base.py:fsdp_state_dict_type 声明（默认 full）；distributed_fsdp_policy.py:resolve_fsdp_state_dict_type / use_full_state_dict 归一化；distributed_runtime.py:_wrap_fsdp2 写入 runtime 句柄；distributed_state.py:_full_state_dict 供四个收集器读；判据 fsdp2_shard_policy_contract_smoke.py"
+  },
+  "advanced_en": {
+    "principle": "A fully_shard-wrapped module's state_dict contains DTensors, not plain tensors. With full_state_dict=True, torch's get_model_state_dict does one all-gather to restore them to full tensors (defaulting to cpu_offload into host memory); False keeps the shards as-is. broadcast_from_rank0 only holds under full — requesting broadcast with sharded is rejected outright with an explanation.",
+    "intervention": "distributed_runtime.py:_wrap_fsdp2 resolves the value onto runtime.fsdp_state_dict_type; the four *_for_runtime collectors in distributed_state.py read from that handle, so all four paths change together without signature changes. The declared default changed from sharded to full on 2026-09-05: this key previously had zero read points while every actually-executed code path hard-coded full_state_dict=True — keeping the old declaration would have meant the key \"silently switched everyone who never touched the setting to sharded artifacts on day one\".",
+    "expectedImpact": "full: one extra all-gather on save, artifacts shaped like single-card ones. sharded: faster saves, smaller single-card writes, artifacts readable only by DCP and bound to the card count.",
+    "tradeoffs": "Those four collectors in distributed_state.py are currently only called by the criterion; the formal checkpoint path uses each family's own state_dict_getter — so this key is alive on the FSDP2 state-collection API, but wiring it into the main save path is separate pending work. Recorded here as-is rather than glossed over.",
+    "codePath": "configs_base.py:fsdp_state_dict_type declaration (default full); distributed_fsdp_policy.py:resolve_fsdp_state_dict_type / use_full_state_dict normalization; distributed_runtime.py:_wrap_fsdp2 writes the runtime handle; distributed_state.py:_full_state_dict read by the four collectors; criterion fsdp2_shard_policy_contract_smoke.py"
+  },
+  "relatedConfigs": [
+    "distributed_strategy",
+    "fsdp_cpu_offload",
+    "fsdp_auto_wrap_policy",
+    "enable_distributed_training"
+  ]
+}

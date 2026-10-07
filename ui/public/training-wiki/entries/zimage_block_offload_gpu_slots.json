@@ -1,0 +1,17 @@
+{
+  "key": "zimage_block_offload_gpu_slots",
+  "title": "Block Offload GPU 槽位",
+  "category": "Z-Image Block Offload",
+  "appliesTo": [
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "同时驻留在 GPU 的 block 数。",
+    "effect": "写入训练配置 zimage_block_offload_gpu_slots，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 4，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

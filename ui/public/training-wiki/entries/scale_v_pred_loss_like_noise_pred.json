@@ -1,0 +1,17 @@
+{
+  "key": "scale_v_pred_loss_like_noise_pred",
+  "title": "缩放 v-pred 损失",
+  "category": "V 参数化",
+  "appliesTo": [
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "缩放 v-prediction 损失（v-pred 模型专用，把损失缩放成与噪声预测同量级）。",
+    "effect": "写入训练配置 scale_v_pred_loss_like_noise_pred，由训练后端在相应阶段消费。",
+    "whenToUse": "默认开启，适合大多数场景。",
+    "avoidWhen": "排查问题想回到原始行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

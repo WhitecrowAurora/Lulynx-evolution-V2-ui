@@ -1,7 +1,9 @@
 {
   "key": "cooldown_every_n_epochs",
   "title": "热管理 (GPU 降温)",
+  "title_en": "Cooldown Every N Epochs",
   "category": "训练 / 运维",
+  "category_en": "Training / Operations",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,17 +15,33 @@
   "layers": [
     "训练控制层"
   ],
+  "layers_en": [
+    "Training control layer"
+  ],
   "standard": {
     "summary": "每隔 N 个 epoch 暂停训练让 GPU 降温，防止长时间高负载导致过热降频或硬件损伤。",
     "effect": "cooldown_every_n_epochs=3 表示每 3 个 epoch 暂停一次。cooldown_minutes=10 表示暂停 10 分钟。cooldown_until_temp=0 表示使用固定时间而非温度阈值。",
     "whenToUse": "长时间训练（几天/几周）时保护 GPU。散热条件差的环境。",
     "avoidWhen": "训练时间短时不需要。暂停会中断训练节奏。"
   },
+  "standard_en": {
+    "summary": "Pauses training every N epochs to let the GPU cool, so a long stretch at full load does not cause thermal throttling or hardware damage.",
+    "effect": "cooldown_every_n_epochs=3 pauses once every 3 epochs. cooldown_minutes=10 pauses for 10 minutes. cooldown_until_temp=0 means a fixed time rather than a temperature threshold.",
+    "whenToUse": "Protecting the GPU during long runs (days or weeks), or in a poorly ventilated environment.",
+    "avoidWhen": "Not needed for short runs; the pauses do break the rhythm of training."
+  },
   "advanced": {
     "principle": "cooldown_until_temp > 0 时启用温度驱动：每 cooldown_poll_seconds 检查 GPU 温度，直到温度降到目标值以下才恢复训练。pause_enabled/pause_every_epochs/pause_duration_minutes 是另一种暂停方案。gpu_power_limit_w 可以通过降低功耗限制来控制温度（需要 root/admin 权限）。",
     "intervention": "训练循环中每 N epoch 插入暂停逻辑 → 等待降温 → 恢复训练。",
     "expectedImpact": "防止 GPU 过热降频。保护硬件寿命。",
     "tradeoffs": "暂停期间 GPU 空闲。总训练时间增加。",
+    "codePath": "training_loop.py:cooldown → pause training → GPU temperature monitoring → resume"
+  },
+  "advanced_en": {
+    "principle": "cooldown_until_temp > 0 enables temperature-driven cooling: every cooldown_poll_seconds the GPU temperature is checked and training only resumes below the target. pause_enabled/pause_every_epochs/pause_duration_minutes are a separate pause scheme. gpu_power_limit_w can control temperature by lowering the power limit (needs root/admin).",
+    "intervention": "The training loop inserts a pause every N epochs → waits for cooling → resumes training.",
+    "expectedImpact": "Prevents thermal throttling. Protects hardware lifespan.",
+    "tradeoffs": "The GPU idles during pauses; total training time increases.",
     "codePath": "training_loop.py:cooldown → pause training → GPU temperature monitoring → resume"
   },
   "relatedConfigs": [

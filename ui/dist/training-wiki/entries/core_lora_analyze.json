@@ -1,7 +1,9 @@
 {
   "key": "core_lora_analyze",
   "title": "OUT",
+  "title_en": "OUT",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Reads a LoRA's weight structure, rank, RMS, sparsity, anomalous layers and",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "读取 LoRA 权重结构、rank、RMS、稀疏度、异常层和 block 分布。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Reads LoRA weight structure, rank, RMS, sparsity, abnormal layers, and block distribution.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

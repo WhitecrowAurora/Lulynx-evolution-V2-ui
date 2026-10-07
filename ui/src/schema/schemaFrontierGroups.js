@@ -95,10 +95,10 @@ export const S_ADAPTIVE_TRAINING = [
   { key: 'adaptive_training_event_history', type: 'number', label: '事件历史长度', desc: '内存与 resume 状态中保留的最近事件数量。', defaultValue: 256, min: 16, max: 4096, step: 16, visibleWhen: when('adaptive_training_enabled', true) },
   { key: 'adaptive_sample_mining_enabled', type: 'boolean', label: '启用困难样本建议', desc: '按样本 loss 的 EMA 生成困难样本建议。', defaultValue: false, visibleWhen: when('adaptive_training_enabled', true) },
   { key: 'adaptive_sample_mining_interval', type: 'number', label: '困难样本采样间隔', desc: '每隔多少个 optimizer step 汇总一次样本 loss。', defaultValue: 10, min: 1, max: 10000, step: 1, visibleWhen: all(when('adaptive_training_enabled', true), when('adaptive_sample_mining_enabled', true)) },
-  { key: 'adaptive_sample_mining_ema_decay', type: 'number', label: '困难度 EMA 衰减', defaultValue: 0.9, min: 0, max: 0.9999, step: 0.01, visibleWhen: all(when('adaptive_training_enabled', true), when('adaptive_sample_mining_enabled', true)) },
-  { key: 'adaptive_sample_mining_top_fraction', type: 'number', label: '困难样本比例', defaultValue: 0.25, min: 0.01, max: 1, step: 0.01, visibleWhen: all(when('adaptive_training_enabled', true), when('adaptive_sample_mining_enabled', true)) },
-  { key: 'adaptive_sample_mining_report_limit', type: 'number', label: '建议列表上限', defaultValue: 32, min: 1, max: 256, step: 1, visibleWhen: all(when('adaptive_training_enabled', true), when('adaptive_sample_mining_enabled', true)) },
-  { key: 'adaptive_sample_mining_max_samples', type: 'number', label: '样本状态容量', defaultValue: 2048, min: 16, max: 100000, step: 16, visibleWhen: all(when('adaptive_training_enabled', true), when('adaptive_sample_mining_enabled', true)) },
+  { key: 'adaptive_sample_mining_ema_decay', type: 'number', label: '困难度 EMA 衰减', desc: '越大越平滑，越小越快响应当前样本 loss。', defaultValue: 0.9, min: 0, max: 0.9999, step: 0.01, visibleWhen: all(when('adaptive_training_enabled', true), when('adaptive_sample_mining_enabled', true)) },
+  { key: 'adaptive_sample_mining_top_fraction', type: 'number', label: '困难样本比例', desc: '建议列表中保留困难度最高的样本比例。', defaultValue: 0.25, min: 0.01, max: 1, step: 0.01, visibleWhen: all(when('adaptive_training_enabled', true), when('adaptive_sample_mining_enabled', true)) },
+  { key: 'adaptive_sample_mining_report_limit', type: 'number', label: '建议列表上限', desc: '每次事件最多输出多少个困难样本建议。', defaultValue: 32, min: 1, max: 256, step: 1, visibleWhen: all(when('adaptive_training_enabled', true), when('adaptive_sample_mining_enabled', true)) },
+  { key: 'adaptive_sample_mining_max_samples', type: 'number', label: '样本状态容量', desc: '内存与 resume 中最多跟踪多少个样本的 EMA 困难度。', defaultValue: 2048, min: 16, max: 100000, step: 16, visibleWhen: all(when('adaptive_training_enabled', true), when('adaptive_sample_mining_enabled', true)) },
   { key: 'loss_state_enabled', type: 'boolean', label: '启用逐图 Loss 状态机', desc: '跨 epoch 跟踪每个样本的 loss 状态，并将判定结果合入样本难度权重。', defaultValue: false },
   { key: 'loss_state_fusion_mode', type: 'select', label: 'Loss 状态融合模式', defaultValue: 'loss', options: [
     { value: 'loss', label: '仅 Loss' },
@@ -208,7 +208,7 @@ export const S_QUALITY_OPTIMIZATION_PACK = [
   { key: 'hard_negative_mining_enabled', type: 'boolean', label: '启用困难样本挖掘 (Hard Negative Mining)', desc: '只回传 loss 最高的 top-k% 样本梯度', defaultValue: false },
   { key: 'hard_negative_mining_ratio', type: 'number', label: '困难样本保留比例', desc: '保留 top-k% 的困难样本。推荐 0.5 (保留 50%)。', defaultValue: 0.5, min: 0.1, max: 1.0, step: 0.05, visibleWhen: (c) => c.hard_negative_mining_enabled },
   { key: 'hard_negative_mining_warmup_steps', type: 'number', label: 'Warmup 步数', desc: '前 N 步不启用困难样本挖掘，让模型先稳定训练。', defaultValue: 100, min: 0, step: 10, visibleWhen: (c) => c.hard_negative_mining_enabled },
-  { key: 'hard_negative_mining_mode', type: 'select', label: '挖掘模式', desc: '挖掘模式', defaultValue: 'topk', options: [
+  { key: 'hard_negative_mining_mode', type: 'select', label: '挖掘模式', desc: '难例挖掘模式：对高损失样本加权（off/batched 等）。', defaultValue: 'topk', options: [
     { value: 'topk', label: 'Top-K 模式' },
     { value: 'threshold', label: 'Threshold 模式' },
   ], visibleWhen: (c) => c.hard_negative_mining_enabled },
@@ -218,27 +218,28 @@ export const S_QUALITY_OPTIMIZATION_PACK = [
   { key: 'multi_scale_supervision_enabled', type: 'boolean', label: '启用多尺度 DiT 监督 (Multi-Scale Supervision)', desc: '在 DiT 中间层 (4/8/12) 上做 student-teacher', defaultValue: false },
   { key: 'multi_scale_supervision_weight', type: 'number', label: '多尺度损失权重', desc: '相对主损失权重。推荐 0.1-0.3。', defaultValue: 0.1, min: 0, max: 1, step: 0.05, visibleWhen: (c) => c.multi_scale_supervision_enabled },
   { key: 'multi_scale_layers', type: 'text', label: '监督层列表', desc: '要监督的 DiT 层，逗号分隔 (如 "4,8,12")。', defaultValue: '4,8,12', visibleWhen: (c) => c.multi_scale_supervision_enabled },
-  { key: 'multi_scale_loss_type', type: 'select', label: '特征损失类型', desc: '特征损失类型', defaultValue: 'mse', options: [
+  { key: 'multi_scale_loss_type', type: 'select', label: '特征损失类型', desc: '多尺度特征 loss 的类型选择。', defaultValue: 'mse', options: [
     { value: 'mse', label: 'MSE (均方误差)' },
     { value: 'cosine', label: 'Cosine (余弦距离)' },
   ], visibleWhen: (c) => c.multi_scale_supervision_enabled },
   { key: 'multi_scale_min_t', type: 'number', label: '最小 sigma (多尺度)', desc: 'sigma 窗口下界，0=全范围。只在指定范围内应用多尺度监督。', defaultValue: 0.0, min: 0, max: 1, step: 0.05, visibleWhen: (c) => c.multi_scale_supervision_enabled },
   { key: 'multi_scale_max_t', type: 'number', label: '最大 sigma (多尺度)', desc: 'sigma 窗口上界，1=全范围。', defaultValue: 1.0, min: 0, max: 1, step: 0.05, visibleWhen: (c) => c.multi_scale_supervision_enabled },
 
-  // ── LPIPS Latent 感知损失 ─────────────────────────────────────────────────
-  { key: 'lpips_latent_enabled', type: 'boolean', label: '启用 LPIPS Latent 感知损失', desc: '利用 DiT 中间层特征计算感知相似度，类似 LPIPS 但在 latent', defaultValue: false },
-  { key: 'lpips_latent_weight', type: 'number', label: 'LPIPS Latent 损失权重', desc: '相对主损失权重。推荐 0.05-0.15。', defaultValue: 0.1, min: 0, max: 1, step: 0.01, visibleWhen: (c) => c.lpips_latent_enabled },
+  // ── lulynx Latent 特征蒸馏（历史 lpips_latent_* key）─────────────────────────────────────────────────
+  { key: 'lpips_latent_enabled', type: 'boolean', label: '启用 lulynx Latent 特征蒸馏', desc: '对 DiT 中间层特征做归一化可选的加权 MSE；不是 LPIPS。', defaultValue: false },
+  { key: 'lpips_latent_weight', type: 'number', label: 'Latent 特征蒸馏权重', desc: '相对主损失权重。推荐 0.05-0.15。', defaultValue: 0.1, min: 0, max: 1, step: 0.01, visibleWhen: (c) => c.lpips_latent_enabled },
   { key: 'lpips_latent_feature_layers', type: 'text', label: '特征层列表', desc: '使用哪些 DiT 层特征，逗号分隔 (如 "4,8,12")。', defaultValue: '4,8,12', visibleWhen: (c) => c.lpips_latent_enabled },
   { key: 'lpips_latent_feature_weight', type: 'text', label: '各层权重', desc: '各层权重，逗号分隔 (如 "1.0,1.0,1.0")。', defaultValue: '1.0,1.0,1.0', visibleWhen: (c) => c.lpips_latent_enabled },
   { key: 'lpips_latent_normalize_features', type: 'boolean', label: '归一化特征', desc: '是否归一化特征 (L2 norm)。归一化后损失更关注方向而非幅度。', defaultValue: true, visibleWhen: (c) => c.lpips_latent_enabled },
-  { key: 'lpips_latent_min_t', type: 'number', label: '最小 sigma (LPIPS)', desc: 'sigma 窗口下界，0=全范围。', defaultValue: 0.0, min: 0, max: 1, step: 0.05, visibleWhen: (c) => c.lpips_latent_enabled },
-  { key: 'lpips_latent_max_t', type: 'number', label: '最大 sigma (LPIPS)', desc: 'sigma 窗口上界，1=全范围。', defaultValue: 1.0, min: 0, max: 1, step: 0.05, visibleWhen: (c) => c.lpips_latent_enabled },
+  { key: 'lpips_latent_min_t', type: 'number', label: '最小 sigma (Latent 特征蒸馏)', desc: 'sigma 窗口下界，0=全范围。', defaultValue: 0.0, min: 0, max: 1, step: 0.05, visibleWhen: (c) => c.lpips_latent_enabled },
+  { key: 'lpips_latent_max_t', type: 'number', label: '最大 sigma (Latent 特征蒸馏)', desc: 'sigma 窗口上界，1=全范围。', defaultValue: 1.0, min: 0, max: 1, step: 0.05, visibleWhen: (c) => c.lpips_latent_enabled },
 
   // ── 对比学习 Latent 一致性 ────────────────────────────────────────────────
   { key: 'contrastive_latent_enabled', type: 'boolean', label: '启用对比学习 Latent 一致性', desc: '对比学习风格的一致性损失：同一 clean latent', defaultValue: false },
   { key: 'contrastive_latent_weight', type: 'number', label: '对比学习损失权重', desc: '相对主损失权重。推荐 0.05-0.2。', defaultValue: 0.1, min: 0, max: 1, step: 0.01, visibleWhen: (c) => c.contrastive_latent_enabled },
-  { key: 'contrastive_latent_noise_pairs', type: 'number', label: '对比对数', desc: '对比对数', defaultValue: 1, min: 1, max: 5, step: 1, visibleWhen: (c) => c.contrastive_latent_enabled },
-  { key: 'contrastive_latent_temperature', type: 'number', label: '对比学习温度', desc: '对比学习温度系数 (保留，当前简化实现未使用)。', defaultValue: 0.07, min: 0.01, max: 0.2, step: 0.01, visibleWhen: (c) => c.contrastive_latent_enabled },
+  { key: 'contrastive_latent_noise_pairs', type: 'number', label: '对比对数', desc: '当前仅使用当前批次的 1 对，无额外前向；请保持 1。大于 1 的值保留兼容但不增加采样。', defaultValue: 1, min: 1, max: 5, step: 1, visibleWhen: (c) => c.contrastive_latent_enabled },
+  // Deprecated: 当前使用 MSE 一致性损失；仅保留旧配置兼容，不提供无效的温度控件。
+  { key: 'contrastive_latent_temperature', type: 'hidden', defaultValue: 0.07 },
   { key: 'contrastive_latent_min_t', type: 'number', label: '最小 sigma (对比)', desc: 'sigma 窗口下界。限制在中间噪声段 (如 0.2-0.8)。', defaultValue: 0.2, min: 0, max: 1, step: 0.05, visibleWhen: (c) => c.contrastive_latent_enabled },
   { key: 'contrastive_latent_max_t', type: 'number', label: '最大 sigma (对比)', desc: 'sigma 窗口上界。限制在中间噪声段。', defaultValue: 0.8, min: 0, max: 1, step: 0.05, visibleWhen: (c) => c.contrastive_latent_enabled },
 ];
@@ -263,11 +264,11 @@ export const S_LORA_VARIANTS = [
   { key: 'dokr_factor_in', type: 'number', label: 'DoKr in 因子', desc: 'LoKr in 侧分解因子偏好 (0=默认 8)。', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.dokr_enabled },
   { key: 'dokr_factor_out', type: 'number', label: 'DoKr out 因子', desc: 'LoKr out 侧分解因子偏好 (0=默认 8)。', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.dokr_enabled },
   { key: 'dokr_decompose_factor', type: 'number', label: 'DoKr w2 低秩', desc: 'w2 低秩分解 rank (0=完整 w2)。', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.dokr_enabled },
-  { key: 'dokr_mode', type: 'select', label: 'DoKr 模式', desc: 'DoKr 模式', defaultValue: 'full', options: [{ value: 'full', label: 'full (完整)' }, { value: 'style', label: 'style (magnitude only)' }, { value: 'structure', label: 'structure (方向 only)' }], visibleWhen: (c) => c.dokr_enabled },
+  { key: 'dokr_mode', type: 'select', label: 'DoKr 模式', desc: 'DoKr（DoRA + LoKr）组合模式开关。', defaultValue: 'full', options: [{ value: 'full', label: 'full (完整)' }, { value: 'style', label: 'style (magnitude only)' }, { value: 'structure', label: 'structure (方向 only)' }], visibleWhen: (c) => c.dokr_enabled },
   { key: 'dokr_alpha', type: 'number', label: 'DoKr alpha', desc: 'Kronecker scale 分子 (默认 1.0)。', defaultValue: 1.0, min: 0, step: 0.1, visibleWhen: (c) => c.dokr_enabled },
   // GDLoKr 主入口在 lora_type/adapter_type 下拉；此处仅补子项，不重复 master 开关
   { key: 'gdlokr_factor', type: 'number', label: 'GDLoKr Kronecker 因子', desc: '共享 Kronecker 因子 (0=自动平衡)。', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.lora_type === 'gdlokr' || c.adapter_type === 'gdlokr' || c.gdlokr_enabled },
-  { key: 'gdlokr_mode', type: 'select', label: 'GDLoKr 模式', desc: 'GDLoKr 模式', defaultValue: 'full', options: [{ value: 'full', label: 'full (完整)' }, { value: 'style', label: 'style (magnitude only)' }, { value: 'structure', label: 'structure (方向 only)' }], visibleWhen: (c) => c.lora_type === 'gdlokr' || c.adapter_type === 'gdlokr' || c.gdlokr_enabled },
+  { key: 'gdlokr_mode', type: 'select', label: 'GDLoKr 模式', desc: 'GDLoKr 变体模式开关。', defaultValue: 'full', options: [{ value: 'full', label: 'full (完整)' }, { value: 'style', label: 'style (magnitude only)' }, { value: 'structure', label: 'structure (方向 only)' }], visibleWhen: (c) => c.lora_type === 'gdlokr' || c.adapter_type === 'gdlokr' || c.gdlokr_enabled },
   { key: 'gdlokr_alpha', type: 'number', label: 'GDLoKr alpha', desc: 'generalized-direction 缩放分子 (默认 1.0)。', defaultValue: 1.0, min: 0, step: 0.1, visibleWhen: (c) => c.lora_type === 'gdlokr' || c.adapter_type === 'gdlokr' || c.gdlokr_enabled },
   // 区域多 LoRA 的 10 个参数曾经住在这里。它们是 GenerationRequest 的字段，训练配置上
   // 只剩 reader-free 的兼容别名，所以放在训练页等于让用户调一组无人读取的旋钮。现在归
@@ -275,7 +276,7 @@ export const S_LORA_VARIANTS = [
   { key: 'delta_lora_enabled', type: 'boolean', label: 'Delta-LoRA (ΔBA 动态缩放)', desc: 'ΔBA 动态缩放 LoRA 更新，提升表达力。', defaultValue: false },
   // DoRA 与网络区的原生入口(dora_wd)互斥:网络区开着时这里隐藏,提交层同样收敛
   { key: 'dora_enabled', type: 'boolean', label: 'DoRA (权重分解)', desc: '分解权重为方向+幅度，比标准 LoRA 表达力强但稍慢。与网络区「启用 DoRA」(dora_wd) 同源，后者开启时以后者为准。', defaultValue: false, visibleWhen: (c) => !c.dora_wd },
-  { key: 'dora_mode', type: 'select', label: 'DoRA 模式', desc: '实现模式。full=完整分解', defaultValue: 'full', options: [{ value: 'full', label: 'full' }, { value: 'split', label: 'split' }, { value: 'merged', label: 'merged' }], visibleWhen: (c) => c.dora_enabled && !c.dora_wd },
+  { key: 'dora_mode', type: 'select', label: 'DoRA 模式', desc: '实现模式：full=方向与幅度都训练；style=仅幅度；structure=仅方向。', defaultValue: 'full', options: [{ value: 'full', label: '完整（方向 + 幅度）' }, { value: 'style', label: '仅幅度（Style）' }, { value: 'structure', label: '仅方向（Structure）' }], visibleWhen: (c) => c.dora_enabled && !c.dora_wd },
   { key: 'dora_variant', type: 'select', label: 'DoRA 方案', desc: 'classic=标准 DoRA；lulynx_stopgrad_dora=前向值相同的 stop-gradient 工程变体。', defaultValue: 'classic', options: [{ value: 'classic', label: '标准 DoRA' }, { value: 'lulynx_stopgrad_dora', label: 'lulynx Stop-Gradient DoRA' }], visibleWhen: (c) => c.dora_enabled || c.dora_wd },
   { key: 'dora_init_scale', type: 'number', label: 'DoRA 初始化缩放', desc: 'magnitude 初始化缩放', defaultValue: 1.0, min: 0, step: 0.05, visibleWhen: (c) => c.dora_enabled && !c.dora_wd },
   { key: 'dora_use_scalar_magnitude', type: 'boolean', label: 'DoRA 标量 magnitude', desc: '用标量 magnitude 代替向量。', defaultValue: false, visibleWhen: (c) => c.dora_enabled && !c.dora_wd },
@@ -286,29 +287,29 @@ export const S_LORA_VARIANTS = [
   { key: 'hydralora_top_k', type: 'number', label: 'Hydra top-k', desc: '每次激活的专家数', defaultValue: 2, min: 1, step: 1, visibleWhen: (c) => c.hydralora_enabled },
   { key: 'hydralora_sparse_top_k', type: 'boolean', label: 'Hydra 稀疏 top-k', desc: '仅计算选中专家。', defaultValue: false, visibleWhen: (c) => c.hydralora_enabled },
   { key: 'hydralora_balance_loss_weight', type: 'number', label: 'Hydra 平衡损失权重', desc: '分支平衡损失权重', defaultValue: 0.0, step: 0.01, visibleWhen: (c) => c.hydralora_enabled },
-  { key: 'reslora_enabled', type: 'boolean', label: 'ResLoRA (跨层残差)', desc: '跨 block 残差 shortcut。', defaultValue: false },
-  { key: 'reslora_mode', type: 'select', label: 'ResLoRA 模式', desc: 'shortcut 合并模式', defaultValue: 'block_shortcut', options: [
+  { key: 'reslora_enabled', type: 'boolean', label: 'lulynx 跨层残差 LoRA', desc: '跨 block 残差 shortcut。基于 ResLoRA (arXiv:2402.18039)，本仓另加：按运行时 adapter 调用顺序解析 shortcut 图（上游要显式 Transformer block 契约），并按 (in,out) 形状分残差链。', defaultValue: false },
+  { key: 'reslora_mode', type: 'select', label: 'lulynx 残差 LoRA 模式', desc: 'shortcut 合并模式。基于 ResLoRA (arXiv:2402.18039)，本仓另加：按运行时 adapter 调用顺序解析 shortcut 图（上游要显式 Transformer block 契约），并按 (in,out) 形状分残差链。', defaultValue: 'block_shortcut', options: [
     { value: 'block_shortcut', label: 'block_shortcut' },
     { value: 'input_shortcut', label: 'input_shortcut' },
     { value: 'middle_shortcut', label: 'middle_shortcut' },
   ], visibleWhen: (c) => c.reslora_enabled },
-  { key: 'reslora_window', type: 'number', label: 'ResLoRA 窗口', desc: '残差 shortcut 回看的 block 数 (1=近似 no-op)。', defaultValue: 2, min: 1, step: 1, visibleWhen: (c) => c.reslora_enabled },
-  { key: 'reslora_alpha_star', type: 'number', label: 'ResLoRA alpha*', desc: 'input/middle shortcut 合并系数。', defaultValue: 1.0, min: 0, step: 0.1, visibleWhen: (c) => c.reslora_enabled },
-  { key: 'tensorring_lora_enabled', type: 'boolean', label: 'T-LoRA (Tensor-Ring)', desc: 'Tensor-Ring 分解 W*=W₀T+Δ，单步 fused', defaultValue: false },
-  { key: 'tensorring_trm_rank', type: 'number', label: 'TensorRing TRM rank', desc: 'TRM 变换 rank (0/≤rank → 低秩 I+UVᵀ；≥输入宽度 → 稠密 T)。', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.tensorring_lora_enabled },
-  { key: 'tensorring_tr_rank', type: 'number', label: 'TensorRing residual rank', desc: 'Tensor-Ring 残差秩 R，0 = 跟随主 rank。', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.tensorring_lora_enabled },
-  { key: 'tensorring_factor', type: 'number', label: 'TensorRing 因子', desc: '2-mode 分解尺寸 f (0=自动选 in&out 公约数)。', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.tensorring_lora_enabled },
+  { key: 'reslora_window', type: 'number', label: 'lulynx 残差窗口', desc: '残差 shortcut 回看的调用项数 (1=标准 LoRA parity)。', defaultValue: 2, min: 1, step: 1, visibleWhen: (c) => c.reslora_enabled },
+  { key: 'reslora_alpha_star', type: 'number', label: 'lulynx 残差 alpha*', desc: 'input/middle shortcut 合并系数。', defaultValue: 1.0, min: 0, step: 0.1, visibleWhen: (c) => c.reslora_enabled },
+  { key: 'tensorring_lora_enabled', type: 'boolean', label: 'Tensor-Ring 适配器', desc: '2-mode Tensor-Ring 分解 W*=W₀T+Δ，单步 fused。同族上游 arXiv:2501.08727 做全模态分解，本仓只做 2-mode 且 in/out 无公约数时退化为 f=1 ⇒ 不等价。', defaultValue: false },
+  { key: 'tensorring_trm_rank', type: 'number', label: 'Tensor-Ring TRM rank', desc: 'TRM 变换 rank (0/≤rank → 低秩 I+UVᵀ；≥输入宽度 → 稠密 T)。', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.tensorring_lora_enabled },
+  { key: 'tensorring_tr_rank', type: 'number', label: 'Tensor-Ring 残差 rank', desc: 'Tensor-Ring 残差秩 R，0 = 跟随主 rank。', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.tensorring_lora_enabled },
+  { key: 'tensorring_factor', type: 'number', label: 'Tensor-Ring 因子', desc: '2-mode 分解尺寸 f (0=自动选 in&out 公约数)。', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.tensorring_lora_enabled },
   { key: 'krona_enabled', type: 'boolean', label: 'KronA (Kronecker 分解)', desc: 'ΔW=scale·kron(w1,w2)，参数比 LoRA 少。', defaultValue: false },
   { key: 'krona_factor_in', type: 'number', label: 'KronA in 因子', desc: 'in 侧分解因子 (0=默认 4)。', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.krona_enabled },
   { key: 'krona_factor_out', type: 'number', label: 'KronA out 因子', desc: 'out 侧分解因子 (0=默认 64)。', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.krona_enabled },
-  { key: 'krona_allora', type: 'boolean', label: 'KronA 模块级 ALLoRA', desc: 'per-output-channel 梯度归一化。', defaultValue: false, visibleWhen: (c) => c.krona_enabled },
-  { key: 'krona_allora_eta', type: 'number', label: 'KronA ALLoRA eta', desc: 'ALLoRA 梯度缩放强度', defaultValue: 2.0, min: 0, step: 0.1, visibleWhen: (c) => c.krona_enabled && c.krona_allora },
+  { key: 'krona_allora', type: 'boolean', label: 'KronA 梯度范数重缩放', desc: '参数级梯度范数重缩放。同族上游 ALLoRA (arXiv:2410.09692) 只作用于 LoRA 因子并移除 dropout/scaling，本仓对 optimizer 名下全部参数做 1/(‖param‖₂+eps) ⇒ 不等价。', defaultValue: false, visibleWhen: (c) => c.krona_enabled },
+  { key: 'krona_allora_eta', type: 'number', label: 'KronA 重缩放强度', desc: '梯度范数重缩放强度', defaultValue: 2.0, min: 0, step: 0.1, visibleWhen: (c) => c.krona_enabled && c.krona_allora },
   { key: 'krona_weight_decompose', type: 'boolean', label: 'KronA DoRA 分解', desc: '在 KronA 上叠加 DoRA magnitude', defaultValue: false, visibleWhen: (c) => c.krona_enabled },
   { key: 'cdka_enabled', type: 'boolean', label: 'CDKA (Component-Designed Kronecker)', desc: 'KronA 改进，不对称分解 + alpha 缩放。', defaultValue: false },
   { key: 'cdka_alpha', type: 'number', label: 'CDKA alpha', desc: '缩放 = alpha/sqrt(in_n) (0→scale=1.0)。', defaultValue: 16.0, min: 0, step: 0.5, visibleWhen: (c) => c.cdka_enabled },
   { key: 'cdka_factor_in', type: 'number', label: 'CDKA r2 (in 因子)', desc: 'r2 (0=默认 8)', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.cdka_enabled },
   { key: 'cdka_factor_out', type: 'number', label: 'CDKA r1 (out 因子)', desc: 'r1 (0=默认 2)', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.cdka_enabled },
-  { key: 'cdka_allora', type: 'boolean', label: 'CDKA 模块级 ALLoRA', desc: 'per-output-channel 梯度归一化。', defaultValue: false, visibleWhen: (c) => c.cdka_enabled },
+  { key: 'cdka_allora', type: 'boolean', label: 'CDKA 梯度范数重缩放', desc: '参数级梯度范数重缩放。同族上游 ALLoRA (arXiv:2410.09692) 只作用于 LoRA 因子并移除 dropout/scaling，本仓对 optimizer 名下全部参数做 1/(‖param‖₂+eps) ⇒ 不等价。', defaultValue: false, visibleWhen: (c) => c.cdka_enabled },
   { key: 'cdka_weight_decompose', type: 'boolean', label: 'CDKA DoRA 分解', desc: '在 CDKA 上叠加 DoRA magnitude 分解。', defaultValue: false, visibleWhen: (c) => c.cdka_enabled },
   { key: 'tc_lora_enabled', type: 'boolean', label: 'TC-LoRA (时间条件)', desc: '时间条件 LoRA hypernetwork。', defaultValue: false },
   { key: 'tc_lora_hidden_dim', type: 'number', label: 'TC-LoRA hidden', desc: '共享 hypernetwork 隐层宽度。', defaultValue: 128, min: 8, step: 8, visibleWhen: (c) => c.tc_lora_enabled },
@@ -322,18 +323,14 @@ export const S_LORA_VARIANTS = [
   { key: 'lora2_adaptive_nu_init', type: 'number', label: 'LoRA2 nu 初始值', desc: 'nu 初始值 (控制衰减速度，推荐 1.0)。', defaultValue: 1.0, min: 0.1, max: 10.0, step: 0.1, visibleWhen: (c) => c.lora2_adaptive_enabled },
   { key: 'lora2_adaptive_decay_lambda', type: 'number', label: 'LoRA2 衰减系数', desc: '指数衰减系数 λ (推荐 1.0)。', defaultValue: 1.0, min: 0.1, max: 5.0, step: 0.1, visibleWhen: (c) => c.lora2_adaptive_enabled },
   { key: 'lora2_adaptive_rank_threshold', type: 'number', label: 'LoRA2 有效 rank 阈值', desc: '计算有效 rank 时的权重阈值。', defaultValue: 0.01, min: 0, step: 0.001, visibleWhen: (c) => c.lora2_adaptive_enabled },
+  { key: 'lora2_adaptive_export_mode', type: 'select', label: 'LoRA2 导出模式', desc: 'native 保留续练权重；static_full 折叠但保留完整 rank。', defaultValue: 'native', options: [{ value: 'native', label: 'Native（可续练）' }, { value: 'static_full', label: '静态完整 Rank' }], visibleWhen: (c) => c.lora2_adaptive_enabled },
+  { key: 'lora2_adaptive_keep_resume_weights', type: 'boolean', label: '保留 LoRA2 续练权重', desc: '静态导出时额外保存 native-resume 伴生文件。', defaultValue: true, visibleWhen: (c) => c.lora2_adaptive_enabled && c.lora2_adaptive_export_mode !== 'native' },
   { key: 'ed_lora_enabled', type: 'boolean', label: 'ED-LoRA (Embedding Decomposed)', desc: 'Text embedding 分解为 V=V_rand+V_class', defaultValue: false },
   { key: 'ed_lora_decomp_dim', type: 'number', label: 'ED-LoRA 分解维度', desc: 'Embedding 分解维度 (推荐 64)。', defaultValue: 64, min: 32, max: 256, step: 8, visibleWhen: (c) => c.ed_lora_enabled },
   { key: 'ed_lora_num_layers', type: 'number', label: 'ED-LoRA 层数', desc: 'Text encoder transformer 层数', defaultValue: 12, min: 6, max: 24, step: 1, visibleWhen: (c) => c.ed_lora_enabled },
   { key: 'ed_lora_alpha', type: 'number', label: 'ED-LoRA Alpha', desc: 'V_class 缩放因子 (推荐 1.0)。', defaultValue: 1.0, min: 0.1, max: 5.0, step: 0.1, visibleWhen: (c) => c.ed_lora_enabled },
   { key: 'ed_lora_sequence_length', type: 'number', label: 'ED-LoRA 序列长度', desc: 'Token 序列长度（CLIP 标准 77）。', defaultValue: 77, min: 1, step: 1, visibleWhen: (c) => c.ed_lora_enabled },
   { key: 'ed_lora_num_concepts', type: 'number', label: 'ED-LoRA 概念数', desc: '概念数量（多概念预留）', defaultValue: 1, min: 1, step: 1, visibleWhen: (c) => c.ed_lora_enabled },
-  // merge-time 融合（非训练循环）；挂在 ED-LoRA 旁便于发现
-  { key: 'merge_ed_lora_fusion', type: 'boolean', label: 'ED-LoRA 合并融合', desc: '导出/合并路径启用梯度下降式权重融合。不进训练循环，只在导出与合并时生效。', defaultValue: false },
-  { key: 'ed_lora_fusion_steps', type: 'number', label: '融合步数', desc: '每次 merge 的梯度下降步数。', defaultValue: 30, min: 1, step: 1, visibleWhen: (c) => c.merge_ed_lora_fusion },
-  { key: 'ed_lora_fusion_lr', type: 'number', label: '融合学习率', desc: '融合优化器学习率', defaultValue: 0.001, min: 0, step: 0.0001, visibleWhen: (c) => c.merge_ed_lora_fusion },
-  { key: 'ed_lora_fusion_rank', type: 'number', label: '融合 Rank', desc: '合并后 adapter rank。', defaultValue: 4, min: 1, step: 1, visibleWhen: (c) => c.merge_ed_lora_fusion },
-  { key: 'ed_lora_fusion_alpha', type: 'number', label: '融合 Alpha', desc: '合并后 adapter alpha（scale=alpha/rank）。', defaultValue: 1.0, min: 0, step: 0.1, visibleWhen: (c) => c.merge_ed_lora_fusion },
   { key: 'vera_enabled', type: 'boolean', label: 'VeRA (向量重参数化)', desc: '共享随机矩阵 + 可学习向量，参数量远小于 LoRA。', defaultValue: false },
   { key: 'vera_d_initial', type: 'number', label: 'VeRA d 初值', desc: '可学习缩放向量 d 的初始化值', defaultValue: 0.1, min: 0, step: 0.01, visibleWhen: (c) => c.vera_enabled },
   { key: 'vera_prng_key', type: 'number', label: 'VeRA PRNG 种子', desc: '共享随机矩阵的 PRNG 种子', defaultValue: 0, min: 0, step: 1, visibleWhen: (c) => c.vera_enabled },
@@ -368,7 +365,7 @@ export const S_PERCEPTUAL_ANCHOR_LOSS = [
   { key: 'lulynx_freq_texture_highpass_sigma', type: 'number', label: '频域纹理高通 σ', desc: '高斯模糊 sigma，用于高低频分离。', defaultValue: 2.0, min: 0, step: 0.1, visibleWhen: (c) => c.lulynx_freq_texture_enabled },
   { key: 'lulynx_freq_texture_min_t', type: 'number', label: '频域纹理最小 σ', desc: '仅 raw σ≥该值时计入', defaultValue: 0.0, min: 0, max: 1, step: 0.01, visibleWhen: (c) => c.lulynx_freq_texture_enabled },
   { key: 'lulynx_freq_texture_max_t', type: 'number', label: '频域纹理最大 σ', desc: '仅 raw σ≤该值时计入', defaultValue: 1.0, min: 0, max: 1, step: 0.01, visibleWhen: (c) => c.lulynx_freq_texture_enabled },
-  { key: 'lulynx_latent_anchor_enabled', type: 'boolean', label: 'Latent 感知锚', desc: 'Latent 感知锚', defaultValue: false },
+  { key: 'lulynx_latent_anchor_enabled', type: 'boolean', label: 'Latent 感知锚', desc: 'Latent 感知锚：以锚点特征约束中间表示漂移。', defaultValue: false },
   { key: 'lulynx_latent_anchor_weight', type: 'number', label: '感知锚权重', desc: '损失权重', defaultValue: 0.0, step: 0.01, visibleWhen: (c) => c.lulynx_latent_anchor_enabled },
   { key: 'lulynx_latent_anchor_perceptor', type: 'select', label: '感知锚 Perceptor', desc: 'latent 感知锚特征后端', defaultValue: 'latent_msgrad', options: [
     { value: 'latent_msgrad', label: 'latent_msgrad' },
@@ -485,7 +482,7 @@ export const S_REPA_RESERVE = [
     { value: 'jina_vision', label: 'jina_vision（税更高）' },
     { value: 'dinov2', label: 'dinov2' },
   ], visibleWhen: (c) => c.repa_enabled },
-  { key: 'repa_mode', type: 'select', label: 'REPA 对齐模式', desc: 'REPA 对齐模式', defaultValue: 'absolute', options: [
+  { key: 'repa_mode', type: 'select', label: 'REPA 对齐模式', desc: 'REPA 表征对齐的模式（对齐目标与调度变体）。', defaultValue: 'absolute', options: [
     { value: 'absolute', label: 'absolute' },
     { value: 'relational', label: 'relational' },
   ], visibleWhen: (c) => c.repa_enabled },
@@ -606,7 +603,7 @@ export const S_EXPERIMENTAL_PROBES = [
   { key: 'lulynx_ln_guard', type: 'boolean', label: 'LNGuard 归一化漂移保护', desc: '对训练中可学习的 LayerNorm/RMSNorm 缩放与偏置施加基线锚定；没有可训练 Norm 参数时安全 no-op。默认关闭。', defaultValue: false },
   { key: 'lulynx_ln_lambda', type: 'number', label: 'LNGuard 锚定强度', desc: 'LayerNorm/RMSNorm 参数偏离训练起点时的均方漂移权重。', defaultValue: 0.01, min: 0, step: 0.001, visibleWhen: (c) => c.lulynx_ln_guard },
   { key: 'fera_enabled', type: 'boolean', label: 'FERA 探测', desc: '特征探测。', defaultValue: false },
-  { key: 'fera_gate_init', type: 'number', label: 'FERA gate 初值', desc: 'FERA 门控初始化值', defaultValue: 0.0, step: 0.01, visibleWhen: (c) => c.fera_enabled },
+  { key: 'fera_gate_init', type: 'number', label: 'FeRA gate 初值', desc: 'FeRA 门控初始化值。', defaultValue: 0.0, step: 0.01, visibleWhen: (c) => c.fera_enabled },
   { key: 'fim_scan_enabled', type: 'boolean', label: 'FIM 扫描', desc: 'Fisher 信息矩阵扫描', defaultValue: false },
   { key: 'fim_scan_calib_steps', type: 'number', label: 'FIM 校准步数', desc: '反向传播校准步数', defaultValue: 8, min: 1, step: 1, visibleWhen: (c) => c.fim_scan_enabled },
   { key: 'fim_scan_r_min', type: 'number', label: 'FIM 最小 rank', desc: 'rank 下界', defaultValue: 8, min: 1, step: 1, visibleWhen: (c) => c.fim_scan_enabled },
@@ -686,8 +683,15 @@ export const S_EXPERIMENTAL_PROBES = [
 // ── 诊断与监控 ────────────────────────────────────────────────────────────────
 export const S_DIAGNOSTICS_MONITORING = [
   { key: 'advanced_monitoring_enabled', type: 'boolean', label: '高级监控', desc: '训练过程高级监控（详细指标）。', defaultValue: false },
+  { key: 'audit_mode_override', type: 'select', label: '审计模式覆盖', desc: '手动锁定审计模式；留空按显存自动切换。', defaultValue: '', options: ['', 'pro', 'lite', 'stop'], visibleWhen: (c) => c.advanced_monitoring_enabled },
+  { key: 'attn_entropy_interval', type: 'number', label: '注意力熵采样间隔', desc: '每隔多少步采集一次注意力熵。', defaultValue: 100, min: 10, max: 2000, step: 10, visibleWhen: (c) => c.advanced_monitoring_enabled },
+  { key: 'act_drift_interval', type: 'number', label: '激活漂移采样间隔', desc: '每隔多少步计算激活漂移。', defaultValue: 100, min: 10, max: 2000, step: 10, visibleWhen: (c) => c.advanced_monitoring_enabled },
+  { key: 'act_drift_anchor_layers', type: 'string', label: '漂移锚定层', desc: '逗号分隔的层名关键词；留空自动选择。', defaultValue: '', visibleWhen: (c) => c.advanced_monitoring_enabled },
+  { key: 'hessian_trace_interval', type: 'number', label: 'Hessian 迹采样间隔', desc: '深度诊断模式下的采样步数。', defaultValue: 200, min: 10, max: 2000, step: 10, visibleWhen: (c) => c.deep_diagnostics_enabled },
+  { key: 'manifold_enabled', type: 'boolean', label: '权重流形可视化', desc: '周期性快照 LoRA 权重并可视化优化轨迹。', defaultValue: false, visibleWhen: (c) => c.deep_diagnostics_enabled },
+  { key: 'manifold_snapshot_interval', type: 'number', label: '流形快照间隔（步）', desc: '权重流形开启后，每隔多少步保存一次权重快照。', defaultValue: 20, min: 5, max: 500, step: 5, visibleWhen: (c) => c.manifold_enabled },
   { key: 'advanced_stats_enabled', type: 'boolean', label: '高级统计', desc: '额外训练统计。', defaultValue: false },
-  { key: 'runtime_features_detail', type: 'select', label: '运行时统计输出', desc: '运行时统计输出', defaultValue: 'off', options: [{ value: 'off', label: '不输出（默认）' }, { value: 'compact', label: '精简' }, { value: 'full', label: '完整' }], visibleWhen: (c) => c.advanced_stats_enabled },
+  { key: 'runtime_features_detail', type: 'select', label: '运行时统计输出', desc: '运行时统计的输出详细程度（计时/显存明细开关）。', defaultValue: 'off', options: [{ value: 'off', label: '不输出（默认）' }, { value: 'compact', label: '精简' }, { value: 'full', label: '完整' }], visibleWhen: (c) => c.advanced_stats_enabled },
   { key: 'deep_diagnostics_enabled', type: 'boolean', label: '深度诊断', desc: '深度诊断模式（更多日志/探针）。', defaultValue: false },
   { key: 'layer_monitor_enabled', type: 'boolean', label: '逐层监测', desc: '逐层激活/梯度监测。', defaultValue: false },
   { key: 'layer_monitor_mode', type: 'select', label: '逐层监测模式', desc: 'sampled=抽样统计（更轻）；exact=全量统计（更准更慢）。', defaultValue: 'sampled', options: [
@@ -710,16 +714,16 @@ export const S_AUTO_CONTROLLER = [
   { key: 'ac_enable_smart_early_stopping', type: 'boolean', label: '智能早停', desc: '损失长期不下降时自动停止训练', defaultValue: false, visibleWhen: when('ac_enabled', true) },
   { key: 'ac_early_stopping_patience', type: 'number', label: '早停耐心值（步数）', desc: '多少步内无改善就触发早停', defaultValue: 5, min: 1, step: 1, visibleWhen: all(when('ac_enabled', true), when('ac_enable_smart_early_stopping', true)) },
   { key: 'ac_early_stopping_threshold', type: 'number', label: '早停阈值', desc: '损失改善小于此值视为无改善', defaultValue: 0.001, min: 0, step: 0.0001, visibleWhen: all(when('ac_enabled', true), when('ac_enable_smart_early_stopping', true)) },
-  { key: 'ac_enable_smart_lr_decay', type: 'boolean', label: '智能学习率衰减', desc: '损失平台期自动降低学习率', defaultValue: false, visibleWhen: when('ac_enabled', true) },
+  { key: 'ac_enable_smart_lr_decay', type: 'boolean', label: '智能学习率衰减', desc: '梯度秩或 GSNR 平台期降低学习率；非 1 强度的自动调整模式不叠加此衰减。', defaultValue: false, visibleWhen: when('ac_enabled', true) },
   { key: 'ac_lr_decay_factor', type: 'number', label: '学习率衰减系数', desc: '触发衰减时学习率乘以此系数', defaultValue: 0.5, min: 0.1, max: 1, step: 0.05, visibleWhen: all(when('ac_enabled', true), when('ac_enable_smart_lr_decay', true)) },
   { key: 'ac_max_decays', type: 'number', label: '最大衰减次数', desc: '学习率最多衰减多少次', defaultValue: 3, min: 1, step: 1, visibleWhen: all(when('ac_enabled', true), when('ac_enable_smart_lr_decay', true)) },
   { key: 'ac_enable_auto_te_freeze', type: 'boolean', label: '自动冻结文本编码器', desc: '训练到指定步数后自动冻结 TE', defaultValue: false, visibleWhen: when('ac_enabled', true) },
   { key: 'ac_te_freeze_step', type: 'number', label: 'TE 冻结步数', desc: '在此步数后冻结文本编码器', defaultValue: 0, min: 0, step: 1, visibleWhen: all(when('ac_enabled', true), when('ac_enable_auto_te_freeze', true)) },
   { key: 'ac_enable_dynamic_loss_scaling', type: 'boolean', label: '动态损失缩放', desc: '根据梯度范数动态调整损失缩放', defaultValue: false, visibleWhen: when('ac_enabled', true) },
-  { key: 'ac_enable_auto_lr_adjustment', type: 'boolean', label: '自动学习率调整', desc: '根据目标 GSNR/损失自动调整学习率。', defaultValue: false, visibleWhen: when('ac_enabled', true) },
-  { key: 'ac_auto_lr_scale_factor', type: 'number', label: '自动学习率缩放因子', desc: '自动调整的学习率缩放系数', defaultValue: 1.0, min: 0.1, max: 10, step: 0.1, visibleWhen: all(when('ac_enabled', true), when('ac_enable_auto_lr_adjustment', true)) },
-  { key: 'ac_target_gsnr', type: 'number', label: '目标 GSNR', desc: '目标梯度信噪比', defaultValue: 5.0, min: 0, step: 0.5, visibleWhen: all(when('ac_enabled', true), when('ac_enable_auto_lr_adjustment', true)) },
-  { key: 'ac_target_loss', type: 'number', label: '目标损失', desc: '期望目标损失值（0 不设目标）', defaultValue: 0.0, min: 0, step: 0.01, visibleWhen: all(when('ac_enabled', true), when('ac_enable_auto_lr_adjustment', true)) },
+  { key: 'ac_enable_auto_lr_adjustment', type: 'boolean', label: '自动学习率调整', desc: '强度 1 保留原平台衰减；非 1 按目标 GSNR 调整，不使用目标损失。', defaultValue: false, visibleWhen: when('ac_enabled', true) },
+  { key: 'ac_auto_lr_scale_factor', type: 'number', label: '自动学习率调节强度', desc: '1 保留原平台衰减；0.5 与 2 同强度，低 GSNR 降、高 GSNR 升。单次最多 2 倍，累计 1/16～4 倍，调度器与续训保持倍率。', defaultValue: 1.0, min: 0.1, max: 10, step: 0.1, visibleWhen: all(when('ac_enabled', true), when('ac_enable_auto_lr_adjustment', true)) },
+  { key: 'ac_target_gsnr', type: 'number', label: '目标 GSNR', desc: '需开启审计器；按实测梯度坐标信噪比设置正目标。仅自动调整开启且强度非 1 时生效，目标上下 10% 内不调整。', defaultValue: 5.0, min: 0.001, step: 0.5, visibleWhen: all(when('ac_enabled', true), when('ac_enable_auto_lr_adjustment', true)) },
+  { key: 'ac_target_loss', type: 'number', label: '目标损失', desc: '预留目标损失；当前自动学习率策略不使用此值。', defaultValue: 0.0, min: 0, step: 0.01, visibleWhen: all(when('ac_enabled', true), when('ac_enable_auto_lr_adjustment', true)) },
   { key: 'ac_warmup_steps', type: 'number', label: 'AutoController 预热步数', desc: '多少步后开始生效', defaultValue: 100, min: 0, step: 10, visibleWhen: when('ac_enabled', true) },
   { key: 'ac_loss_plateau_window', type: 'number', label: '损失平台窗口', desc: '判断损失平台的滑动窗口大小（步数）。', defaultValue: 50, min: 10, step: 10, visibleWhen: when('ac_enabled', true) },
   { key: 'ac_clip_drift_warning', type: 'number', label: 'CLIP 漂移警告阈值', desc: 'CLIP 漂移超过此值发出警告', defaultValue: 0.03, min: 0, step: 0.001, visibleWhen: when('ac_enabled', true) },
@@ -821,9 +825,9 @@ export const S_DPO = [
   { key: 'dpo_preference_pair_field', type: 'string', label: 'Rejected target 字段', desc: '弱代理：batch 中显式 rejected velocity target 字段；空=自构造。与真 pair latent 不同。', defaultValue: '', visibleWhen: (c) => c.dpo_enabled },
 ];
 
-// ── SRA2-HASTE 表征对齐储备 ───────────────────────────────────────────────────
+// ── lulynx SRA2 表征对齐储备（历史 sra2_haste_* key）───────────────────────────────────────────────────
 export const S_SRA2_HASTE = [
-  { key: 'sra2_haste_enabled', type: 'boolean', label: 'SRA2-HASTE', desc: '中间层表征对齐（HASTE 调度）。', defaultValue: false },
+  { key: 'sra2_haste_enabled', type: 'boolean', label: 'lulynx SRA2 表征对齐', desc: '中间层表征对齐与本仓 step/decay/plateau heuristic；没有已核验的 HASTE 论文等价关系。', defaultValue: false },
   { key: 'sra2_haste_capture_layers', type: 'string', label: '捕获层后缀', desc: '逗号分隔的 module-name 后缀。', defaultValue: '', visibleWhen: (c) => c.sra2_haste_enabled },
   { key: 'sra2_haste_loss_type', type: 'select', label: '对齐损失类型', desc: 'cosine / l2 / l1。', defaultValue: 'cosine', options: [
     { value: 'cosine', label: 'cosine' },
@@ -851,7 +855,7 @@ export const S_ADAPTIVE_CACHING = [
   { key: 'adaptive_caching_min_blocks_computed', type: 'number', label: '最少计算 block 数', desc: '每步至少完整计算的 block 数（稳定护栏）。', defaultValue: 4, min: 1, step: 1, visibleWhen: (c) => c.adaptive_caching_enabled },
 ];
 
-// ── 预览采样探针（FSG / T-GATE / Spectrum / SmoothCache probe）────────────────
+// ── 预览采样探针（FSG / T-GATE / Spectrum / 误差引导缓存探针）────────────────
 // 与产品入口 sample_cache_seam_* 并存；探针默认关，apply/skip 才真正改行为。
 export const S_SAMPLE_PROBES = [
   { key: 'spd_enabled', type: 'boolean', label: 'SPD 多分辨率预览采样', desc: '仅影响训练预览/推理 sampler，不进入训练 loss；默认关闭。', defaultValue: false },
@@ -874,8 +878,8 @@ export const S_SAMPLE_PROBES = [
   { key: 'sample_spectrum_flex_window', type: 'number', label: 'Spectrum 柔性窗口', desc: '柔性窗口系数', defaultValue: 0.25, min: 0, step: 0.05, visibleWhen: (c) => c.sample_spectrum_probe },
   { key: 'sample_spectrum_warmup_steps', type: 'number', label: 'Spectrum 预热步', desc: '预热采样步数', defaultValue: 6, min: 0, step: 1, visibleWhen: (c) => c.sample_spectrum_probe },
   { key: 'sample_spectrum_stop_caching_step', type: 'number', label: 'Spectrum 停缓存步', desc: '-1=不提前停', defaultValue: -1, min: -1, step: 1, visibleWhen: (c) => c.sample_spectrum_probe },
-  { key: 'sample_smoothcache_probe', type: 'boolean', label: 'SmoothCache 探针', desc: '误差引导缓存探针。', defaultValue: false },
-  { key: 'sample_smoothcache_warmup_steps', type: 'number', label: 'SmoothCache 预热步', desc: '预热采样步数，预热内不跳过', defaultValue: 2, min: 0, step: 1, visibleWhen: (c) => c.sample_smoothcache_probe },
+  { key: 'sample_smoothcache_probe', type: 'boolean', label: '误差引导缓存探针', desc: '相邻 step relative-L1 误差探针。上游 SmoothCache (arXiv:2411.10510) 是推理期按层表征误差离线标定的 schedule；本仓只有运行时误差阈值与预热步，没有 calibration ⇒ 机制不同。', defaultValue: false },
+  { key: 'sample_smoothcache_warmup_steps', type: 'number', label: '误差引导缓存预热步', desc: '预热采样步数，预热内不跳过', defaultValue: 2, min: 0, step: 1, visibleWhen: (c) => c.sample_smoothcache_probe },
 ];
 
 // ── TurboCore ─────────────────────────────────────────────────────────────────
@@ -911,9 +915,14 @@ export const S_STAGED_RESOLUTION_ADVANCED = [
 ];
 
 export const S_SOFT_PROMPT_TUNING = [
-  { key: 'use_allora', type: 'boolean', label: 'ALLoRA 自适应梯度缩放', title: 'use_allora', desc: '优化器 step 中对 LoRA 梯度做 ALLoRA 自适应重缩放。默认关闭（关闭时与基础优化器行为一致）。', defaultValue: false },
-  { key: 'prefix_tuning_length', type: 'number', label: 'Prefix Tuning 长度', title: 'prefix_tuning_length', desc: '可学习 prefix soft-prompt token 数；0=关闭。', defaultValue: 0, min: 0, step: 1 },
-  { key: 'postfix_tuning_length', type: 'number', label: 'Postfix Tuning 长度', title: 'postfix_tuning_length', desc: '可学习 postfix soft-prompt token 数；0=关闭。', defaultValue: 0, min: 0, step: 1 }
+  { key: 'use_allora', type: 'boolean', label: '梯度范数重缩放', title: 'use_allora', desc: '优化器 step 中按参数梯度范数重缩放。默认关闭（关闭时与基础优化器行为一致）。同族上游 ALLoRA (arXiv:2410.09692) 只作用于 LoRA 因子并移除 dropout/scaling，本仓对 optimizer 名下全部参数做 1/(‖param‖₂+eps) ⇒ 不等价。', defaultValue: false },
+  { key: 'prefix_tuning_length', type: 'number', label: '隐状态前缀长度', title: 'prefix_tuning_length', desc: '可学习前缀向量个数；0=关闭。上游 Prefix-Tuning (arXiv:2101.00190) 逐层向 attention 注入 K/V prefix；本仓的 post-hook 晚于 attention，只把可学习向量拼到输出序列上 ⇒ 机制不同。', defaultValue: 0, min: 0, step: 1 },
+  { key: 'postfix_tuning_length', type: 'number', label: '隐状态后缀长度', title: 'postfix_tuning_length', desc: '可学习后缀向量个数；0=关闭。上游 Prefix-Tuning (arXiv:2101.00190) 逐层向 attention 注入 K/V prefix；本仓的 post-hook 晚于 attention，只把可学习向量拼到输出序列上 ⇒ 机制不同。', defaultValue: 0, min: 0, step: 1 },
+  { key: 'lulynx_hidden_state_prompt_init', type: 'select', label: '隐状态前后缀初始化', title: 'lulynx_hidden_state_prompt_init', desc: '前缀/后缀向量初始化方式。', defaultValue: 'normal', options: [
+    { value: 'normal', label: '正态分布 (normal)' },
+    { value: 'uniform', label: '均匀分布 (uniform)' },
+    { value: 'zeros', label: '全零 (zeros)' },
+  ], visibleWhen: (c) => Number(c.prefix_tuning_length || 0) > 0 || Number(c.postfix_tuning_length || 0) > 0 },
 ];
 
 export const S_CONCEPT_EDIT_CURRICULUM = [

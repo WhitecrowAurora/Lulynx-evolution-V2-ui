@@ -1,7 +1,9 @@
 {
   "key": "pattern_loss_high_type",
   "title": "高频损失类型",
+  "title_en": "Pattern Loss High Type",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "l2": "高频用 L2，纹理边缘拉得紧，噪点也罚得重。",
       "l1": "高频 L1，孤立噪点没那么刺。",
       "huber": "高频 Huber，正常二次、离谱线性。"
+    }
+  },
+  "standard_en": {
+    "summary": "The high-frequency loss type: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "l2": "L2 on the high band: texture edges are pulled tight, and noise is punished heavily too.",
+      "l1": "L1 on the high band: isolated noise points sting less.",
+      "huber": "Huber on the high band: quadratic in the normal range, linear for the wild ones."
     }
   },
   "advanced": {},

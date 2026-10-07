@@ -1,0 +1,24 @@
+{
+  "key": "pilot_threshold_low_grad",
+  "title": "Pilot 低梯度阈值",
+  "title_en": "Pilot Low-Grad Threshold",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "平滑后的全局梯度范数低于它时，Pilot 认为训练停滞，往上调学习率（boost 档）。",
+    "effect": "默认 1e-6。设 0 或负数启动报错。",
+    "whenToUse": "梯度经常接近 0、训练“睡着”时用。",
+    "avoidWhen": "阈值调太高会把正常训练误判成停滞。"
+  },
+  "standard_en": {
+    "summary": "When the smoothed global gradient norm drops below this, the Pilot treats training as stalled and raises the learning rate (boost gear).",
+    "effect": "Default 1e-6. 0 or negative fails closed at startup.",
+    "whenToUse": "Use when gradients hover near zero and training falls asleep.",
+    "avoidWhen": "Too high a threshold misreads healthy training as stalled."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

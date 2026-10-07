@@ -1,7 +1,9 @@
 {
   "key": "fused_backward_grad_clip_mode",
   "title": "LOMO 梯度裁剪档位",
+  "title_en": "LOMO gradient clipping tier",
   "category": "优化器 / 进阶",
+  "category_en": "Optimizer / Advanced",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,11 +13,20 @@
   "layers": [
     "优化器层"
   ],
+  "layers_en": [
+    "Optimizer layer"
+  ],
   "standard": {
     "summary": "为 LOMO/AdaLOMO 这类「反传中逐参数就地更新」的融合反传优化器选择梯度裁剪档位：default 单遍反传不裁剪，full 额外跑一次预反传让 max_grad_norm 真正生效。",
     "effect": "default（默认）：保持单遍反传，梯度算完立即用掉并释放，max_grad_norm 拿不到全局梯度范数，裁剪被上报为 not_applied；full：每步先做一次 retain_graph 的 grad_norm 预反传，再做正式反传，裁剪真实生效，但反传开销约翻倍。",
     "whenToUse": "用 LOMO/AdaLOMO 做全参微调且训练发散、确实需要梯度裁剪兜底时选 full；显存和速度优先、训练本身稳定时保持 default。",
     "avoidWhen": "非 LOMO 家族优化器时此项不生效；max_grad_norm ≤ 0 时选 full 也会被自动回落为 default（后端配置校验器会主动降级，避免白付预反传成本）。"
+  },
+  "standard_en": {
+    "summary": "Selects the gradient clipping gear for fused-backward optimizers such as LOMO/AdaLOMO, which update each parameter in place during backward: default keeps a single backward pass with no clipping, full runs an extra pre-backward so max_grad_norm really takes effect.",
+    "effect": "default (the default) keeps the single backward pass -- each gradient is used and freed as soon as it is computed, so max_grad_norm never sees a global gradient norm and clipping is reported as not_applied. full runs a retain_graph grad_norm pre-backward each step before the real backward, so clipping genuinely applies at roughly double the backward cost.",
+    "whenToUse": "Choose full when doing a full finetune with LOMO/AdaLOMO, training diverges, and you really need clipping as a safety net; keep default when VRAM and speed come first and training is stable anyway.",
+    "avoidWhen": "It does nothing outside the LOMO family. With max_grad_norm <= 0, choosing full is downgraded to default automatically (the backend's config validator does this deliberately, so the pre-backward cost is not paid for nothing)."
   },
   "advanced": {
     "principle": "LOMO 的省显存来源是「反传到哪个参数就立即更新并丢掉梯度」，因此永远不存在完整梯度向量，常规 clip_grad_norm 无从谈起。full 档通过先跑一次只求全局梯度范数的反传（retain_graph=True），把范数传给优化器的 clip_grad_norm 属性，第二次反传时按比例缩放更新。",
@@ -23,6 +34,13 @@
     "expectedImpact": "full 档使 LOMO 训练在梯度尖峰时更稳；代价是每步两次反传，吞吐约减半。",
     "tradeoffs": "default 最快最省显存但放弃裁剪保护；full 抵消了 LOMO 的一部分速度优势。运行契约（applied/not_applied）会写进训练报告，便于事后核对裁剪是否真实生效。",
     "codePath": "configs.py:_validate_fused_backward_grad_clip_mode；training_step_optimizer_execution_handler.py:fused_grad_clip 契约组装；optimizer_step_contracts.py 说明 full 档的 grad_norm 预反传语义"
+  },
+  "advanced_en": {
+    "principle": "LOMO's VRAM savings come from \"update and discard the gradient the moment backward reaches a parameter\", so a full gradient vector never exists and conventional clip_grad_norm is impossible. The full tier first runs one backward pass that only computes the global gradient norm (retain_graph=True), passes the norm to the optimizer's clip_grad_norm attribute, and scales the second backward's update proportionally.",
+    "intervention": "Config layer: configs.py's model_validator normalizes the value and downgrades to default when max_grad_norm≤0; execution layer: training_step_optimizer_execution_handler.py assembles fused_grad_clip_contract per tier, reporting fallback_reason=fused_backward_grad_clip_mode_default with remediation hints on the default tier.",
+    "expectedImpact": "The full tier steadies LOMO training under gradient spikes; the cost is two backward passes per step, roughly halving throughput.",
+    "tradeoffs": "default is fastest and most VRAM-friendly but gives up clipping protection; full negates part of LOMO's speed advantage. The run contract (applied/not_applied) is written into the training report for post-hoc verification that clipping really took effect.",
+    "codePath": "configs.py:_validate_fused_backward_grad_clip_mode; training_step_optimizer_execution_handler.py:fused_grad_clip contract assembly; optimizer_step_contracts.py documents the full tier's grad_norm pre-backward semantics"
   },
   "relatedConfigs": [
     "max_grad_norm",

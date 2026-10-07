@@ -1,0 +1,27 @@
+{
+  "key": "region_focus_coverage_max_boost",
+  "title": "覆盖率 boost 上限",
+  "category": "语义区域加权",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "区域覆盖率 boost 上限。",
+    "effect": "欠采样区域权重放大的上限倍数，防止过补。",
+    "whenToUse": "配合 coverage_target 使用，一般 2-4 之间。",
+    "avoidWhen": "过大我们会让小区域过拟合。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

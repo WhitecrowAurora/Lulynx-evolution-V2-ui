@@ -1,0 +1,16 @@
+{
+  "key": "trust_remote_code",
+  "title": "允许远程代码",
+  "category": "DiT / 缓存",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "允许 transformers / diffusers 加载远程自定义代码",
+    "effect": "写入训练配置 trust_remote_code，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

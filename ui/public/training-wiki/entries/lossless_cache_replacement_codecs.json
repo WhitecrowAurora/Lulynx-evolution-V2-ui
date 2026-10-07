@@ -1,7 +1,9 @@
 {
   "key": "lossless_cache_replacement_codecs",
   "title": "压缩编码",
+  "title_en": "Lossless Cache Replacement Codecs",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -16,8 +18,26 @@
       "fast-cache": "快路径组合。"
     }
   },
+  "standard_en": {
+    "summary": "The sidecar compression codec. lz4fast = speed first (the default), zstd1 = compression ratio first, raw = no compression, fast-cache = a combination.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "lz4fast": "Compresses fast, average size.",
+      "zstd1": "Compresses smaller, heavier to encode and decode.",
+      "raw": "No compression.",
+      "fast-cache": "The fast-path combination."
+    }
+  },
   "advanced": {
     "principle": "sidecar 压缩编码。lz4fast=速度优先（默认），zstd1=压缩率优先，raw=不压缩，fast-cache=组合。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Sidecar compression codec. lz4fast = speed-first (default); zstd1 = ratio-first; raw = no compression; fast-cache = combined.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

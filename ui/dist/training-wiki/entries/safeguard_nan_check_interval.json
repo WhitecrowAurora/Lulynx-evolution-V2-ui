@@ -1,7 +1,9 @@
 {
   "key": "safeguard_nan_check_interval",
   "title": "NaN 检查间隔",
+  "title_en": "NaN check interval",
   "category": "训练 / 稳定性",
+  "category_en": "Training / Stability",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -16,9 +18,19 @@
     "whenToUse": "保持默认 1 即可。仅在意极致性能时才考虑设为 5~10。",
     "avoidWhen": "不宜设置过大（>50），否则真实 NaN 崩溃会被忽视很多步。"
   },
+  "standard_en": {
+    "summary": "How many optimisation steps apart the NaN/Inf loss check runs. Default 1 = every step.",
+    "effect": "Raising it lowers the checking overhead slightly, but NaN detection is delayed by the same amount and a few more steps run after a NaN appears.",
+    "whenToUse": "The default 1 is fine. Only consider 5~10 if you care about absolute performance.",
+    "avoidWhen": "It should not be set too high (>50), or a real NaN collapse goes unnoticed for many steps."
+  },
   "advanced": {
     "principle": "每 N 步执行 torch.isnan(loss).any() + torch.isinf(loss).any()，代价约为一次 GPU→CPU 同步（约 0.1ms）。",
     "expectedImpact": "从 1 改为 10，理论节省约 1-5μs/step（几乎不可测量），不值得为此牺牲检测实时性。"
+  },
+  "advanced_en": {
+    "principle": "Every N steps it runs torch.isnan(loss).any() + torch.isinf(loss).any(), costing roughly one GPU→CPU sync (about 0.1ms).",
+    "expectedImpact": "Going from 1 to 10 saves about 1-5μs/step in theory (practically unmeasurable) — not worth sacrificing detection latency for."
   },
   "relatedConfigs": [
     "safeguard_enabled",

@@ -1,7 +1,9 @@
 {
   "key": "data_backend",
   "title": "数据后端（data_backend）",
+  "title_en": "Data backend",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -17,8 +19,27 @@
       "dali": "DALI，要额外环境。"
     }
   },
+  "standard_en": {
+    "summary": "auto/caption still go through CaptionDataset",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "auto": "Still the current, stable CaptionDataset path.",
+      "caption": "CaptionDataset.",
+      "raw": "An old alias that ends up at CaptionDataset anyway.",
+      "webdataset": "WebDataset, still exploratory.",
+      "dali": "DALI, which needs an extra environment."
+    }
+  },
   "advanced": {
     "principle": "auto/caption 当前继续走 CaptionDataset；webdataset 会探测 Python 包与 tar shard ，但暂不替换训练主路径；dali 目前只做预留 profile。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "auto/caption currently keep using CaptionDataset; webdataset probes the Python package and tar shards but does not replace the main training path yet; dali is a reserved profile only.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

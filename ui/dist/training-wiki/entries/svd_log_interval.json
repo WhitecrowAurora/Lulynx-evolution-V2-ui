@@ -1,0 +1,24 @@
+{
+  "key": "svd_log_interval",
+  "title": "SVD 日志间隔",
+  "title_en": "SVD Log Interval",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "每隔多少步把最近一次 SVD 摘要写进日志和运行时遥测。",
+    "effect": "默认 100。如果比检查间隔密，会重复发出最近一次的结果（只发不重算）。设小于 1 启动报错。",
+    "whenToUse": "想让日志/前端更密集地看到 SVD 摘要时调小。",
+    "avoidWhen": "调太小会产生大量日志行。"
+  },
+  "standard_en": {
+    "summary": "Steps between emitting the latest SVD summary into the log and runtime telemetry.",
+    "effect": "Default 100. Denser than the check interval re-emits the latest result (emit-only, no recompute). Below 1 fails closed.",
+    "whenToUse": "Lower it to surface SVD summaries more often in logs/UI.",
+    "avoidWhen": "Very small values flood the log."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

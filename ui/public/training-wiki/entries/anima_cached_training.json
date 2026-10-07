@@ -1,7 +1,9 @@
 {
   "key": "anima_cached_training",
   "title": "Anima 缓存训练模式",
+  "title_en": "Anima Cached Training Mode",
   "category": "速度 / Anima 专用",
+  "category_en": "Speed / Anima-specific",
   "appliesTo": [
     "anima-lora"
   ],
@@ -18,9 +20,19 @@
     "whenToUse": "数据集固定（不动态增强 latent）时强烈推荐开启，尤其是多 epoch 训练（缓存只需生成一次）。",
     "avoidWhen": "数据集有动态增强（每 epoch 随机裁剪/翻转影响 latent）时缓存会不准确；或首次运行磁盘空间不足时。"
   },
+  "standard_en": {
+    "summary": "Anima's cached training mode: VAE-encoded latents and LLM text features are cached to disk beforehand and loaded directly during training, skipping the per-step VAE / LLM inference and speeding training up considerably.",
+    "effect": "The first run pre-generates the cache files, which is slow; after that the VAE / LLM inference time per epoch is close to zero and training gets 20% to 50% faster depending on batch size and model size.",
+    "whenToUse": "Strongly recommended when the dataset is fixed and latents are not augmented dynamically, especially for multi-epoch training, since the cache is only built once.",
+    "avoidWhen": "When the dataset has dynamic augmentation -- random crops or flips per epoch that change the latent -- the cache would be wrong; also when the first run has no disk space for it."
+  },
   "advanced": {
     "principle": "训练前对所有图像运行 VAE encoder 并将 latent 保存为 .npz 文件；对所有 caption 运行 LLM/CLIP 并保存文本 embedding。训练时 DataLoader 直接读取缓存，跳过 VAE/LLM 推理（这部分约占每步时间的 10%~30%）。",
     "tradeoffs": "缓存大小 ≈ 数据量 × latent 维度 × 数据类型大小。对于 1000 张 1024×1024 图像，latent 缓存约 1~5GB；文本缓存较小。lossless 缓存格式（lxfs）可提供更快的读取速度。"
+  },
+  "advanced_en": {
+    "principle": "Before training, runs the VAE encoder on all images and saves latents as .npz files; runs LLM/CLIP on all captions and saves text embeddings. During training the DataLoader reads the caches directly, skipping VAE/LLM inference (roughly 10%~30% of per-step time).",
+    "tradeoffs": "Cache size ≈ data volume × latent dims × dtype size. For 1000 images at 1024×1024, the latent cache is roughly 1~5GB; the text cache is smaller. The lossless cache format (lxfs) offers faster reads."
   },
   "relatedConfigs": [
     "cache_latents",

@@ -1,7 +1,9 @@
 {
   "key": "hard_negative_mining_threshold_multiplier",
   "title": "Threshold 系数",
+  "title_en": "Threshold",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "The threshold coefficient for threshold mode (threshold = the batch's mean loss x this value).",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "Threshold 模式的阈值系数 (threshold = mean_loss × multiplier)。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Threshold coefficient for threshold mode (threshold = mean_loss × multiplier).",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

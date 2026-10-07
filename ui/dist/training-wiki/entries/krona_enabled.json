@@ -1,7 +1,9 @@
 {
   "key": "krona_enabled",
   "title": "KronA（Kronecker LoRA）",
+  "title_en": "KronA Enabled",
   "category": "LoRA 变体 / Kronecker",
+  "category_en": "LoRA Variants / Kronecker",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -17,9 +19,19 @@
     "whenToUse": "实验性功能，追求参数效率的场景。KronA 通常在相同参数量下比标准 LoRA 有更强的表达力。",
     "avoidWhen": "KronA 展开后的 ΔW 是完整大矩阵（out × in），与 LoRA 低秩矩阵不同，实际 VRAM 消耗更高（CDKA 和 KronA 的共同问题）。"
   },
+  "standard_en": {
+    "summary": "(Experimental) KronA (Kronecker Adaptation): expresses the weight update as the Kronecker product of two small matrices, keeping the parameter count low while being more parameter-efficient than standard LoRA.",
+    "effect": "dW = scale x kron(A, B), with A's and B's dimensions set by factor_in/factor_out. With krona_lulynx_gradient_norm_rescale_enabled = True, the lulynx engineering gradient-norm rescale is enabled (no claim of equivalence to the ALLoRA paper), bounding the update magnitude per channel.",
+    "whenToUse": "An experimental feature for cases that chase parameter efficiency. KronA is usually more expressive than standard LoRA at the same parameter count.",
+    "avoidWhen": "KronA's expanded dW is a full large matrix (out x in), unlike LoRA's low-rank pair, so actual VRAM use is higher -- a problem CDKA and KronA share."
+  },
   "advanced": {
     "principle": "KronA: ΔW = scale × kron(w1, w2)，kron(w1, w2)_{ij} = w1_{i//rows2, j//cols2} × w2_{i%rows2, j%cols2}。w1 维度 = (out_f × in_f)，w2 = (out//out_f × in//in_f)，参数量 = out_f×in_f + out//out_f×in//in_f << out×in。ALLoRA 按每输出通道对 ΔW 行向量的范数归一化，防止某些通道的更新幅度过大。",
     "tradeoffs": "Kronecker 积的计算需要 materialize 完整 ΔW（out×in），比 LoRA 的 B@A 需要更多临时内存；但参数量更少，理论上更难过拟合。"
+  },
+  "advanced_en": {
+    "principle": "KronA: ΔW = scale × kron(w1, w2), kron(w1, w2)_{ij} = w1_{i//rows2, j//cols2} × w2_{i%rows2, j%cols2}. w1 dims = (out_f × in_f), w2 = (out//out_f × in//in_f), parameter count = out_f×in_f + out//out_f×in//in_f << out×in. ALLoRA normalizes ΔW row-vector norms per output channel, preventing some channels' updates from being too large.",
+    "tradeoffs": "Computing the Kronecker product must materialize the full ΔW (out×in), needing more temporary memory than LoRA's B@A; but with fewer parameters it is theoretically less prone to overfitting."
   },
   "relatedConfigs": [
     "cdka_enabled",

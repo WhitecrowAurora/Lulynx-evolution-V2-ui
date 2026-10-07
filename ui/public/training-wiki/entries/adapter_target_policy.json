@@ -1,7 +1,9 @@
 {
   "key": "adapter_target_policy",
   "title": "FG-LoRA (前沿梯度/选择性注入)",
+  "title_en": "FG-LoRA Select Strategy",
   "category": "LoRA / FG-LoRA",
+  "category_en": "LoRA / FG-LoRA",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -10,6 +12,9 @@
   ],
   "layers": [
     "适配器层"
+  ],
+  "layers_en": [
+    "Adapter layer"
   ],
   "standard": {
     "summary": "FG-LoRA 不是对所有目标模块使用统一 rank，而是根据每个模块的重要性/梯度贡献选择性分配 rank 或跳过不重要的模块，实现更高效的参数利用。",
@@ -23,11 +28,30 @@
       "cka_selected": "按 CKA 挑，算 profile 贵。"
     }
   },
+  "standard_en": {
+    "summary": "FG-LoRA does not give every target module the same rank: it allocates rank by each module's importance / gradient contribution, or skips unimportant modules altogether, so the parameter budget is used more efficiently.",
+    "effect": "adapter_target_policy='all' is the default traditional injection. 'profiled' picks a subset from a pre-computed profile JSON. 'gradient_selected' and 'cka_selected' choose dynamically from gradient / CKA analysis during training. fg_lora_rank_policy controls the rank allocation strategy.",
+    "whenToUse": "When you want better LoRA quality without raising the total parameter count, or when VRAM is limited and you want to maximise effective capacity.",
+    "avoidWhen": "Start with 'all' when you do not know which modules matter more. 'profiled' mode needs a profile JSON file.",
+    "optionDescriptions": {
+      "all": "Every target module gets an adapter -- the largest parameter count.",
+      "profiled": "Only the important layers, according to a profile made in advance.",
+      "gradient_selected": "Picks layers by gradient; noisy early gradients pick the wrong ones.",
+      "cka_selected": "Picks by CKA; computing the profile is expensive."
+    }
+  },
   "advanced": {
     "principle": "adapter_target_policy 有两种哲学：(1) coupled_prune——选择不重要的模块直接删除，保留的模块按重要性 score 分配 rank，节省显存。(2) orthogonal_redistribute——保留所有模块，只重新分配 rank（如 center_peak 给中间层更多 rank，ascending/descending 给特定方向更多）。fg_lora_rank_conserve_budget=True 确保总 rank 预算不变（纯重分配）。adapter_target_policy_fraction/top_k/min_score 控制模块选择。",
     "intervention": "LoRA 注入阶段根据 policy 决定哪些模块创建 adapter、每个模块的 rank。",
     "expectedImpact": "同等参数量下质量提升 5-15%。或同等质量下参数量减少 20-40%。",
     "tradeoffs": "fg_lora_rank_profile 支持 center_peak/ascending/descending/flat。fg_lora_rank_min/max 控制每层 rank 范围。",
+    "codePath": "core/lulynx_trainer/fg_lora_rank_policy.py → per-layer rank allocation → adapter injection"
+  },
+  "advanced_en": {
+    "principle": "adapter_target_policy has two philosophies: (1) coupled_prune — directly drops unimportant modules and allocates rank to the kept ones by importance score, saving VRAM. (2) orthogonal_redistribute — keeps all modules and only reallocates rank (e.g. center_peak gives middle layers more rank, ascending/descending favor a particular direction). fg_lora_rank_conserve_budget=True keeps the total rank budget fixed (pure reallocation). adapter_target_policy_fraction/top_k/min_score control module selection.",
+    "intervention": "At the LoRA injection stage, the policy decides which modules get adapters and each module's rank.",
+    "expectedImpact": "5-15% quality improvement at equal parameter count, or 20-40% fewer parameters at equal quality.",
+    "tradeoffs": "fg_lora_rank_profile supports center_peak/ascending/descending/flat. fg_lora_rank_min/max bound each layer's rank.",
     "codePath": "core/lulynx_trainer/fg_lora_rank_policy.py → per-layer rank allocation → adapter injection"
   },
   "relatedConfigs": [

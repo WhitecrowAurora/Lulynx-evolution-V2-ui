@@ -1,0 +1,40 @@
+{
+  "key": "sample_difficulty_weighting_mode",
+  "title": "样本难度策略",
+  "category": "统一权重组合",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "样本难度加权策略。",
+    "effect": "provided=直接使用数据侧提供的难度分；其余模式由训练器按 loss 历史估计。",
+    "whenToUse": "数据集已带难度标注时选 provided。",
+    "avoidWhen": "难度估计不稳定时关闭加权。",
+    "optionDescriptions": {
+      "provided": "使用数据侧提供的难度分。"
+    }
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "anima_rematerializable_block_enabled",
   "title": "Anima 可重物化 Block",
+  "title_en": "Block",
   "category": "速度 / Anima 专用",
+  "category_en": "Speed / Anima-specific",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "动态显存需求变化较大时（如不同大小图像交替训练），自适应显存管理比固定 checkpoint 更高效。",
     "avoidWhen": "固定分辨率训练时，静态 gradient_checkpointing 通常更简单有效。"
   },
+  "standard_en": {
+    "summary": "Marks specific DiT blocks as rematerializable, letting the trainer drop their activations under memory pressure and recompute them on demand -- more flexible than plain gradient checkpointing.",
+    "effect": "Caches activations while VRAM is plentiful (fast backward) and discards then recomputes them when VRAM is tight (saves memory), giving adaptive memory management.",
+    "whenToUse": "When memory demand varies a lot during the run (for instance alternating image sizes), where adaptive management beats a fixed checkpoint policy.",
+    "avoidWhen": "At a fixed resolution, static gradient_checkpointing is usually simpler and just as effective."
+  },
   "advanced": {
     "principle": "通过 torch 的 activation recomputation API 标记 block 为 rematerializable，PyTorch 内存管理器在 OOM 风险时自动触发重计算而非直接 OOM。比手动 checkpoint 更细粒度。",
     "tradeoffs": "自适应重物化的决策时机（何时触发重算）不完全可预测，可能在关键时刻引入额外计算延迟。"
+  },
+  "advanced_en": {
+    "principle": "Marks blocks as rematerializable via torch's activation recomputation API, so PyTorch's memory manager triggers recomputation automatically under OOM risk instead of OOMing. Finer-grained than manual checkpointing.",
+    "tradeoffs": "The timing of adaptive rematerialization decisions (when recompute fires) is not fully predictable and can add compute latency at critical moments."
   },
   "relatedConfigs": [
     "gradient_checkpointing",

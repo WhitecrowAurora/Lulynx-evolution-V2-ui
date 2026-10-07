@@ -1,0 +1,16 @@
+{
+  "key": "model_family",
+  "title": "model_family",
+  "category": "Anima few-step 输入",
+  "appliesTo": [
+    "anima-few-step-lora"
+  ],
+  "standard": {
+    "summary": "model_family。默认 anima",
+    "effect": "写入训练配置 model_family，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 anima，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

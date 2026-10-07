@@ -1,0 +1,20 @@
+{
+  "key": "vram_smart_sensing_streaming_enabled",
+  "title": "智能感知流式候选",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-controlnet",
+    "anima-edit-model",
+    "anima-lora",
+    "flux-finetune",
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "允许把流式 offload 列为候选策略。",
+    "effect": "写入训练配置 vram_smart_sensing_streaming_enabled，由训练后端在相应阶段消费。",
+    "whenToUse": "默认开启，适合大多数场景。",
+    "avoidWhen": "排查问题想回到原始行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,41 @@
+{
+  "key": "dit_low_vram_profile",
+  "title": "DiT 低显存档案",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-addift",
+    "anima-controlnet",
+    "anima-edit-model",
+    "anima-finetune",
+    "anima-ileco",
+    "anima-lora",
+    "anima-multi-addift",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "concept-edit",
+    "flux-finetune",
+    "flux2-finetune",
+    "flux2-lora",
+    "hunyuan-dit-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "lumina-finetune",
+    "lumina-lora",
+    "qwen-image-lora",
+    "sd3-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "映射到既有 block residency / module_offload，不是第三套 offload。",
+    "effect": "bounce 已归档。默认 off。",
+    "whenToUse": "默认 off，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

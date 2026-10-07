@@ -1,0 +1,17 @@
+{
+  "key": "rank_comp_target_suffixes",
+  "title": "回补目标后缀",
+  "category": "精度 / 量化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "逗号分隔模块后缀；空=沿用该架构的量化目标表",
+    "effect": "写入训练配置 rank_comp_target_suffixes，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

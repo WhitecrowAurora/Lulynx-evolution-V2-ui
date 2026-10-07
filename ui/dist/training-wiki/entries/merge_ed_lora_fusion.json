@@ -1,0 +1,20 @@
+{
+  "key": "merge_ed_lora_fusion",
+  "title": "ED-LoRA 合并融合",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "导出/合并路径启用梯度下降式权重融合。",
+    "effect": "不进训练循环，只在导出与合并时生效。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

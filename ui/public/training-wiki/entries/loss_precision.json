@@ -1,7 +1,9 @@
 {
   "key": "loss_precision",
   "title": "Loss 精度策略",
+  "title_en": "Loss Strategy",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -14,8 +16,24 @@
       "mixed_loss": "尽量用模型输出精度算 loss，少拷一份 fp32；特别小的 loss 时可能更噪。"
     }
   },
+  "standard_en": {
+    "summary": "fp32_loss keeps the current stable path",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "fp32_loss": "Computes the loss in fp32 and writes it back: cleaner numbers, a little more temporary VRAM.",
+      "mixed_loss": "Computes the loss in the model's output precision where it can, saving an fp32 copy; a very small loss may come out noisier."
+    }
+  },
   "advanced": {
     "principle": "fp32_loss 保持当前稳定路径；mixed_loss 保留模型输出精度计算核心 loss，减少临时 FP32 副本，但属于实验选项。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "fp32_loss keeps the current stable path; mixed_loss computes the core loss keeping the model output precision, reducing temporary FP32 copies, but remains an experimental option.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

@@ -1,12 +1,17 @@
 {
   "key": "concept_edit_timestep_curriculum",
   "title": "概念编辑时间步课程学习",
+  "title_en": "Concept-Edit Timestep Curriculum",
   "category": "训练 / 高级",
+  "category_en": "Training / Advanced",
   "appliesTo": [
     "concept-edit"
   ],
   "layers": [
     "采样层"
+  ],
+  "layers_en": [
+    "Sampling layer"
   ],
   "standard": {
     "summary": "概念编辑训练中把 timestep 采样限制在一个逐步轮换的窄 band 内，按「由易到难」的课程顺序覆盖整个时间步区间。默认关闭（保持全窗口均匀采样）。",
@@ -14,12 +19,25 @@
     "whenToUse": "iLECO/ADDifT 训练不稳定、loss 在不同 timestep 区间震荡剧烈时；步数较多（≥300）足够完成多个 band 循环的任务。",
     "avoidWhen": "极短训练（几十步）时 band 覆盖不完整、部分时间步学不到；已经手动收窄 min/max_timestep 到很小区间时课程化意义不大。"
   },
+  "standard_en": {
+    "summary": "Confines timestep sampling in concept-edit training to a narrow band that rotates step by step, covering the whole timestep range in curriculum order from easy to hard. Off by default (uniform sampling over the full window).",
+    "effect": "Once on, each step samples its timestep only from the current band, and the band advances cyclically with the step count; off, sampling stays uniform over [min_timestep, max_timestep) and nothing changes.",
+    "whenToUse": "When iLECO/ADDifT training is unstable and the loss swings sharply between timestep ranges, and the run is long enough (>=300 steps) to complete several band cycles.",
+    "avoidWhen": "In a very short run (a few dozen steps) the bands are not fully covered and some timesteps never get trained; and there is little point once you have narrowed min/max_timestep to a small range by hand."
+  },
   "advanced": {
     "principle": "不同 timestep 对应不同学习难度与内容（高噪声学结构、低噪声学细节），全窗口随机采样使梯度方向在难度间跳变。band 课程把每步的监督集中在窄区间内，降低批间梯度方差，循环推进保证最终覆盖完整窗口。",
     "intervention": "concept_edit_curriculum.py：读取开关与 concept_edit_timestep_curriculum_buckets（band 数，默认 10，非整数时告警回落）；concept_edit_anima_timestep.py 在采样 timestep 时把均匀抽样限制到当前 band。",
     "expectedImpact": "loss 曲线更平滑、概念编辑方向更一致；同等步数下每个 timestep 区间的有效步数不变，只是重新排序。",
     "tradeoffs": "band 轮换引入训练进程的周期性（loss 有锯齿是正常现象）；与手动 min/max_timestep 组合时 band 在收窄后的窗口内划分。",
     "codePath": "concept_edit_curriculum.py：开关与 band 解析；concept_edit_anima_timestep.py：band 内受限采样；configs_anima.py 定义"
+  },
+  "advanced_en": {
+    "principle": "Different timesteps carry different difficulty and content (high noise learns structure, low noise learns detail); random sampling over the full window makes gradient directions jump between difficulties. A band curriculum concentrates each step's supervision in a narrow interval, lowering inter-batch gradient variance, while cyclic progression guarantees the full window is eventually covered.",
+    "intervention": "concept_edit_curriculum.py: reads the switch and concept_edit_timestep_curriculum_buckets (band count, default 10, warning-and-fallback on non-integers); concept_edit_anima_timestep.py restricts uniform timestep sampling to the current band.",
+    "expectedImpact": "Smoother loss curve and more consistent concept-edit direction; per-interval effective steps per total step count are unchanged, merely reordered.",
+    "tradeoffs": "Band rotation introduces periodicity into training progress (a sawtooth loss is normal); combined with manual min/max_timestep, bands are divided within the narrowed window.",
+    "codePath": "concept_edit_curriculum.py: switch and band parsing; concept_edit_anima_timestep.py: band-restricted sampling; defined in configs_anima.py"
   },
   "relatedConfigs": [
     "concept_edit_timestep_curriculum_buckets",

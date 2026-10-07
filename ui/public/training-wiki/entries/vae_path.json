@@ -1,0 +1,17 @@
+{
+  "key": "vae_path",
+  "title": "VAE 目录",
+  "category": "训练用模型",
+  "appliesTo": [
+    "newbie-lora",
+    "sdxl-turbo-lora"
+  ],
+  "standard": {
+    "summary": "VAE 目录。",
+    "effect": "覆盖底模自带的 VAE，用指定 VAE 编解码。",
+    "whenToUse": "底模 VAE 有已知问题（如 fp16 NaN）时换修复版。",
+    "avoidWhen": "留空用底模 VAE。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

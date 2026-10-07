@@ -1,7 +1,9 @@
 {
   "key": "mixed_resolution_strategy",
   "title": "混合分辨率策略",
+  "title_en": "Mixed Resolution Strategy",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -9,11 +11,20 @@
   "layers": [
     "数据层"
   ],
+  "layers_en": [
+    "Data layer"
+  ],
   "standard": {
     "summary": "enable_mixed_resolution_training 开启时的分辨率组织方式：staged（默认）按 epoch 阶段整体切换分辨率；within_epoch_free_fit 在同一 epoch 内让不同样本使用不同分辨率档位。",
     "effect": "staged 沿用阶段分辨率占比（staged_resolution_ratio_*）按训练进度切档；within_epoch_free_fit 走 Anima free-fit 路线，每个样本从多个分辨率 profile 中分配（数量由 mixed_resolution_profiles_per_sample 决定），且要求缓存 resize_mode=freefit。",
     "whenToUse": "想用「低分辨率先学结构、高分辨率后学细节」的课程式训练用 staged；数据源分辨率差异大、想避免统一缩放损失时用 within_epoch_free_fit（Anima cached 路线）。",
     "avoidWhen": "enable_mixed_resolution_training 关闭时无效；within_epoch_free_fit 有前置校验（策略、freefit 缓存、至少两个活跃 profile），条件不满足会直接报错而非静默降级。"
+  },
+  "standard_en": {
+    "summary": "How resolutions are organised when enable_mixed_resolution_training is on: staged (the default) switches the whole run's resolution by epoch stage; within_epoch_free_fit lets different samples use different resolution tiers within the same epoch.",
+    "effect": "staged follows the stage resolution shares (staged_resolution_ratio_*) and changes gear as training progresses; within_epoch_free_fit takes the Anima free-fit route, assigning each sample among several resolution profiles (how many is set by mixed_resolution_profiles_per_sample), and it requires the cache to have resize_mode=freefit.",
+    "whenToUse": "Use staged for curriculum-style training that learns structure at low resolution first and detail at high resolution later; use within_epoch_free_fit (the Anima cached route) when the source resolutions vary widely and you want to avoid the loss from scaling everything to one size.",
+    "avoidWhen": "No effect while enable_mixed_resolution_training is off; within_epoch_free_fit has preconditions (the strategy, a freefit cache, at least two active profiles) and errors out rather than silently downgrading when they are not met."
   },
   "advanced": {
     "principle": "staged 是时间维度的分辨率课程（不同阶段不同档）；free-fit 是样本维度的混合（同 batch 周期内并存多档），后者保留原始构图信息、避免长图被强裁，需要缓存构建阶段就按 freefit 模式生成多 profile latent。",
@@ -21,6 +32,13 @@
     "expectedImpact": "staged：前期吞吐高、细节在后期补足；free-fit：多分辨率数据利用率高，桶分布更均匀。",
     "tradeoffs": "free-fit 依赖 Anima cached 训练链路且缓存需重建为 freefit 模式；两种策略的显存峰值都由最大档位决定。",
     "codePath": "anima_free_fit_epoch.py:normalize_mixed_resolution_strategy / 前置校验；trainer_config_runtime_profile_mixin.py:_anima_staged_resolution_enabled；configs_dataset.py 定义"
+  },
+  "advanced_en": {
+    "principle": "staged is a resolution curriculum along the time axis (different stages use different profiles); free-fit mixes along the sample axis (multiple profiles coexist within the same batch cycle), which preserves original composition and avoids hard-cropping tall images — it requires the cache build stage to generate multi-profile latents in freefit mode.",
+    "intervention": "anima_free_fit_epoch.py:normalize_mixed_resolution_strategy validates the value strictly (illegal values raise immediately); trainer_config_runtime_profile_mixin.py decides when staged takes effect; trainer_anima_free_fit_epoch_runtime.py writes the strategy into the cache manifest.",
+    "expectedImpact": "staged: high throughput early, details filled in later; free-fit: better multi-resolution data utilization and a more even bucket distribution.",
+    "tradeoffs": "free-fit depends on the Anima cached training chain and requires rebuilding the cache in freefit mode; for both strategies the VRAM peak is set by the largest profile.",
+    "codePath": "anima_free_fit_epoch.py:normalize_mixed_resolution_strategy / pre-validation; trainer_config_runtime_profile_mixin.py:_anima_staged_resolution_enabled; defined in configs_dataset.py"
   },
   "relatedConfigs": [
     "enable_mixed_resolution_training",

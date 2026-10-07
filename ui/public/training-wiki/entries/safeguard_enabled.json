@@ -1,7 +1,9 @@
 {
   "key": "safeguard_enabled",
   "title": "SafeGuard（训练安全防护）",
+  "title_en": "Enable Safe Guard",
   "category": "训练 / 稳定性",
+  "category_en": "Training / Stability",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -13,11 +15,24 @@
     "whenToUse": "推荐长时间无人值守训练时开启，或使用较激进学习率时作为保险。对新角色/新数据集调参阶段特别有用。",
     "avoidWhen": "不需要关闭。SafeGuard 本身对训练速度影响极小，可常驻开启。"
   },
+  "standard_en": {
+    "summary": "A lightweight training safety layer that watches in real time for NaN/Inf or an abnormal spike in the loss and can lower the learning rate or abort training automatically, so the run does not collapse.",
+    "effect": "With this on, the loss is checked every N steps, and a NaN/Inf or a large jump triggers the intervention (lowering the LR or stopping early). It does not affect normal training speed; the check costs almost nothing.",
+    "whenToUse": "Recommended for long unattended runs, or as insurance when you use a fairly aggressive learning rate. Especially useful while tuning for a new character or a new dataset.",
+    "avoidWhen": "There is no need to turn it off. SafeGuard's own effect on training speed is minimal, so it can stay on permanently."
+  },
   "advanced": {
     "principle": "每隔 nan_check_interval 步在 loss 值上执行 torch.isnan/isinf 检查，并维护一个 loss_window_size 大小的滑动窗口检测 spike（当前 loss 超过窗口均值 × spike_threshold 倍判定为 spike）。",
     "intervention": "三档干预：NaN/Inf 计数超 max_nan_count → 停止；spike → 可选自动降低 LR（系数 lr_reduction_factor）；gradients 扫描模式（batched/foreach/legacy）控制梯度异常检测的 CUDA 同步策略。",
     "expectedImpact": "正常训练不受影响；发生 NaN 爆炸时及时止损，避免浪费整个训练 run。",
     "tradeoffs": "每步多一次 loss tensor 检查（几乎无开销）；自动降 LR 会改变训练轨迹，若 loss 抖动属正常范围应适当调高 spike_threshold。",
+    "codePath": "core/lulynx_trainer/training_loop.py → safeguard_check_step → lulynx_trainer/safeguard.py"
+  },
+  "advanced_en": {
+    "principle": "Every nan_check_interval steps it runs torch.isnan/isinf checks on the loss value and maintains a sliding window of loss_window_size to detect spikes (the current loss exceeding the window mean × spike_threshold counts as a spike).",
+    "intervention": "Three intervention tiers: NaN/Inf count above max_nan_count → stop; spike → optional automatic LR reduction (factor lr_reduction_factor); the gradients scan mode (batched/foreach/legacy) controls the CUDA sync strategy for gradient anomaly detection.",
+    "expectedImpact": "Normal training is unaffected; when a NaN explosion happens it stops the bleeding promptly, saving the whole run.",
+    "tradeoffs": "One extra loss tensor check per step (nearly free); auto LR reduction changes the training trajectory, so if the loss jitter is within the normal range raise spike_threshold appropriately.",
     "codePath": "core/lulynx_trainer/training_loop.py → safeguard_check_step → lulynx_trainer/safeguard.py"
   },
   "relatedConfigs": [
@@ -27,5 +42,8 @@
     "safeguard_loss_window_size",
     "safeguard_auto_reduce_lr",
     "safeguard_lr_reduction_factor"
+  ],
+  "aliases": [
+    "lulynx_safeguard_enabled"
   ]
 }

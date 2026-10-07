@@ -1,7 +1,9 @@
 {
   "key": "enable_auditor",
   "title": "LoRA Auditor (SVD 监控)",
+  "title_en": "LoRA Auditor (SVD Monitoring)",
   "category": "训练 / 监控",
+  "category_en": "Training / Monitoring",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,17 +13,33 @@
   "layers": [
     "训练控制层"
   ],
+  "layers_en": [
+    "Training control layer"
+  ],
   "standard": {
     "summary": "Auditor 定期对 LoRA 权重做 SVD 分析，监控 13 项指标（奇异值分布、rank 利用率、谱范数等），检测 rank collapse 和过拟合信号。",
     "effect": "每 auditor_interval 步输出审计报告。如果奇异值集中在少数几个方向，说明 LoRA 的有效 rank 在降低（rank collapse）。",
     "whenToUse": "长训练（>500 步）时推荐开启。高 rank（>64）训练时帮助判断是否实际需要这么高的 rank。",
     "avoidWhen": "短训练或快速实验时不需要。分析有少量计算开销（SVD 分解）。"
   },
+  "standard_en": {
+    "summary": "The auditor runs a periodic SVD analysis of the LoRA weights, tracking 13 metrics (singular value distribution, rank utilisation, spectral norm and so on) to catch rank collapse and signs of overfitting.",
+    "effect": "Prints an audit report every auditor_interval steps. Singular values concentrating in a few directions mean the LoRA's effective rank is falling (rank collapse).",
+    "whenToUse": "Recommended for long runs (>500 steps). At high rank (>64) it helps judge whether that much rank is really needed.",
+    "avoidWhen": "Not needed for short runs or quick experiments. The analysis costs a little computation (the SVD)."
+  },
   "advanced": {
     "principle": "对每个 LoRA 层的 矩阵做 SVD：A = U_A·S_A·V_A^T。分析指标包括：(1) 谱范数 σ_max；(2) 条件数 σ_max/σ_min；(3) 有效 rank = exp(entropy(σ²/||σ||²))；(4) stable rank = ||σ||²/σ_max²。这些指标反映 LoRA 学习到的子空间是否健康。",
     "intervention": "每 N 步在 optimizer.step 后提取 LoRA 权重，做 SVD 分析，写入审计日志。",
     "expectedImpact": "帮助诊断训练问题（如 rank collapse、过拟合）。不直接影响训练过程。",
     "tradeoffs": "enable_dynamic_rank 与 SmartRank 联动——如果有效 rank 远低于 network_dim，自动降低 rank 节省计算。",
+    "codePath": "core/auditor/auditor.py:LoRAAuditor → periodic SVD analysis → audit report"
+  },
+  "advanced_en": {
+    "principle": "SVD on each LoRA layer's matrices: A = U_A·S_A·V_A^T. Metrics analyzed: (1) spectral norm σ_max; (2) condition number σ_max/σ_min; (3) effective rank = exp(entropy(σ²/||σ||²)); (4) stable rank = ||σ||²/σ_max². These reflect whether the LoRA's learned subspace is healthy.",
+    "intervention": "Every N steps, extracts LoRA weights after optimizer.step, runs SVD analysis, and writes the audit log.",
+    "expectedImpact": "Helps diagnose training problems (rank collapse, overfitting). Does not directly affect training.",
+    "tradeoffs": "enable_dynamic_rank links with SmartRank — if the effective rank is far below network_dim, rank is lowered automatically to save compute.",
     "codePath": "core/auditor/auditor.py:LoRAAuditor → periodic SVD analysis → audit report"
   },
   "relatedConfigs": [

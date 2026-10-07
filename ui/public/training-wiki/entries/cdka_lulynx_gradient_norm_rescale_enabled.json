@@ -1,0 +1,20 @@
+{
+  "key": "cdka_lulynx_gradient_norm_rescale_enabled",
+  "title": "CDKA 梯度范数重缩放",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "参数级梯度范数重缩放。",
+    "effect": "同族上游 ALLoRA (arXiv:2410.09692) 只作用于 LoRA 因子并移除 dropout/scaling，本仓对 optimizer 名下全部参数做 1/(‖param‖₂+eps) ⇒ 不等价。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

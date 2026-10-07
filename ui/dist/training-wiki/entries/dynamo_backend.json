@@ -1,7 +1,9 @@
 {
   "key": "dynamo_backend",
   "title": "torch.compile 后端",
+  "title_en": "Torch.compile Backend",
   "category": "速度 / 编译",
+  "category_en": "Speed / Compilation",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -22,9 +24,26 @@
       "cudagraphs": "CUDA Graphs，shape 固定才合适。"
     }
   },
+  "standard_en": {
+    "summary": "Selects the backend torch.compile uses underneath. They differ in speed, compatibility and how easy they are to debug.",
+    "effect": "inductor (the default) = the best performance, generating Triton kernels; cudagraphs = extremely fast at fixed shapes; eager = no compilation, only Dynamo tracing (for debugging); aot_eager = AOT graph capture without compilation (for debugging).",
+    "whenToUse": "Use inductor for production training; try cudagraphs for extra speed when input shapes are fixed; use eager to debug an inductor bug.",
+    "avoidWhen": "eager and aot_eager are debugging backends and give no speed-up.",
+    "optionDescriptions": {
+      "eager": "No compilation backend at all; easy to debug.",
+      "aot_eager": "Traces AOT then runs eager.",
+      "inductor": "The usual high-performance compilation backend.",
+      "cudagraphs": "CUDA Graphs, appropriate only at fixed shapes."
+    }
+  },
   "advanced": {
     "principle": "TorchDynamo 将 Python 计算图降级到 FX 图 → 送入后端：inductor 通过 Triton/CUDA 生成 kernel；cudagraphs 捕获 CUDA stream 命令序列实现零-overhead 重放；eager 直接执行 FX 图。",
     "tradeoffs": "cudagraphs 要求每次前向输入形状完全相同（否则需重新捕获），变长 token 场景不适用；inductor 首次编译慢但一次编译多次复用。",
+    "codePath": "backend/core/lulynx_trainer/trainer_execution_mixin.py → runtime_optimizations_attention.py:708-718"
+  },
+  "advanced_en": {
+    "principle": "TorchDynamo lowers the Python compute graph to an FX graph → handed to the backend: inductor generates kernels via Triton/CUDA; cudagraphs captures the CUDA stream command sequence for zero-overhead replay; eager executes the FX graph directly.",
+    "tradeoffs": "cudagraphs requires identical input shapes every forward (otherwise re-capture is needed) — not applicable to variable-length tokens; inductor compiles slowly the first time but reuses the compilation thereafter.",
     "codePath": "backend/core/lulynx_trainer/trainer_execution_mixin.py → runtime_optimizations_attention.py:708-718"
   },
   "relatedConfigs": [

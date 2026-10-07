@@ -1,0 +1,16 @@
+{
+  "key": "resume_from",
+  "title": "续训 checkpoint",
+  "category": "训练参数",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "可选。",
+    "effect": "加载 scorer_checkpoint.pt 或 scorer_checkpoint_latest.pt 继续训练。",
+    "whenToUse": "路径留空时走默认解析/该功能不启用。",
+    "avoidWhen": "填错路径会在预检或启动时报错，注意路径有效性。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

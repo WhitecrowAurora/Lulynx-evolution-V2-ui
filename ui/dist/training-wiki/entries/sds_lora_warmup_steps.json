@@ -1,0 +1,24 @@
+{
+  "key": "sds_lora_warmup_steps",
+  "title": "SDS-LoRA warmup",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "SVD 重参数前的 plain-LoRA 预热步。",
+    "effect": "写入训练配置 sds_lora_warmup_steps，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 10，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

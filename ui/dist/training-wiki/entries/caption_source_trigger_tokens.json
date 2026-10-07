@@ -1,7 +1,9 @@
 {
   "key": "caption_source_trigger_tokens",
   "title": "触发词",
+  "title_en": "Caption Source Trigger Tokens",
   "category": "数据集 / 图说",
+  "category_en": "Dataset / Captions",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -13,9 +15,19 @@
     "whenToUse": "训练角色/物体 LoRA 时强烈推荐设置唯一触发词（如 lulynx_char、mychar_v1）。风格 LoRA 可以不设置（直接用风格描述词）。",
     "avoidWhen": "触发词不要与常用词（如 woman、cat）重叠，否则会影响模型对常规提示词的响应。"
   },
+  "standard_en": {
+    "summary": "The trigger token prepended to captions during training. Using the same trigger at inference activates the LoRA's concept.",
+    "effect": "Once set, the trigger is added in front of every training sample's caption, so the model ties that token to the concept being trained.",
+    "whenToUse": "Strongly recommended for character or object LoRAs -- pick a unique trigger (lulynx_char, mychar_v1). Style LoRAs can go without one and use style words directly.",
+    "avoidWhen": "Do not let the trigger overlap a common word (woman, cat), or the model's response to ordinary prompts suffers."
+  },
   "advanced": {
     "principle": "触发词被添加到每个图说最前面（或通过特定位置策略插入），优化器学习建立触发词 embedding 与概念视觉特征的关联。训练 TE 时这种关联更紧密。",
     "tradeoffs": "触发词越独特（如造词），干扰越小；但太生僻的词在 CLIP tokenizer 中可能被拆分为多个 subword，影响绑定效果。推荐使用 2~3 个简短常见词的组合（如 lulynx person）。"
+  },
+  "advanced_en": {
+    "principle": "Trigger words are prepended to every caption (or inserted via a positional policy), and the optimizer learns to associate the trigger embedding with the concept's visual features. Training the TE tightens this association further.",
+    "tradeoffs": "The more distinctive the trigger (e.g. a coined word), the less interference; but overly obscure words may split into multiple subwords in the CLIP tokenizer, weakening binding. A combination of 2~3 short common words (e.g. lulynx person) is recommended."
   },
   "relatedConfigs": [
     "caption_extension",

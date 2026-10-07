@@ -1,0 +1,17 @@
+{
+  "key": "anima_block_offload_prefetch_depth",
+  "title": "LRU 预取深度",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "前向/反向各异步预取 N 个 block。",
+    "effect": "写入训练配置 anima_block_offload_prefetch_depth，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 1，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

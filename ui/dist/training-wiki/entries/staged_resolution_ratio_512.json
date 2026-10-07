@@ -1,7 +1,9 @@
 {
   "key": "staged_resolution_ratio_512",
   "title": "分阶段分辨率（512）",
+  "title_en": "512 stage share (%)",
   "category": "训练 / 分辨率",
+  "category_en": "Training / Resolution",
   "appliesTo": [
     "anima-lora"
   ],
@@ -17,9 +19,19 @@
     "whenToUse": "实验性功能。希望在有限步数内兼顾全局结构和细节质量时可以尝试。",
     "avoidWhen": "默认单一固定分辨率对大多数 LoRA 训练已经足够；分阶段分辨率实现复杂，效果需要实验验证。"
   },
+  "standard_en": {
+    "summary": "Staged-resolution training: it controls the share of training allocated to each resolution level (512/768/1024/1536/2048), progressing from low resolution to high.",
+    "effect": "With the ratios set, training cycles through the resolutions: it learns global features quickly at low resolution first, then refines detail at high resolution.",
+    "whenToUse": "An experimental feature. Worth trying when you want both global structure and detail quality within a limited step count.",
+    "avoidWhen": "A single fixed resolution is already enough for most LoRA training; staged resolution is complex to implement and its benefit needs experimental confirmation."
+  },
   "advanced": {
     "principle": "按照配置的比例，每步从不同分辨率 bucket 采样：ratio_512=0.3, ratio_1024=0.7 意味着 30% 步骤用 512 分辨率，70% 用 1024。低分辨率步骤更快（显存占用低），高分辨率步骤更慢但细节更丰富。",
     "tradeoffs": "分阶段分辨率需要所有分辨率的 bucket 预先生成，增加初始化时间；低分辨率训练的梯度对高分辨率特征的作用有限。"
+  },
+  "advanced_en": {
+    "principle": "Per the configured ratios, each step samples from a different resolution bucket: ratio_512=0.3, ratio_1024=0.7 means 30% of steps use 512 resolution and 70% use 1024. Low-resolution steps are faster (lower VRAM use), high-resolution steps slower but richer in detail.",
+    "tradeoffs": "Staged resolution requires buckets for all resolutions to be pre-generated, increasing initialization time; gradients from low-resolution training have limited effect on high-resolution features."
   },
   "relatedConfigs": [
     "resolution",

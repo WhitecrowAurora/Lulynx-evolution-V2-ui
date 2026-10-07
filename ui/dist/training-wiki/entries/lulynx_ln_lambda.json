@@ -1,0 +1,24 @@
+{
+  "key": "lulynx_ln_lambda",
+  "title": "LNGuard 锚定强度",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "LayerNorm/RMSNorm 参数偏离训练起点时的均方漂移权重。",
+    "effect": "写入训练配置 lulynx_ln_lambda，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0.01，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

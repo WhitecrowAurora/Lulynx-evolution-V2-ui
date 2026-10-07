@@ -1,0 +1,20 @@
+{
+  "key": "tc_lora_condition_enabled",
+  "title": "TC-LoRA 条件编码",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "TC-LoRA 条件编码。",
+    "effect": "TC-LoRA（时间条件 LoRA）开启条件编码分支，让 A/B 的生成依赖 timestep 条件。",
+    "whenToUse": "做 timestep 自适应适配器实验时开启。",
+    "avoidWhen": "默认关闭，属前沿储备。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

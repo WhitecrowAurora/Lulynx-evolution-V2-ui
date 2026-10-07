@@ -1,0 +1,24 @@
+{
+  "key": "twinflow_adversarial_weight",
+  "title": "L_adv 权重",
+  "category": "采样与优化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "fake→noise 速度 MSE 权重；需 adversarial 开且 >0 才进 loss。",
+    "effect": "写入训练配置 twinflow_adversarial_weight，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

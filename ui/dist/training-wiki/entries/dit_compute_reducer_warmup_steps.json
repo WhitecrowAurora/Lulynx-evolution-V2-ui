@@ -1,0 +1,18 @@
+{
+  "key": "dit_compute_reducer_warmup_steps",
+  "title": "BlockSkip 预热步数",
+  "category": "DiT / 训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "前 N 个训练 step 不启用 blockskip，只做完整前向。",
+    "effect": "写入训练配置 dit_compute_reducer_warmup_steps，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 4，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

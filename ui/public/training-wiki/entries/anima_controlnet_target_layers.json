@@ -1,7 +1,9 @@
 {
   "key": "anima_controlnet_target_layers",
   "title": "注入层",
+  "title_en": "Layer",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -15,6 +17,18 @@
       "self_attn_qkv": "QKV 都打，控制强。",
       "self_attn_qkv_cross_q": "self QKV 再加 cross 的 Q。",
       "self_attn_q_pre,mlp_fc1_pre": "Q 前和 MLP 前两个点都打，覆盖面大。"
+    }
+  },
+  "standard_en": {
+    "summary": "Injection layers -- the options below, including what changing level does.",
+    "effect": "Switching the value changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default, then change after a short test.",
+    "avoidWhen": "Do not stack several aggressive levels before you understand their effect.",
+    "optionDescriptions": {
+      "self_attn_q": "Only the self-attention Q, so control is on the weaker side.",
+      "self_attn_qkv": "All of Q, K and V, so control is strong.",
+      "self_attn_qkv_cross_q": "Self-attention QKV plus the cross-attention Q.",
+      "self_attn_q_pre,mlp_fc1_pre": "Both the pre-Q and pre-MLP points, so the coverage is wide."
     }
   },
   "advanced": {},

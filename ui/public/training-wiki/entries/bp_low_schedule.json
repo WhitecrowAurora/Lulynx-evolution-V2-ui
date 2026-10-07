@@ -1,7 +1,9 @@
 {
   "key": "bp_low_schedule",
   "title": "BP-low 调度策略",
+  "title_en": "BP-low scheduler Strategy",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -14,12 +16,24 @@
       "cosine": "余弦变。"
     }
   },
+  "standard_en": {
+    "summary": "step = a hard switch (downsample as soon as sigma > threshold); cosine = a smooth cosine transition (smoother but slightly more involved).",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "step": "Changes in steps.",
+      "cosine": "Changes on a cosine."
+    }
+  },
   "advanced": {
     "principle": "step = 阶跃开关（sigma > threshold 直接下采样）；cosine = 余弦平滑过渡（更平滑但稍复杂）。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "step = step switch (downsample directly when sigma > threshold); cosine = smooth cosine transition (smoother but slightly more complex)."
   },
   "relatedConfigs": []
 }

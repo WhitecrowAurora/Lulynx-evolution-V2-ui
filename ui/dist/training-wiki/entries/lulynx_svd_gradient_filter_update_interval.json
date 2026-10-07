@@ -1,0 +1,24 @@
+{
+  "key": "lulynx_svd_gradient_filter_update_interval",
+  "title": "SVD 基更新间隔",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "每 N 个优化器 step 重算投影基。",
+    "effect": "写入训练配置 lulynx_svd_gradient_filter_update_interval，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 100，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

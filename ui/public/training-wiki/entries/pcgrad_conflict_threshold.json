@@ -1,0 +1,24 @@
+{
+  "key": "pcgrad_conflict_threshold",
+  "title": "PCGrad 冲突阈值",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "PCGrad 冲突阈值。",
+    "effect": "多 loss 梯度夹角超过该阈值判定为冲突并投影消除。",
+    "whenToUse": "多目标 loss（如对齐+主 loss）互相拖累时使用。",
+    "avoidWhen": "单 loss 训练不涉及。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

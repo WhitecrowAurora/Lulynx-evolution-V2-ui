@@ -1,0 +1,16 @@
+{
+  "key": "training_vram_profile_control",
+  "title": "training_vram_profile_control",
+  "category": "速度优化",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "training_vram_profile_control。默认 managed",
+    "effect": "写入训练配置 training_vram_profile_control，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 managed，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -136,12 +136,14 @@
   "experimental_attention_profile_enabled": {
     "anima-edit-model": "Windowed attention. auto prefers the attention backend resolved by the launcher/preflight.",
     "anima-lora": "Windowed attention. auto prefers the attention backend resolved by the launcher/preflight.",
-    "newbie-lora": "Windowed attention. auto prefers the attention backend resolved by the launcher/preflight."
+    "newbie-lora": "Windowed attention. auto prefers the attention backend resolved by the launcher/preflight.",
+    "flux-finetune": "Windowed attention. auto prefers the attention backend resolved by the launcher/preflight."
   },
   "experimental_attention_profile_window": {
     "anima-edit-model": "Size of the history window each token may attend to.",
     "anima-lora": "Size of the history window each token may attend to.",
-    "newbie-lora": "Size of the history window each token may attend to."
+    "newbie-lora": "Size of the history window each token may attend to.",
+    "flux-finetune": "Size of the history window each token may attend to."
   },
   "flashattn": {
     "sdxl-addift": "Advanced override: force FlashAttention 2.",
@@ -616,9 +618,6 @@
   },
   "timestep_sampling": {
     "sdxl-turbo-lora": "Timestep sampling strategy for short runs."
-  },
-  "tlora_orthogonal_init": {
-    "sdxl-lora": "T-LoRA: initialize lora_down with an orthogonal matrix so the rank channels start mutually independent instead of correlated."
   },
   "train_batch_size": {
     "anima-addift": "For concept editing, starting with a small batch is recommended.",

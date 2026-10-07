@@ -1,7 +1,9 @@
 {
   "key": "hydralora_routing",
   "title": "Hydra 路由",
+  "title_en": "Hydra",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "top_k": "只算前 K 个专家，K 太小会漏。",
       "soft": "软混合，更顺也更贵。"
+    }
+  },
+  "standard_en": {
+    "summary": "Hydra routing: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "top_k": "Computes only the top K experts; too small a K misses things.",
+      "soft": "A soft mixture: smoother and more expensive."
     }
   },
   "advanced": {},

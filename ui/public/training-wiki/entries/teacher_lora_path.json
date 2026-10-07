@@ -1,0 +1,16 @@
+{
+  "key": "teacher_lora_path",
+  "title": "Teacher LoRA",
+  "category": "SDXL 教师与数据",
+  "appliesTo": [
+    "sdxl-turbo-lora"
+  ],
+  "standard": {
+    "summary": "可选，从已有风格/角色 LoRA 蒸馏 few-step 版本。",
+    "effect": "写入训练配置 teacher_lora_path，由训练后端在相应阶段消费。",
+    "whenToUse": "路径留空时走默认解析/该功能不启用。",
+    "avoidWhen": "填错路径会在预检或启动时报错，注意路径有效性。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

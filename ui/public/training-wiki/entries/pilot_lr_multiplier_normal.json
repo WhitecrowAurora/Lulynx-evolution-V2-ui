@@ -1,0 +1,24 @@
+{
+  "key": "pilot_lr_multiplier_normal",
+  "title": "Pilot 常态倍率",
+  "title_en": "Pilot Normal Multiplier",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "一切正常时学习率倍率的目标值（倍率会慢慢回到它）。",
+    "effect": "默认 1.0 = 不干预。保持 1.0 即可，除非你明确想让整个训练在缩放后的学习率上跑。",
+    "whenToUse": "基本不用动。",
+    "avoidWhen": "设成非 1 倍率会让全训练都跑在缩放后的学习率上。"
+  },
+  "standard_en": {
+    "summary": "The lr multiplier the Pilot relaxes toward when everything looks normal.",
+    "effect": "Default 1.0 = no intervention. Keep 1.0 unless you deliberately want the whole run scaled.",
+    "whenToUse": "Rarely needs changing.",
+    "avoidWhen": "A non-1 value scales the entire run."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

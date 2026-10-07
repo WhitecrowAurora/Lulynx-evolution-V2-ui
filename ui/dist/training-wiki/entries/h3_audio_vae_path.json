@@ -1,0 +1,17 @@
+{
+  "key": "h3_audio_vae_path",
+  "title": "H3 Audio VAE",
+  "category": "MiniMax H3 模型",
+  "appliesTo": [
+    "minimax-h3-finetune",
+    "minimax-h3-lora"
+  ],
+  "standard": {
+    "summary": "H3 Audio VAE 路径。",
+    "effect": "H3 音频侧 VAE 权重路径。",
+    "whenToUse": "音频路线必配。",
+    "avoidWhen": "纯视频训练可留空。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

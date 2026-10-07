@@ -1,7 +1,9 @@
 {
   "key": "alpha_adaln",
   "title": "Modulation Alpha",
+  "title_en": "Modulation Alpha",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,12 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "The alpha of the AdaLN modulation layer.",
+    "whenToUse": "When unsure keep the default, then short-test a few steps before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is on at the same time."
+  },
   "advanced": {
     "principle": "AdaLN 调制层的 alpha。留空 = 用全局 Network Alpha。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Alpha for the AdaLN modulation layers. Empty = use the global Network Alpha."
   },
   "relatedConfigs": []
 }

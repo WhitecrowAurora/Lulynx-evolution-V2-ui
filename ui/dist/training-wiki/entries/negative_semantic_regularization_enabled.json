@@ -1,7 +1,9 @@
 {
   "key": "negative_semantic_regularization_enabled",
   "title": "负面语义正则",
+  "title_en": "Negative Semantic Regularization Enabled",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Uses negative prompts during training as a LoRA-on / LoRA-off difference constraint",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "训练时用负面提示词做 LoRA-on / LoRA-off 差异约束，压制靠近负面语义的 LoRA 增量。默认关闭。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "During training, applies a LoRA-on / LoRA-off difference constraint with the negative prompt, suppressing LoRA increments close to the negative semantics. Off by default.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

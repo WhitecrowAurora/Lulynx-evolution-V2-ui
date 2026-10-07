@@ -1,0 +1,17 @@
+{
+  "key": "easycontrol_v2_target_family",
+  "title": "目标族",
+  "category": "EasyControl",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "EasyControl v2 目标族。",
+    "effect": "限定注入目标的目标模型族（如只注入某家族 DiT）。",
+    "whenToUse": "多底模环境想限定作用面时配置。",
+    "avoidWhen": "留空=自动探测。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

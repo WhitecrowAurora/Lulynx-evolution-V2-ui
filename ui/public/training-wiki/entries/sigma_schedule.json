@@ -1,0 +1,17 @@
+{
+  "key": "sigma_schedule",
+  "title": "Sigma Schedule",
+  "category": "Few-step 目标",
+  "appliesTo": [
+    "anima-few-step-lora",
+    "newbie-few-step-lora"
+  ],
+  "standard": {
+    "summary": "Sigma Schedule。",
+    "effect": "few-step 蒸馏的 sigma 日程；family_default 按模型族默认。",
+    "whenToUse": "有明确调度偏好时覆盖。",
+    "avoidWhen": "默认 family_default。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

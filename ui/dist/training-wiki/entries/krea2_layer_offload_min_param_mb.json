@@ -1,0 +1,17 @@
+{
+  "key": "krea2_layer_offload_min_param_mb",
+  "title": "Layer Offload 最小参数 MB",
+  "category": "Krea2 Block/Layer Offload",
+  "appliesTo": [
+    "krea2-finetune",
+    "krea2-lora"
+  ],
+  "standard": {
+    "summary": "Krea2 Layer Offload 最小参数 MB。",
+    "effect": "小于该体积的层不参与卸载。",
+    "whenToUse": "控制卸载粒度。",
+    "avoidWhen": "默认 0 全部可卸载。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

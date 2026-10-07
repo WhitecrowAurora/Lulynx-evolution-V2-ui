@@ -1,7 +1,9 @@
 {
   "key": "sample_scheduler",
   "title": "采样调度器覆盖",
+  "title_en": "Sampling scheduler override",
   "category": "训练 / 采样",
+  "category_en": "Training / Sampling",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,11 +13,20 @@
   "layers": [
     "预览层"
   ],
+  "layers_en": [
+    "Preview layer"
+  ],
   "standard": {
     "summary": "预览采样器的 scheduler 覆盖字段（如 karras/simple 等噪声调度变体）；留空使用采样器默认调度。",
     "effect": "非空时预览/评估采样按该调度器变体组织噪声步；与 sample_sampler（采样算法）是两个正交维度。配置检查器会对不识别的取值给出提示。",
     "whenToUse": "想让预览图的采样调度与你推理端习惯一致（如 dpmpp_2m + karras）时。",
     "avoidWhen": "enable_preview 关闭时无效；不确定调度器名称时留空，错误取值不会带来收益。"
+  },
+  "standard_en": {
+    "summary": "The scheduler override for the preview sampler (karras/simple and other noise-schedule variants); leave it blank to use the sampler's default schedule.",
+    "effect": "When non-empty, preview/evaluation sampling organises the noise steps by that scheduler variant; it is orthogonal to sample_sampler (the sampling algorithm). The configuration checker flags a value it does not recognise.",
+    "whenToUse": "When you want the preview images' sampling schedule to match what you use at inference (dpmpp_2m + karras, say).",
+    "avoidWhen": "No effect while enable_preview is off; leave it blank when unsure of the scheduler name, as a wrong value brings no benefit."
   },
   "advanced": {
     "principle": "采样器（算法：euler/dpm++ 等）与调度器（sigma 序列的分布：karras/simple 等）共同决定生成轨迹；分开配置让预览尽量复现用户推理端的组合。",
@@ -23,6 +34,13 @@
     "expectedImpact": "只影响预览/评估图的观感一致性，不影响训练。",
     "tradeoffs": "训练器内置采样器对调度器变体的支持面小于专业推理端，不支持的组合会回落默认并提示。",
     "codePath": "configs_monitoring.py:sample_scheduler 定义；training_config_checks.py 取值检查；services/training/router_facade.py 预览键传递"
+  },
+  "advanced_en": {
+    "principle": "The sampler (algorithm: euler/dpm++ etc.) and the scheduler (distribution of the sigma sequence: karras/simple etc.) together determine the generation trajectory; configuring them separately lets previews reproduce the user's inference-side combination as closely as possible.",
+    "intervention": "Defined in configs_monitoring.py (empty = default); warehouse/training_features/training_config_checks.py checks the value; the preview and validation sampling chains (router_facade.py's preview key set, validation_suite) read and pass it.",
+    "expectedImpact": "Only affects the visual consistency of preview/evaluation images, not training.",
+    "tradeoffs": "The trainer's built-in samplers support fewer scheduler variants than a dedicated inference stack; unsupported combinations fall back to the default with a notice.",
+    "codePath": "configs_monitoring.py:sample_scheduler definition; training_config_checks.py value check; services/training/router_facade.py preview key passthrough"
   },
   "relatedConfigs": [
     "sample_sampler",

@@ -1,0 +1,17 @@
+{
+  "key": "t5xxl_max_token_length",
+  "title": "T5XXL 最大 token",
+  "category": "FLUX 专用参数",
+  "appliesTo": [
+    "flux-finetune",
+    "flux-lora"
+  ],
+  "standard": {
+    "summary": "T5-XXL 最大 Token。",
+    "effect": "T5-XXL 编码截断长度；越长显存与缓存越大。",
+    "whenToUse": "长描述数据集加大。",
+    "avoidWhen": "默认按模型上限。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

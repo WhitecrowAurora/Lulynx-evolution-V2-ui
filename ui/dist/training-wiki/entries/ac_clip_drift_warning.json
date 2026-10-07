@@ -1,7 +1,9 @@
 {
   "key": "ac_clip_drift_warning",
   "title": "CLIP 漂移警告阈值",
+  "title_en": "CLIP threshold",
   "category": "训练 / 自动化",
+  "category_en": "Training / Automation",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "监控训练过程中图像-文本对齐是否出现偏移，可作为过拟合的早期信号。",
     "avoidWhen": "不使用 CLIP 评分评估的训练场景可忽略此参数。"
   },
+  "standard_en": {
+    "summary": "CLIP-score drift above this value raises a warning without intervening. Default 0.03.",
+    "effect": "The warning level only writes a log line; it does not adjust the LR or stop training. It exists to draw your attention.",
+    "whenToUse": "To watch whether image-text alignment starts drifting during training -- it can be an early overfitting signal.",
+    "avoidWhen": "Ignore it in runs that do not use CLIP scoring at all."
+  },
   "advanced": {
     "principle": "CLIP 漂移 = |CLIP_score_step_n - CLIP_score_baseline| / CLIP_score_baseline，反映当前生成与训练早期的文本对齐偏差。",
     "tradeoffs": "CLIP 评估本身有计算开销，频繁评估会影响训练速度。"
+  },
+  "advanced_en": {
+    "principle": "CLIP drift = |CLIP_score_step_n - CLIP_score_baseline| / CLIP_score_baseline, reflecting how far current generations have drifted from the text alignment of early training.",
+    "tradeoffs": "CLIP evaluation itself costs compute; frequent evaluation slows training."
   },
   "relatedConfigs": [
     "ac_enabled",

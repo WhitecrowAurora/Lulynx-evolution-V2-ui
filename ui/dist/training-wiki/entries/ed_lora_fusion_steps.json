@@ -1,0 +1,20 @@
+{
+  "key": "ed_lora_fusion_steps",
+  "title": "融合步数",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "ED-LoRA 融合步数。",
+    "effect": "ED-LoRA embedding 分解后的融合训练步数。",
+    "whenToUse": "使用 ED-LoRA 时按收敛情况调整。",
+    "avoidWhen": "未使用 ED-LoRA 时不生效。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

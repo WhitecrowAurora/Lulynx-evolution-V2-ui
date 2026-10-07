@@ -1,13 +1,19 @@
 {
   "key": "anima_block_checkpointing_mode",
   "title": "Anima Selective Checkpoint (选择性检查点)",
+  "title_en": "Checkpointing Mode",
   "category": "显存优化 / DiT",
+  "category_en": "VRAM Optimization / DiT",
   "appliesTo": [
     "anima-lora"
   ],
   "layers": [
     "显存层",
     "DiT Block"
+  ],
+  "layers_en": [
+    "VRAM layer",
+    "DiT block"
   ],
   "standard": {
     "summary": "Anima DiT block checkpoint 的增强模式：'block' 标准模式重算整个 block；'selective' (SAC) 模式只重算轻量级操作（elementwise），保留重型操作（matmul/SDPA）的激活。",
@@ -19,11 +25,28 @@
       "selective": "轻的重算、matmul/SDPA 留着，速度和显存折中。"
     }
   },
+  "standard_en": {
+    "summary": "The enhanced mode for Anima DiT block checkpointing: 'block' is the standard mode and recomputes the whole block; 'selective' (SAC) recomputes only the lightweight elementwise operations and keeps the activations of the heavy ones (matmul / SDPA).",
+    "effect": "anima_block_checkpointing_mode='selective' cuts roughly 30-40% of the recompute cost by skipping the matmul / SDPA recompute while still saving VRAM. anima_block_checkpointing_interval controls checkpointing only every N blocks; with N>1 some blocks are not checkpointed, trading more VRAM for less recompute.",
+    "whenToUse": "In Anima training when VRAM is tight but you do not want to give up speed entirely. selective is the best compromise between the two.",
+    "avoidWhen": "Not needed when VRAM is plentiful. selective uses slightly more VRAM than block.",
+    "optionDescriptions": {
+      "block": "The whole block is recomputed: saves VRAM, heavy backward.",
+      "selective": "The light operations are recomputed and matmul / SDPA are kept -- a compromise between speed and VRAM."
+    }
+  },
   "advanced": {
     "principle": "标准 gradient checkpointing 在 backward 时重算整个 forward。Selective Activation Checkpointing (SAC) 分析每个操作的 FLOPs/内存比：高 FLOPs 操作（matmul/SDPA）保留激活不重算，低 FLOPs 操作（elementwise/layernorm）丢弃激活在 backward 时重算。anima_block_checkpointing_interval=1 表示所有 block 都做 checkpoint；=2 表示每隔一个 block 做 checkpoint（一半 block 保留完整激活）。anima_block_prefetch_mode='adaptive' 根据 blockskip 策略和在线深度自适应调整预取深度。",
     "intervention": "DiT block forward 时根据 mode 决定哪些操作保留激活。",
     "expectedImpact": "selective 比 block 模式速度提升约 15-25%，显存多约 10-15%。interval=2 进一步提速但显存增加更多。",
     "tradeoffs": "interval > 1 时部分 block 不做 checkpoint，显存占用更高。",
+    "codePath": "core/lulynx_trainer/ → Anima DiT block checkpoint → selective SAC / interval control"
+  },
+  "advanced_en": {
+    "principle": "Standard gradient checkpointing recomputes the whole forward during backward. Selective Activation Checkpointing (SAC) analyzes each op's FLOPs/memory ratio: high-FLOPs ops (matmul/SDPA) keep activations without recompute, low-FLOPs ops (elementwise/layernorm) drop activations and recompute them in backward. anima_block_checkpointing_interval=1 checkpoints every block; =2 checkpoints every other block (half the blocks keep full activations). anima_block_prefetch_mode='adaptive' adjusts prefetch depth online based on the blockskip strategy.",
+    "intervention": "At DiT block forward, the mode decides which ops keep activations.",
+    "expectedImpact": "selective is about 15-25% faster than block mode with roughly 10-15% more VRAM. interval=2 speeds up further but increases VRAM more.",
+    "tradeoffs": "With interval > 1 some blocks are not checkpointed, so VRAM usage is higher.",
     "codePath": "core/lulynx_trainer/ → Anima DiT block checkpoint → selective SAC / interval control"
   },
   "relatedConfigs": [

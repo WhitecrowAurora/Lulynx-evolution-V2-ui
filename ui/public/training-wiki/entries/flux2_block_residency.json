@@ -1,7 +1,9 @@
 {
   "key": "flux2_block_residency",
   "title": "FLUX.2 Block 驻留",
+  "title_en": "FLUX.2 Block",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -14,8 +16,24 @@
       "block_offload": "按 block LRU 卸。"
     }
   },
+  "standard_en": {
+    "summary": "resident = everything on the GPU; block_offload = per-block LRU (recommended). Phase A has no layer_offload.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "resident": "Everything on the GPU.",
+      "block_offload": "Offloads per block on an LRU basis."
+    }
+  },
   "advanced": {
     "principle": "resident=全 GPU；block_offload=按 block LRU（推荐）。Phase A 无 layer_offload。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "resident = all-GPU; block_offload = per-block LRU (recommended). Phase A has no layer_offload.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

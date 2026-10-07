@@ -1,0 +1,17 @@
+{
+  "key": "easycontrol_v2_cond_lora_rank",
+  "title": "条件 LoRA Rank",
+  "category": "EasyControl",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "EasyControl v2 的 条件 LoRA Rank，默认 8。",
+    "effect": "EasyControl v2 通用条件训练管线，条件 LoRA Rank 控制条件/缓存/控制图解析或条件丢弃等行为。",
+    "whenToUse": "做控制类条件训练（边缘图、深度图等成对数据）时按数据布局配置。",
+    "avoidWhen": "普通 LoRA 训练不需要任何 easycontrol_v2_* 字段。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

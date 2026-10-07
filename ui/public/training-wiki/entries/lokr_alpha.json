@@ -1,0 +1,16 @@
+{
+  "key": "lokr_alpha",
+  "title": "LoKr Alpha",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "LoKr Alpha。",
+    "effect": "LoKr 缩放系数，常规经验 alpha=rank。",
+    "whenToUse": "与 rank 配套调整。",
+    "avoidWhen": "默认 32。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

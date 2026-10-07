@@ -1,7 +1,9 @@
 {
   "key": "newbie_block_prefetch_mode",
   "title": "Newbie 预取模式（newbie_block_prefetch_mode）",
+  "title_en": "Newbie prefetch mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "original": "预取深度固定。",
       "adaptive": "自适应深度。"
+    }
+  },
+  "standard_en": {
+    "summary": "The Newbie prefetch mode (newbie_block_prefetch_mode); the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "original": "A fixed prefetch depth.",
+      "adaptive": "An adaptive depth."
     }
   },
   "advanced": {},

@@ -1,0 +1,16 @@
+{
+  "key": "imgsz",
+  "title": "输入分辨率",
+  "category": "训练参数",
+  "appliesTo": [
+    "yolo"
+  ],
+  "standard": {
+    "summary": "输入分辨率（scorer）。",
+    "effect": "scorer 输入图像尺寸（YOLO 风格方形边）。",
+    "whenToUse": "与标注训练分辨率一致。",
+    "avoidWhen": "默认 640。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "safeguard_loss_window_size",
   "title": "Loss 窗口大小",
+  "title_en": "Loss Window",
   "category": "训练 / 稳定性",
+  "category_en": "Training / Stability",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -16,9 +18,19 @@
     "whenToUse": "默认 20 适合大多数训练。总步数 <100 时可减小到 5~10；长训练（>1000 步）可增大到 50。",
     "avoidWhen": "窗口过小（<5）时均值不稳定；过大（>100）时基准更新太慢，早期 spike 可能被淹没。"
   },
+  "standard_en": {
+    "summary": "The size of the sliding window (in steps) used to detect a loss spike; the mean inside the window is the baseline for a normal loss. Default 20.",
+    "effect": "The larger the window, the steadier the baseline mean and the less a brief fluctuation moves it; the smaller it is, the more sensitive the baseline is to the recent loss.",
+    "whenToUse": "The default 20 suits most runs. With under 100 total steps you can reduce it to 5~10; on a long run (>1000 steps) you can raise it to 50.",
+    "avoidWhen": "Too small a window (<5) makes the mean unsteady; too large (>100) updates the baseline too slowly and an early spike may be drowned out."
+  },
   "advanced": {
     "principle": "使用循环队列（deque with maxlen=window_size）维护最近 N 步 loss，取均值为 spike 检测基准。",
     "tradeoffs": "窗口大小影响「正常 loss」基准的平滑程度，与 spike_threshold 共同决定触发灵敏度。"
+  },
+  "advanced_en": {
+    "principle": "Uses a circular queue (deque with maxlen=window_size) to maintain the last N steps' loss and takes the mean as the spike detection baseline.",
+    "tradeoffs": "Window size affects how smoothed the \"normal loss\" baseline is, and together with spike_threshold determines trigger sensitivity."
   },
   "relatedConfigs": [
     "safeguard_enabled",

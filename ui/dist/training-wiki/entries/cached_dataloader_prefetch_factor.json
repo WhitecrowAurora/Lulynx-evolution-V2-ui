@@ -1,0 +1,17 @@
+{
+  "key": "cached_dataloader_prefetch_factor",
+  "title": "缓存 prefetch_factor",
+  "category": "DiT / 缓存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "缓存 prefetch 深度。",
+    "effect": "每个 worker 预取的 batch 数；auto 自动。",
+    "whenToUse": "GPU 等数据时加大。",
+    "avoidWhen": "默认 auto。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

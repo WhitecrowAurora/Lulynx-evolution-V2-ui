@@ -1,7 +1,9 @@
 {
   "key": "ema_update_every",
   "title": "EMA 更新间隔",
+  "title_en": "EMA Interval",
   "category": "训练 / 平滑",
+  "category_en": "Training / Smoothing",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -11,11 +13,20 @@
   "layers": [
     "训练控制层"
   ],
+  "layers_en": [
+    "Training control layer"
+  ],
   "standard": {
     "summary": "每隔多少个优化步更新一次 EMA 副本。默认 1 = 每步更新。",
     "effect": "增大该值可略微降低 EMA 的计算开销，但平滑效果会变粗糙（相当于 decay 等效窗口缩短）。",
     "whenToUse": "通常保持默认 1。仅在训练速度瓶颈明确来自 EMA 更新时才考虑增大。",
     "avoidWhen": "不建议设置过大（如 >10），否则 EMA 权重可能在步间剧烈跳动。"
+  },
+  "standard_en": {
+    "summary": "How many optimizer steps pass between EMA updates. The default of 1 updates every step.",
+    "effect": "Raising it shaves a little off the EMA's cost but coarsens the smoothing (equivalent to shortening the decay window).",
+    "whenToUse": "Normally leave it at 1. Consider raising it only when the EMA update is demonstrably the speed bottleneck.",
+    "avoidWhen": "Not recommended too high (>10), or the EMA weights may jump sharply between steps."
   },
   "advanced": {
     "principle": "每 N 步才执行一次 θ_ema = decay × θ_ema + (1-decay) × θ_t，其余步 EMA 权重不变。",
@@ -23,6 +34,13 @@
     "expectedImpact": "N=1 最精确；N>1 节省约 N-1 次 tensor copy，但平滑窗口等效变短。",
     "tradeoffs": "EMA 更新本身开销很小（仅 tensor 加权），通常不是瓶颈，一般不需要调整。",
     "codePath": "core/lulynx_trainer/training_loop.py → EMA update 条件判断"
+  },
+  "advanced_en": {
+    "principle": "Only every N steps executes θ_ema = decay × θ_ema + (1-decay) × θ_t; EMA weights stay unchanged on other steps.",
+    "intervention": "Reduces EMA copy operations, lowering sync overhead for large models.",
+    "expectedImpact": "N=1 is most accurate; N>1 saves N-1 tensor copies but effectively shortens the smoothing window.",
+    "tradeoffs": "The EMA update itself is cheap (just tensor averaging) and rarely the bottleneck — usually no need to adjust.",
+    "codePath": "core/lulynx_trainer/training_loop.py → EMA update condition"
   },
   "relatedConfigs": [
     "ema_enabled",

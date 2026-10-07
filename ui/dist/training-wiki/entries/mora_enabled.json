@@ -1,0 +1,16 @@
+{
+  "key": "mora_enabled",
+  "title": "MoRA",
+  "category": "LoRA 结构变体",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "用 r×r 方阵 + 非学习 compress/decompress 替代 BA。",
+    "effect": "参数量 r²；非 A1111 原生 LoRA 格式，导出为 mora_matrix 或 materialize。与 DoRA/AdaLoRA 互斥。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

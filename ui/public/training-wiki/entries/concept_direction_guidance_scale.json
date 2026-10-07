@@ -1,0 +1,17 @@
+{
+  "key": "concept_direction_guidance_scale",
+  "title": "方向引导强度",
+  "category": "概念方向训练 · Concept Direction",
+  "appliesTo": [
+    "sd-lora",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "控制正负概念预测差异的强度；0 为零引导。",
+    "effect": "写入训练配置 concept_direction_guidance_scale，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 1，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

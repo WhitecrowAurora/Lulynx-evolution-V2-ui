@@ -1,7 +1,9 @@
 {
   "key": "low_vram_profile",
   "title": "低显存档位",
+  "title_en": "Low-VRAM tier",
   "category": "显存 / 自动策略",
+  "category_en": "VRAM / Automatic Policy",
   "appliesTo": [
     "sdxl-lora",
     "anima-lora",
@@ -11,6 +13,11 @@
     "配置编排层",
     "内存层",
     "数据缓存层"
+  ],
+  "layers_en": [
+    "Configuration orchestration layer",
+    "Memory layer",
+    "Data cache layer"
   ],
   "standard": {
     "summary": "低显存档位会把多项省显存开关组合成稳定预设。",
@@ -25,11 +32,30 @@
       "experimental": "实验组合，版本间可能变。"
     }
   },
+  "standard_en": {
+    "summary": "The low-VRAM profiles combine several memory-saving switches into a stable preset.",
+    "effect": "It can lower the chance of OOM, but the more aggressive the profile the slower it usually is.",
+    "whenToUse": "When you have a clear VRAM target such as 16G, 12G or 8G, or when you would rather not tune offload, caching and checkpointing one by one.",
+    "avoidWhen": "Keep it off when VRAM is plentiful, when you need the highest speed, or when you are running a strict benchmark.",
+    "optionDescriptions": {
+      "off": "No low-VRAM combination applied.",
+      "standard_16g": "Aims at roughly 16G; the cutbacks are not severe.",
+      "low_12g": "Aims at roughly 12G; offloading and cutbacks are more active and the speed drop is noticeable.",
+      "very_low_8g": "Aims at roughly 8G; resolution, batch and features are all held in tightly.",
+      "experimental": "An experimental combination that may change between versions."
+    }
+  },
   "advanced": {
     "principle": "档位不是单一技术，而是把 latent/text cache、checkpointing、阶段分辨率、block swap/offload 等策略统一解析。",
     "intervention": "主要介入训练启动前的配置解析，不会在训练中途无提示改参数。",
     "expectedImpact": "能降低峰值显存和启动失败率；真实速度取决于缓存命中、PCIe 带宽、分辨率和 batch。",
     "tradeoffs": "过激档位会把瓶颈转移到 CPU、磁盘或 PCIe；建议从稳定档开始逐步下探。"
+  },
+  "advanced_en": {
+    "principle": "The profile is not a single technique — it uniformly resolves latent/text cache, checkpointing, staged resolution, block swap/offload, and similar policies.",
+    "intervention": "Mainly intervenes in config resolution before training starts; it does not silently change parameters mid-training.",
+    "expectedImpact": "Can lower peak VRAM and startup failure rate; real speed depends on cache hits, PCIe bandwidth, resolution, and batch.",
+    "tradeoffs": "Overly aggressive profiles move the bottleneck to CPU, disk, or PCIe; start from a stable profile and descend step by step."
   },
   "relatedConfigs": [
     "vram_auto_enhance_enabled",

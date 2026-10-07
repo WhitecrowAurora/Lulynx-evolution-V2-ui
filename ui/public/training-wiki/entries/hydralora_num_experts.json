@@ -1,0 +1,20 @@
+{
+  "key": "hydralora_num_experts",
+  "title": "Hydra 专家数",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "HydraLoRA 的 Hydra 专家数，默认 4。",
+    "effect": "HydraLoRA 用共享 A 矩阵 + 多专家 B 矩阵，Hydra 专家数 控制专家数与 top-k 路由。",
+    "whenToUse": "多概念/多风格混合训练想专家化时使用。",
+    "avoidWhen": "单概念训练专家数 >1 只会增加参数量。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,24 @@
+{
+  "key": "fractional_grad_damping_window",
+  "title": "分数梯度窗口",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "分数梯度窗口。",
+    "effect": "分数阶阻尼回看的步数窗口。",
+    "whenToUse": "配合阶数调整记忆长度。",
+    "avoidWhen": "默认 4。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

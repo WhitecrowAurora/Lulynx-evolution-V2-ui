@@ -1,7 +1,9 @@
 {
   "key": "preview_groups",
   "title": "预览测试组",
+  "title_en": "Preview",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "You can add several preview groups and set the seed and LoRA separately for each",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "可添加多组预览，并为每组单独设置 seed、LoRA 权重和延迟启用轮次；例如第三组从第 3 个 epoch 后再开始测试泛化性。留空时仍使用上方旧提示词。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Multiple preview groups can be added, each with its own seed, LoRA weight, and deferred-enable epoch; e.g. a third group starts testing generalization only after epoch 3. When empty, the legacy prompts above are still used.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

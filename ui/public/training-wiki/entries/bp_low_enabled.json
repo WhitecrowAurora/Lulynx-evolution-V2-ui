@@ -1,7 +1,9 @@
 {
   "key": "bp_low_enabled",
   "title": "BP-Low（低范数 backward 传播）",
+  "title_en": "BP-low resolution",
   "category": "前沿储备 / 训练",
+  "category_en": "Frontier Reserve / Training",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "实验性功能。在 safeguard 触发梯度爆炸较频繁时可以叠加尝试。",
     "avoidWhen": "默认关闭。与 max_grad_norm 功能有部分重叠，通常选择其中一种使用。"
   },
+  "standard_en": {
+    "summary": "(Experimental) BP-Low: regularises gradients towards a low norm during backward, which helps head off gradient explosions and steadies training.",
+    "effect": "Applies an extra norm constraint when the gradient norm grows too large -- softer than clip_grad_norm, since it regularises instead of clipping outright.",
+    "whenToUse": "An experimental feature. Worth stacking on when the safeguard reports gradient explosions fairly often.",
+    "avoidWhen": "Off by default. It overlaps in part with max_grad_norm, so normally you pick one or the other."
+  },
   "advanced": {
     "principle": "BP-Low 在每次 backward 后对梯度向量添加 L2 惩罚项，拉向低范数方向，类似于优化器的 weight_decay 但作用于梯度而非权重。",
     "tradeoffs": "低范数约束会减慢梯度方向的变化速度，可能影响收敛速度；但在高 LR 场景下显著提升稳定性。"
+  },
+  "advanced_en": {
+    "principle": "BP-Low adds an L2 penalty to the gradient vector after each backward, pulling it toward low norm — like optimizer weight_decay but acting on gradients rather than weights.",
+    "tradeoffs": "The low-norm constraint slows gradient-direction changes and can affect convergence speed, but markedly improves stability at high LR."
   },
   "relatedConfigs": [
     "max_grad_norm",

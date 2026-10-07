@@ -1,0 +1,24 @@
+{
+  "key": "pilot_max_lr_change_per_step",
+  "title": "Pilot 每步变化上限",
+  "title_en": "Pilot Per-Step Change Cap",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "学习率倍率每一步最多移动的比例（相对当前值）。0.1 = 每步最多 10%。",
+    "effect": "默认 0.1。0 或负数启动时直接报错（0 会让倍率永远锁死在常态值，等于 Pilot 失效）。推荐 0.01–0.1。",
+    "whenToUse": "想让干预更柔和就调小（如 0.05），更果断就调大。",
+    "avoidWhen": "调太大（接近 1）等于没有限速，尖峰一步打穿。"
+  },
+  "standard_en": {
+    "summary": "How far the lr multiplier may move per step, relative to its current value. 0.1 = at most 10 percent per step.",
+    "effect": "Default 0.1. Zero or negative fails closed at startup (0 would pin the multiplier at its neutral value forever, disabling the pilot). Recommended 0.01-0.1.",
+    "whenToUse": "Lower for gentler modulation (e.g. 0.05), raise for more decisive moves.",
+    "avoidWhen": "Near 1.0 there is no rate limit at all."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

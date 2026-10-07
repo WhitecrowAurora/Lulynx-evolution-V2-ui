@@ -1,0 +1,17 @@
+{
+  "key": "dpo_rejected_latent_filename_template",
+  "title": "Rejected 文件名模板",
+  "category": "DPO 偏好对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "须含 {stem}。",
+    "effect": "默认 {stem}_rejected_anima.npz。",
+    "whenToUse": "默认 {stem}_rejected_anima.npz，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,17 @@
+{
+  "key": "dpo_pair_mode",
+  "title": "Pair 模式",
+  "category": "DPO 偏好对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "auto=有 rejected_latents 走 Flow-DPO 否则弱代理；flow=强制真 pair（无则 skip）；proxy=强制弱代理。",
+    "effect": "写入训练配置 dpo_pair_mode，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 auto，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

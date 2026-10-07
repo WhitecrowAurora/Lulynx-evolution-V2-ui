@@ -1,7 +1,9 @@
 {
   "key": "turbo_lora_enabled",
   "title": "TurboLoRA 投机采样",
-  "category": "推理加速 /",
+  "title_en": "TurboLoRA draft contract",
+  "category": "推理加速 / 蒸馏",
+  "category_en": "Inference Acceleration / Distillation",
   "appliesTo": [
     "anima-lora"
   ],
@@ -21,11 +23,20 @@
     "whenToUse": "需要加速 Anima DiT 推理速度时可开启。草稿网络参数量仅 2%，几乎不增加训练开销，推理加速在接受率 >30% 时显著。",
     "avoidWhen": "推理步数极少（<8步）时投机收益有限。检查点加载需指定 turbo_lora_draft_checkpoint 路径。"
   },
+  "standard_en": {
+    "summary": "(Experimental) TurboLoRA speculative sampling: it trains a lightweight draft network (about 2% of the parameters); at inference the draft network guesses K denoising steps blind and the large model verifies them in one batch, so the steps that pass verification come almost free, for a theoretical 2-4x speedup.",
+    "effect": "During each training step the draft network learns the target model's velocity-field distribution automatically, through trajectory-aware distillation plus a cosine direction alignment loss. At inference an adaptive Mahalanobis-distance threshold decides accept or reject, loose at the high-noise end and strict at the low-noise end.",
+    "whenToUse": "Worth enabling when you need faster Anima DiT inference. The draft network is only 2% of the parameters, so it adds almost nothing to training cost, and the inference speedup is significant once the acceptance rate is above 30%.",
+    "avoidWhen": "With a very low inference step count (<8 steps) speculation gains little. Loading a checkpoint requires the turbo_lora_draft_checkpoint path to be set."
+  },
   "relatedConfigs": [
     "distillation_enabled",
     "anyflow_student_steps"
   ],
   "advanced": {
     "principle": "草稿网络盲猜 K 步，大模型批量验证，接受的步骤几乎\"免费\"。理论 2-4× 推理加速。默认关闭。"
+  },
+  "advanced_en": {
+    "principle": "A draft network blind-guesses K steps and the large model verifies them in batch, so accepted steps are nearly \"free\". Theoretically a 2-4x inference speedup. Off by default."
   }
 }

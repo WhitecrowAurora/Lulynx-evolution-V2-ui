@@ -1,0 +1,16 @@
+{
+  "key": "allow_unverified_dataset_start",
+  "title": "允许未完成数据集验证时启动",
+  "category": "数据集设置",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "允许未完成数据集验证时启动（高级）。",
+    "effect": "数据集探测异常或顾问不可用导致的阻断降级为警告，训练可能启动后立刻因数据集问题失败。",
+    "whenToUse": "明确知道数据集没问题、只想绕过阻断时使用。",
+    "avoidWhen": "默认关闭；带着警告跑长训风险自负。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

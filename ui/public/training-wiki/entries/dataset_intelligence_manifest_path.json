@@ -1,0 +1,37 @@
+{
+  "key": "dataset_intelligence_manifest_path",
+  "title": "数据智能 Manifest",
+  "category": "数据集 / 图说",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "数据集智能调度的 数据智能 Manifest，默认 {default}。",
+    "effect": "数据集智能（dataset intelligence）按难度/稀有度组织采样与课程，数据智能 Manifest 控制采样策略或课程阶段参数。",
+    "whenToUse": "数据集样本难度差异大、想自动做由易到难课程时使用。",
+    "avoidWhen": "小数据集或已手动分好阶段时收益有限。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

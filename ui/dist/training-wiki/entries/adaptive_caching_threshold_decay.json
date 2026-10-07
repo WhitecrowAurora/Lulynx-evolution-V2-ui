@@ -1,0 +1,17 @@
+{
+  "key": "adaptive_caching_threshold_decay",
+  "title": "阈值衰减",
+  "category": "DiT / 训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "自适应缓存阈值衰减。",
+    "effect": "阈值随训练进程的衰减速度。",
+    "whenToUse": "训练后期想收紧跳过标准时使用。",
+    "avoidWhen": "默认 0.5。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

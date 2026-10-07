@@ -1,7 +1,9 @@
 {
   "key": "quality_evaluation_validation_seeds",
   "title": "质量评估固定验证 Seeds",
+  "title_en": "Fixed Validation Seeds",
   "category": "质量评估",
+  "category_en": "Quality Assessment",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,11 +13,20 @@
   "layers": [
     "评估层"
   ],
+  "layers_en": [
+    "Evaluation layer"
+  ],
   "standard": {
     "summary": "质量评估生成样本时使用的固定随机种子列表（逗号分隔）。相同 prompt/seed 组合会同时用于基础模型与当前 LoRA，产生严格可比的成对样本。",
     "effect": "填写后评估采样不再随机，每次评估的生成条件完全一致；留空时回落为 sample_seed（或 42）作为基准种子。字符串输入会被解析为整数列表，非法项跳过。",
     "whenToUse": "需要跨 checkpoint 追踪质量变化趋势时必填——随机种子下的分数波动会淹没真实差异；配合 compare_base 做「底模 vs LoRA」增量对比时。",
     "avoidWhen": "quality_evaluation_enabled 关闭时无效；只看单次大致水平、不做对比时可以不填。"
+  },
+  "standard_en": {
+    "summary": "The list of fixed random seeds used when quality evaluation generates samples (comma-separated). The same prompt/seed combination is used for both the base model and the current LoRA, giving strictly comparable paired samples.",
+    "effect": "Once filled in, evaluation sampling is no longer random and every evaluation's generation conditions are identical; left blank it falls back to sample_seed (or 42) as the base seed. A string input is parsed into a list of integers, and invalid items are skipped.",
+    "whenToUse": "Mandatory when you need to track a quality trend across checkpoints -- score fluctuation under random seeds drowns out the real difference; and alongside compare_base for a base-model-against-LoRA comparison.",
+    "avoidWhen": "No effect while quality_evaluation_enabled is off; you can leave it empty when you only want a rough one-off reading and are not comparing."
   },
   "advanced": {
     "principle": "生成式评估的方差主要来自采样随机性；固定 seeds 把评估变成确定性函数，分数差异才能归因于权重变化。种子数 × prompt 数 = 评估样本量，受 quality_evaluation_num_samples 上限截断。",
@@ -23,6 +34,13 @@
     "expectedImpact": "评估可重复性从「±几个点的随机波动」提升到确定性；评估耗时随种子数线性增长。",
     "tradeoffs": "种子太少（1~2 个）评估对该种子的特异性敏感；建议 3~5 个平衡成本与代表性。",
     "codePath": "quality/validation_suite.py：seeds 解析与用例组装；configs_validators.py：字符串→整数列表归一化"
+  },
+  "advanced_en": {
+    "principle": "Generative evaluation variance comes mainly from sampling randomness; fixed seeds turn evaluation into a deterministic function so score differences can be attributed to weight changes. Seed count × prompt count = evaluation sample size, capped by quality_evaluation_num_samples.",
+    "intervention": "configs_validators.py: parses an integer list from either a config block or a flat string; quality/validation_suite.py: seeds = quality_evaluation_validation_seeds or [sample_seed or 42], entering the validation case matrix.",
+    "expectedImpact": "Evaluation repeatability goes from \"±a few points of random fluctuation\" to deterministic; evaluation time grows linearly with seed count.",
+    "tradeoffs": "Too few seeds (1~2) makes the evaluation sensitive to that seed's idiosyncrasies; 3~5 is recommended to balance cost and representativeness.",
+    "codePath": "quality/validation_suite.py: seeds parsing and case assembly; configs_validators.py: string → integer list normalization"
   },
   "relatedConfigs": [
     "quality_evaluation_suite_id",

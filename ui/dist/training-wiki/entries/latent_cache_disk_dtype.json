@@ -1,7 +1,9 @@
 {
   "key": "latent_cache_disk_dtype",
   "title": "Latent 缓存精度",
+  "title_en": "Latent",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -19,8 +21,29 @@
       "float32": "同 fp32。"
     }
   },
+  "standard_en": {
+    "summary": "The precision the latent disk cache is saved at.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "auto": "The cache precision follows the runtime.",
+      "fp16": "A half-precision cache: easier on disk and on IO.",
+      "bf16": "A BF16 cache, with slightly wider range than fp16.",
+      "fp32": "A full-precision cache: large and exact, for comparison.",
+      "float16": "Same as fp16.",
+      "bfloat16": "Same as bf16.",
+      "float32": "Same as fp32."
+    }
+  },
   "advanced": {
     "principle": "latent 磁盘缓存保存精度。auto 会尽量保留运行时 dtype；fp16 更省空间，fp32 兼容性更高。若选择 npz + bf16，后端会自动回退为 fp32",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Precision for the on-disk latent cache. auto keeps the runtime dtype where possible; fp16 saves more space, fp32 is more compatible. With npz + bf16 the backend automatically falls back to fp32.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

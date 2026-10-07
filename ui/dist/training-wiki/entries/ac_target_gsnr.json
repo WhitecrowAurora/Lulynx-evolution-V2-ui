@@ -1,7 +1,9 @@
 {
   "key": "ac_target_gsnr",
   "title": "目标 GSNR",
+  "title_en": "Target GSNR",
   "category": "训练 / 自动化",
+  "category_en": "Training / Automation",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "开启 ac_enable_auto_lr_adjustment 后设置。5.0 是 LoRA 训练的经验合理范围。",
     "avoidWhen": "没有 GSNR 监控经验时不建议调整，保持默认。"
   },
+  "standard_en": {
+    "summary": "Target value for the gradient signal-to-noise ratio (GSNR). Default 5.0.",
+    "effect": "GSNR above the target means the LR can go up; below the target means it should come down.",
+    "whenToUse": "Set it after enabling ac_enable_auto_lr_adjustment. 5.0 is the empirically sensible range for LoRA training.",
+    "avoidWhen": "Keep the default unless you have experience reading GSNR."
+  },
   "advanced": {
     "principle": "GSNR = E[‖g‖²] / Var[g]，刻画梯度的信号质量。工业训练常见范围 1~20。LoRA 由于参数少，GSNR 通常比全量微调高。",
     "tradeoffs": "目标值需要根据实际训练 GSNR 曲线校准，初始建议先观察几次训练的 GSNR 范围再设定目标。"
+  },
+  "advanced_en": {
+    "principle": "GSNR = E[‖g‖²] / Var[g], characterizing gradient signal quality. Common industrial-training range is 1~20. LoRA, with few parameters, usually has higher GSNR than full fine-tuning.",
+    "tradeoffs": "The target must be calibrated against the actual training GSNR curve; initially, observe the GSNR range across a few runs before setting a target."
   },
   "relatedConfigs": [
     "ac_enabled",

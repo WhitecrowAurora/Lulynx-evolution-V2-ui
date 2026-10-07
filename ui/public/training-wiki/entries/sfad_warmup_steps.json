@@ -1,0 +1,24 @@
+{
+  "key": "sfad_warmup_steps",
+  "title": "SFAD 预热步",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "SFAD 预热步。",
+    "effect": "开始丢弃前先纯观察的步数，让重要性估计先收敛。",
+    "whenToUse": "调大可减少早期误剪。",
+    "avoidWhen": "默认 0；建议至少几百步。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

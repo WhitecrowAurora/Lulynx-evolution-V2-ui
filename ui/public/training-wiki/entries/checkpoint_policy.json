@@ -1,7 +1,9 @@
 {
   "key": "checkpoint_policy",
   "title": "Checkpoint 保存策略",
+  "title_en": "Checkpoint Strategy",
   "category": "训练 / 保存",
+  "category_en": "Training / Saving",
   "appliesTo": [
     "anima-lora"
   ],
@@ -18,9 +20,26 @@
       "selective": "轻的重算、重的留着，折中。"
     }
   },
+  "standard_en": {
+    "summary": "Governs how intermediate checkpoints are kept: all = keep every step's checkpoint; best = keep only the lowest validation loss; last_n = keep the most recent N (together with save_last_n_steps).",
+    "effect": "best needs an evaluation set and saves the weights from the best step automatically; last_n is the usual way to save disk space.",
+    "whenToUse": "Choose last_n when disk space is limited (with save_last_n_steps=3-5); with an evaluation set, best picks the optimum for you.",
+    "avoidWhen": "LoRA training usually has no separate evaluation set, so best is of limited use there -- judging by preview images is more practical.",
+    "optionDescriptions": {
+      "auto": "Picks the gradient-checkpointing policy automatically (this is not the save policy).",
+      "off": "No gradient checkpointing: fastest, with the highest peak VRAM.",
+      "full": "Recomputes large spans to buy VRAM; the slowest backward.",
+      "offloaded": "Moves activations to the CPU or similar: easy on the GPU, busy on PCIe.",
+      "selective": "Recomputes the cheap parts and keeps the expensive ones -- a compromise."
+    }
+  },
   "advanced": {
     "principle": "checkpoint_policy 影响 checkpoint 管理器的行为：all = 写出所有 checkpoint 不删除（磁盘空间最大占用）；last_n = 写出后检查总数并删除超限的旧 checkpoint。",
     "tradeoffs": "若训练意外中断，last_n 模式下只能从最近 N 个 checkpoint 恢复；all 模式可以从任意 checkpoint 恢复但磁盘占用极高。"
+  },
+  "advanced_en": {
+    "principle": "checkpoint_policy shapes the checkpoint manager's behavior: all = write every checkpoint and delete none (largest disk usage); last_n = after writing, check the total and delete older checkpoints beyond the limit.",
+    "tradeoffs": "If training is interrupted unexpectedly, last_n mode can only resume from the most recent N checkpoints; all mode can resume from any checkpoint but uses a lot of disk."
   },
   "relatedConfigs": [
     "save_every_n_steps",

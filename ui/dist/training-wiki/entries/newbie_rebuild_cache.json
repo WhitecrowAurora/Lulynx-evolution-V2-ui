@@ -1,0 +1,16 @@
+{
+  "key": "newbie_rebuild_cache",
+  "title": "强制重建缓存",
+  "category": "DiT / 缓存",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "强制重建缓存。",
+    "effect": "忽略已有缓存全部重算。",
+    "whenToUse": "缓存 schema 升级或怀疑缓存损坏时使用。",
+    "avoidWhen": "代价是完整重跑缓存管线。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

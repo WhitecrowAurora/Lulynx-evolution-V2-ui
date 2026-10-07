@@ -1,7 +1,9 @@
 {
   "key": "anima_weighting_scheme",
   "title": "Anima 训练步权重方案",
+  "title_en": "Loss scheme",
   "category": "训练 / Anima 专用",
+  "category_en": "Training / Anima-specific",
   "appliesTo": [
     "anima-lora"
   ],
@@ -18,9 +20,26 @@
       "cosmap": "cosmap 曲线。"
     }
   },
+  "standard_en": {
+    "summary": "Controls how much each noise timestep contributes to the loss. Different schemes point the run at features of different granularity.",
+    "effect": "uniform = every timestep weighs the same (simplest); logit_normal = mid-noise steps weigh more (focus on mid-frequency features); sigma_sqrt = weights follow the square root of sigma (focus on high-noise steps).",
+    "whenToUse": "logit_normal is the recommended scheme for newer architectures such as Anima and Flux; it balances detail against structure. uniform suits debugging, being closest to the plain implementation.",
+    "avoidWhen": "If you are unsure how the schemes differ, keep the default (logit_normal) -- it is already tuned.",
+    "optionDescriptions": {
+      "不加权 (none)": "Every timestep weighs the same.",
+      "sigma_sqrt": "Leans towards high noise: more structure, possibly less detail.",
+      "logit_normal": "A little more mid-noise, so structure and detail come out fairly even.",
+      "mode": "Goes with the mode distribution.",
+      "cosmap": "The cosmap curve."
+    }
+  },
   "advanced": {
     "principle": "训练 loss = E_t[w(t) × ||ε_θ(x_t,t) - ε||²]。权重函数 w(t) 决定模型优化的优先方向：低噪声步（精细细节）vs 高噪声步（全局结构）。logit_normal 通过对数正态分布集中采样中等噪声，等效于关注语义级特征。",
     "tradeoffs": "sigma_sqrt 偏重高噪声步，可能导致全局结构学习更充分但细节稍弱；logit_normal 是当前 SOTA 扩散模型训练的主流选择。"
+  },
+  "advanced_en": {
+    "principle": "Training loss = E_t[w(t) × ||ε_θ(x_t,t) - ε||²]. The weight function w(t) decides what the model optimizes for: low-noise steps (fine detail) vs high-noise steps (global structure). logit_normal concentrates sampling on medium noise via a log-normal distribution, equivalent to focusing on semantic-level features.",
+    "tradeoffs": "sigma_sqrt favors high-noise steps — global structure may be learned more fully at slightly weaker detail; logit_normal is the mainstream choice in current SOTA diffusion training."
   },
   "relatedConfigs": [
     "anima_sigmoid_scale",

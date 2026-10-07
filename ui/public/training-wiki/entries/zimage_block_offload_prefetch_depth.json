@@ -1,0 +1,17 @@
+{
+  "key": "zimage_block_offload_prefetch_depth",
+  "title": "Block Offload 预取深度",
+  "category": "Z-Image Block Offload",
+  "appliesTo": [
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "Z-Image Block Offload 预取深度。",
+    "effect": "Z-Image 块卸载的预取深度。",
+    "whenToUse": "同通用预取逻辑。",
+    "avoidWhen": "默认 2。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

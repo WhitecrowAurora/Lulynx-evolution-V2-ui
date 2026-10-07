@@ -1,0 +1,17 @@
+{
+  "key": "anima_train_cross_attn",
+  "title": "训练 Cross-Attention",
+  "category": "Anima 高级配置",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "是否把 Cross-Attn 注入 LoRA。",
+    "effect": "关 = 不注入，与「Cross-Attn 学习率」可叠加理解。",
+    "whenToUse": "默认开启，适合大多数场景。",
+    "avoidWhen": "排查问题想回到原始行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

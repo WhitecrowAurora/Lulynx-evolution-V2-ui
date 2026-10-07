@@ -1,0 +1,16 @@
+{
+  "key": "wan22_frame_stride",
+  "title": "帧步长",
+  "category": "数据集设置",
+  "appliesTo": [
+    "wan22-ti2v-lora"
+  ],
+  "standard": {
+    "summary": "采样相邻帧的 stride；1=连续帧。",
+    "effect": "写入训练配置 wan22_frame_stride，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 1，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

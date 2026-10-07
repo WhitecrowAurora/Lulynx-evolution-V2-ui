@@ -1,7 +1,9 @@
 {
   "key": "student_scheduler",
   "title": "Student Scheduler（student_scheduler）",
+  "title_en": "Student Scheduler",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "lcm": "学生 LCM。",
       "euler": "学生 Euler。",
       "euler_a": "学生 Euler A。"
+    }
+  },
+  "standard_en": {
+    "summary": "Student Scheduler (student_scheduler); the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "lcm": "Student LCM.",
+      "euler": "Student Euler.",
+      "euler_a": "Student Euler A."
     }
   },
   "advanced": {},

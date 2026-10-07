@@ -1,7 +1,9 @@
 {
   "key": "lulynx_svd_gradient_filter_enabled",
   "title": "lulynx SVD 梯度过滤",
+  "title_en": "lulynx SVD Gradient Filter",
   "category": "优化器 / 实验性",
+  "category_en": "Optimizer / Experimental",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -14,11 +16,20 @@
   "layers": [
     "优化器层"
   ],
+  "layers_en": [
+    "Optimizer layer"
+  ],
   "standard": {
     "summary": "通过双侧 SVD 低秩投影后重构全形状梯度；基础优化器状态仍为全尺寸。这是 lulynx 工程近似，不是 GaLore 的低秩 optimizer-state 路径。",
     "effect": "lulynx_svd_gradient_filter_rank 控制投影子空间维度；update_interval、warmup_steps 与 scale 控制更新频率、启用时机和重构梯度缩放。",
     "whenToUse": "把它当作实验性梯度谱过滤器，在同模型、数据和 seed 下做短程 A/B 后再决定是否保留。",
     "avoidWhen": "rank 很低时不需要。投影可能丢失有用的梯度信息。"
+  },
+  "standard_en": {
+    "summary": "Reconstructs a full-shape gradient after a two-sided SVD low-rank projection; the base optimizer state stays full size. This is a lulynx engineering approximation, not GaLore's low-rank optimizer-state path.",
+    "effect": "lulynx_svd_gradient_filter_rank controls the projection subspace's dimension; update_interval, warmup_steps and scale control the update frequency, when it turns on, and the scaling of the reconstructed gradient.",
+    "whenToUse": "Treat it as an experimental gradient spectrum filter: run a short A/B on the same model, data and seed before deciding whether to keep it.",
+    "avoidWhen": "Not needed when the rank is already very low. The projection may discard useful gradient information."
   },
   "advanced": {
     "principle": "每隔 update_interval 步，对当前梯度矩阵做双侧 SVD 低秩投影，再重构回原始全形状梯度；warmup 与 scale 控制启用时机和幅度。完整 optimizer state 仍由基础优化器维护，因此不能宣称 GaLore 的显存节省。",
@@ -26,6 +37,13 @@
     "expectedImpact": "可能改变梯度的低秩谱结构；当前不承诺显存下降、速度提升或论文等价，效果需本地 A/B。",
     "tradeoffs": "投影基需要定期更新以适应训练动态。",
     "codePath": "svd_grad_projection.py → 双侧低秩投影并重构全形状梯度 → 基础 optimizer.step()"
+  },
+  "advanced_en": {
+    "principle": "Every update_interval steps, applies a two-sided SVD low-rank projection to the current gradient matrix and reconstructs back to the original full-shape gradient; warmup and scale control when and how strongly it engages. The full optimizer state is still maintained by the base optimizer, so GaLore's VRAM savings cannot be claimed.",
+    "intervention": "After backward and before optimizer.step, multiplies the gradient by the projection matrix.",
+    "expectedImpact": "May alter the gradient's low-rank spectral structure; currently no promise of VRAM savings, speedup, or paper equivalence — A/B locally.",
+    "tradeoffs": "The projection basis needs periodic updates to follow training dynamics.",
+    "codePath": "svd_grad_projection.py → two-sided low-rank projection and full-shape reconstruction → base optimizer.step()"
   },
   "relatedConfigs": [
     "lulynx_svd_gradient_filter_rank",

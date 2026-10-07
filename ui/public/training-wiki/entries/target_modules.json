@@ -1,7 +1,9 @@
 {
   "key": "target_modules",
   "title": "目标模块（target_modules）",
+  "title_en": "Target modules",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "unet_attention": "只挂 attention，参数少。",
       "unet_attention_and_mlp": "attention 加 MLP，能改的面更大。"
+    }
+  },
+  "standard_en": {
+    "summary": "Target modules (target_modules); the values below include what changing gear does.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "unet_attention": "Attaches to attention only, so fewer parameters.",
+      "unet_attention_and_mlp": "Attention plus MLP, so a wider surface to change."
     }
   },
   "advanced": {},

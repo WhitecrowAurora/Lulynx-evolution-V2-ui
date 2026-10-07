@@ -1,7 +1,9 @@
 {
   "key": "weighting_scheme",
   "title": "权重策略（weighting_scheme）",
+  "title_en": "Weighting scheme",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -16,6 +18,19 @@
       "logit_normal": "中等噪声更重，语义段吃得多一点。",
       "mode": "跟 mode 时间分布配套的权重。",
       "cosmap": "另一条中频偏好曲线，可跟 logit_normal 对着试。"
+    }
+  },
+  "standard_en": {
+    "summary": "Weighting scheme (weighting_scheme): the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "none": "Every timestep counts the same.",
+      "sigma_sqrt": "Weighted by sqrt(sigma), so the high-noise structural range counts more.",
+      "logit_normal": "Mid noise counts more, so the semantic range gets a little more.",
+      "mode": "The weighting that goes with the mode timestep distribution.",
+      "cosmap": "Another mid-frequency preference curve, worth trying against logit_normal."
     }
   },
   "advanced": {},

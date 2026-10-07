@@ -1,7 +1,9 @@
 {
   "key": "dokr_enabled",
   "title": "DoKr (DoRA + LoKr)",
+  "title_en": "DoKr (DoRA + LoKr)",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "The LoKr Kronecker direction plus DoRA magnitude",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "LoKr Kronecker 方向 + DoRA magnitude 分解。默认关闭， 。比 baseline 收敛快 ~2%。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "LoKr Kronecker direction + DoRA magnitude decomposition. Off by default. Converges ~2% faster than baseline.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

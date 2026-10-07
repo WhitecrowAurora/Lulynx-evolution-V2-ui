@@ -1,0 +1,37 @@
+{
+  "key": "sc_quality_dropout",
+  "title": "SC 质量词丢弃率",
+  "category": "数据集 / 图说",
+  "appliesTo": [
+    "anima-controlnet",
+    "anima-edit-model",
+    "anima-finetune",
+    "anima-lora",
+    "flux-finetune",
+    "flux-lora",
+    "hunyuan-dit-lora",
+    "lumina-finetune",
+    "lumina-lora",
+    "qwen-image-lora",
+    "sd-controlnet",
+    "sd-dreambooth",
+    "sd-ip-adapter",
+    "sd-lora",
+    "sd-textual-inversion",
+    "sd3-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "SC（语义分割 Caption）SC 质量词丢弃率，默认 0。",
+    "effect": "SC 系按语义类别（风格/质量/内容/修饰词）分别做 tag dropout，SC 质量词丢弃率 控制对应类别的丢弃率或保护名单。",
+    "whenToUse": "想让 dropout 只作用于某些语义类别、保护触发词时使用。",
+    "avoidWhen": "只想要普通均匀 dropout 时用 caption_dropout_rate 即可。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

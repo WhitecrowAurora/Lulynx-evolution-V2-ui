@@ -1,7 +1,9 @@
 {
   "key": "albumentations_pipeline",
   "title": "Albumentations JSON",
+  "title_en": "Albumentations JSON",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,12 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "A JSON array, for example:",
+    "whenToUse": "When unsure keep the default, then short-test a few steps before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is on at the same time."
+  },
   "advanced": {
     "principle": "JSON 数组，例如 [{\"name\":\"GaussianBlur\",\"params\":{\"blur_limit\":7,\"p\":0.3}}]。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "JSON array, e.g. [{\"name\":\"GaussianBlur\",\"params\":{\"blur_limit\":7,\"p\":0.3}}]."
   },
   "relatedConfigs": []
 }

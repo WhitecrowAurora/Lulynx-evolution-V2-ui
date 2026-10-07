@@ -1,0 +1,16 @@
+{
+  "key": "sageattn_drift_threshold",
+  "title": "SageAttn 漂移阈值",
+  "category": "编译与执行后端",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "SageAttn 漂移阈值。",
+    "effect": "SageAttention 输出与 SDPA 参考对比的容差，超过判定为漂移。",
+    "whenToUse": "开启漂移检测时按精度要求设定。",
+    "avoidWhen": "默认关闭检测路径。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

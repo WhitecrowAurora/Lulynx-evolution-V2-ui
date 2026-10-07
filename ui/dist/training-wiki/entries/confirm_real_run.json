@@ -1,0 +1,16 @@
+{
+  "key": "confirm_real_run",
+  "title": "确认真实短测",
+  "category": "LCM / Turbo 蒸馏参数",
+  "appliesTo": [
+    "sdxl-turbo-lora"
+  ],
+  "standard": {
+    "summary": "确认真实短测。",
+    "effect": "蒸馏工具的防误触确认开关。",
+    "whenToUse": "确认配置无误后勾选执行。",
+    "avoidWhen": "默认关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

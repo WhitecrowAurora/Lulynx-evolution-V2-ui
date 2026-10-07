@@ -1,7 +1,9 @@
 {
   "key": "pcie_delta_cache_mode",
   "title": "PCIe Delta/Cache 模式（pcie_delta_cache_mode）",
+  "title_en": "PCIe Delta/Cache mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "observe": "只看信号，不改缓存语义。",
       "cache_v0": "开 v0 缓存实验。"
+    }
+  },
+  "standard_en": {
+    "summary": "The PCIe Delta/Cache mode (pcie_delta_cache_mode): the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "observe": "Watches the signals only, without changing cache semantics.",
+      "cache_v0": "Turns the v0 cache experiment on."
     }
   },
   "advanced": {},

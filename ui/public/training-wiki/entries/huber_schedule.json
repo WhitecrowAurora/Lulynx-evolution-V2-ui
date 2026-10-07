@@ -1,7 +1,9 @@
 {
   "key": "huber_schedule",
   "title": "Huber 调度",
+  "title_en": "Huber scheduler",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -16,8 +18,26 @@
       "auto": "运行时自己选日程。"
     }
   },
+  "standard_en": {
+    "summary": "constant keeps it fixed",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "constant": "The Huber threshold stays fixed throughout.",
+      "exponential": "The threshold changes exponentially.",
+      "snr": "It follows the SNR.",
+      "auto": "Chooses its own schedule at runtime."
+    }
+  },
   "advanced": {
     "principle": "constant 固定；exponential/snr 随训练/SNR 变化；auto 按 batch 残差分位估计。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "constant = fixed; exponential/snr vary with training progress/SNR; auto estimates from batch residual quantiles.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

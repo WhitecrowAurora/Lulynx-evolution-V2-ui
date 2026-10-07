@@ -1,7 +1,9 @@
 {
   "key": "coreset_enabled",
   "title": "Coreset 采样 (课程学习)",
+  "title_en": "Coreset",
   "category": "数据集 / 采样",
+  "category_en": "Dataset / Sampling",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,17 +14,34 @@
     "数据层",
     "采样层"
   ],
+  "layers_en": [
+    "Data layer",
+    "Sampling layer"
+  ],
   "standard": {
     "summary": "Coreset 根据每个样本的历史 loss 将其分类为「简单/困难/有毒」，然后按权重采样。简单样本正常采样，困难样本提升权重，有毒样本降低或排除。",
     "effect": "减少离群样本对训练的干扰，提升整体收敛质量。coreset_toxic_weight=0 可以完全排除有毒样本。",
     "whenToUse": "数据集质量不均匀（有些图片标注错误或质量极差）时。长训练（>1000 步）时帮助最大。",
     "avoidWhen": "小数据集（<30 张）时分类统计不够可靠。训练初期（前 500 步）还没有足够 loss 历史。"
   },
+  "standard_en": {
+    "summary": "Coreset classifies each sample as easy, hard or toxic from its loss history, then samples by weight. Easy samples are sampled normally, hard ones get more weight, and toxic ones are down-weighted or excluded.",
+    "effect": "Reduces the interference of outlier samples and improves convergence quality overall. coreset_toxic_weight=0 excludes toxic samples entirely.",
+    "whenToUse": "When dataset quality is uneven (some images mislabelled or very poor). It helps most on long runs (>1000 steps).",
+    "avoidWhen": "On a small dataset (<30 images) the classification statistics are not reliable, and early in a run (the first 500 steps) there is not yet enough loss history."
+  },
   "advanced": {
     "principle": "每 N 步收集每个样本的 loss 值，计算均值和标准差。easy: loss < mean - threshold；hard: loss > mean + threshold；toxic: loss > mean + std * toxic_std_threshold。采样权重 = coreset_easy_weight / coreset_hard_weight / coreset_toxic_weight。",
     "intervention": "替换 DataLoader 的 sampler 为 WeightedBatchSampler。",
     "expectedImpact": "在有 5-10% 噪声样本的数据集上改善显著。干净数据集上效果有限。",
     "tradeoffs": "coreset_report_enabled 生成 top-k 困难/有毒样本报告，帮助人工审核数据质量。",
+    "codePath": "core/training_components/coreset.py:CoresetManager → per-sample loss tracking → weighted sampling"
+  },
+  "advanced_en": {
+    "principle": "Every N steps, collects each sample's loss and computes mean and standard deviation. easy: loss < mean - threshold; hard: loss > mean + threshold; toxic: loss > mean + std * toxic_std_threshold. Sampling weights = coreset_easy_weight / coreset_hard_weight / coreset_toxic_weight.",
+    "intervention": "Replaces the DataLoader's sampler with WeightedBatchSampler.",
+    "expectedImpact": "Marked improvement on datasets with 5-10% noisy samples; limited effect on clean datasets.",
+    "tradeoffs": "coreset_report_enabled generates a top-k hard/toxic sample report to help manual data-quality review.",
     "codePath": "core/training_components/coreset.py:CoresetManager → per-sample loss tracking → weighted sampling"
   },
   "relatedConfigs": [

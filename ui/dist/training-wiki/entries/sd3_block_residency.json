@@ -1,0 +1,16 @@
+{
+  "key": "sd3_block_residency",
+  "title": "SD3 Block 驻留",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "sd3-lora"
+  ],
+  "standard": {
+    "summary": "SD3 MMDiT block 驻留模式。",
+    "effect": "block_offload 需要梯度检查点配对才真省显存。",
+    "whenToUse": "默认 block_offload，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

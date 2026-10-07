@@ -1,0 +1,19 @@
+{
+  "key": "ltx23_block_offload_prefetch_depth",
+  "title": "Block Offload 预取深度",
+  "category": "LTX-2.x Block Offload",
+  "appliesTo": [
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora"
+  ],
+  "standard": {
+    "summary": "LTX Block Offload 预取深度。",
+    "effect": "LTX 块卸载预取深度。",
+    "whenToUse": "同通用预取逻辑。",
+    "avoidWhen": "默认 1。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

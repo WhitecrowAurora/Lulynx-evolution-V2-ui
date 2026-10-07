@@ -1,0 +1,16 @@
+{
+  "key": "sigma_depth_schedule_beta",
+  "title": "σ 深度 β",
+  "category": "σ 深度调度",
+  "appliesTo": [
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "sigmoid 中心（RF σ ∈ [0,1]）。",
+    "effect": "写入训练配置 sigma_depth_schedule_beta，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0.35，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

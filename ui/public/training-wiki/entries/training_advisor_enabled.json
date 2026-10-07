@@ -1,7 +1,9 @@
 {
   "key": "training_advisor_enabled",
   "title": "Training Advisor (训练预检)",
+  "title_en": "Training Advisor (Preflight)",
   "category": "训练 / 预检",
+  "category_en": "Training / Preflight",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,17 +15,33 @@
   "layers": [
     "训练控制层"
   ],
+  "layers_en": [
+    "Training control layer"
+  ],
   "standard": {
     "summary": "训练前自动检查配置合理性、数据集质量、运行时依赖，生成预检报告。提前发现潜在问题，避免训练中途失败。",
     "effect": "检查项包括：学习率范围是否合理、数据集图片数量和格式、缓存是否完整、显存是否够用、优化器兼容性等。报告写入 training_advisor_report.json。",
     "whenToUse": "始终推荐开启（默认就是开启的）。开销极小（训练前一次性检查）。",
     "avoidWhen": "不需要关闭。如果你对配置非常有把握且想跳过预检节省几秒钟。"
   },
+  "standard_en": {
+    "summary": "Automatically checks configuration sanity, dataset quality and runtime dependencies before training, and produces a preflight report. It finds potential problems early and avoids a failure part-way through.",
+    "effect": "The checks include whether the learning rate is in a sensible range, the dataset's image count and formats, whether the cache is complete, whether VRAM is sufficient, optimizer compatibility and so on. The report is written to training_advisor_report.json.",
+    "whenToUse": "Always recommended (and on by default). The overhead is tiny (a one-off check before training).",
+    "avoidWhen": "No need to turn it off. Only if you are very sure of your configuration and want to skip preflight to save a few seconds."
+  },
   "advanced": {
     "principle": "Advisor 在训练启动前执行一系列检查器：(1) ConfigValidator 检查超参数范围；(2) DatasetInspector 统计数据集状态；(3) ResourceChecker 评估 GPU/磁盘资源；(4) RuntimeDependencyChecker 验证包版本。每个检查器产出 Pass/Warn/Fail 结果。",
     "intervention": "在 entry_train.py 的 trainer.train() 调用前执行。Warn 不阻止训练，Fail 阻止训练启动。",
     "expectedImpact": "防止常见配置错误导致的训练失败。不直接影响训练质量。",
     "tradeoffs": "training_advisor_log_summary 在日志中输出简要报告。",
+    "codePath": "core/warehouse/training_features/preflight.py:PreflightOrchestrator → pre-training checks"
+  },
+  "advanced_en": {
+    "principle": "The Advisor runs a series of checkers before training starts: (1) ConfigValidator checks hyperparameter ranges; (2) DatasetInspector profiles dataset state; (3) ResourceChecker assesses GPU/disk resources; (4) RuntimeDependencyChecker verifies package versions. Each checker produces a Pass/Warn/Fail result.",
+    "intervention": "Runs before the trainer.train() call in entry_train.py. Warn does not block training; Fail blocks the training start.",
+    "expectedImpact": "Prevents training failures from common config mistakes. Does not directly affect training quality.",
+    "tradeoffs": "training_advisor_log_summary outputs a brief report to the logs.",
     "codePath": "core/warehouse/training_features/preflight.py:PreflightOrchestrator → pre-training checks"
   },
   "relatedConfigs": [

@@ -1,0 +1,27 @@
+{
+  "key": "region_focus_coverage_target",
+  "title": "覆盖率目标",
+  "category": "语义区域加权",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "区域覆盖率目标。",
+    "effect": "语义区域加权中，希望每个语义区域被采样覆盖的最低比例。",
+    "whenToUse": "小主体（配饰、纹身等）长期欠采样时提高。",
+    "avoidWhen": "主体占比正常时保持默认。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

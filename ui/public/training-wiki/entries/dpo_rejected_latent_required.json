@@ -1,0 +1,17 @@
+{
+  "key": "dpo_rejected_latent_required",
+  "title": "Rejected 侧车必填",
+  "category": "DPO 偏好对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "DPO Rejected 侧车必填。",
+    "effect": "开启后缺 rejected latent 侧车文件的样本直接报错而不是跳过。",
+    "whenToUse": "要求 DPO 数据严格完整时开启。",
+    "avoidWhen": "默认跳过更宽容。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

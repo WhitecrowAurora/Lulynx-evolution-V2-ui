@@ -1,7 +1,9 @@
 {
   "key": "max_train_steps",
   "title": "最大训练步数",
+  "title_en": "Max training Steps",
   "category": "训练 / 基础",
+  "category_en": "Training / Basics",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -18,9 +20,19 @@
     "whenToUse": "推荐用步数控制训练时长（比 epoch 更直观，尤其是数据集大小变化时）。",
     "avoidWhen": "步数过多（>5000步且数据集<50张）容易过拟合，建议配合 EMA 和 safeguard 使用。"
   },
+  "standard_en": {
+    "summary": "Caps the total number of training steps (it takes precedence over the epoch count). One step = one optimizer update (forward + backward + optimizer.step).",
+    "effect": "Typical ranges: a simple style 100~300 steps; a character LoRA 300~1000 steps; a complex concept 1000~3000 steps.",
+    "whenToUse": "Controlling the length by step count is recommended (more direct than epochs, especially when the dataset size changes).",
+    "avoidWhen": "Too many steps (>5000 with a dataset under 50 images) overfits easily; pair it with EMA and safeguard."
+  },
   "advanced": {
     "principle": "有效步数 = max_train_steps / gradient_accumulation_steps（若使用梯度累积）。实际消耗显卡时间正比于步数 × 每步时间。",
     "tradeoffs": "步数 vs epoch：相同数据集大小时等效，但 max_train_steps 在数据集大小变化时更稳定（不随数据量变化而意外变长/变短）。"
+  },
+  "advanced_en": {
+    "principle": "Effective steps = max_train_steps / gradient_accumulation_steps (when using gradient accumulation). Actual GPU time scales with steps × per-step time.",
+    "tradeoffs": "Steps vs epochs: equivalent at a fixed dataset size, but max_train_steps is more stable when dataset size changes (doesn't unexpectedly lengthen or shorten with data volume)."
   },
   "relatedConfigs": [
     "num_train_epochs",

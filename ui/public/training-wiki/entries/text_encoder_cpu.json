@@ -1,0 +1,16 @@
+{
+  "key": "text_encoder_cpu",
+  "title": "文本编码器用 CPU",
+  "category": "HunyuanDiT 参数",
+  "appliesTo": [
+    "hunyuan-dit-lora"
+  ],
+  "standard": {
+    "summary": "文本编码器用 CPU。",
+    "effect": "把文本编码器放到 CPU 执行（编码慢但省显存）。",
+    "whenToUse": "低显存且只训 UNet 时使用。",
+    "avoidWhen": "开启会显著拖慢每个 epoch 的编码。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

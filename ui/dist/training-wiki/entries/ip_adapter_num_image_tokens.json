@@ -1,0 +1,17 @@
+{
+  "key": "ip_adapter_num_image_tokens",
+  "title": "图像 token 数",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "IP-Adapter 图像 token 数。",
+    "effect": "每张参考图压缩成的 token 数量。",
+    "whenToUse": "参考图信息复杂时增加。",
+    "avoidWhen": "默认 16。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

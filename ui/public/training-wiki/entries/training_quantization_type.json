@@ -1,7 +1,9 @@
 {
   "key": "training_quantization_type",
   "title": "训练量化类型（别名）",
+  "title_en": "Training Quantization Type (Alias)",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -12,6 +14,15 @@
     "avoidWhen": "未理解影响前不要叠多个激进档。",
     "optionDescriptions": {
       "qlora_nf4": "训练侧 QLoRA NF4。"
+    }
+  },
+  "standard_en": {
+    "summary": "Training quantization type (an alias); the values below include what changing gear does. The real FP4 switch is a separate field, bnb_4bit_quant_type, which is not among this field's values.",
+    "effect": "Switching the enum changes algorithm or resource behaviour.",
+    "whenToUse": "Prefer the default and switch only after a short test.",
+    "avoidWhen": "Do not stack several aggressive gears before you understand the effect.",
+    "optionDescriptions": {
+      "qlora_nf4": "QLoRA NF4 on the training side."
     }
   },
   "advanced": {},

@@ -1,7 +1,9 @@
 {
   "key": "diff_target_name",
   "title": "目标图后缀",
+  "title_en": "Target-Image Suffix",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "With `_closed_eyes`, for instance, `image.png` is paired with `image_closed_eyes.png`.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "例如 `_closed_eyes`，则会把 `image.png` 与 `image_closed_eyes.png` 配对。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "E.g. `_closed_eyes` pairs `image.png` with `image_closed_eyes.png`.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

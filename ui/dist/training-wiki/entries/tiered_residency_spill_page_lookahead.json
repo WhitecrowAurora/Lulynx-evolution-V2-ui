@@ -1,0 +1,17 @@
+{
+  "key": "tiered_residency_spill_page_lookahead",
+  "title": "预读提前块数",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "提前几个块开始把内存页读回来。",
+    "effect": "缺页是 4KB 且同步的，不预读的话一个块要缺页几万次。",
+    "whenToUse": "默认 2，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,16 @@
+{
+  "key": "edit_mask_field",
+  "title": "编辑 Mask 字段",
+  "category": "Edit 训练",
+  "appliesTo": [
+    "anima-edit-model"
+  ],
+  "standard": {
+    "summary": "编辑 Mask 字段。",
+    "effect": "侧车 JSON 里读取编辑区域 mask 的字段名。",
+    "whenToUse": "只对局部编辑生效时配置。",
+    "avoidWhen": "默认 edit_mask，无 mask 则全图。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

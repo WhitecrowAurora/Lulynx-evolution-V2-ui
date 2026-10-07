@@ -1,7 +1,9 @@
 {
   "key": "multi_scale_loss_type",
   "title": "特征损失类型",
+  "title_en": "Multi Scale Loss Type",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -14,8 +16,24 @@
       "cosine": "多尺度余弦。"
     }
   },
+  "standard_en": {
+    "summary": "MSE = mean squared error; Cosine = cosine distance (1 - cosine_similarity).",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "mse": "Multi-scale MSE.",
+      "cosine": "Multi-scale cosine."
+    }
+  },
   "advanced": {
     "principle": "MSE=均方误差; Cosine=余弦距离 (1 - cosine_similarity)。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "MSE = mean squared error; Cosine = cosine distance (1 - cosine_similarity).",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

@@ -1,7 +1,9 @@
 {
   "key": "vram_auto_enhance_enabled",
   "title": "VRAM 自动增强 & 智能感知",
+  "title_en": "VRAM",
   "category": "速度 / 显存",
+  "category_en": "Speed / VRAM",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -19,9 +21,19 @@
     "whenToUse": "显存使用不稳定（偶发 OOM）或想自动诊断 VRAM 瓶颈时开启。",
     "avoidWhen": "稳定训练（从不 OOM）时无需开启监控，有额外开销。"
   },
+  "standard_en": {
+    "summary": "The VRAM auto-enhancement suite: smart sensing (smart_sensing) measures actual VRAM use over the first few training steps and recommends optimisations automatically; vram_swap_to_ram allows inactive weights to be swapped out to CPU RAM; startup_guard prevents an OOM at training startup.",
+    "effect": "smart_sensing monitors VRAM over baseline_steps steps and detects slowdown_ratio (the slowdown signal when VRAM utilisation passes a threshold), with delta_cache recording the incremental change. startup_guard allocates test memory before training starts, to head off an OOM blow-up during compilation or on the first step.",
+    "whenToUse": "Turn it on when VRAM use is unstable (occasional OOM) or when you want an automatic diagnosis of the VRAM bottleneck.",
+    "avoidWhen": "Stable training (never OOMs) needs no monitoring, and it carries some overhead."
+  },
   "advanced": {
     "principle": "smart_sensing 在 baseline_steps 步内以更频繁的频率记录 VRAM 使用量，建立基线；之后转为定期检查（配合 peak_vram_diagnostics）。vram_swap_to_ram 通过 torch.cuda.memory 的 reserved → system RAM 策略实现（非 offload，只是内存管理策略）。anima_block_residency_min_params 控制块驻留 GPU 所需的最小参数量（小块不值得常驻 GPU）。",
     "tradeoffs": "频繁 VRAM 监控有约 0.5~1ms/step 额外开销；startup_guard 分配的测试内存在验证后立即释放，但可能延迟训练开始约 10~30 秒。"
+  },
+  "advanced_en": {
+    "principle": "smart_sensing records VRAM usage at a more frequent rate for baseline_steps to build a baseline; afterwards it switches to periodic checks (paired with peak_vram_diagnostics). vram_swap_to_ram is implemented through the torch.cuda.memory reserved → system RAM strategy (not offload, just a memory management strategy). anima_block_residency_min_params controls the minimum parameter count for a block to stay resident on GPU (small blocks are not worth keeping resident).",
+    "tradeoffs": "Frequent VRAM monitoring adds about 0.5~1ms/step overhead; the test memory allocated by startup_guard is freed immediately after verification, but may delay training start by about 10~30 seconds."
   },
   "relatedConfigs": [
     "peak_vram_control_enabled",

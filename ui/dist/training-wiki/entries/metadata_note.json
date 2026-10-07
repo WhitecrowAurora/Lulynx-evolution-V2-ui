@@ -1,0 +1,16 @@
+{
+  "key": "metadata_note",
+  "title": "元数据备注",
+  "category": "精度 / 输出",
+  "appliesTo": [
+    "sdxl-turbo-lora"
+  ],
+  "standard": {
+    "summary": "元数据备注。",
+    "effect": "写入产出文件元数据的备注文本。",
+    "whenToUse": "标记实验来源/参数便于溯源。",
+    "avoidWhen": "可选。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

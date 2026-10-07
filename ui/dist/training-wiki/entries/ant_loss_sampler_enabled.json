@@ -1,7 +1,9 @@
 {
   "key": "ant_loss_sampler_enabled",
   "title": "ANT Loss 采样器",
+  "title_en": "ANT Loss Sampler",
   "category": "前沿储备 / 训练",
+  "category_en": "Frontier Reserve / Training",
   "appliesTo": [
     "anima-lora"
   ],
@@ -16,9 +18,19 @@
     "whenToUse": "实验性功能。与 anima_weighting_scheme 正交（一个控制 loss 权重，一个控制采样分布），可以叠加使用。",
     "avoidWhen": "默认关闭。EMA 需要一定步数积累才能反映真实 loss 分布，短训练（<100步）效果不明显。"
   },
+  "standard_en": {
+    "summary": "(Experimental) A per-sigma-bin adaptive loss sampler: it keeps an EMA of historical loss for each noise sigma bin and replaces uniform timestep sampling with a multinomial draw, concentrating training on the bins with the highest (hardest) loss.",
+    "effect": "Makes timestep sampling more efficient: a sigma bin with high loss (where the model does badly) gets a higher chance of being sampled. It adapts to the state of the run, which is smarter than a fixed weighting scheme.",
+    "whenToUse": "An experimental feature. It is orthogonal to anima_weighting_scheme (one sets loss weights, the other the sampling distribution), so the two can be stacked.",
+    "avoidWhen": "Off by default. The EMA needs a number of steps before it reflects the true loss distribution, so the effect is faint in short runs (<100 steps)."
+  },
   "advanced": {
     "principle": "将 sigma 空间分为 ant_loss_sampler_bins 个区间，维护各区间的 loss EMA（指数滑动平均，系数 ant_loss_sampler_alpha）。采样时以多项式分布按 loss EMA 值采样（高 loss 区间高概率）。beta_schedule 控制 EMA 更新的学习率衰减，防止后期对早期噪声信号过度敏感。",
     "tradeoffs": "与 anima_weighting_scheme 同时使用时需要注意：weighting_scheme 改变各步的 loss 权重（梯度幅度），而 loss_sampler 改变哪些步骤被选中（采样频率）；两者叠加效果复杂，建议分开测试。"
+  },
+  "advanced_en": {
+    "principle": "Divides sigma space into ant_loss_sampler_bins intervals and maintains a loss EMA per interval (coefficient ant_loss_sampler_alpha). Sampling uses a multinomial distribution weighted by loss EMA (high-loss intervals sampled more often). beta_schedule decays the EMA update's learning rate, preventing late-training oversensitivity to early noise signals.",
+    "tradeoffs": "Careful when combined with anima_weighting_scheme: weighting_scheme changes per-step loss weights (gradient magnitude), while loss_sampler changes which steps get selected (sampling frequency); their combined effect is complex — test them separately."
   },
   "relatedConfigs": [
     "anima_weighting_scheme",

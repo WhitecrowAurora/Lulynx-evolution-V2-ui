@@ -1,0 +1,65 @@
+{
+  "key": "parallel_backend",
+  "title": "集合通信后端 (parallel_backend)",
+  "title_en": "Collective Backend",
+  "category": "性能 / 分布式",
+  "category_en": "Performance / Distributed",
+  "appliesTo": [
+    "sdxl-lora",
+    "sd-lora",
+    "anima-lora",
+    "newbie-lora",
+    "finetune",
+    "flux-lora"
+  ],
+  "layers": [
+    "训练控制层"
+  ],
+  "layers_en": [
+    "Training control layer"
+  ],
+  "standard": {
+    "summary": "torch.distributed 进程组用哪个集合通信后端。auto（默认）= 非 Windows 且有 CUDA 时用 nccl，否则 gloo；也可以显式指定 nccl 或 gloo。",
+    "effect": "只影响进程组怎么建、集合通信走哪条路，不改任何数值语义：同一份配置换后端得到的梯度是同一份，变的是通信带宽与延迟。nccl 走 GPU 直连（NVLink/PCIe/IB），gloo 走 CPU 与 TCP。",
+    "whenToUse": "默认留 auto。多机训练时网卡不止一张、auto 选错了路由时，配合 nccl_socket_ifname / gloo_socket_ifname 显式指定后端与网卡；只想验证分布式接线是否正确、不在意速度时用 gloo。",
+    "avoidWhen": "单进程训练时这个键不起作用（进程组根本不建）。原生 Windows 上没有 NCCL，显式选 nccl 会被自动降级为 gloo 并打一条 warning —— 想要 NCCL 速度就得换 Linux 或 WSL。不要填 cuda_direct：它不是进程组后端，见下。",
+    "optionDescriptions": {
+      "auto": "默认。非 Windows 且 torch.cuda.is_available() 为真时解析成 nccl，否则 gloo。不确定就用它。",
+      "nccl": "NVIDIA 集合通信库，走 GPU 直连（NVLink/PCIe/IB）。原生 Windows 上没有 NCCL，显式选它会被降级成 gloo 并打一条 warning。",
+      "gloo": "CPU 与 TCP 上的集合通信，任何平台都能起，带宽与延迟都不如 nccl。只想验证分布式接线是否正确、不在意速度时用它。"
+    }
+  },
+  "standard_en": {
+    "summary": "Which collective communication backend the torch.distributed process group uses. auto (the default) = nccl when not on Windows and CUDA is present, otherwise gloo; you can also name nccl or gloo explicitly.",
+    "effect": "It only affects how the process group is built and which path collective communication takes, and changes no numeric semantics: the same config gives the same gradients on either backend, and what changes is communication bandwidth and latency. nccl goes over the GPU interconnect (NVLink/PCIe/IB), gloo over the CPU and TCP.",
+    "whenToUse": "Leave it on auto. In multi-node training with more than one NIC, where auto picks the wrong route, name the backend and the NIC explicitly alongside nccl_socket_ifname / gloo_socket_ifname; use gloo when you only want to verify that the distributed wiring is correct and do not care about speed.",
+    "avoidWhen": "The key does nothing in single-process training (no process group is built at all). Native Windows has no NCCL, so naming nccl explicitly is downgraded to gloo automatically with a warning -- for NCCL speed you need Linux or WSL. Do not write cuda_direct: it is not a process-group backend, see below.",
+    "optionDescriptions": {
+      "auto": "The default. It resolves to nccl when the platform is not Windows and torch.cuda.is_available() is true, otherwise gloo. Use it when unsure.",
+      "nccl": "NVIDIA's collective communication library, over the GPU interconnect (NVLink/PCIe/IB). Native Windows has no NCCL, so naming it explicitly is downgraded to gloo with a warning.",
+      "gloo": "Collective communication over the CPU and TCP. It starts on any platform, with worse bandwidth and latency than nccl. Use it when you only want to verify the distributed wiring and do not care about speed."
+    }
+  },
+  "advanced": {
+    "principle": "取值由 resolve_ddp_backend 解析：auto 在非 Windows 且 torch.cuda.is_available() 时给 nccl，否则给 gloo；显式取值原样返回，只有 Windows 上的 nccl 会降级成 gloo。解析结果直接交给 torch.distributed.init_process_group，所以它只能是 torch 认识的后端名。历史上这个键还接受 cuda_direct，那不是后端而是一组 NCCL P2P/IPC 环境提示（NCCL_P2P_LEVEL/NCCL_SHM_DISABLE/NCCL_P2P_DISABLE），只在张量并行那条路上被归一化；走 DDP 时它会原样到 init_process_group 并当场报错，所以现在在配置解析期就被拒收并给出理由。",
+    "intervention": "起进程组时选后端；nccl_proto 之类的传输提示在同一处应用。",
+    "expectedImpact": "梯度与权重逐位不受影响；每步的通信时间随后端与互联而变。",
+    "tradeoffs": "声明默认值是 auto，与三个读点的兜底值一致 —— 这一点是判据钉住的：声明曾经是 nccl，而物化后的配置压过声明，于是无 CUDA 的 Linux 主机上进程组起不来。",
+    "codePath": "core/lulynx_trainer/distributed_process_group.py:resolve_ddp_backend → init_process_group"
+  },
+  "advanced_en": {
+    "principle": "The value is resolved by resolve_ddp_backend: auto yields nccl when not on Windows and torch.cuda.is_available(), otherwise gloo; explicit values are returned as-is, and only nccl on Windows is downgraded to gloo. The resolved result goes straight to torch.distributed.init_process_group, so it can only be a backend name torch recognizes. Historically this key also accepted cuda_direct, which is not a backend but a set of NCCL P2P/IPC environment hints (NCCL_P2P_LEVEL/NCCL_SHM_DISABLE/NCCL_P2P_DISABLE) normalized only on the tensor-parallel path; on the DDP path it reached init_process_group verbatim and failed immediately, so it is now rejected at config parse time with a reason.",
+    "intervention": "Choose the backend when starting the process group; transport hints such as nccl_proto are applied in the same place.",
+    "expectedImpact": "Gradients and weights are unaffected bit-for-bit; per-step communication time varies with backend and interconnect.",
+    "tradeoffs": "The declared default is auto, consistent with the fallbacks at the three read sites — this is the pinned judgment criterion: the declaration used to be nccl, and the materialized config overrode the declaration, so the process group failed to start on CUDA-less Linux hosts.",
+    "codePath": "core/lulynx_trainer/distributed_process_group.py:resolve_ddp_backend → init_process_group"
+  },
+  "relatedConfigs": [
+    "multi_gpu",
+    "distributed_strategy",
+    "num_processes",
+    "nccl_proto",
+    "nccl_socket_ifname",
+    "gloo_socket_ifname"
+  ]
+}

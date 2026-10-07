@@ -1,7 +1,9 @@
 {
   "key": "unet_lr",
   "title": "UNet/DiT 学习率",
+  "title_en": "U-Net Learning Rate",
   "category": "训练 / 学习率",
+  "category_en": "Training / Learning Rate",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -16,9 +18,19 @@
     "whenToUse": "希望分别控制 UNet 和 TE 学习节奏时使用。典型：UNet LR=1e-4，TE LR=5e-5。",
     "avoidWhen": "不需要差异化控制时，只设总 learning_rate 即可。同时设置两者会使总 LR 失效。"
   },
+  "standard_en": {
+    "summary": "Sets the learning rate for the UNet (or DiT) separately, controlled apart from the text encoder's learning rate.",
+    "effect": "Once set, the overall learning_rate no longer applies to the UNet. It lets the UNet and the TE take different step sizes; the usual configuration is UNet LR > TE LR (since the UNet is the main learning target).",
+    "whenToUse": "Use it when you want to pace the UNet and the TE separately. Typically: UNet LR=1e-4, TE LR=5e-5.",
+    "avoidWhen": "When you need no differentiated control, just set the overall learning_rate. Setting both of these makes the overall LR ineffective."
+  },
   "advanced": {
     "principle": "通过 param_groups 对不同模块设置独立 lr，允许 optimizer 对 UNet 和 TE 参数使用不同步长。",
     "tradeoffs": "如果 TE LR 过高，TE 的语义理解会偏离预训练，导致推理时文本控制力下降。"
+  },
+  "advanced_en": {
+    "principle": "Uses param_groups to set an independent lr per module, letting the optimizer use different step sizes for UNet and TE parameters.",
+    "tradeoffs": "If the TE LR is too high, the TE's semantic understanding drifts from pretraining, weakening textual control at inference."
   },
   "relatedConfigs": [
     "learning_rate",

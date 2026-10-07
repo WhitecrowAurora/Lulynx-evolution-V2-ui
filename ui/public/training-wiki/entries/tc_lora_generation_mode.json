@@ -1,7 +1,9 @@
 {
   "key": "tc_lora_generation_mode",
   "title": "TC-LoRA 生成模式",
+  "title_en": "TC-LoRA generation mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -12,6 +14,15 @@
     "avoidWhen": "未做短测对照前不要同时叠多个激进实验档。",
     "optionDescriptions": {
       "gated": "门控生成（现在运行时就这一种）。"
+    }
+  },
+  "standard_en": {
+    "summary": "TC-LoRA generation mode: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "gated": "Gated generation (the only one in the runtime today)."
     }
   },
   "advanced": {},

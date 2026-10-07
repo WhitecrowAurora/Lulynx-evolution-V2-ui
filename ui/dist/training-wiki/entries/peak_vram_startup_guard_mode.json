@@ -1,7 +1,9 @@
 {
   "key": "peak_vram_startup_guard_mode",
   "title": "保护强度",
+  "title_en": "Protection",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "auto": "启动峰值守护自动。",
       "balanced": "预留和可用性折中。",
       "aggressive": "预留更狠，优先别 OOM。"
+    }
+  },
+  "standard_en": {
+    "summary": "The values available for the protection strength (auto-generated skeleton, still open to polish).",
+    "effect": "Switching between the enum values changes training behaviour or resource use; see the individual entries.",
+    "whenToUse": "Choose by task and hardware; when unsure use the product default.",
+    "avoidWhen": "Do not pick an experimental or aggressive gear blindly before you understand what the entries mean.",
+    "optionDescriptions": {
+      "auto": "Automatic startup peak guarding.",
+      "balanced": "A compromise between reservation and availability.",
+      "aggressive": "Reserves harder, avoiding OOM before anything else."
     }
   },
   "advanced": {},

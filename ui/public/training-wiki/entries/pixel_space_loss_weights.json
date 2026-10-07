@@ -1,0 +1,17 @@
+{
+  "key": "pixel_space_loss_weights",
+  "title": "像素损失权重 JSON",
+  "category": "像素空间训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "如 {\"mse\":1.0,\"lpips\":0.0}。",
+    "effect": "写入训练配置 pixel_space_loss_weights，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 {\"mse\":1.0,\"lpips\":0.0}，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

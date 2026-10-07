@@ -1,7 +1,9 @@
 {
   "key": "enable_inference_accel",
   "title": "推理加速（采样预览）",
+  "title_en": "Allow acceleration (Preview)",
   "category": "速度 / 推理加速",
+  "category_en": "Speed / Inference Acceleration",
   "appliesTo": [
     "anima-lora"
   ],
@@ -16,9 +18,19 @@
     "whenToUse": "各字段视需求开启，大多数有对应的细粒度配置参数。enable_sequential_cpu_offload 是最激进的 offload（逐层），仅在极端低 VRAM 时使用。",
     "avoidWhen": "enable_distributed_training 需要多 GPU 环境且正确配置 DDP；enable_sequential_cpu_offload 极大降低训练速度，只作为 OOM 最后手段。"
   },
+  "standard_en": {
+    "summary": "enable_inference_accel turns on the lulynx inference acceleration path for the sampling previews taken during training; the cache backend may draw inspiration from research such as SmoothCache but claims no equivalence to any paper.",
+    "effect": "With enable_inference_accel on, preview generation runs roughly 1.3-1.6x faster; enable_base_weight allows training a LoRA carrying a base weight bias; enable_block_weights turns on block-level LR weights; enable_distributed_training turns on multi-GPU training (which needs a multi-GPU environment).",
+    "whenToUse": "Turn each on as needed -- most have their own finer-grained configuration parameters. enable_sequential_cpu_offload is the most aggressive offload (layer by layer) and is for extremely low VRAM only.",
+    "avoidWhen": "enable_distributed_training needs a multi-GPU environment with DDP configured correctly; enable_sequential_cpu_offload slows training enormously and is a last resort against OOM."
+  },
   "advanced": {
     "principle": "这些开关字段通常控制对应功能模块的激活状态。enable_* 设为 false 时，对应模块的所有子参数即使设置也不生效。",
     "tradeoffs": "顶层开关使功能的启用/禁用更方便，但需要注意开关与子参数的组合：开关 off 但子参数有值时，子参数静默不生效（无警告）。"
+  },
+  "advanced_en": {
+    "principle": "These switch fields usually control whether the corresponding feature module is active. When enable_* is false, all sub-parameters of that module are inert even if set.",
+    "tradeoffs": "Top-level switches make enabling/disabling convenient, but watch the switch × sub-parameter combination: switch off with sub-parameters set means the sub-parameters are silently inert (no warning)."
   },
   "relatedConfigs": [
     "blocks_to_swap",

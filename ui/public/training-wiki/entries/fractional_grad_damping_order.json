@@ -1,0 +1,24 @@
+{
+  "key": "fractional_grad_damping_order",
+  "title": "分数梯度阶数",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "分数梯度阻尼阶数。",
+    "effect": "分数阶（fractional）梯度阻尼的阶数，0-1 之间，越小阻尼越强。",
+    "whenToUse": "训练振荡时使用。",
+    "avoidWhen": "默认 0.5；属实验特性。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

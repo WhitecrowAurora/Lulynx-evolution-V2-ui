@@ -1,7 +1,9 @@
 {
   "key": "lowram",
   "title": "低内存模式",
+  "title_en": "Mode",
   "category": "速度 / 显存",
+  "category_en": "Speed / VRAM",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -12,9 +14,19 @@
     "whenToUse": "系统内存有限（<16GB）且 GPU 显存充足时开启。",
     "avoidWhen": "GPU 显存不足时，low_ram 反而会增加 GPU 压力。系统内存充足时无需开启。"
   },
+  "standard_en": {
+    "summary": "Enables low-memory (RAM) mode, keeping most weights in GPU VRAM rather than system memory to reduce CPU RAM use.",
+    "effect": "With this on the main weights are not cached to CPU RAM, saving roughly 50% of system memory. Suited to machines with little CPU RAM (<16GB).",
+    "whenToUse": "When system memory is limited (<16GB) and GPU VRAM is plentiful.",
+    "avoidWhen": "When GPU VRAM is short, low_ram only adds GPU pressure. There is no need for it when system memory is plentiful."
+  },
   "advanced": {
     "principle": "正常训练会在 CPU RAM 保留权重副本用于快速加载；low_ram 模式减少这些 RAM 副本，依赖 GPU 的 VRAM 作为主要工作区。",
     "tradeoffs": "低 RAM 模式可能影响训练速度（数据传输路径改变）；在某些情况下反而增加 GPU-CPU 数据交换。"
+  },
+  "advanced_en": {
+    "principle": "Normal training keeps a weight copy in CPU RAM for fast loading; low_ram mode reduces these RAM copies, relying on GPU VRAM as the main workspace.",
+    "tradeoffs": "Low-RAM mode may affect training speed (changed data-transfer paths); in some cases it actually increases GPU-CPU data swapping."
   },
   "relatedConfigs": [
     "xformers",

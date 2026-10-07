@@ -16,7 +16,12 @@ html[data-theme='glass'] .lx-brand-mark { border-radius: 3px; box-shadow: 0 0 12
 .lx-brand-name { font: 700 15px var(--lx-font-display); letter-spacing: 0.24em; }
 .lx-brand-sub { font: 500 9.5px var(--lx-font-display); letter-spacing: 0.34em; color: var(--lx-dim); }
 
-.lx-nav { display: flex; gap: 2px; margin-left: auto; }
+.lx-navigation { position: relative; margin-left: auto; }
+.lx-nav-toggle {
+  display: none; width: 34px; height: 34px; align-items: center; justify-content: center;
+  color: var(--lx-text); border: 1px solid var(--lx-border); border-radius: var(--lx-radius);
+}
+.lx-nav { display: flex; gap: 2px; }
 .lx-nav a {
   padding: 8px 12px; font: 600 11.5px var(--lx-font-display); letter-spacing: 0.11em;
   color: var(--lx-dim); text-transform: uppercase;
@@ -75,9 +80,31 @@ html[data-theme='glass'] .lx-nav a.on { background: rgba(255, 255, 255, 0.07); c
 .lx-main { max-width: var(--lx-page-max); margin: 0 auto; padding: 0 28px 90px; }
 .lx-page-loading { padding: 70px; text-align: center; font: 600 11px var(--lx-font-mono); letter-spacing: 0.34em; color: var(--lx-dim); text-transform: uppercase; }
 
-@media (max-width: 920px) {
+@media (max-width: 1100px) {
+  .lx-topbar { gap: 12px; padding: 0 16px; }
+  .lx-nav-toggle { display: flex; }
   .lx-nav { display: none; }
+  .lx-nav.is-open {
+    position: absolute; top: calc(100% + 8px); right: 0;
+    display: flex; flex-direction: column; gap: 4px;
+    width: 220px; max-width: calc(100vw - 32px); padding: 8px;
+    max-height: calc(100dvh - var(--lx-topbar-h) - 24px); overflow-y: auto;
+    background: var(--lx-bg); border: 1px solid var(--lx-border); border-radius: var(--lx-radius);
+  }
+  .lx-nav a { min-height: 40px; }
+  .lx-topbar-right { gap: 8px; }
+}
+
+@media (max-width: 920px) {
   .lx-main { padding: 0 16px 90px; }
+}
+
+@media (max-width: 600px) {
+  :root { --lx-topbar-h: 100px; }
+  .lx-topbar { height: auto; min-height: var(--lx-topbar-h); flex-wrap: wrap; align-content: center; gap: 6px 12px; padding: 8px 16px; }
+  .lx-topbar-right { width: 100%; justify-content: flex-end; flex-wrap: wrap; }
+  .lx-navigation { z-index: 1; }
+  .lx-conn { margin-right: auto; }
 }
 
 

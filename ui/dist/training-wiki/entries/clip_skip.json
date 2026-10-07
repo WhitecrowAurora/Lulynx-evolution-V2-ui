@@ -1,7 +1,9 @@
 {
   "key": "clip_skip",
   "title": "CLIP Skip",
+  "title_en": "CLIP layer",
   "category": "文本编码器 / 层级",
+  "category_en": "Text Encoder / Layers",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -9,6 +11,9 @@
   ],
   "layers": [
     "文本编码器层"
+  ],
+  "layers_en": [
+    "Text encoder layer"
   ],
   "standard": {
     "summary": "跳过 CLIP 文本编码器 Transformer 的最后几层，使用更浅层的隐藏状态作为文本条件。浅层的语义表示更抽象/泛化，深层更具体/精确。",
@@ -21,11 +26,29 @@
     "whenToUse": "训练动漫/插画风格 LoRA 时，如果底模（如 Anything V5、Counterfeit）本身训练时用了 clip_skip=2，那你的 LoRA 也应该用 2。训练写实风格或 SDXL 时保持 1。",
     "avoidWhen": "FLUX、Anima、Newbie 等不使用 CLIP skip 的架构——这些设置会被忽略。finetune 时通常保持 1（需要精确的文本-图像对齐）。训练时用的 skip 值必须和推理时一致，否则生成效果会偏移。"
   },
+  "standard_en": {
+    "summary": "Skips the last few layers of the CLIP text encoder's transformer and takes a shallower hidden state as the text condition. Shallower representations are more abstract and general, deeper ones more specific and precise.",
+    "effect": "skip=1 (the default) uses the final layer, the most precise semantics, which suits photorealism and exact prompt following. skip=2 uses the second-to-last layer, giving broader semantics: the model is more forgiving about exact wording and output varies more -- which is why the anime and illustration community prefers skip=2.",
+    "whenToUse": "For anime or illustration LoRAs, if the base model (Anything V5, Counterfeit) was itself trained at clip_skip=2, your LoRA should use 2 as well. Keep 1 for photorealism and for SDXL.",
+    "avoidWhen": "FLUX, Anima, Newbie and other architectures that do not use CLIP skip ignore this setting. Finetunes usually keep 1 (they need precise text-image alignment). The skip used in training must match the one used at inference, or the results shift.",
+    "recommendedValues": {
+      "1": "The default. Photorealism and anything needing exact prompt following. Recommended for SDXL.",
+      "2": "Common for anime, illustration and cartoon styles. The standard choice when training SD1.5 anime models.",
+      "3+": "Rarely used; the semantics get too abstract and prompt following usually degrades noticeably."
+    }
+  },
   "advanced": {
     "principle": "CLIP Transformer 有 12 层（SD1.5）或更多。每一层通过 self-attention 逐步抽象化文本语义：第 1 层主要编码词法和语法，中间层编码语义组合，最后几层编码与图像对齐的具象概念。跳过最后 N 层等价于截断 hidden_states[-(N+1)] 而非 hidden_states[-1]。NovelAI 的研究发现倒数第二层在动漫数据上的 CLIP score 更高。",
     "intervention": "在 text_encoder forward 后，取 encoder_hidden_states 的第 -(skip+1) 层输出而非最后一层。如果 cache_text_encoder_outputs=True，缓存的是 skip 后的输出——换 skip 值后需要重新缓存。max_token_length 控制 token padding 长度（默认 225 对 SD1.5，SDXL 通常不需要调整）。",
     "expectedImpact": "skip=2 让模型对 prompt 的同义词替换更宽容（例如 'girl' vs 'woman' 差异减小），增加生成多样性但降低精确控制能力。对 LoRA 训练而言，skip 主要影响训练时的文本条件质量——skip=2 的 LoRA 在推理时用 skip=1 会出现风格偏移。",
     "tradeoffs": "network_train_text_encoder_only 或 LoRA 训练 TE 时，skip 的影响更复杂——训练的 TE 权重是针对特定 skip 层优化的。keep_tokens > 0 时前 N 个 token（通常是触发词）不打乱，但 skip 影响的是所有 token 的表示层。",
+    "codePath": "trainer.py:encode_prompt() → text_encoder(input_ids, output_hidden_states=True) → hidden_states[-(clip_skip+1)]"
+  },
+  "advanced_en": {
+    "principle": "CLIP's transformer has 12 layers (SD1.5) or more. Each layer progressively abstracts text semantics via self-attention: layer 1 mostly encodes lexicon and syntax, middle layers encode semantic composition, and the last few encode concrete concepts aligned with images. Skipping the last N layers equals taking hidden_states[-(N+1)] instead of hidden_states[-1]. NovelAI's research found the second-to-last layer gives a higher CLIP score on anime data.",
+    "intervention": "After the text_encoder forward, take encoder_hidden_states at layer -(skip+1) rather than the last. With cache_text_encoder_outputs=True, the cache stores the post-skip output — re-cache after changing skip. max_token_length controls token padding (default 225 for SD1.5; SDXL usually needs no change).",
+    "expectedImpact": "skip=2 makes the model more tolerant of prompt synonym swaps (e.g. 'girl' vs 'woman' differences shrink), adding generation diversity at some cost to precise control. For LoRA training, skip mainly affects the quality of text conditioning during training — a skip=2 LoRA used with skip=1 at inference shows style drift.",
+    "tradeoffs": "With network_train_text_encoder_only or LoRA training the TE, skip's effect is more complex — the trained TE weights are optimized for a specific skip layer. With keep_tokens > 0 the first N tokens (usually trigger words) are not shuffled, but skip affects the representation layer of all tokens.",
     "codePath": "trainer.py:encode_prompt() → text_encoder(input_ids, output_hidden_states=True) → hidden_states[-(clip_skip+1)]"
   },
   "relatedConfigs": [

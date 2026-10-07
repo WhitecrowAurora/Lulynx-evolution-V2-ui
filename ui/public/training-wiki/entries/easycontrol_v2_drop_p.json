@@ -1,0 +1,17 @@
+{
+  "key": "easycontrol_v2_drop_p",
+  "title": "条件丢弃概率",
+  "category": "EasyControl",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "EasyControl 条件丢弃概率。",
+    "effect": "训练时随机丢弃条件输入（CFG 风格 dropout），保底无条件生成能力。",
+    "whenToUse": "默认 0.1 常用。",
+    "avoidWhen": "0 = 永不丢弃，推理时无条件行为不可控。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

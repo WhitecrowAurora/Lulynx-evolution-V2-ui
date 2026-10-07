@@ -1,0 +1,18 @@
+{
+  "key": "dit_compute_reducer_min_block",
+  "title": "最小生效 Block",
+  "category": "DiT / 训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "小于该索引的前层 block 永不跳过，用来保护浅层稳定性。",
+    "effect": "写入训练配置 dit_compute_reducer_min_block，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 1，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,17 @@
+{
+  "key": "sample_tgate_min_block",
+  "title": "T-GATE 最小 block",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "T-GATE 最小 block。",
+    "effect": "跳过 cross-attn 的最小 block 索引（更深的 block 才跳）。",
+    "whenToUse": "控制跳过范围。",
+    "avoidWhen": "默认从 0 层起。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

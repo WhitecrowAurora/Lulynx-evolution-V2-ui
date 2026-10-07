@@ -1,0 +1,16 @@
+{
+  "key": "num_workers",
+  "title": "DataLoader Worker",
+  "category": "训练参数",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "DataLoader worker 数。",
+    "effect": "Windows 建议保持 0。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

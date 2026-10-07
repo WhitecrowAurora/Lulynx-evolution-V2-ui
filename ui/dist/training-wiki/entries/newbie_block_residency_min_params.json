@@ -1,0 +1,16 @@
+{
+  "key": "newbie_block_residency_min_params",
+  "title": "Newbie Offload 最小参数量",
+  "category": "DiT / 缓存",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "只托管参数量达到该阈值的冻结 Linear。",
+    "effect": "0 表示不过滤。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

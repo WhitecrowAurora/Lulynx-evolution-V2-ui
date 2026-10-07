@@ -1,0 +1,17 @@
+{
+  "key": "easycontrol_v2_scale",
+  "title": "EasyControl v2 强度",
+  "category": "EasyControl",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "EasyControl v2 强度。",
+    "effect": "条件注入的整体强度。",
+    "whenToUse": "控制感过强/过弱时调整。",
+    "avoidWhen": "默认 1。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,0 +1,17 @@
+{
+  "key": "dpo_rejected_latent_field",
+  "title": "Rejected batch 字段",
+  "category": "DPO 偏好对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "batch 中真 pair clean latent 键名。",
+    "effect": "写入训练配置 dpo_rejected_latent_field，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 rejected_latents，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

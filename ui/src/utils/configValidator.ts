@@ -137,12 +137,25 @@ export function validateConfig(config: Record<string, any>): ValidationResult {
   }
 
   // ========== 冲突 5: 模型路径为空 ==========
+  // Most families use the generic pretrained key, while component-based
+  // families (for example MiniMax H3) deliberately expose their own primary
+  // weight paths. Do not make a schema with no generic key impossible to
+  // submit; still require at least one actual model asset path.
   const modelPath = String(config.pretrained_model_name_or_path || '').trim()
+  const dedicatedModelPathFields = [
+    'h3_transformer_path',
+    'h3_text_encoder_path',
+    'h3_video_vae_path',
+    'h3_audio_vae_path'
+  ]
+  const hasDedicatedModelPath = dedicatedModelPathFields.some(
+    field => String(config[field] || '').trim().length > 0
+  )
 
-  if (!modelPath) {
+  if (!modelPath && !hasDedicatedModelPath) {
     errors.push({
       message: '预训练模型路径为空，无法开始训练。',
-      fields: ['pretrained_model_name_or_path']
+      fields: ['pretrained_model_name_or_path', ...dedicatedModelPathFields]
     })
   }
 

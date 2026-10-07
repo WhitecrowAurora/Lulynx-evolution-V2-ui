@@ -1,7 +1,9 @@
 {
   "key": "ema_update_after_step",
   "title": "EMA 起始步",
+  "title_en": "EMA",
   "category": "训练 / 平滑",
+  "category_en": "Training / Smoothing",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -11,11 +13,20 @@
   "layers": [
     "训练控制层"
   ],
+  "layers_en": [
+    "Training control layer"
+  ],
   "standard": {
     "summary": "从第几个优化步开始累积 EMA。之前的步骤 EMA 副本不更新（保持初始化权重）。",
     "effect": "避免训练早期 loss 剧烈震荡时的不稳定权重污染 EMA。设为 100 意味着前 100 步的不稳定状态不会影响 EMA 副本。",
     "whenToUse": "训练早期 loss 波动大时（常见于高学习率或未预热阶段）推荐设为 warmup 步数左右。",
     "avoidWhen": "总训练步数很少时不宜设太大，否则 EMA 有效积累步数太少。"
+  },
+  "standard_en": {
+    "summary": "The optimizer step at which EMA accumulation begins. Before that the EMA copy is not updated (it stays at the initial weights).",
+    "effect": "Keeps the unstable weights of a wildly oscillating early loss out of the EMA. Setting 100 means the first 100 steps' instability never reaches the EMA copy.",
+    "whenToUse": "Recommended at around the warmup step count when the early loss swings a lot (common at a high learning rate or before warmup finishes).",
+    "avoidWhen": "Do not set it high when the total step count is small, or the EMA gets too few steps to accumulate over."
   },
   "advanced": {
     "principle": "step < ema_update_after_step 时跳过 EMA 更新，EMA 副本保持初始化状态（通常等于初始模型权重）。",
@@ -23,6 +34,13 @@
     "expectedImpact": "有效防止早期爆炸性 loss 污染 EMA，最终 EMA 权重更可信。",
     "tradeoffs": "设置过大时 EMA 实际只积累了末期权重，平滑效果降低。",
     "codePath": "core/lulynx_trainer/training_loop.py → EMA update 起始判断"
+  },
+  "advanced_en": {
+    "principle": "While step < ema_update_after_step, EMA updates are skipped and the EMA replica stays at its initialization (usually the initial model weights).",
+    "intervention": "Controls EMA warmup: the EMA replica only starts accumulating from a relatively stable training phase.",
+    "expectedImpact": "Effectively prevents early explosive loss from polluting the EMA; the final EMA weights are more trustworthy.",
+    "tradeoffs": "Set too large, the EMA only accumulates late-phase weights and its smoothing effect weakens.",
+    "codePath": "core/lulynx_trainer/training_loop.py → EMA update start check"
   },
   "relatedConfigs": [
     "ema_enabled",

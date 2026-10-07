@@ -121,6 +121,17 @@ describe('validateConfig', () => {
     expect(result.errors.some(e => e.message.includes('模型路径'))).toBe(true)
   })
 
+  test('组件型模型使用专用主权重路径时不触发冲突 5', () => {
+    const config = {
+      model_type: 'minimax_h3',
+      training_type: 'lora',
+      train_data_dir: '/path/to/data',
+      h3_transformer_path: '/models/h3-transformer.safetensors',
+    }
+    const result = validateConfig(config)
+    expect(result.errors.some(e => e.message.includes('模型路径'))).toBe(false)
+  })
+
   test('建议 5: Anima 短训练 → 警告', () => {
     const config = {
       model_type: 'anima',

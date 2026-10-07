@@ -1,7 +1,9 @@
 {
   "key": "fused_projection_memory_mode",
   "title": "Fused Projection 显存模式",
+  "title_en": "Fused Projection VRAMmode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -15,8 +17,25 @@
       "materialize_on_save": "训的时候省，存盘时再补回原始 key。"
     }
   },
+  "standard_en": {
+    "summary": "keep_original is the most compatible",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "keep_original": "Keeps the original Q/K/V: good compatibility, high VRAM.",
+      "drop_original": "Keeps only the fused form: the least VRAM, though some exports and hooks will find keys missing.",
+      "materialize_on_save": "Saves VRAM while training and restores the original keys at save time."
+    }
+  },
   "advanced": {
     "principle": "keep_original 最兼容；drop_original 会移除原始 Q/K/V 层以节省显存；materialize_on_save 训练中移除，state_dict 保存时从 fused 权重补回原始 key。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "keep_original is the most compatible; drop_original removes the original Q/K/V layers to save VRAM; materialize_on_save removes them during training and restores the original keys from the fused weights when the state_dict is saved.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

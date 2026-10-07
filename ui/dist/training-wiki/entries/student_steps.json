@@ -1,0 +1,18 @@
+{
+  "key": "student_steps",
+  "title": "Student 步数",
+  "category": "LCM / Turbo 蒸馏参数",
+  "appliesTo": [
+    "anima-few-step-lora",
+    "newbie-few-step-lora",
+    "sdxl-turbo-lora"
+  ],
+  "standard": {
+    "summary": "Student 步数。",
+    "effect": "学生模型目标推理步数（蒸馏目标）。",
+    "whenToUse": "想产出 4 步出图就设 4。",
+    "avoidWhen": "默认 4。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

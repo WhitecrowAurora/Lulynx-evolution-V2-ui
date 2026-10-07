@@ -1,0 +1,20 @@
+{
+  "key": "ed_lora_fusion_lr",
+  "title": "融合学习率",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "ED-LoRA 融合学习率。",
+    "effect": "融合阶段的专用学习率，通常低于主训练 LR。",
+    "whenToUse": "融合阶段不稳时调低。",
+    "avoidWhen": "未使用 ED-LoRA 时不生效。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

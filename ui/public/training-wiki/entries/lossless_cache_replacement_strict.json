@@ -1,0 +1,17 @@
+{
+  "key": "lossless_cache_replacement_strict",
+  "title": "读取时校验 CRC32",
+  "category": "DiT / 缓存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "验证 shard 字节完整性；fingerprint 不匹配时自动重建缓存",
+    "effect": "写入训练配置 lossless_cache_replacement_strict，由训练后端在相应阶段消费。",
+    "whenToUse": "默认开启，适合大多数场景。",
+    "avoidWhen": "排查问题想回到原始行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

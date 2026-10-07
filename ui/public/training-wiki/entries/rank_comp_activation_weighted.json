@@ -1,0 +1,17 @@
+{
+  "key": "rank_comp_activation_weighted",
+  "title": "激活加权回补",
+  "category": "精度 / 量化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "按每通道激活能量加权分解，最小化输出误差而非权重误差；实测再削约 16 个百分点。",
+    "effect": "需要训练缓存在场，取不到会自动降级",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

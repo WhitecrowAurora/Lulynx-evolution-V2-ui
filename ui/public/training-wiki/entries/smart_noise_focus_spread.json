@@ -1,0 +1,17 @@
+{
+  "key": "smart_noise_focus_spread",
+  "title": "Smart Noise 焦点宽度",
+  "category": "时间步采样策略",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "焦点高斯分布的标准差（logSNR 单位）。",
+    "effect": "写入训练配置 smart_noise_focus_spread，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 2，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

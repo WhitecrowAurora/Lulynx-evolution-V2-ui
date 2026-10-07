@@ -1,7 +1,9 @@
 {
   "key": "enable_distributed_training",
   "title": "启用分布式训练",
+  "title_en": "Enable Training",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Enables distributed launch. Currently a minimal implementation supporting multi-process and multi-node start-up, plus",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "启用分布式启动。当前为最小实现，支持多进程/多机拉起，以及 worker 最小配置与缺失资源同步",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Enables distributed launch. Currently a minimal implementation: multi-process/multi-node bring-up, minimal worker configuration, and missing-resource synchronization.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

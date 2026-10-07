@@ -1,7 +1,9 @@
 {
   "key": "pcgrad_reduction",
   "title": "PCGrad 归约",
+  "title_en": "PCGrad",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "mean": "冲突投完取平均。",
       "sum": "冲突投完求和，任务多时信号更猛。"
+    }
+  },
+  "standard_en": {
+    "summary": "PCGrad's reduction: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "mean": "Averages after the conflicts are projected out.",
+      "sum": "Sums after the conflicts are projected out; a stronger signal when there are many tasks."
     }
   },
   "advanced": {},

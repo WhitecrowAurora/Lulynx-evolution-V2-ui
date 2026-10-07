@@ -1,0 +1,24 @@
+{
+  "key": "svd_log_matrix",
+  "title": "SVD 完整奇异值",
+  "title_en": "SVD Full Singular Arrays",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "日志载荷里带每层的完整奇异值数组，而不是只带前 5 个。",
+    "effect": "默认关 = 只记每层前 5 个奇异值。打开后载荷变大（层数多时明显）。",
+    "whenToUse": "想做离线分析（画完整谱、算有效秩）时打开。",
+    "avoidWhen": "只是想瞄一眼健康度时别开。"
+  },
+  "standard_en": {
+    "summary": "Include the full per-layer singular-value array in the payload instead of only the top 5.",
+    "effect": "Default off = top-5 summary per layer. On, payloads grow (noticeable with many layers).",
+    "whenToUse": "Enable for offline analysis (full spectra, effective rank).",
+    "avoidWhen": "Leave off for a quick health glance."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

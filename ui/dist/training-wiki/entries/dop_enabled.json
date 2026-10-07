@@ -1,7 +1,9 @@
 {
   "key": "dop_enabled",
   "title": "DOP (差分输出保持)",
+  "title_en": "DOP (Output)",
   "category": "正则 / 正则化",
+  "category_en": "Regularization / Weight Regularization",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,17 +13,33 @@
   "layers": [
     "Loss 层"
   ],
+  "layers_en": [
+    "Loss layer"
+  ],
   "standard": {
     "summary": "DOP 在训练过程中保持模型输出与训练前基线输出的差异稳定，防止 LoRA 过度偏离底模行为。类似知识蒸馏但更轻量。",
     "effect": "dop_weight=0.1 时，10% 的 loss 来自保持输出一致性。减少「灾难性遗忘」——学了新概念后忘记底模原有的生成能力。",
     "whenToUse": "长训练或高 rank 训练时防止底模能力退化。学了新概念后发现其他 prompt 质量下降时。",
     "avoidWhen": "短训练或低 rank 时通常不需要。dop 增加少量计算开销（需要额外的 reference forward）。"
   },
+  "standard_en": {
+    "summary": "DOP keeps the difference between the model's output and the pre-training baseline output stable, so the LoRA does not drift too far from the base model's behaviour. Similar to knowledge distillation but lighter.",
+    "effect": "At dop_weight=0.1, 10% of the loss comes from keeping the output consistent. It reduces catastrophic forgetting -- losing the base model's own generative ability after learning a new concept.",
+    "whenToUse": "On long or high-rank runs, to stop the base model's abilities degrading; and whenever other prompts get worse after a new concept is learned.",
+    "avoidWhen": "Usually unnecessary on short or low-rank runs. DOP adds a little computation (it needs an extra reference forward)."
+  },
   "advanced": {
     "principle": "训练开始前对每个 timestep 记录一次底模的输出（reference）。训练中每 dop_interval 步计算当前输出与 reference 的差异，作为额外的正则化 loss。dop_detach_reference=True 时 reference 不参与梯度，只做监督信号。",
     "intervention": "training_step 中额外计算 dop_loss = MSE(current_output, reference_output) * dop_weight。",
     "expectedImpact": "在多概念训练中保持底模特性的能力更强。对单一概念训练效果不明显。",
     "tradeoffs": "dop_target='output' 比较最终预测，'features' 比较中间特征（更强约束但开销更大）。",
+    "codePath": "training_loop.py:DOP loss = MSE(pred, reference) * dop_weight"
+  },
+  "advanced_en": {
+    "principle": "Before training starts, records one output per timestep from the base model (the reference). During training, every dop_interval steps computes the difference between the current output and the reference as an extra regularization loss. With dop_detach_reference=True the reference carries no gradient — pure supervision.",
+    "intervention": "training_step additionally computes dop_loss = MSE(current_output, reference_output) * dop_weight.",
+    "expectedImpact": "Better at preserving base-model traits in multi-concept training. Barely noticeable on single-concept training.",
+    "tradeoffs": "dop_target='output' compares final predictions; 'features' compares intermediate features (stronger constraint, higher cost).",
     "codePath": "training_loop.py:DOP loss = MSE(pred, reference) * dop_weight"
   },
   "relatedConfigs": [

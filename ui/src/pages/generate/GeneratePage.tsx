@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   generateApi,
+  isGenerationTaskActive,
   serializeRegions,
   type GenerationImage,
   type GenerationLogItem,
@@ -86,15 +87,23 @@ export default function GeneratePage() {
   const [task, setTask] = useState<GenerationTask>({})
   const [logs, setLogs] = useState<GenerationLogItem[]>([])
   const [images, setImages] = useState<GenerationImage[]>([])
-  const [error, setError] = useState('')
+  const [commandError, setError] = useState('')
+  const [pollError, setPollError] = useState('')
   const [showTuning, setShowTuning] = useState(false)
+  const [collecting, setCollecting] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
   const lastLogId = useRef(0)
   const pollGeneration = useRef(0)
+  const pollInFlight = useRef<number | null>(null)
+  const commandPending = useRef(false)
 
-  const running = task.status === 'running'
+  const running = submitting || isGenerationTaskActive(task)
+  const error = commandError || (pollError ? `${pollError} · ${t('generate.retrying')}` : '')
 
   const poll = useCallback(async () => {
     const generation = pollGeneration.current
+    if (commandPending.current || pollInFlight.current === generation) return
+    pollInFlight.current = generation
     try {
       const { task: current } = await generateApi.status()
       if (generation !== pollGeneration.current) return
@@ -102,28 +111,34 @@ export default function GeneratePage() {
       const { items, last_id } = await generateApi.logs(lastLogId.current)
       if (generation !== pollGeneration.current) return
       if (items.length) {
-        lastLogId.current = last_id
         setLogs((prev) => [...prev, ...items].slice(-400))
       }
-      if (current.status && current.status !== 'running' && current.output_dir) {
+      lastLogId.current = last_id
+      if (current.status && !isGenerationTaskActive(current) && current.output_dir) {
         const result = await generateApi.results(current.output_dir)
         if (generation !== pollGeneration.current) return
         setImages(result.items)
       }
+      // 任务终态不等于最后一份数据已收到；失败时保留定时补收。
+      setCollecting(isGenerationTaskActive(current))
+      setPollError('')
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e))
+      if (generation === pollGeneration.current) setPollError(e instanceof Error ? e.message : String(e))
+    } finally {
+      if (pollInFlight.current === generation) pollInFlight.current = null
     }
   }, [])
 
   useEffect(() => {
     void poll()
+    return () => { pollGeneration.current += 1 }
   }, [poll])
 
   useEffect(() => {
-    if (!running) return
+    if (!collecting) return
     const timer = window.setInterval(() => void poll(), POLL_MS)
     return () => window.clearInterval(timer)
-  }, [running, poll])
+  }, [collecting, poll])
 
   const addLora = () => {
     const path = loraInput.trim()
@@ -133,8 +148,13 @@ export default function GeneratePage() {
   }
 
   const start = async () => {
-    pollGeneration.current += 1
+    if (running || commandPending.current) return
+    const generation = ++pollGeneration.current
+    commandPending.current = true
+    setSubmitting(true)
+    setCollecting(true)
     setError('')
+    setPollError('')
     lastLogId.current = 0
     setLogs([])
     setImages([])
@@ -151,19 +171,34 @@ export default function GeneratePage() {
         regional_lora_regions_json: regionsJson,
         ...(regionsJson ? tuning : {}),
       })
-      setTask(started)
+      if (generation === pollGeneration.current) setTask(started)
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e))
+      if (generation === pollGeneration.current) setError(e instanceof Error ? e.message : String(e))
+    } finally {
+      if (generation === pollGeneration.current) {
+        commandPending.current = false
+        setSubmitting(false)
+      }
     }
   }
 
   const stop = async () => {
-    pollGeneration.current += 1
+    if (commandPending.current || !running || task.status === 'stopping') return
+    const generation = ++pollGeneration.current
+    commandPending.current = true
+    setSubmitting(true)
+    setCollecting(true)
+    setError('')
     try {
       const { task: stopped } = await generateApi.stop()
-      setTask(stopped)
+      if (generation === pollGeneration.current) setTask(stopped)
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e))
+      if (generation === pollGeneration.current) setError(e instanceof Error ? e.message : String(e))
+    } finally {
+      if (generation === pollGeneration.current) {
+        commandPending.current = false
+        setSubmitting(false)
+      }
     }
   }
 
@@ -185,7 +220,7 @@ export default function GeneratePage() {
           <button type="button" className="lx-btn lx-btn--primary" disabled={running} onClick={() => void start()}>
             {running ? t('generate.running') : t('generate.start')}
           </button>
-          <button type="button" className="lx-btn" disabled={!running} onClick={() => void stop()}>
+          <button type="button" className="lx-btn" disabled={!running || submitting || task.status === 'stopping'} onClick={() => void stop()}>
             {t('generate.stop')}
           </button>
         </div>

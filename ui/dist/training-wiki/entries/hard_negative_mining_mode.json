@@ -1,11 +1,13 @@
 {
   "key": "hard_negative_mining_mode",
   "title": "挖掘模式",
+  "title_en": "Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
-    "summary": "topk=保留 top-k% 困难样本（详见 ?）",
+    "summary": "topk=保留 top-k% 困难样本; threshold=保留 loss > threshold 的样本。",
     "effect": "",
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。",
@@ -14,8 +16,24 @@
       "threshold": "过阈值才算难例，阈值高就更少更尖。"
     }
   },
+  "standard_en": {
+    "summary": "topk = keep the hardest top-k% of samples; threshold = keep the samples whose loss exceeds the threshold.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "topk": "Always takes the K hardest; the larger K is, the more noise may come with it.",
+      "threshold": "Only what clears the threshold counts as hard, so a high threshold gives fewer, sharper cases."
+    }
+  },
   "advanced": {
     "principle": "topk=保留 top-k% 困难样本; threshold=保留 loss > threshold 的样本。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "topk = keep the top-k% hardest samples; threshold = keep samples with loss > threshold.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

@@ -1,0 +1,16 @@
+{
+  "key": "samples_dir",
+  "title": "样张目录",
+  "category": "精度 / 输出",
+  "appliesTo": [
+    "sdxl-turbo-lora"
+  ],
+  "standard": {
+    "summary": "样张目录。",
+    "effect": "蒸馏过程样图的输出目录。",
+    "whenToUse": "按需指定。",
+    "avoidWhen": "留空用默认输出。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

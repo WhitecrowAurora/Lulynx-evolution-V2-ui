@@ -1,0 +1,16 @@
+{
+  "key": "lpips_latent_weight",
+  "title": "Latent 特征蒸馏权重",
+  "category": "图像质量增强",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "相对主损失权重。",
+    "effect": "推荐 0.05-0.15。",
+    "whenToUse": "默认 0.1，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

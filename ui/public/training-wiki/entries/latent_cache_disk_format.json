@@ -1,7 +1,9 @@
 {
   "key": "latent_cache_disk_format",
   "title": "Latent 缓存磁盘格式",
+  "title_en": "Latent",
   "category": "速度 / 缓存",
+  "category_en": "Speed / Caching",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -21,9 +23,24 @@
       "pt": "torch 自己的格式。"
     }
   },
+  "standard_en": {
+    "summary": "The storage format and precision of the latent cache files under the original cache engine (lossless_cache_replacement_mode=off).",
+    "effect": "format=npz (the default) is the compressed NumPy format, the most compatible; safetensors is the HuggingFace format, which reads faster; pt is PyTorch's own. dtype=float16/bfloat16/float32 sets the cache precision (float16 saves the most space).",
+    "whenToUse": "Choose a format once cache_latents_to_disk is on. npz is the most widely compatible; safetensors reads fastest; pt integrates best with the PyTorch ecosystem.",
+    "avoidWhen": "The parameter has no effect when lossless_cache_replacement_mode != off (the lossless engine controls its own format).",
+    "optionDescriptions": {
+      "safetensors": "Stores the cache as safetensors.",
+      "npz": "npy, easy for outside scripts to read.",
+      "pt": "torch's own format."
+    }
+  },
   "advanced": {
     "principle": "latent 缓存存储 VAE encoder 输出的 float 张量，原版引擎通过 numpy.savez_compressed（npz）或 safetensors.torch.save_file 写出。dtype 降精度（float32 → float16）可以节省约 50% 磁盘空间，引入的精度误差通常在训练中不可感知（latent 空间的 float16 精度已够用）。",
     "tradeoffs": "npz 的 gzip 压缩在读取时需要解压（CPU 开销）；safetensors 是原始张量（无压缩，读取更快但文件更大）；lossless 引擎（lxfs/lynx）提供中间方案（快速有损压缩如 lz4）。"
+  },
+  "advanced_en": {
+    "principle": "The latent cache stores float tensors from the VAE encoder's output; the legacy engine writes via numpy.savez_compressed (npz) or safetensors.torch.save_file. Lowering dtype (float32 → float16) saves about 50% disk, and the introduced precision error is usually imperceptible in training (float16 precision suffices in latent space).",
+    "tradeoffs": "npz's gzip compression requires decompression at read (CPU cost); safetensors is raw tensors (no compression, faster reads but larger files); the lossless engine (lxfs/lynx) offers a middle ground (fast lossy compression like lz4)."
   },
   "relatedConfigs": [
     "cache_latents",

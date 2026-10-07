@@ -1,7 +1,9 @@
 {
   "key": "repa_capture_modules_auto",
   "title": "REPA 自动选 capture 层",
+  "title_en": "REPA capture layer",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "When the target modules are empty, a single mid layer is chosen automatically by model family.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "目标模块为空时按模型族自动选单层 mid。关且模块空 → fail-closed 不装 hook。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "When target modules are empty, automatically picks a single mid layer per model family. Off with empty modules → fail-closed, no hooks installed.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

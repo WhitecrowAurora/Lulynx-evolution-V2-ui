@@ -1,0 +1,17 @@
+{
+  "key": "training_quantization_enabled",
+  "title": "训练量化别名开关",
+  "category": "精度 / 量化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "与 quantization_enabled",
+    "effect": "写入训练配置 training_quantization_enabled，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

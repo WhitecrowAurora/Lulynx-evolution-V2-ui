@@ -1,0 +1,17 @@
+{
+  "key": "spd_steps_per_level",
+  "title": "SPD 每层步数",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "SPD 每层步数。",
+    "effect": "SPD 多分辨率推理路线中每个分辨率级推进的步数列表。",
+    "whenToUse": "SPD 实验时配置。",
+    "avoidWhen": "留空用默认日程。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

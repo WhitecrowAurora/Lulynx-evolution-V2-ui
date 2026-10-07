@@ -1,0 +1,17 @@
+{
+  "key": "sample_spectrum_window_size",
+  "title": "Spectrum 窗口",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "Spectrum 探测窗口。",
+    "effect": "Spectrum 特征预测探针的窗口大小。",
+    "whenToUse": "observe-only 探针参数。",
+    "avoidWhen": "不影响训练。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -6,6 +6,7 @@
 // NEWBIE_BLOCK_RESIDENCY_FIELDS)就地定义、不外泄;按依赖顺序排列(const 不提升)。
 // 依赖方向(单向无环):schemaCommon → schemaFieldGroups → 本文件 → schemaIndex。
 // ================================================================
+import { LTX23_AUDIO_FIELD_KEYS } from './ltx23AudioFields.js';
 import {
   when,
   all,
@@ -139,7 +140,7 @@ export const FLUX_LORA_SECTIONS = [
   sec('caption-settings', 'dataset', 'Caption 选项', '', S_CAPTION.filter((f) => f.key !== 'max_token_length')),
   sec('data-aug-settings', 'dataset', '数据增强', '颜色、翻转与裁剪增强。', [...S_DATA_AUG]),
   sec('network-settings', 'network', '网络设置', 'LoRA。', netLora('networks.lora_flux', 4, 16, 256, [], [
-    { value: 'networks.tlora_flux', label: 'T-LoRA (FLUX)', disabled: true, disabledReason: 'FLUX T-LoRA 暂未接入后端训练器' },
+    { value: 'networks.tlora_flux', label: '渐进秩 LoRA (FLUX)', disabled: true, disabledReason: '该 FLUX 历史 T-LoRA key 暂未接入后端训练器' },
     { value: 'networks.oft_flux', label: 'OFT (FLUX)', disabled: true, disabledReason: 'FLUX OFT 暂未接入后端训练器' },
     { value: 'lycoris.kohya', label: 'LyCORIS', disabled: true, disabledReason: 'FLUX LyCORIS 暂未接入后端训练器' }
 ], false)),
@@ -220,7 +221,6 @@ const qwenImageSections = (typeId = 'qwen-image-lora') => [
     { key: 'resume', type: 'file', pickerType: 'output-model-file', allowModelDirectory: true, label: '继续训练路径', title: 'resume', desc: '从某个 save_state / 检查点继续训练：可选择检查点文件，或选择存档目录自动取最新', defaultValue: '' }
 ]),
   sec('qwen-image-params', 'model', 'Qwen Image 参数', '', [
-    placeholderWarningField('Qwen Image'),
     ...flowParams({ ts: 'shift', dfs: 3.0 })
 ]),
   sec('save-settings', 'model', '保存设置', '', [...S_SAVE]),
@@ -341,7 +341,7 @@ const KREA2_SPEED_FLOW_FIELDS = (() => {
 
 // ---- FLUX Finetune ----
 export const FLUX_FT_SECTIONS = [
-  sec('model-settings', 'model', '训练用模型', 'FLUX 全参微调。', [
+  sec('model-settings', 'model', '训练用模型', 'FLUX.1 全参微调（不是 LoRA）。显存代价要先看清:FLUX.1 是 12B，bf16 骨干本身就 22.15 GiB，再加优化器状态与梯度，远超 16GB 卡 —— 这一页能选到不等于这台机器跑得动。训练的是 DiT 主干本体，产物是完整权重而不是几十 MB 的 LoRA。', [
     { key: 'model_train_type', type: 'hidden', defaultValue: 'flux-finetune' },
     { key: 'pretrained_model_name_or_path', type: 'file', pickerType: 'model-file', label: 'FLUX 模型路径', title: 'pretrained_model_name_or_path', desc: '底模文件路径', defaultValue: '' },
     { key: 'ae', type: 'file', pickerType: 'model-file', label: 'AE 路径', title: 'ae', desc: 'AutoEncoder 模型路径', defaultValue: '' },
@@ -380,15 +380,15 @@ export const FLUX_FT_SECTIONS = [
 export const LUMINA_FT_SECTIONS = [
   sec('model-settings', 'model', '训练用模型', 'Lumina 全参微调。', [
     { key: 'model_train_type', type: 'hidden', defaultValue: 'lumina-finetune' },
-    { key: 'pretrained_model_name_or_path', type: 'file', pickerType: 'model-file', label: 'Lumina 模型路径', title: 'pretrained_model_name_or_path', desc: 'Lumina 模型路径', defaultValue: '' },
-    { key: 'ae', type: 'file', pickerType: 'model-file', label: 'AE 路径', title: 'ae', desc: 'AE 路径', defaultValue: '' },
-    { key: 'gemma2', type: 'file', pickerType: 'model-file', label: 'Gemma2 路径', title: 'gemma2', desc: 'Gemma2 路径', defaultValue: '' },
+    { key: 'pretrained_model_name_or_path', type: 'file', pickerType: 'model-file', label: 'Lumina 模型路径', title: 'pretrained_model_name_or_path', desc: 'Lumina 底模权重路径（本地目录或 HuggingFace 名称）。', defaultValue: '' },
+    { key: 'ae', type: 'file', pickerType: 'model-file', label: 'AE 路径', title: 'ae', desc: 'AutoEncoder 权重路径，负责 Lumina 像素与 latent 的互转。', defaultValue: '' },
+    { key: 'gemma2', type: 'file', pickerType: 'model-file', label: 'Gemma2 路径', title: 'gemma2', desc: 'Gemma2 文本编码器模型路径（Lumina 文本侧）。', defaultValue: '' },
     { key: 'resume', type: 'file', pickerType: 'output-model-file', allowModelDirectory: true, label: '继续训练路径', title: 'resume', desc: '从某个 save_state / 检查点继续训练：可选择检查点文件，或选择存档目录自动取最新', defaultValue: '' }
 ]),
   sec('lumina-params', 'model', 'Lumina 专用参数', '', [
     ...flowParams({ ts: 'shift', dfs: 6.0 }),
-    { key: 'gemma2_max_token_length', type: 'number', label: 'Gemma2 最大 token', title: 'gemma2_max_token_length', desc: 'Gemma2 最大 token', defaultValue: '', min: 1 },
-    { key: 'use_sage_attn', type: 'boolean', label: '启用 Sage Attention', title: 'use_sage_attn', desc: '启用 Sage Attention', defaultValue: false },
+    { key: 'gemma2_max_token_length', type: 'number', label: 'Gemma2 最大 token', title: 'gemma2_max_token_length', desc: 'Gemma2 编码的最大 token 长度，超长截断。', defaultValue: '', min: 1 },
+    { key: 'use_sage_attn', type: 'boolean', label: '启用 Sage Attention', title: 'use_sage_attn', desc: '启用 SageAttention INT8 量化注意力加速。', defaultValue: false },
         { key: 'sample_batch_size', type: 'number', label: '预览图采样批量', title: 'sample_batch_size', desc: '预览图采样批量大小', defaultValue: '', min: 1 },
     { key: 'mem_eff_save', type: 'boolean', label: '省内存保存', title: 'mem_eff_save', desc: '使用更省内存的保存方式', defaultValue: false }
 ]),
@@ -416,7 +416,7 @@ export const FLUX_CN_SECTIONS = [
   sec('model-settings', 'model', '训练用模型', 'FLUX ControlNet。', [
     { key: 'model_train_type', type: 'hidden', defaultValue: 'flux-controlnet' },
     { key: 'pretrained_model_name_or_path', type: 'file', pickerType: 'model-file', label: 'FLUX 模型路径', title: 'pretrained_model_name_or_path', desc: 'FLUX 模型路径', defaultValue: '' },
-    { key: 'ae', type: 'file', pickerType: 'model-file', label: 'AE 路径', title: 'ae', desc: 'AE 路径', defaultValue: '' },
+    { key: 'ae', type: 'file', pickerType: 'model-file', label: 'AE 路径', title: 'ae', desc: 'AutoEncoder 权重路径，负责 Lumina 像素与 latent 的互转。', defaultValue: '' },
     { key: 'clip_l', type: 'file', pickerType: 'model-file', label: 'CLIP-L 路径', title: 'clip_l', desc: 'CLIP-L 路径', defaultValue: '' },
     { key: 't5xxl', type: 'file', pickerType: 'model-file', label: 'T5-XXL 路径', title: 't5xxl', desc: 'T5-XXL 路径', defaultValue: '' },
     { key: 'controlnet_model_name_or_path', type: 'file', pickerType: 'model-file', label: '已有 ControlNet 路径', title: 'controlnet_model_name_or_path', desc: '已有 ControlNet 路径', defaultValue: '' },
@@ -447,13 +447,13 @@ const NEWBIE_BLOCK_RESIDENCY_FIELDS = [
   { key: 'lora_activation_recompute_mode', type: 'select', label: 'LoRA 分支重算', title: 'lora_activation_recompute_mode', desc: '降低原生 DiT LoRA 反传激活峰值。', defaultValue: 'auto', options: LORA_RECOMPUTE_OPTIONS },
   { key: 'newbie_block_residency', type: 'select', label: 'Newbie Block Offload', title: 'newbie_block_residency', desc: '控制原生 Newbie 冻结 DiT 权重的驻留策略。', defaultValue: 'block_cpu_pinned', options: DIT_BLOCK_RESIDENCY_OPTIONS },
   { key: 'newbie_block_residency_min_params', type: 'number', label: 'Newbie Offload 最小参数量', title: 'newbie_block_residency_min_params', desc: '只托管参数量达到该阈值的冻结 Linear。0 表示不过滤。', defaultValue: 0, min: 0, visibleWhen: nonResidentBlockMode('newbie_block_residency') },
-  { key: 'newbie_block_checkpointing', type: 'boolean', label: 'Newbie DiT Block Checkpointing', title: 'newbie_block_checkpointing', desc: '训练时重算 DiT block 以降低反传激活峰值。', defaultValue: false, visibleWhen: nonResidentBlockMode('newbie_block_residency') },
+  { key: 'newbie_block_checkpointing', type: 'boolean', label: 'Newbie 梯度检查点（分块重算）', title: 'newbie_block_checkpointing', desc: '训练时重算 DiT block 以降低反传激活峰值。', defaultValue: false, visibleWhen: nonResidentBlockMode('newbie_block_residency') },
   { key: 'newbie_block_checkpointing_mode', type: 'select', label: 'Newbie Checkpointing 模式', title: 'newbie_block_checkpointing_mode', desc: 'block 整块重算；selective 可选（与 Anima 对齐）。', defaultValue: 'block', options: [
     { value: 'block', label: 'block（整块重算）' },
     { value: 'selective', label: 'selective' }
 ], visibleWhen: all(nonResidentBlockMode('newbie_block_residency'), when('newbie_block_checkpointing', true)) },
   { key: 'newbie_block_checkpointing_interval', type: 'number', label: 'Newbie Checkpointing 间隔', title: 'newbie_block_checkpointing_interval', desc: '每 N 个 DiT block 设一个检查点（1=全部）。N>1 少重算、多占激活显存。', defaultValue: 1, min: 1, max: 8, step: 1, visibleWhen: all(nonResidentBlockMode('newbie_block_residency'), when('newbie_block_checkpointing', true)) },
-  { key: 'newbie_block_prefetch', type: 'boolean', label: 'Newbie Block 预取', title: 'newbie_block_prefetch', desc: 'Newbie Block 预取', defaultValue: false, visibleWhen: nonResidentBlockMode('newbie_block_residency') },
+  { key: 'newbie_block_prefetch', type: 'boolean', label: 'Newbie Block 预取', title: 'newbie_block_prefetch', desc: '新手模式的 block 预取：提前把后续 block 搬入 GPU。', defaultValue: false, visibleWhen: nonResidentBlockMode('newbie_block_residency') },
   { key: 'newbie_block_prefetch_depth', type: 'number', label: 'Newbie 预取深度', title: 'newbie_block_prefetch_depth', desc: '向前预取几个 block', defaultValue: 1, min: 1, max: 8, step: 1, visibleWhen: all(nonResidentBlockMode('newbie_block_residency'), when('newbie_block_prefetch', true)) },
   { key: 'newbie_block_prefetch_mode', type: 'select', label: 'Newbie 预取模式', title: 'newbie_block_prefetch_mode', desc: 'original=固定深度（默认）；adaptive=自适应深度。', defaultValue: 'original', options: [
     { value: 'original', label: 'original（固定深度）' },
@@ -478,7 +478,7 @@ export const NEWBIE_LORA_SECTIONS = [
     { key: 'resume', type: 'file', pickerType: 'output-model-file', allowModelDirectory: true, label: '继续训练路径', title: 'resume', desc: '从某个 save_state / 检查点继续训练：可选择检查点文件，或选择存档目录自动取最新', defaultValue: '' }
 ]),
   sec('dataset-settings', 'dataset', '数据集设置', '训练数据与分辨率。', [
-    { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图片目录', title: 'train_data_dir', desc: '训练图片目录', defaultValue: './output/lulynx' },
+    { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图片目录', title: 'train_data_dir', desc: '训练图像所在目录，子目录名可作为概念名。', defaultValue: './output/lulynx' },
     { key: 'resolution', type: 'string', label: '训练分辨率', title: 'resolution', desc: '训练分辨率，宽x高。当前建议 1024 起步', defaultValue: '1024,1024' },
     { key: 'dataloader_num_workers', type: 'number', label: 'DataLoader 线程数', title: 'dataloader_num_workers', desc: 'DataLoader 工作线程数', defaultValue: 4, min: 0 },
     { key: 'newbie_dataloader_workers', type: 'string', label: 'Newbie DataLoader 线程数', title: 'newbie_dataloader_workers', desc: 'auto 或显式整数。auto = 按平台保守值（Windows ≥8 核给 2，其它给 min(4, 核数/2)）；填整数则覆盖通用 cached_dataloader_workers 与 dataloader_num_workers。这里以前出厂填 4，而表单每次都把它发给后端，等于所有人都在「显式选了 4」，缓存路的专用 worker 设置永远赢不了。', defaultValue: 'auto' },
@@ -489,8 +489,8 @@ export const NEWBIE_LORA_SECTIONS = [
     { key: 'caption_extension', type: 'string', label: 'Caption 扩展名', title: 'caption_extension', desc: '回退读取的 caption 扩展名', defaultValue: '.txt' }
 ]),
   sec('save-settings', 'model', '训练与保存', '训练参数与输出设置。', [
-    { key: 'output_dir', type: 'folder', pickerType: 'folder', label: '输出目录', title: 'output_dir', desc: '输出目录', defaultValue: './output/newbie' },
-    { key: 'output_name', type: 'string', label: '输出名称', title: 'output_name', desc: '输出名称', defaultValue: 'newbie-lora' },
+    { key: 'output_dir', type: 'folder', pickerType: 'folder', label: '输出目录', title: 'output_dir', desc: '模型/LoRA 产物输出文件夹，中间 checkpoint 按步数命名。', defaultValue: './output/newbie' },
+    { key: 'output_name', type: 'string', label: '输出名称', title: 'output_name', desc: '输出文件名（不含扩展名），中间 checkpoint 自动追加 -步数 后缀。', defaultValue: 'newbie-lora' },
     { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', desc: '每 N 步保存一次。0 表示仅在训练结束时保存', defaultValue: 0, min: 0 },
     { key: 'save_every_n_epochs', type: 'number', label: '每 N 轮保存', title: 'save_every_n_epochs', desc: '每 N 个 epoch 保存一次。0 表示不按轮保存，此时「每 N 步保存」必须大于 0', defaultValue: 1, min: 0 },
     { key: 'max_train_epochs', type: 'number', label: '最大训练轮数', title: 'max_train_epochs', desc: '最大训练 epoch', defaultValue: 50, min: 1 },
@@ -504,8 +504,8 @@ export const NEWBIE_LORA_SECTIONS = [
       { value: 'classic', label: 'classic（逐 microbatch 检查）' }
 ], visibleWhen: (c) => Number(c.gradient_accumulation_steps || 1) > 1 },
     ditGradientCheckpointingField('Newbie'),
-    { key: 'mixed_precision', type: 'select', label: '训练精度', title: 'mixed_precision', desc: '训练精度', defaultValue: 'bf16', options: ['bf16', 'fp16', 'fp32'] },
-    { key: 'seed', type: 'number', label: '随机种子', title: 'seed', desc: '随机种子', defaultValue: 42 },
+    { key: 'mixed_precision', type: 'select', label: '训练精度', title: 'mixed_precision', desc: '混合精度档位（no/fp16/bf16），影响速度与数值稳定性。', defaultValue: 'bf16', options: ['bf16', 'fp16', 'fp32'] },
+    { key: 'seed', type: 'number', label: '随机种子', title: 'seed', desc: '随机种子，固定后训练完全可复现。', defaultValue: 42 },
     ...S_NEWBIE_MERGE_EXPORT
   ]),
   sec('optimizer-settings', 'training', '优化器与学习率', '', [
@@ -513,8 +513,8 @@ export const NEWBIE_LORA_SECTIONS = [
     { key: 'optimizer_backend', type: 'select', label: 'AdamW 后端', title: 'optimizer_backend', desc: 'AdamW 后端档位；compiled_step 可包装 step', defaultValue: 'auto', options: OPTIMIZER_BACKEND_OPTIONS, visibleWhen: all(when('performance_expert_mode', true), adamwFamilyOptimizer) },
     { key: 'advanced_optimizer_strategy', type: 'select', label: '高级优化策略', title: 'advanced_optimizer_strategy', desc: '默认 auto 不改变训练', defaultValue: 'auto', options: ADVANCED_OPTIMIZER_STRATEGY_OPTIONS, visibleWhen: when('performance_expert_mode', true) },
     { key: 'optimizer_args_custom', type: 'textarea', label: '自定义 optimizer_args', title: 'optimizer_args_custom', desc: '自定义优化器参数，每行一个 key=value。', defaultValue: '' },
-    { key: 'learning_rate', type: 'string', label: '学习率', title: 'learning_rate', desc: '学习率', defaultValue: '0.0001' },
-    { key: 'weight_decay', type: 'number', label: '权重衰减', title: 'weight_decay', desc: '权重衰减', defaultValue: 0.01, min: 0, step: 0.0001 },
+    { key: 'learning_rate', type: 'string', label: '学习率', title: 'learning_rate', desc: '参数更新的步长基准，LoRA 常用 1e-4 量级。', defaultValue: '0.0001' },
+    { key: 'weight_decay', type: 'number', label: '权重衰减', title: 'weight_decay', desc: 'AdamW 权重衰减系数，抑制过拟合；LoRA 参数少，影响比全参温和。', defaultValue: 0.01, min: 0, step: 0.0001 },
     { key: 'lr_scheduler', type: 'select', label: '学习率调度器', title: 'lr_scheduler', desc: 'Newbie 学习率调度器', defaultValue: 'cosine', options: schedulerOptions(ALL_SCHEDULERS) },
     { key: 'lr_warmup_steps', type: 'number', label: 'Warmup 步数', title: 'lr_warmup_steps', desc: 'warmup 步数', defaultValue: 100, min: 0 },
     { key: 'lr_scheduler_num_cycles', type: 'number', label: '重启次数', title: 'lr_scheduler_num_cycles', desc: 'cosine_with_restarts 的重启次数', defaultValue: 1, min: 1, visibleWhen: when('lr_scheduler', 'cosine_with_restarts') },
@@ -523,7 +523,7 @@ export const NEWBIE_LORA_SECTIONS = [
     ...S_LOSS_AWARE_LR,
     { key: 'prodigy_d0', type: 'string', label: 'Prodigy d0', desc: 'Prodigy / ProdigyPlus', defaultValue: '', visibleWhen: (cfg) => ['prodigy', 'prodigyplus.prodigyplusschedulefree'].includes(String(cfg.optimizer_type || '').trim().toLowerCase()) },
     { key: 'prodigy_d_coef', type: 'string', label: 'Prodigy d_coef', desc: 'Prodigy / ProdigyPlus d 系数，影响自适应学习率大小', defaultValue: '2.0', visibleWhen: (cfg) => ['prodigy', 'prodigyplus.prodigyplusschedulefree'].includes(String(cfg.optimizer_type || '').trim().toLowerCase()) },
-    { key: 'max_grad_norm', type: 'number', label: '梯度裁剪', title: 'max_grad_norm', desc: '梯度裁剪', defaultValue: 1.0, min: 0, step: 0.01 }
+    { key: 'max_grad_norm', type: 'number', label: '梯度裁剪', title: 'max_grad_norm', desc: '梯度范数裁剪上限，超出按比例缩放，0=不裁剪。', defaultValue: 1.0, min: 0, step: 0.01 }
 ]),
   sec('negative-semantic-regularization', 'frontier', '负面语义正则', '用负面提示词约束 LoRA 在不希望语义上的增量。', [...S_NEGATIVE_SEMANTIC_REGULARIZATION]),
   sec('weight-composer', 'frontier', '统一权重组合', '空间/语义、时间步、噪声与样本难度权重按乘法组合，并保持均值尺度。', [...S_WEIGHT_COMPOSER]),
@@ -558,7 +558,7 @@ export const NEWBIE_LORA_SECTIONS = [
     ...S_LORA_VARIANTS
 ]),
   sec('cache-runtime-settings', 'speed', '缓存与运行时', '缓存流程控制与显存管理。', [
-    { key: 'use_cache', type: 'boolean', label: '启用缓存流程', title: 'use_cache', desc: '启用缓存流程', defaultValue: true },
+    { key: 'use_cache', type: 'boolean', label: '启用缓存流程', title: 'use_cache', desc: '启用 latent/text 预缓存流程，训练时不再重复编码。', defaultValue: true },
     { key: 'newbie_force_cache_only', type: 'boolean', label: '仅缓存完备样本参与训练', title: 'newbie_force_cache_only', desc: '只使用缓存完备样本进入正式训练', defaultValue: true },
     { key: 'newbie_rebuild_cache', type: 'boolean', label: '强制重建缓存', title: 'newbie_rebuild_cache', desc: '强制重建已有缓存', defaultValue: false },
     { key: 'newbie_cache_build_batch_size', type: 'number', label: '缓存构建批大小', title: 'newbie_cache_build_batch_size', desc: '首轮缓存构建时每批编码的图像数', defaultValue: 8, min: 1 },
@@ -570,12 +570,12 @@ export const NEWBIE_LORA_SECTIONS = [
     { key: 'newbie_use_flash_attn2', type: 'boolean', label: 'Newbie FlashAttention 2', title: 'newbie_use_flash_attn2', desc: 'Newbie 路线启用 FlashAttention 2（需环境支持）。默认开启。', defaultValue: true },
     ...VRAM_AUTO_ENHANCE_FIELDS,
     ...NEWBIE_BLOCK_RESIDENCY_FIELDS,
-    { key: 'swap_granularity', type: 'select', label: '显存交换模式', title: 'swap_granularity', desc: '显存交换模式', defaultValue: 'off', options: ['off', 'auto', 'block', 'merged_block', 'layer'] },
+    { key: 'swap_granularity', type: 'select', label: '显存交换模式', title: 'swap_granularity', desc: '显存交换的粒度模式（整组/逐块/合并搬运/异步流水线）。', defaultValue: 'off', options: ['off', 'auto', 'block', 'merged_block', 'layer'] },
     { key: 'swap_ratio', type: 'slider', label: '显存交换比例', title: 'swap_ratio', desc: '按原始 block/layer 总数计算交换比例。', defaultValue: 0, min: 0, max: 1, step: 0.05, visibleWhen: swapEnabled },
     { key: 'swap_count', type: 'number', label: '显存交换数量', title: 'swap_count', desc: '高级：绝对交换数量。大于 0 时优先于比例。', defaultValue: 0, min: 0, visibleWhen: swapEnabled },
     { key: 'block_merge_size', type: 'number', label: '合并 Block 大小', title: 'block_merge_size', desc: 'merged_block 模式下每组包含的 block 数。', defaultValue: 2, min: 2, visibleWhen: when('swap_granularity', 'merged_block') },
     { key: 'block_swap_strategy', type: 'select', label: 'BlockSwap 搬运策略', title: 'block_swap_strategy', desc: 'auto 使用后端解析', defaultValue: 'auto', options: BLOCK_SWAP_STRATEGY_OPTIONS, visibleWhen: all(swapEnabled, when('performance_expert_mode', true)) },
-    { key: 'blocks_to_swap', type: 'number', label: 'CPU 交换 Block 数', title: 'blocks_to_swap', desc: 'CPU 交换 Block 数', defaultValue: 0, min: 0 },
+    { key: 'blocks_to_swap', type: 'number', label: 'CPU 交换 Block 数', title: 'blocks_to_swap', desc: 'CPU↔GPU 交换的 block 数量，越大越省显存、越慢。', defaultValue: 0, min: 0 },
     { key: 'newbie_auto_swap_release', type: 'boolean', label: '自动 Swap 释放', desc: '显存占用持续偏低时逐步减少 blocks_to_swap，回收训练速度。', defaultValue: false },
     { key: 'cpu_offload_checkpointing', type: 'boolean', label: 'CPU 卸载检查点', title: 'cpu_offload_checkpointing', desc: 'checkpointing 时把部分张量卸载到 CPU', defaultValue: false },
     ...S_MEMORY_RECLAIM,
@@ -592,9 +592,9 @@ export const NEWBIE_LORA_SECTIONS = [
     [...S_MODULE_OFFLOAD_EXPERT], { expert: true }),
   sec('lulynx-settings', 'advanced', 'Lulynx 核心 (Newbie)', 'SafeGuard、EMA、ResourceManager、SmartRank、AutoController。', S_LULYNX_SDXL),
   sec('log-settings', 'model', '日志设置', '', [
-    { key: 'log_with', type: 'select', label: '日志模块', title: 'log_with', desc: '日志模块', defaultValue: 'tensorboard', options: ['tensorboard', 'wandb'] },
-    { key: 'logging_dir', type: 'folder', pickerType: 'folder', label: '日志保存文件夹', title: 'logging_dir', desc: '日志保存文件夹', defaultValue: './logs' },
-    { key: 'log_prefix', type: 'string', label: '日志前缀', title: 'log_prefix', desc: '日志前缀', defaultValue: '' },
+    { key: 'log_with', type: 'select', label: '日志模块', title: 'log_with', desc: '训练日志上报目标（tensorboard/wandb/all 等）。', defaultValue: 'tensorboard', options: ['tensorboard', 'wandb'] },
+    { key: 'logging_dir', type: 'folder', pickerType: 'folder', label: '日志保存文件夹', title: 'logging_dir', desc: '日志文件保存目录（tensorboard 事件等）。', defaultValue: './logs' },
+    { key: 'log_prefix', type: 'string', label: '日志前缀', title: 'log_prefix', desc: '日志指标名前缀，区分同一项目下的多次训练。', defaultValue: '' },
     { key: 'wandb_api_key', type: 'string', label: 'WandB API Key', desc: 'wandb 的 api 密钥', defaultValue: '', visibleWhen: when('log_with', 'wandb') }
 ]),
   sec('noise-settings', 'advanced', '噪声设置', 'noise_offset=0 表示关闭；正数会进入 Newbie 的共享噪声构造。', [
@@ -688,7 +688,7 @@ export const KREA2_LORA_SECTIONS = [
     }
 ]),
   sec('dataset-settings', 'dataset', '数据集设置', '训练数据与分辨率。', [
-    { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图片目录', title: 'train_data_dir', desc: '训练图片目录', defaultValue: './output/lulynx' },
+    { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图片目录', title: 'train_data_dir', desc: '训练图像所在目录，子目录名可作为概念名。', defaultValue: './output/lulynx' },
     { key: 'resolution', type: 'string', label: '训练分辨率', title: 'resolution', desc: '推荐 512,512（显存友好）或 768,768', defaultValue: '512,512' },
     { key: 'enable_bucket', type: 'boolean', label: '启用 Bucket', title: 'enable_bucket', desc: 'DiT cache-first 路径：分桶多为 partial。已缓存 latent/TE 回放通常不改分辨率；主要影响 online/rebuild。勿当 UNet 全 arb。', defaultValue: true },
     { key: 'min_bucket_reso', type: 'number', label: 'Bucket 最小分辨率', defaultValue: 256, min: 64 },
@@ -699,7 +699,7 @@ export const KREA2_LORA_SECTIONS = [
   sec('save-settings', 'model', '保存设置', '', [
     { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', defaultValue: 0, min: 0 },
     { key: 'save_every_n_epochs', type: 'number', label: '每 N 轮保存', title: 'save_every_n_epochs', defaultValue: 1, min: 0 },
-    { key: 'train_batch_size', type: 'number', label: 'Batch Size', title: 'train_batch_size', defaultValue: 1, min: 1 },
+    { key: 'train_batch_size', type: 'number', label: '批量大小', title: 'train_batch_size', defaultValue: 1, min: 1 },
     ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key)),
     ...S_KREA2_MERGE_EXPORT
 ]),
@@ -719,7 +719,7 @@ export const KREA2_LORA_SECTIONS = [
     sec('compile-settings', 'speed', '编译与执行后端',
     'execution_backend / torch.compile / Thunder 与 compile expert 旋钮；从速度页拆出以免与缓存/注意力搅在一起。',
     [...S_EXECUTION_BACKEND, ...S_COMPILE_EXPERT], { expert: true }),
-  sec('krea2-offload-settings', 'speed', 'Krea2 Block/Layer Offload', 'resident / block_offload / layer_offload 与预取、槽位。vram_preset 会覆盖默认 slots。', [...KREA2_OFFLOAD_FIELDS]),
+  sec('krea2-offload-settings', 'speed', 'Krea2 Block/Layer Offload', 'resident / block_offload / layer_offload 与预取、槽位。vram_preset 会覆盖默认 slots。', [...VRAM_AUTO_ENHANCE_FIELDS, ...KREA2_OFFLOAD_FIELDS]),
   sec('advanced-settings', 'advanced', '其他设置', '', [...S_ADV_DIT]),
   sec('noise-settings', 'advanced', '噪声设置', 'noise_offset=0 表示关闭；正数会进入 Krea-2 的共享噪声构造。', [...S_NOISE]),
   sec('thermal-settings', 'training', '散热与功耗', '', [...S_THERMAL]),
@@ -788,6 +788,24 @@ export const KREA2_FT_SECTIONS = dropDuplicateFieldKeys(KREA2_LORA_SECTIONS
     return { ...section, title: 'Krea-2 全参微调', description: '训练完整 Krea-2 DiT，或扩展深度后只训练新增层。', fields: [...fields, ...KREA2_DEPTH_EXPANSION_FIELDS] };
   }));
 
+// ---- Qwen Image 全参微调 ----
+// 由 LoRA 表单派生：去掉网络/适配器段，优化器换全参 LR，隐藏 model_train_type
+// 置 'qwen-image-finetune'。后端走 full_finetune 分支直训 Qwen-Image DiT
+// （20B，需大显存/内存；block-residency 仅冻结底模 LoRA 用，全参走梯度检查点）。
+export const QWEN_IMAGE_FT_SECTIONS = dropDuplicateFieldKeys(QWEN_IMAGE_LORA_SECTIONS
+  .filter((section) => section.id !== 'network-settings')
+  .map((section) => {
+    const sourceFields = section.id === 'optimizer-settings' ? S_LR_FT_DIT : section.fields;
+    const fields = sourceFields
+      .filter((field) => field.key !== 'network_weights')
+      .map((field) => {
+        if (field.key === 'model_train_type') return { ...field, defaultValue: 'qwen-image-finetune' };
+        return field;
+      });
+    if (section.id !== 'model-settings') return { ...section, fields };
+    return { ...section, title: 'Qwen Image 全参微调', description: '训练完整 Qwen-Image DiT（20B 全参，需大显存/内存）。', fields };
+  }));
+
 // ---- FLUX.2 Klein LoRA ----
 // 分模型默认：slots=4 / prefetch=3 / pin=true（与 krea2 4/2 字段分离）
 // 不挂：krea2_training_mode / vram_preset / layer_offload / de_turbo
@@ -809,7 +827,7 @@ export const FLUX2_LORA_SECTIONS = [
     { key: 'output_name', type: 'string', label: '输出名称', title: 'output_name', desc: 'LoRA 输出文件名', defaultValue: 'flux2-lora' }
   ]),
   sec('dataset-settings', 'dataset', '数据集设置', '训练数据与分辨率。cache 文件后缀 *_flux2.npz。', [
-    { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图片目录', title: 'train_data_dir', desc: '训练图片目录', defaultValue: './output/lulynx' },
+    { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图片目录', title: 'train_data_dir', desc: '训练图像所在目录，子目录名可作为概念名。', defaultValue: './output/lulynx' },
     { key: 'resolution', type: 'string', label: '训练分辨率', title: 'resolution', desc: '推荐 1024,1024；显存紧张可用 512,512', defaultValue: '1024,1024' },
     { key: 'enable_bucket', type: 'boolean', label: '启用 Bucket', title: 'enable_bucket', desc: 'DiT cache-first 路径：分桶多为 partial。已缓存 latent/TE 回放通常不改分辨率；主要影响 online/rebuild。勿当 UNet 全 arb。', defaultValue: true },
     { key: 'min_bucket_reso', type: 'number', label: 'Bucket 最小分辨率', defaultValue: 256, min: 64 },
@@ -821,7 +839,7 @@ export const FLUX2_LORA_SECTIONS = [
   sec('save-settings', 'model', '保存设置', '', [
     { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', defaultValue: 0, min: 0 },
     { key: 'save_every_n_epochs', type: 'number', label: '每 N 轮保存', title: 'save_every_n_epochs', defaultValue: 1, min: 0 },
-    { key: 'train_batch_size', type: 'number', label: 'Batch Size', title: 'train_batch_size', defaultValue: 1, min: 1 },
+    { key: 'train_batch_size', type: 'number', label: '批量大小', title: 'train_batch_size', defaultValue: 1, min: 1 },
     ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key)),
     ...S_BOOGU_MERGE_EXPORT
 ]),
@@ -841,7 +859,7 @@ export const FLUX2_LORA_SECTIONS = [
     sec('compile-settings', 'speed', '编译与执行后端',
     'execution_backend / torch.compile / Thunder 与 compile expert 旋钮；从速度页拆出以免与缓存/注意力搅在一起。',
     [...S_EXECUTION_BACKEND, ...S_COMPILE_EXPERT], { expert: true }),
-  sec('flux2-offload-settings', 'speed', 'FLUX.2 Block Offload', 'resident / block_offload 与预取、槽位。默认 slots=4、prefetch=3、pin=true。无 layer_offload。', [...FLUX2_OFFLOAD_FIELDS]),
+  sec('flux2-offload-settings', 'speed', 'FLUX.2 Block Offload', 'resident / block_offload 与预取、槽位。默认 slots=4、prefetch=3、pin=true。无 layer_offload。', [...VRAM_AUTO_ENHANCE_FIELDS, ...FLUX2_OFFLOAD_FIELDS]),
   sec('advanced-settings', 'advanced', '其他设置', '', [...S_ADV_DIT]),
   sec('noise-settings', 'advanced', '噪声设置', 'noise_offset=0 表示关闭；正数会进入 FLUX.2 RF 噪声构造。', [...S_NOISE]),
   sec('thermal-settings', 'training', '散热与功耗', '', [...S_THERMAL]),
@@ -870,7 +888,7 @@ export const ZIMAGE_LORA_SECTIONS = [
     { key: 'zimage_discrete_flow_shift', type: 'number', label: 'Flow shift', title: 'zimage_discrete_flow_shift', desc: 'discrete flow shift，默认 2.0。', defaultValue: 2.0, min: 0.1, step: 0.1 }
   ]),
   sec('dataset-settings', 'dataset', '数据集设置', '训练图片与分辨率。首版支持 live 编码；cache 后缀规划 *_zimage.npz。', [
-    { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图片目录', title: 'train_data_dir', desc: '训练图片目录', defaultValue: './output/lulynx' },
+    { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图片目录', title: 'train_data_dir', desc: '训练图像所在目录，子目录名可作为概念名。', defaultValue: './output/lulynx' },
     { key: 'resolution', type: 'string', label: '训练分辨率', title: 'resolution', desc: '推荐 1024,1024；显存紧张可试 512,512', defaultValue: '1024,1024' },
     { key: 'enable_bucket', type: 'boolean', label: '启用 Bucket', title: 'enable_bucket', desc: 'DiT cache-first 路径：分桶多为 partial。已缓存 latent/TE 回放通常不改分辨率；主要影响 online/rebuild。勿当 UNet 全 arb。', defaultValue: true },
     { key: 'min_bucket_reso', type: 'number', label: 'Bucket 最小分辨率', defaultValue: 256, min: 64 },
@@ -882,7 +900,7 @@ export const ZIMAGE_LORA_SECTIONS = [
   sec('save-settings', 'model', '保存设置', '', [
     { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', defaultValue: 0, min: 0 },
     { key: 'save_every_n_epochs', type: 'number', label: '每 N 轮保存', title: 'save_every_n_epochs', defaultValue: 1, min: 0 },
-    { key: 'train_batch_size', type: 'number', label: 'Batch Size', title: 'train_batch_size', defaultValue: 1, min: 1 },
+    { key: 'train_batch_size', type: 'number', label: '批量大小', title: 'train_batch_size', defaultValue: 1, min: 1 },
     ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key)),
     ...S_BOOGU_MERGE_EXPORT
 ]),
@@ -902,7 +920,7 @@ export const ZIMAGE_LORA_SECTIONS = [
     sec('compile-settings', 'speed', '编译与执行后端',
     'execution_backend / torch.compile / Thunder 与 compile expert 旋钮；从速度页拆出以免与缓存/注意力搅在一起。',
     [...S_EXECUTION_BACKEND, ...S_COMPILE_EXPERT], { expert: true }),
-  sec('zimage-offload-settings', 'speed', 'Z-Image Block Offload', 'resident / block_offload 与预取槽位。默认 slots=4、prefetch=2、pin=true。', [...ZIMAGE_OFFLOAD_FIELDS]),
+  sec('zimage-offload-settings', 'speed', 'Z-Image Block Offload', 'resident / block_offload 与预取槽位。默认 slots=4、prefetch=2、pin=true。', [...VRAM_AUTO_ENHANCE_FIELDS, ...ZIMAGE_OFFLOAD_FIELDS]),
   sec('advanced-settings', 'advanced', '高级参数', '', [...S_ADV_DIT]),
   sec('thermal-settings', 'training', '散热与功耗', '', [...S_THERMAL]),
   sec('peak-vram-settings', 'speed', 'VRAM 峰值观测', '', [...S_PEAK_VRAM], { expert: true }),
@@ -957,7 +975,7 @@ export const WAN22_TI2V_LORA_SECTIONS = [
   sec('save-settings', 'model', '保存设置', '', [
     { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', defaultValue: 0, min: 0 },
     { key: 'save_every_n_epochs', type: 'number', label: '每 N 轮保存', title: 'save_every_n_epochs', defaultValue: 1, min: 0 },
-    { key: 'train_batch_size', type: 'number', label: 'Batch Size', title: 'train_batch_size', defaultValue: 1, min: 1 },
+    { key: 'train_batch_size', type: 'number', label: '批量大小', title: 'train_batch_size', defaultValue: 1, min: 1 },
     ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key)),
     ...S_BOOGU_MERGE_EXPORT
   ]),
@@ -976,7 +994,7 @@ export const WAN22_TI2V_LORA_SECTIONS = [
     sec('compile-settings', 'speed', '编译与执行后端',
     'execution_backend / torch.compile / Thunder 与 compile expert 旋钮；从速度页拆出以免与缓存/注意力搅在一起。',
     [...S_EXECUTION_BACKEND, ...S_COMPILE_EXPERT], { expert: true }),
-  sec('wan22-offload-settings', 'speed', 'Wan2.2 Block Offload', 'resident / block_offload；5B 建议 slots=4。', [...WAN22_OFFLOAD_FIELDS]),
+  sec('wan22-offload-settings', 'speed', 'Wan2.2 Block Offload', 'resident / block_offload；5B 建议 slots=4。', [...VRAM_AUTO_ENHANCE_FIELDS, ...WAN22_OFFLOAD_FIELDS]),
   sec('advanced-settings', 'advanced', '高级设置', '', [...S_ADV_DIT]),
   sec('thermal-settings', 'training', '散热与功耗', '', [...S_THERMAL]),
   sec('peak-vram-settings', 'speed', 'VRAM 峰值观测', '', [...S_PEAK_VRAM], { expert: true }),
@@ -1021,7 +1039,7 @@ export const WAN22_T2V_A14B_LORA_SECTIONS = [
   sec('save-settings', 'model', '保存设置', '', [
     { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', defaultValue: 0, min: 0 },
     { key: 'save_every_n_epochs', type: 'number', label: '每 N 轮保存', title: 'save_every_n_epochs', defaultValue: 1, min: 0 },
-    { key: 'train_batch_size', type: 'number', label: 'Batch Size', title: 'train_batch_size', defaultValue: 1, min: 1 },
+    { key: 'train_batch_size', type: 'number', label: '批量大小', title: 'train_batch_size', defaultValue: 1, min: 1 },
     ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key)),
     ...S_BOOGU_MERGE_EXPORT
   ]),
@@ -1040,7 +1058,7 @@ export const WAN22_T2V_A14B_LORA_SECTIONS = [
     sec('compile-settings', 'speed', '编译与执行后端',
     'execution_backend / torch.compile / Thunder 与 compile expert 旋钮；从速度页拆出以免与缓存/注意力搅在一起。',
     [...S_EXECUTION_BACKEND, ...S_COMPILE_EXPERT], { expert: true }),
-  sec('wan22-offload-settings', 'speed', 'Wan2.2 Block Offload', 'A14B 单塔显存安全基线：slots=2 / prefetch=1；16GB/24GB 可训练性仍待真实训练证据确认。', [...WAN22_A14B_OFFLOAD_FIELDS]),
+  sec('wan22-offload-settings', 'speed', 'Wan2.2 Block Offload', 'A14B 单塔显存安全基线：slots=2 / prefetch=1；16GB/24GB 可训练性仍待真实训练证据确认。', [...VRAM_AUTO_ENHANCE_FIELDS, ...WAN22_A14B_OFFLOAD_FIELDS]),
   sec('advanced-settings', 'advanced', '高级设置', '', [...S_ADV_DIT]),
   sec('thermal-settings', 'training', '散热与功耗', '', [...S_THERMAL]),
   sec('peak-vram-settings', 'speed', 'VRAM 峰值观测', '', [...S_PEAK_VRAM], { expert: true }),
@@ -1085,9 +1103,9 @@ const LTX2_CHECKPOINT_FIELDS = [
   { key: 'activation_cpu_offload_pool_gb', type: 'number', label: 'Offload Pinned 池 GB', title: 'activation_cpu_offload_pool_gb', desc: '激活 Offload 使用的 pinned CPU 内存池。', defaultValue: 1.0, min: 0.1, step: 0.1, visibleWhen: when('activation_cpu_offload_enabled', true) },
 ];
 
-// ---- LTX-2.x visual-only LoRA（内部字段继续使用 canonical ltx23_*）----
+// ---- LTX-2.x LoRA（内部字段继续使用 canonical ltx23_*）----
 export const LTX23_LORA_SECTIONS = dropDuplicateFieldKeys([
-  sec('model-settings', 'model', '训练用模型', 'LTX-2.3 视觉-only LoRA；支持单文件或目录，并自动读取 checkpoint metadata。', [
+  sec('model-settings', 'model', '训练用模型', 'LTX-2.3 视频 LoRA，可选择联合训练音频；支持单文件或模型目录。', [
     { key: 'model_train_type', type: 'hidden', defaultValue: 'ltx23-lora' },
     { key: 'pretrained_model_name_or_path', type: 'folder', pickerType: 'folder', label: 'LTX-2.3 模型路径', title: 'pretrained_model_name_or_path', desc: 'LTX-2.3 单文件或模型目录。', defaultValue: '' },
     { key: 'ltx23_text_encoder_path', type: 'file', pickerType: 'model-file', label: 'LTX-2.3 Gemma3 文本编码器', title: 'ltx23_text_encoder_path', desc: '匹配底座的 Gemma3 文本编码器；标准目录可自动解析，自定义布局时覆盖。', defaultValue: '' },
@@ -1101,11 +1119,11 @@ export const LTX23_LORA_SECTIONS = dropDuplicateFieldKeys([
       { value: 'sigma', label: 'sigma' }
     ] },
     { key: 'ltx23_discrete_flow_shift', type: 'number', label: 'Flow shift', title: 'ltx23_discrete_flow_shift', desc: '默认 1.0', defaultValue: 1.0, min: 0.1, step: 0.1 },
-    { key: 'ltx23_isolate_modalities', type: 'boolean', label: '隔离模态', title: 'ltx23_isolate_modalities', desc: 'true=视觉-only，关闭 a2v/v2a 交叉。', defaultValue: true },
+    { key: 'ltx23_isolate_modalities', type: 'boolean', label: '隔离模态', title: 'ltx23_isolate_modalities', desc: '关闭视频与音频交互；联合训练音频时自动取消隔离。', defaultValue: true, visibleWhen: when('ltx23_train_audio', false) },
     { key: 'ltx23_fps', type: 'number', label: 'FPS', title: 'ltx23_fps', desc: 'RoPE 用帧率', defaultValue: 24.0, min: 1, max: 60, step: 1 }
   ]),
-  sec('dataset-settings', 'dataset', '数据集设置', '首版图像当 1 帧或短 clip 潜空间；short 可用合成 text embeds。', [
-    { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图片目录', title: 'train_data_dir', desc: '训练图片目录（1-frame MVP）', defaultValue: './output/lulynx' },
+  sec('dataset-settings', 'dataset', '数据集设置', '图像或视频片段训练；联合音频训练使用带音轨的视频。', [
+    { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练数据目录', title: 'train_data_dir', desc: '图像或视频目录；联合音频训练要求视频带有音轨。', defaultValue: './output/lulynx' },
     { key: 'resolution', type: 'string', label: '训练分辨率', title: 'resolution', desc: '22B 建议小分辨率试跑', defaultValue: '512,512' },
     { key: 'caption_extension', type: 'string', label: 'Caption 扩展名', title: 'caption_extension', defaultValue: '.txt' },
     { key: 'dataloader_num_workers', type: 'number', label: 'DataLoader 线程数', defaultValue: 2, min: 0 },
@@ -1113,13 +1131,13 @@ export const LTX23_LORA_SECTIONS = dropDuplicateFieldKeys([
     ...S_LTX23_VIDEO
   ]),
   sec('save-settings', 'model', '保存设置', '', [
-    { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', defaultValue: 0, min: 0 },
-    { key: 'save_every_n_epochs', type: 'number', label: '每 N 轮保存', title: 'save_every_n_epochs', defaultValue: 1, min: 0 },
-    { key: 'train_batch_size', type: 'number', label: 'Batch Size', title: 'train_batch_size', defaultValue: 1, min: 1 },
+    { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', desc: '每 N 步自动保存一次模型。0 表示不按步保存，此时「每 N 轮保存」必须大于 0。两者可以同时开，但间隔都设得很小会写出大量检查点', defaultValue: 0, min: 0 },
+    { key: 'save_every_n_epochs', type: 'number', label: '每 N 轮保存', title: 'save_every_n_epochs', desc: '每 N epoch（轮）自动保存一次模型。0 表示不按轮保存，此时「每 N 步保存」必须大于 0——两者不能同时为 0，否则整个训练只在正常结束时落盘一次，中途中断拿不到权重', defaultValue: 1, min: 0 },
+    { key: 'train_batch_size', type: 'number', label: '批量大小', title: 'train_batch_size', desc: '批量大小。数值越高显存占用越高', defaultValue: 1, min: 1 },
     { key: 'resume', type: 'file', pickerType: 'output-model-file', allowModelDirectory: true, label: '继续训练路径', title: 'resume', desc: '从某个 save_state / 检查点继续训练：可选择检查点文件，或选择存档目录自动取最新', defaultValue: '' },
     ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key)),
   ]),
-  sec('adapter-settings', 'network', 'LoRA 设置', '22B 建议小 rank；仅 video attn1/attn2 + ff。', [
+  sec('adapter-settings', 'network', 'LoRA 设置', '22B 建议小 rank；联合训练音频时包含音频及跨模态 attention。', [
     { key: 'network_dim', type: 'number', label: 'Rank (Dim)', desc: 'LoRA rank', defaultValue: 16, min: 1 },
     { key: 'network_alpha', type: 'number', label: 'Alpha', desc: 'LoRA alpha', defaultValue: 16, min: 1 },
     { key: 'network_dropout', type: 'number', label: 'Dropout', defaultValue: 0.05, min: 0, max: 1, step: 0.01 },
@@ -1133,7 +1151,7 @@ export const LTX23_LORA_SECTIONS = dropDuplicateFieldKeys([
     sec('compile-settings', 'speed', '编译与执行后端',
     'execution_backend / torch.compile / Thunder 与 compile expert 旋钮；从速度页拆出以免与缓存/注意力搅在一起。',
     [...S_EXECUTION_BACKEND, ...S_COMPILE_EXPERT], { expert: true }),
-  sec('ltx23-offload-settings', 'speed', 'LTX-2.x Block Offload', '22B 默认 block_offload，slots=2。', [...LTX23_OFFLOAD_FIELDS]),
+  sec('ltx23-offload-settings', 'speed', 'LTX-2.x Block Offload', '22B 默认 block_offload，slots=2。', [...VRAM_AUTO_ENHANCE_FIELDS, ...LTX23_OFFLOAD_FIELDS]),
   sec('ltx23-activation-offload', 'speed', 'Checkpoint / 激活 Offload', '复用原生 trainer checkpoint policy 与 activation CPU offload。', [...LTX2_CHECKPOINT_FIELDS], { expert: true }),
   sec('advanced-settings', 'advanced', '高级设置', '', [...S_ADV_DIT]),
   sec('thermal-settings', 'training', '散热与功耗', '', [...S_THERMAL]),
@@ -1146,13 +1164,15 @@ export const LTX23_LORA_SECTIONS = dropDuplicateFieldKeys([
 const retargetLtx25Sections = (sections, { typeId, outputName, finetune = false }) => (
   dropDuplicateFieldKeys(sections.map((section) => ({
     ...section,
+    ...(section.id === 'dataset-settings' ? { description: '图像或视频片段的视觉训练。' } : {}),
+    ...(section.id === 'adapter-settings' ? { description: '22B 建议小 rank；训练视觉 attention 与 FFN。' } : {}),
     ...(section.id === 'model-settings' ? {
       title: finetune ? 'LTX-2.5 全参微调' : section.title,
       description: finetune
         ? '训练完整 LTX-2.5 DiT，或扩展深度后只训练新增层。22B 模型全参/扩层显存与磁盘开销极大，请确认资源后再启用。'
         : 'LTX-2.5 视觉-only LoRA；选择包含 diffusion_models、text_encoders、vae 的官方 split pack 根目录。',
     } : {}),
-    fields: section.fields.map((field) => {
+    fields: section.fields.filter((field) => !LTX23_AUDIO_FIELD_KEYS.has(field.key)).map((field) => {
       if (field.key === 'model_train_type') return { ...field, defaultValue: typeId };
       if (field.key === 'pretrained_model_name_or_path') {
         return { ...field, label: 'LTX-2.5 模型目录', desc: '选择包含 diffusion_models、text_encoders、vae 的官方 split pack 根目录。' };
@@ -1163,6 +1183,8 @@ const retargetLtx25Sections = (sections, { typeId, outputName, finetune = false 
       if (field.key === 'ltx23_video_vae_path') {
         return { ...field, label: 'LTX-2.5 视频 VAE', desc: '可选覆盖；训练缓存推荐 video-vae-conv-bf16。' };
       }
+      if (field.key === 'ltx23_isolate_modalities') return { ...field, desc: '隔离音频模态，使用视觉训练。', visibleWhen: undefined };
+      if (field.key === 'train_data_dir') return { ...field, desc: '图像或视频训练目录。' };
       if (field.key === 'output_dir') return { ...field, defaultValue: './output/ltx25' };
       if (field.key === 'output_name') {
         return {
@@ -1212,7 +1234,7 @@ export const BOOGU_LORA_SECTIONS = [
     { key: 'output_name', type: 'string', label: '输出名称', title: 'output_name', desc: 'LoRA 输出文件名', defaultValue: 'boogu-lora' }
   ]),
   sec('dataset-settings', 'dataset', '数据集设置', '自然语言 instruction caption。cache 后缀 *_boogu.npz。推荐 buckets 覆盖 512/768/1024。', [
-    { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图片目录', title: 'train_data_dir', desc: '训练图片目录', defaultValue: './output/lulynx' },
+    { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图片目录', title: 'train_data_dir', desc: '训练图像所在目录，子目录名可作为概念名。', defaultValue: './output/lulynx' },
     { key: 'resolution', type: 'string', label: '训练分辨率', title: 'resolution', desc: '推荐 1024,1024；bucket 会覆盖 512/768/1024 档。', defaultValue: '1024,1024' },
     { key: 'enable_bucket', type: 'boolean', label: '启用 Bucket', title: 'enable_bucket', desc: 'DiT cache-first 路径：分桶多为 partial。已缓存 latent/TE 回放通常不改分辨率；主要影响 online/rebuild。勿当 UNet 全 arb。', defaultValue: true },
     { key: 'min_bucket_reso', type: 'number', label: 'Bucket 最小分辨率', defaultValue: 512, min: 64 },
@@ -1222,7 +1244,7 @@ export const BOOGU_LORA_SECTIONS = [
     { key: 'use_cache', type: 'boolean', label: '使用磁盘缓存', title: 'use_cache', desc: '推荐开启：读 latent/指令 TE 缓存', defaultValue: true }
 ]),
   sec('save-settings', 'model', '保存设置', '默认按轮保存（每轮一次）。RunComfy 参考基线是每 250 步保留约 4 份，需要的话把「每 N 步保存」改成 250。', [
-    { key: 'train_batch_size', type: 'number', label: 'Batch Size', title: 'train_batch_size', defaultValue: 1, min: 1 },
+    { key: 'train_batch_size', type: 'number', label: '批量大小', title: 'train_batch_size', defaultValue: 1, min: 1 },
     ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key))
 ]),
   sec('adapter-settings', 'network', 'LoRA 适配器', 'RunComfy 默认 rank/α 32/32。', [
@@ -1245,7 +1267,7 @@ export const BOOGU_LORA_SECTIONS = [
     sec('compile-settings', 'speed', '编译与执行后端',
     'execution_backend / torch.compile / Thunder 与 compile expert 旋钮；从速度页拆出以免与缓存/注意力搅在一起。',
     [...S_EXECUTION_BACKEND, ...S_COMPILE_EXPERT], { expert: true }),
-  sec('boogu-offload-settings', 'speed', 'Boogu Block Offload', '默认 resident（OFF）。OOM 再开 block_offload。', [...BOOGU_OFFLOAD_FIELDS]),
+  sec('boogu-offload-settings', 'speed', 'Boogu Block Offload', '默认 resident（OFF）。OOM 再开 block_offload。', [...VRAM_AUTO_ENHANCE_FIELDS, ...BOOGU_OFFLOAD_FIELDS]),
   sec('advanced-settings', 'advanced', '其他设置', '', [...S_ADV_DIT]),
   sec('thermal-settings', 'training', '散热与功耗', '', [...S_THERMAL]),
   sec('peak-vram-settings', 'speed', 'VRAM 峰值监测', '', [...S_PEAK_VRAM], { expert: true }),
@@ -1287,6 +1309,7 @@ export const BOOGU_EDIT_LORA_SECTIONS = [
 ]),
   sec('dataset-settings', 'dataset', '数据集设置', 'Edit：目标图 + caption；ref 图进 cache 的 ref_latents（与 Base *_boogu.npz 命名空间隔离推荐分目录）。', [
     { key: 'train_data_dir', type: 'folder', pickerType: 'folder', label: '训练图片目录', title: 'train_data_dir', desc: '目标图目录；建议与 Base cache 分目录', defaultValue: './output/lulynx-edit' },
+    { key: 'conditioning_data_dir', type: 'folder', pickerType: 'folder', label: '参考图目录', title: 'conditioning_data_dir', desc: 'Edit 参考图目录；按相对路径或同名匹配目标图，用于构建参考图缓存。', defaultValue: '' },
     { key: 'resolution', type: 'string', label: '训练分辨率', title: 'resolution', desc: '推荐 1024,1024', defaultValue: '1024,1024' },
     { key: 'enable_bucket', type: 'boolean', label: '启用 Bucket', title: 'enable_bucket', desc: 'DiT cache-first 路径：分桶多为 partial。已缓存 latent/TE 回放通常不改分辨率；主要影响 online/rebuild。勿当 UNet 全 arb。', defaultValue: true },
     { key: 'min_bucket_reso', type: 'number', label: 'Bucket 最小分辨率', defaultValue: 512, min: 64 },
@@ -1296,7 +1319,7 @@ export const BOOGU_EDIT_LORA_SECTIONS = [
     { key: 'use_cache', type: 'boolean', label: '使用磁盘缓存', title: 'use_cache', desc: 'Edit cache 含 ref_latents', defaultValue: true }
 ]),
   sec('save-settings', 'model', '保存设置', '默认按轮保存（每轮一次）。RunComfy 基线是每 250 步保留约 4 份，需要的话把「每 N 步保存」改成 250。', [
-    { key: 'train_batch_size', type: 'number', label: 'Batch Size', title: 'train_batch_size', defaultValue: 1, min: 1 },
+    { key: 'train_batch_size', type: 'number', label: '批量大小', title: 'train_batch_size', defaultValue: 1, min: 1 },
     ...S_SAVE.filter((f) => !['output_dir', 'output_name'].includes(f.key))
 ]),
   sec('adapter-settings', 'network', 'LoRA 适配器', '默认 rank/α 32/32。', [
@@ -1319,7 +1342,7 @@ export const BOOGU_EDIT_LORA_SECTIONS = [
     sec('compile-settings', 'speed', '编译与执行后端',
     'execution_backend / torch.compile / Thunder 与 compile expert 旋钮；从速度页拆出以免与缓存/注意力搅在一起。',
     [...S_EXECUTION_BACKEND, ...S_COMPILE_EXPERT], { expert: true }),
-  sec('boogu-offload-settings', 'speed', 'Boogu Block Offload', '默认 resident（OFF）；OOM 再开 block_offload。', [...BOOGU_OFFLOAD_FIELDS]),
+  sec('boogu-offload-settings', 'speed', 'Boogu Block Offload', '默认 resident（OFF）；OOM 再开 block_offload。', [...VRAM_AUTO_ENHANCE_FIELDS, ...BOOGU_OFFLOAD_FIELDS]),
   sec('advanced-settings', 'advanced', '高级设置', '', [...S_ADV_DIT]),
   sec('thermal-settings', 'training', '散热与功耗', '', [...S_THERMAL]),
   sec('peak-vram-settings', 'speed', 'VRAM 峰值监控', '', [...S_PEAK_VRAM], { expert: true }),

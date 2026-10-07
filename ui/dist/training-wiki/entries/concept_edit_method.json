@@ -1,12 +1,17 @@
 {
   "key": "concept_edit_method",
   "title": "概念编辑方法",
+  "title_en": "Training",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "concept-edit"
   ],
   "layers": [
     "Loss 层"
+  ],
+  "layers_en": [
+    "Loss layer"
   ],
   "standard": {
     "summary": "概念编辑的算法路线：ileco（默认，基于 caption 的概念方向学习）或 addift（基于成对图像的潜空间差分学习）。",
@@ -14,12 +19,25 @@
     "whenToUse": "想「让某个词的语义改变/消失」用 iLECO（改笑容、擦水印概念等）；有明确的前后对比图（同一构图改了某个元素）想学这种变换用 ADDifT。",
     "avoidWhen": "ADDifT 没有像素级对应的成对图时效果差（建议同分辨率、同构图）；iLECO 的 prompt 对写不清楚概念边界时学到的方向会含糊。"
   },
+  "standard_en": {
+    "summary": "The concept-editing algorithm: ileco (the default, caption-based concept direction learning) or addift (latent-space difference learning from paired images).",
+    "effect": "ileco is driven by text pairs such as target_prompt; leaving target_prompt empty leans towards erasing the original concept. addift needs original/target image pairs (the dataset pairs them by the original_ prefix) and learns the direction of change between the two. The dataset loader validates sample structure per method, and an unsupported value is an outright error.",
+    "whenToUse": "Use iLECO when you want a word's meaning changed or removed (altering a smile, erasing a watermark concept); use ADDifT when you have explicit before/after images (the same composition with one element changed) and want that transformation learned.",
+    "avoidWhen": "ADDifT does poorly without pixel-level correspondence between the pairs (same resolution and composition is best); iLECO learns a vague direction when the prompt pair does not draw the concept boundary clearly."
+  },
   "advanced": {
     "principle": "iLECO：在文本条件空间构造正负概念对，训练 LoRA 让模型对原概念的预测靠近目标概念的预测，本质是语义方向编辑。ADDifT：对成对图像的 latent 做差分监督，LoRA 学习 original→target 的潜空间位移，适合可视化定义的变化。",
     "intervention": "trainer_side_train_runtime.py：method 解析后传入 ConceptEditDataset（concept_edit_dataset.py 按 ileco/addift 决定样本配对方式：addift 额外加载 original_<stem> 图像，ileco 用 caption 对）；每步回调把 method 写入训练指标。",
     "expectedImpact": "iLECO 常见 300~1000 步；ADDifT 收敛快（30~150 步），步数超配容易过拟合差分方向。",
     "tradeoffs": "两种方法的产物都是「编辑向量式 LoRA」，适合低权重叠加使用而不是当作常规角色/风格 LoRA。",
     "codePath": "trainer_side_train_runtime.py：method 分支；concept_edit_dataset.py：按方法配对样本（不支持值抛 ValueError）；concept_edit_anima_mixin.py：ileco/addift batch 处理"
+  },
+  "advanced_en": {
+    "principle": "iLECO: builds positive/negative concept pairs in text-conditioning space and trains a LoRA so the model's prediction for the original concept moves toward the target concept's prediction — essentially semantic-direction editing. ADDifT: applies difference supervision on latents of paired images; the LoRA learns the original→target latent-space displacement, suited to visually defined changes.",
+    "intervention": "trainer_side_train_runtime.py: after method is parsed it is passed to ConceptEditDataset (concept_edit_dataset.py decides sample pairing by ileco/addift: addift additionally loads original_<stem> images, ileco uses caption pairs); a per-step callback writes the method into training metrics.",
+    "expectedImpact": "iLECO commonly needs 300~1000 steps; ADDifT converges fast (30~150 steps), and over-allocating steps easily overfits the difference direction.",
+    "tradeoffs": "Both methods produce an \"edit-vector-style LoRA\", suited to stacking at low weights rather than serving as a regular character/style LoRA.",
+    "codePath": "trainer_side_train_runtime.py: method branching; concept_edit_dataset.py: pairs samples by method (unsupported values raise ValueError); concept_edit_anima_mixin.py: ileco/addift batch handling"
   },
   "relatedConfigs": [
     "concept_edit_base_model",

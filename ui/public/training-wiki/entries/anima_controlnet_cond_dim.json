@@ -1,0 +1,16 @@
+{
+  "key": "anima_controlnet_cond_dim",
+  "title": "条件主干宽度",
+  "category": "训练 / 适配器",
+  "appliesTo": [
+    "anima-controlnet"
+  ],
+  "standard": {
+    "summary": "Anima ControlNet 条件主干宽度。",
+    "effect": "条件主干网络宽度。",
+    "whenToUse": "控制容量旋钮。",
+    "avoidWhen": "默认 64。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

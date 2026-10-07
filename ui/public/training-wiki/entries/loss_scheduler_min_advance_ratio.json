@@ -1,7 +1,9 @@
 {
   "key": "loss_scheduler_min_advance_ratio",
   "title": "最小推进速度",
+  "title_en": "Min",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Used by the loss-weighted annealed cosine only.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "仅用于 Loss 加权退火余弦。未锁定或触发保护上限时，每步至少推进多少余弦相位，避免后期完全停住。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Only for the loss-weighted annealing cosine. When unlocked or after the guard cap triggers, the minimum cosine phase advanced per step, keeping late training from stalling completely.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

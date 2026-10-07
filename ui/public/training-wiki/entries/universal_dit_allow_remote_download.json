@@ -1,0 +1,16 @@
+{
+  "key": "universal_dit_allow_remote_download",
+  "title": "允许远程模型下载",
+  "category": "高级自定义 DiT（实验）",
+  "appliesTo": [
+    "universal-dit-lora"
+  ],
+  "standard": {
+    "summary": "默认仅解析本地目录。",
+    "effect": "开启后可解析远程仓库标识。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

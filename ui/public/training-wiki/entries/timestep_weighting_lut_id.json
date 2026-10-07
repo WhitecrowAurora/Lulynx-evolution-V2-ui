@@ -1,0 +1,37 @@
+{
+  "key": "timestep_weighting_lut_id",
+  "title": "时间步标定表 ID",
+  "category": "统一权重组合",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "时间步权重标定表 ID。",
+    "effect": "引用预生成的 timestep 加权查找表（LUT），替代解析式加权。",
+    "whenToUse": "已有离线标定结果时按 ID 引用。",
+    "avoidWhen": "无 LUT 资产时留空，用解析式权重。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

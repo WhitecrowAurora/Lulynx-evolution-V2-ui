@@ -1,7 +1,9 @@
 {
   "key": "bucket_no_upscale",
   "title": "禁止 Bucket 放大",
+  "title_en": "Buckets do not upscale images",
   "category": "数据集 / 预处理",
+  "category_en": "Dataset / Preprocessing",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -12,9 +14,19 @@
     "whenToUse": "数据集中包含低分辨率图像（如 256×256）时推荐开启，避免放大劣化图像质量。",
     "avoidWhen": "数据集全为高分辨率图像时无需开启（不会触发放大）。"
   },
+  "standard_en": {
+    "summary": "Once on, bucket training never upscales an image below the target resolution -- it only shrinks.",
+    "effect": "Stops small images from being trained on upscaled (the blur and noise upscaling introduces can hurt training quality). Images keep their original resolution or shrink to the bucket that fits.",
+    "whenToUse": "Recommended when the dataset contains low-resolution images (256x256, say), so quality is not degraded by upscaling.",
+    "avoidWhen": "Not needed when every image in the dataset is already high resolution -- upscaling never triggers."
+  },
   "advanced": {
     "principle": "在桶分配时，若图像最大维度小于桶的最小维度，则不分配到该桶而是寻找面积更小的桶（或丢弃）。",
     "tradeoffs": "可能导致小图被分配到更小的桶（更低分辨率训练），影响这部分数据的贡献度。"
+  },
+  "advanced_en": {
+    "principle": "During bucket assignment, if the image's largest dimension is smaller than the bucket's smallest dimension, the image is not assigned to that bucket — a smaller-area bucket is sought instead (or the image is dropped).",
+    "tradeoffs": "Small images may land in smaller buckets (lower-resolution training), reducing those images' contribution."
   },
   "relatedConfigs": [
     "enable_bucket",

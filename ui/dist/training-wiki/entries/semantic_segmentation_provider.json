@@ -1,0 +1,27 @@
+{
+  "key": "semantic_segmentation_provider",
+  "title": "分割模型提供者",
+  "category": "语义区域加权",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "auto/transformers 均只使用本地模型；disabled 用于明确停用分割预处理。",
+    "effect": "写入训练配置 semantic_segmentation_provider，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 auto，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

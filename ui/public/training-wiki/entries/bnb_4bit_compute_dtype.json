@@ -1,7 +1,9 @@
 {
   "key": "bnb_4bit_compute_dtype",
   "title": "bnb 4bit 计算精度",
+  "title_en": "Bnb 4bit",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "bfloat16": "反量化后用 bf16 算。",
       "float16": "反量化后用 fp16 算。",
       "float32": "反量化后用 fp32 算，又慢又占。"
+    }
+  },
+  "standard_en": {
+    "summary": "bnb 4-bit compute precision: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "bfloat16": "Computes in bf16 after dequantisation.",
+      "float16": "Computes in fp16 after dequantisation.",
+      "float32": "Computes in fp32 after dequantisation: slow and memory-hungry."
     }
   },
   "advanced": {},

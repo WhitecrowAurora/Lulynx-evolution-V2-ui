@@ -1,0 +1,17 @@
+{
+  "key": "pattern_loss_high_weight",
+  "title": "高频权重",
+  "category": "正则 / Loss",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "Pattern 高频权重。",
+    "effect": "高频子带（细节/纹理）的 loss 权重。",
+    "whenToUse": "细节糊时调大。",
+    "avoidWhen": "默认 2。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

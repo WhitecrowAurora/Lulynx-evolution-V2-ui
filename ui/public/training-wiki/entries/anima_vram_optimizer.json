@@ -1,0 +1,17 @@
+{
+  "key": "anima_vram_optimizer",
+  "title": "显存优化器",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "Anima packed/varlen 显存优化意图。",
+    "effect": "仅在 FlashAttention 2 后端下可用；开启后会请求 packed varlen attention，并自动采用最省显存的 checkpointing。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

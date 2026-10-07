@@ -1,0 +1,17 @@
+{
+  "key": "krea2_block_offload_ratio",
+  "title": "Block Offload 比例 %",
+  "category": "Krea2 Block/Layer Offload",
+  "appliesTo": [
+    "krea2-finetune",
+    "krea2-lora"
+  ],
+  "standard": {
+    "summary": "参与 block offload 的比例（0–100）。",
+    "effect": "100 表示尽可能多 block 走 offload。",
+    "whenToUse": "默认 100，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

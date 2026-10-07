@@ -1,7 +1,9 @@
 {
   "key": "multi_gpu",
   "title": "多 GPU 训练 (DDP)",
+  "title_en": "Multi-GPU Training (DDP)",
   "category": "性能 / 分布式",
+  "category_en": "Performance / Distributed",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,24 +15,39 @@
   "layers": [
     "训练控制层"
   ],
+  "layers_en": [
+    "Training control layer"
+  ],
   "standard": {
     "summary": "启用 PyTorch DDP（Distributed Data Parallel）多 GPU 训练。每张 GPU 处理独立的 batch，梯度通过 AllReduce 同步。",
     "effect": "2 张 GPU 约提速 1.8-1.9 倍（不是完美 2 倍，因为通信开销）。num_processes 指定 GPU 数量。",
     "whenToUse": "有多张 GPU 且想加速训练时。",
     "avoidWhen": "单 GPU 时不要开启。与 block swap 不兼容。"
   },
+  "standard_en": {
+    "summary": "Enables PyTorch DDP (Distributed Data Parallel) multi-GPU training. Each GPU handles its own batch and the gradients are synchronised by AllReduce.",
+    "effect": "Two GPUs give roughly a 1.8-1.9x speedup (not a perfect 2x, because of communication overhead). num_processes gives the number of GPUs.",
+    "whenToUse": "When you have several GPUs and want to speed training up.",
+    "avoidWhen": "Do not enable it on a single GPU. It is not compatible with block swap."
+  },
   "advanced": {
-    "principle": "DDP 在每张 GPU 上运行完整的训练循环，每步 optimizer.step() 前通过 NCCL AllReduce 同步所有 GPU 的梯度。ddp_gradient_as_bucket_view=True 将梯度放入连续内存桶中减少通信开销。ddp_static_graph=True 在图不变时进一步优化。ddp_find_unused_parameters 检测未使用的参数（调试用，训练时关闭）。 nccl_proto 指定 NCCL 集合通信协议（NCCL_PROTO 环境变量）：LL/LL128 适合小消息低延迟（PCIe 多卡 TP 常见收益），Simple 适合大消息带宽。留空 = NCCL 自动选择。已设置的环境变量优先于该配置。影响本进程所有 NCCL collective（不只 TP）；无通用“必然更快”结论，请在实际拓扑上单变量实测。",
+    "principle": "DDP 在每张 GPU 上运行完整的训练循环，每步 optimizer.step() 前通过 NCCL AllReduce 同步所有 GPU 的梯度。ddp_gradient_as_bucket_view=True 将梯度放入连续内存桶中减少通信开销。ddp_static_graph=True 在图不变时进一步优化。ddp_find_unused_parameters 检测未使用的参数（调试用，训练时关闭）。",
     "intervention": "entry_train.py 通过 torch.distributed.launch 启动多进程。",
     "expectedImpact": "接近线性的加速比。2 GPU ≈ 1.85x，4 GPU ≈ 3.5x。",
-    "tradeoffs": "main_process_ip/port 配置多机训练的网络。nccl_socket_ifname 指定网络接口。 nccl_proto 指定 NCCL 集合通信协议（NCCL_PROTO）：留空=自动选择，环境变量优先于配置。",
+    "tradeoffs": "main_process_ip/port 配置多机训练的网络。nccl_socket_ifname 指定网络接口。",
+    "codePath": "entry_train.py:torch.distributed.launch → DDP(model) → AllReduce gradients"
+  },
+  "advanced_en": {
+    "principle": "DDP runs the full training loop on every GPU, syncing all GPUs' gradients via NCCL AllReduce before each optimizer.step(). ddp_gradient_as_bucket_view=True puts gradients into contiguous memory buckets to cut communication overhead. ddp_static_graph=True optimizes further when the graph is fixed. ddp_find_unused_parameters detects unused parameters (for debugging; keep off in training).",
+    "intervention": "entry_train.py launches multiple processes via torch.distributed.launch.",
+    "expectedImpact": "Near-linear scaling. 2 GPUs ≈ 1.85×, 4 GPUs ≈ 3.5×.",
+    "tradeoffs": "main_process_ip/port configures multi-node networking. nccl_socket_ifname specifies the network interface.",
     "codePath": "entry_train.py:torch.distributed.launch → DDP(model) → AllReduce gradients"
   },
   "relatedConfigs": [
     "num_processes",
     "num_machines",
     "main_process_ip",
-    "main_process_port",
-    "nccl_proto"
+    "main_process_port"
   ]
 }

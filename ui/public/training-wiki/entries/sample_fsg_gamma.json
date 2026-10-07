@@ -1,0 +1,17 @@
+{
+  "key": "sample_fsg_gamma",
+  "title": "FSG gamma",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "FSG（频带引导采样）探针的 FSG gamma，默认 0。",
+    "effect": "FSG 在预览采样阶段按频带能量引导噪声，FSG gamma 定义频带与强度；sample_fsg_apply 关闭时只记录观测不生效。",
+    "whenToUse": "研究高频细节与采样质量关系时使用。",
+    "avoidWhen": "默认 observe-only；除非明确在做频带实验，不要打开 apply。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

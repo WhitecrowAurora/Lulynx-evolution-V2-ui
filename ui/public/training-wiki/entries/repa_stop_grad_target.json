@@ -1,0 +1,24 @@
+{
+  "key": "repa_stop_grad_target",
+  "title": "REPA 目标 stop-grad",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "REPA 目标 stop-grad。",
+    "effect": "对齐目标侧不回传梯度，只把表征拉向目标。",
+    "whenToUse": "默认开启，防止 teacher 侧被带偏。",
+    "avoidWhen": "做双向对齐实验时可关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

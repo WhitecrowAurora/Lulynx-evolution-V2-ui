@@ -1,0 +1,17 @@
+{
+  "key": "concept_geometry_translation_batch_size",
+  "title": "翻译批量",
+  "category": "Concept Geometry",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "翻译批量。",
+    "effect": "批量翻译的 batch 大小。",
+    "whenToUse": "按 API 限速调整。",
+    "avoidWhen": "默认 8。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

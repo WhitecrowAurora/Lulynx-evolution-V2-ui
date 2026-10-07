@@ -1,0 +1,16 @@
+{
+  "key": "sra2_haste_normalize_targets",
+  "title": "归一化 target",
+  "category": "表征对齐",
+  "appliesTo": [
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "对齐前对 target 做归一化。",
+    "effect": "写入训练配置 sra2_haste_normalize_targets，由训练后端在相应阶段消费。",
+    "whenToUse": "默认开启，适合大多数场景。",
+    "avoidWhen": "排查问题想回到原始行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

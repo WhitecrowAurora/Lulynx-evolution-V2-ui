@@ -1,0 +1,17 @@
+{
+  "key": "adaptive_caching_min_blocks_computed",
+  "title": "最少计算 block 数",
+  "category": "DiT / 训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "每步至少完整计算的 block 数（稳定护栏）。",
+    "effect": "写入训练配置 adaptive_caching_min_blocks_computed，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 4，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

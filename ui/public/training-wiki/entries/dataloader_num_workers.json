@@ -1,0 +1,34 @@
+{
+  "key": "dataloader_num_workers",
+  "title": "DataLoader 线程数",
+  "category": "数据集 / 图说",
+  "appliesTo": [
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "minimax-h3-finetune",
+    "minimax-h3-lora",
+    "newbie-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "DataLoader 线程数。",
+    "effect": "原始（非缓存）数据加载的 worker 进程数。",
+    "whenToUse": "CPU 核多且 IO 瓶颈时加大。",
+    "avoidWhen": "Windows 下过大会拖慢启动。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

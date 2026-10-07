@@ -1,7 +1,9 @@
 {
   "key": "gram_texture_enabled",
   "title": "Gram 矩阵纹理 Loss",
+  "title_en": "Enable Gram",
   "category": "前沿储备 / 质量",
+  "category_en": "Frontier Reserve / Quality",
   "appliesTo": [
     "anima-lora"
   ],
@@ -17,9 +19,19 @@
     "whenToUse": "实验性功能。风格 LoRA 训练（希望输出保持特定艺术风格纹理）时可以尝试。",
     "avoidWhen": "默认关闭。Gram 矩阵计算需要完整的特征通道乘法（O(C²)），对大通道数（C>512）有一定计算开销。"
   },
+  "standard_en": {
+    "summary": "(Experimental) Gram matrix style loss: computes the Gram matrix of the feature maps (inter-channel correlation) to constrain the texture and style consistency of the training output.",
+    "effect": "The Gram matrix captures the features' second-order statistics (equivalent to style information), and this loss encourages output to keep the same texture and style distribution as the target.",
+    "whenToUse": "An experimental feature. Worth trying for style LoRA training where the output should hold a particular artistic texture.",
+    "avoidWhen": "Off by default. The Gram matrix needs a full channel-wise multiplication (O(C^2)), which costs something at high channel counts (C>512)."
+  },
   "advanced": {
     "principle": "G = F × F^T，G_{ij} = <F_i, F_j>（特征图通道 i 和 j 的内积）。Gram 矩阵等价于特征空间的二阶矩，不保留空间位置信息（只捕捉风格而非内容）。normalize=True 对 Gram 矩阵按元素数归一化，防止深层特征因维度大而主导 loss。",
     "tradeoffs": "Gram loss 单纯约束风格，可能弱化对内容/结构的约束。通常应与 MSE loss 一起使用（Gram 权重设较小）。"
+  },
+  "advanced_en": {
+    "principle": "G = F × F^T, G_{ij} = <F_i, F_j> (inner product of feature channels i and j). The Gram matrix is the second moment of feature space and keeps no spatial-position information (captures style, not content). normalize=True normalizes the Gram matrix by element count, keeping deep features' large dimensionality from dominating the loss.",
+    "tradeoffs": "Gram loss constrains only style and can weaken content/structure constraints. Usually use alongside MSE loss (with a small Gram weight)."
   },
   "relatedConfigs": [
     "dct_frequency_enabled",

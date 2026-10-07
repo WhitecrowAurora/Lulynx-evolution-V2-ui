@@ -1,7 +1,9 @@
 {
   "key": "vortex_profile",
   "title": "Vortex 档位（vortex_profile）",
+  "title_en": "Vortex tier",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -15,8 +17,25 @@
       "extreme": "极限档。"
     }
   },
+  "standard_en": {
+    "summary": "standard is the default",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "standard": "The standard resource gear.",
+      "low_vram": "The low-VRAM gear.",
+      "extreme": "The extreme gear."
+    }
+  },
   "advanced": {
     "principle": "standard 默认；low_vram 更保守；extreme 更激进。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "standard is the default; low_vram is more conservative; extreme is more aggressive.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

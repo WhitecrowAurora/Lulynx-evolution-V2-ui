@@ -1,0 +1,19 @@
+{
+  "key": "stochastic_depth_min_blocks_kept",
+  "title": "最少保留 Block 数",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "flux-finetune",
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "始终保留前 N 个 block，防止网络过浅导致训练不稳。",
+    "effect": "写入训练配置 stochastic_depth_min_blocks_kept，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 4，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

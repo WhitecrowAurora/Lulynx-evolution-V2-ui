@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { usePageEntrance } from '@/motion/useEntrance'
 import { PageHead, Panel } from '@/components/layout'
 import { Badge, Bar, Button, Dot, Empty } from '@/components/primitives'
 import { Modal } from '@/components/overlay'
-import { queueApi, type TaskRecord } from '@/api/queueApi'
+import { queueApi, type QueuePayload, type QueueRun, type TaskRecord } from '@/api/queueApi'
 import { trainApi } from '@/api/trainApi'
 import { unwrap } from '@/api/transport'
 import { applyConfigBag, extractRunRestorable } from '@/lib/applyConfigBag'
@@ -51,6 +51,122 @@ function matchFilter(task: TaskRecord, f: Filter): boolean {
   return s === 'FAILED' || s === 'ERROR' || s === 'ORPHANED'
 }
 
+const IMMUTABLE_QUEUE_FIELDS = new Set([
+  'run_id', 'task_id', 'status', 'pid', 'launcher_pid', 'worker_pid', 'queued_at',
+  'queue_position', 'queue_message', 'source_run_id', 'replay_kind', 'parent_run_id',
+  'gpu_holder_id', 'process_create_time', 'runtime_owner', 'idempotency_key', 'ui_config_revision',
+])
+
+function queueRunId(run: QueueRun): string { return String(run.run_id ?? '') }
+
+function QueueEditModal({ run, onClose, onSaved }: { run: QueueRun | null; onClose: () => void; onSaved: () => void }) {
+  const { t } = useI18n()
+  const [revision, setRevision] = useState<number | null>(null)
+  const [text, setText] = useState('')
+  const [busy, setBusy] = useState(false)
+
+  useEffect(() => {
+    if (!run) return
+    setRevision(null)
+    setText('')
+    let active = true
+    void queueApi.editContext(queueRunId(run)).then((payload) => {
+      if (!active) return
+      setRevision(payload.revision)
+      setText(JSON.stringify(payload.config ?? {}, null, 2))
+    }).catch((error) => {
+      if (active) toast.err((error as Error).message, t('queue.edit_fail'))
+    })
+    return () => { active = false }
+  }, [run, t])
+
+  const save = async () => {
+    if (!run || revision == null) return
+    let parsed: unknown
+    try { parsed = JSON.parse(text) } catch {
+      toast.err(t('queue.edit_invalid_json'), t('queue.edit_fail'))
+      return
+    }
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      toast.err(t('queue.edit_object_required'), t('queue.edit_fail'))
+      return
+    }
+    const patch = Object.fromEntries(Object.entries(parsed).filter(([key]) => !IMMUTABLE_QUEUE_FIELDS.has(key)))
+    setBusy(true)
+    try {
+      unwrap(await queueApi.edit(queueRunId(run), revision, patch))
+      toast.info(t('queue.edit_saved'), 'QUEUE')
+      onSaved()
+      onClose()
+    } catch (error) {
+      toast.err((error as Error).message, t('queue.edit_fail'))
+    } finally { setBusy(false) }
+  }
+
+  return (
+    <Modal open={!!run} title={t('queue.edit_title', { id: run ? queueRunId(run) : '' })} onClose={onClose} width={720}>
+      {run ? <>
+        <p className="lx-queue-edit-note">{t('queue.edit_hint')}</p>
+        <textarea className="lx-queue-config-editor" value={text} onChange={(event) => setText(event.target.value)} disabled={revision == null || busy} spellCheck={false} />
+        <div className="lx-queue-modal-actions">
+          <Button onClick={onClose}>{t('common.cancel')}</Button>
+          <Button variant="primary" disabled={revision == null || busy} onClick={() => void save()}>{busy ? t('common.loading') : t('common.save')}</Button>
+        </div>
+      </> : null}
+    </Modal>
+  )
+}
+
+function QueueWorkbenchPanel({ payload, onChanged }: { payload: QueuePayload | null; onChanged: () => void }) {
+  const { t } = useI18n()
+  const [editing, setEditing] = useState<QueueRun | null>(null)
+  const [busy, setBusy] = useState<string | null>(null)
+  const queued = payload?.queued_runs ?? []
+  const revision = Number(payload?.revision ?? 0)
+  const currentId = String(payload?.current_run_id ?? '')
+  const currentStatus = String(payload?.current_status ?? '').toLowerCase()
+
+  const move = async (index: number, direction: -1 | 1) => {
+    const target = index + direction
+    if (target < 0 || target >= queued.length) return
+    const ids = queued.map(queueRunId)
+    ;[ids[index], ids[target]] = [ids[target], ids[index]]
+    setBusy('reorder')
+    try { unwrap(await queueApi.reorder(revision, ids)); onChanged() } catch (error) {
+      toast.err((error as Error).message, t('queue.reorder_fail'))
+    } finally { setBusy(null) }
+  }
+
+  const togglePause = async () => {
+    if (!currentId) return
+    setBusy('pause')
+    try { unwrap(await (currentStatus === 'paused' ? queueApi.resume(currentId) : queueApi.pause(currentId))); onChanged() } catch (error) {
+      toast.err((error as Error).message, t('queue.control_fail'))
+    } finally { setBusy(null) }
+  }
+
+  return <>
+    <Panel title={t('queue.workbench_title')} idx="00" panelId="QUEUE.WORKBENCH"
+      right={currentId ? <Button size="sm" disabled={busy === 'pause'} onClick={() => void togglePause()}>{currentStatus === 'paused' ? t('queue.resume') : t('queue.pause')}</Button> : null}>
+      {queued.length ? <ul className="lx-task-list">{queued.map((run, index) => {
+        const id = queueRunId(run)
+        const label = String(run.config_name ?? id)
+        const eta = run.eta?.available ? `${Math.round(Number(run.eta.wait_seconds ?? 0))}s` : ''
+        return <li className="lx-task-row lx-queue-workbench-row" key={id || index}>
+          <span className="lx-queue-position">{index + 1}</span>
+          <div className="lx-task-main"><b>{label}</b><span className="lx-num">{id} {eta ? `· ${t('queue.eta', { value: eta })}` : ''}</span>{run.queue_message ? <span>{String(run.queue_message)}</span> : null}</div>
+          <div className="lx-queue-order-actions">
+            <Button size="sm" disabled={busy === 'reorder' || index === 0} onClick={() => void move(index, -1)} aria-label={t('queue.move_up')}>↑</Button>
+            <Button size="sm" disabled={busy === 'reorder' || index === queued.length - 1} onClick={() => void move(index, 1)} aria-label={t('queue.move_down')}>↓</Button>
+          </div>
+          <Button size="sm" disabled={busy != null} onClick={() => setEditing(run)}>{t('queue.edit')}</Button>
+        </li>
+      })}</ul> : <Empty title={t('queue.workbench_empty')} desc={t('queue.workbench_empty_desc')} />}
+    </Panel>
+    <QueueEditModal run={editing} onClose={() => setEditing(null)} onSaved={onChanged} />
+  </>
+}
+
 function TaskRow({ task, onDetail, onChanged }: {
   task: TaskRecord
   onDetail: (t: TaskRecord) => void
@@ -85,6 +201,16 @@ function TaskRow({ task, onDetail, onChanged }: {
     }
   }
 
+  const doReplay = async () => {
+    try {
+      unwrap(await queueApi.replay(id, 'rerun'))
+      toast.info(t('queue.replay_sent'), 'QUEUE')
+      onChanged()
+    } catch (e) {
+      toast.err((e as Error).message, t('queue.replay_fail'))
+    }
+  }
+
   return (
     <li className="lx-task-row">
       <Dot tone={running ? 'ok' : statusTone(status) === 'danger' ? 'danger' : statusTone(status) === 'accent' ? 'accent' : 'idle'} pulse={running} />
@@ -108,7 +234,10 @@ function TaskRow({ task, onDetail, onChanged }: {
         {running ? (
           <Button size="sm" variant="danger" onClick={() => void doTerminate()}>{t('queue.terminate')}</Button>
         ) : (
-          <Button size="sm" variant="danger" onClick={() => void doDelete()}>{t('common.delete')}</Button>
+          <>
+            {(status === 'COMPLETED' || status === 'FINISHED' || status === 'FAILED' || status === 'ERROR') ? <Button size="sm" onClick={() => void doReplay()}>{t('queue.replay')}</Button> : null}
+            <Button size="sm" variant="danger" onClick={() => void doDelete()}>{t('common.delete')}</Button>
+          </>
         )}
       </div>
     </li>
@@ -191,36 +320,95 @@ export default function QueuePage() {
   const [filter, setFilter] = useState<Filter>('all')
   const [detail, setDetail] = useState<TaskRecord | null>(null)
   const [loaded, setLoaded] = useState(false)
+  const [workbench, setWorkbench] = useState<QueuePayload | null>(null)
+  const refreshState = useRef({
+    generation: 0,
+    tasksInFlight: false,
+    tasksQueued: false,
+    workbenchInFlight: false,
+    workbenchQueued: false,
+    disposed: false,
+  })
 
   useEffect(() => {
     void hydrateRunHistoryFromDisk()
   }, [])
 
-  const refresh = async () => {
+  const refresh = async (invalidate = false) => {
+    const state = refreshState.current
+    if (state.disposed) return
+    if (invalidate) state.generation += 1
+    const generation = state.generation
+    if (state.tasksInFlight) {
+      state.tasksQueued = true
+      return
+    }
+    state.tasksInFlight = true
     try {
       const data = unwrap<{ tasks?: TaskRecord[] }>(await queueApi.tasks())
       const list = [...(data?.tasks ?? [])]
       list.sort((a, b) => String(b.created_at ?? '').localeCompare(String(a.created_at ?? '')))
+      if (state.disposed || generation !== state.generation) return
       setTasks(list)
     } catch {
       /* 后端未起,顶栏已示警 */
     } finally {
-      setLoaded(true)
+      state.tasksInFlight = false
+      if (state.tasksQueued && !state.disposed) {
+        state.tasksQueued = false
+        void refresh()
+      } else if (!state.disposed && generation === state.generation) {
+        setLoaded(true)
+      }
+    }
+  }
+
+  const refreshWorkbench = async () => {
+    const state = refreshState.current
+    if (state.disposed) return
+    const generation = state.generation
+    if (state.workbenchInFlight) {
+      state.workbenchQueued = true
+      return
+    }
+    state.workbenchInFlight = true
+    try {
+      const payload = unwrap<QueuePayload>(await queueApi.workbench())
+      if (state.disposed || generation !== state.generation) return
+      setWorkbench(payload)
+    } catch {
+      if (!state.disposed && generation === state.generation) setWorkbench(null)
+    } finally {
+      state.workbenchInFlight = false
+      if (state.workbenchQueued && !state.disposed) {
+        state.workbenchQueued = false
+        void refreshWorkbench()
+      }
     }
   }
 
   useEffect(() => {
     void refresh()
-    const t = window.setInterval(() => void refresh(), 8000)
-    return () => window.clearInterval(t)
+    void refreshWorkbench()
+    const t = window.setInterval(() => { void refresh(); void refreshWorkbench() }, 8000)
+    return () => {
+      window.clearInterval(t)
+      const state = refreshState.current
+      state.disposed = true
+      state.generation += 1
+      state.tasksQueued = false
+      state.workbenchQueued = false
+    }
   }, [])
+
+  const refreshAll = () => { void refresh(true); void refreshWorkbench() }
 
   const doClear = async () => {
     if (!window.confirm(t('queue.clear_confirm'))) return
     try {
       unwrap(await queueApi.deleteAll())
       toast.info(t('queue.cleared'), 'CLEARED')
-      void refresh()
+      refreshAll()
     } catch (e) {
       toast.err((e as Error).message, t('queue.clear_fail'))
     }
@@ -249,6 +437,8 @@ export default function QueuePage() {
         sub={t('queue.sub', { running: counts.running, total: tasks.length })}
       />
 
+      <QueueWorkbenchPanel payload={workbench} onChanged={refreshAll} />
+
       <Panel
         title={t('queue.records_title')}
         idx="01"
@@ -272,7 +462,7 @@ export default function QueuePage() {
         {shown.length ? (
           <ul className="lx-task-list">
             {shown.map((t, i) => (
-              <TaskRow key={taskId(t) || i} task={t} onDetail={setDetail} onChanged={() => void refresh()} />
+              <TaskRow key={taskId(t) || i} task={t} onDetail={setDetail} onChanged={refreshAll} />
             ))}
           </ul>
         ) : (

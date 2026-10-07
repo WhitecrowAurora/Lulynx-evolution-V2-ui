@@ -1,7 +1,9 @@
 {
   "key": "cuda_cache_release_interval",
   "title": "缓存释放间隔",
+  "title_en": "Cache Interval",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Allows one cache release every N optimizer steps.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "每 N 个优化 step 允许一次缓存释放。1 最省显存；2~10 可减少同步频率，适合显存略紧但想保留速度时尝试。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Allows one cache release every N optimizer steps. 1 saves the most VRAM; 2~10 reduces sync frequency — worth trying when VRAM is a bit tight but you want to keep speed.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

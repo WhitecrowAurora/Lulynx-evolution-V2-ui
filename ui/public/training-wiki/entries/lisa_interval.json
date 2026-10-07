@@ -1,0 +1,24 @@
+{
+  "key": "lisa_interval",
+  "title": "LISA 切换间隔",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "LISA 切换间隔。",
+    "effect": "每隔多少步轮换激活的层集合。",
+    "whenToUse": "配合 active_ratio 调整轮换节奏。",
+    "avoidWhen": "默认 1 每步轮换。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

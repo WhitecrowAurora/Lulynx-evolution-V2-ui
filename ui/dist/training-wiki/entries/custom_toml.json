@@ -1,0 +1,16 @@
+{
+  "key": "custom_toml",
+  "title": "自定义 TOML 覆盖",
+  "category": "其他设置",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "自定义 TOML 覆盖。",
+    "effect": "以 TOML 文本直接覆盖训练配置的任意键，最后生效、优先级最高。",
+    "whenToUse": "临时试验后端参数、UI 还没有对应字段时使用。",
+    "avoidWhen": "常规配置请用正式字段；写错键名会被后端忽略或报错。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

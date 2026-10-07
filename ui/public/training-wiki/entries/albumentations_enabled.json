@@ -1,7 +1,9 @@
 {
   "key": "albumentations_enabled",
   "title": "Albumentations 增强管线",
+  "title_en": "Albumentations pipeline",
   "category": "数据集 / 增强",
+  "category_en": "Dataset / Augmentation",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,17 +14,33 @@
   "layers": [
     "数据层"
   ],
+  "layers_en": [
+    "Data layer"
+  ],
   "standard": {
     "summary": "使用 Albumentations 库提供的高级图像增强管线。支持高斯模糊、弹性变换、网格畸变等复杂增强操作。",
     "effect": "比内置的 flip_aug/color_aug 更强大和灵活。albumentations_pipeline 用 JSON 定义增强操作序列。",
     "whenToUse": "需要复杂增强（如模拟运动模糊、镜头畸变）时。内置增强不够用时。",
     "avoidWhen": "简单训练场景不需要。Albumentations 增加了额外依赖和计算开销。"
   },
+  "standard_en": {
+    "summary": "Uses the advanced image augmentation pipeline from the Albumentations library, with support for Gaussian blur, elastic transforms, grid distortion and other complex operations.",
+    "effect": "More powerful and more flexible than the built-in flip_aug / color_aug. albumentations_pipeline defines the sequence of operations as JSON.",
+    "whenToUse": "When you need complex augmentation, such as simulating motion blur or lens distortion, and the built-in ones are not enough.",
+    "avoidWhen": "Not needed for simple training runs. Albumentations adds a dependency and some compute cost."
+  },
   "advanced": {
     "principle": "albumentations_pipeline 是 JSON 数组：[{\"name\": \"GaussianBlur\", \"params\": {\"blur_limit\": 7, \"p\": 0.3}}, ...]。每个操作指定名称、参数和概率。albumentations_mask_replay=True 时用 A.ReplayCompose 确保图像和 mask 受到相同的空间变换。",
     "intervention": "在 DataLoader 的 image preprocess 阶段插入 Albumentations transform pipeline。",
     "expectedImpact": "在数据量极少（<20 张）时通过增强有效扩充数据多样性。",
     "tradeoffs": "需要 albumentations 包已安装。某些变换（如弹性变换）计算开销较大。",
+    "codePath": "dataset/image_preprocess.py:AlbumentationsPipeline → A.ReplayCompose(transforms)"
+  },
+  "advanced_en": {
+    "principle": "albumentations_pipeline is a JSON array: [{\"name\": \"GaussianBlur\", \"params\": {\"blur_limit\": 7, \"p\": 0.3}}, ...]. Each op specifies a name, parameters, and probability. With albumentations_mask_replay=True, A.ReplayCompose ensures images and masks receive identical spatial transforms.",
+    "intervention": "Inserts the Albumentations transform pipeline at the DataLoader's image-preprocess stage.",
+    "expectedImpact": "With very little data (<20 images), augmentation effectively expands data diversity.",
+    "tradeoffs": "Requires the albumentations package installed. Some transforms (e.g. elastic) are computationally expensive.",
     "codePath": "dataset/image_preprocess.py:AlbumentationsPipeline → A.ReplayCompose(transforms)"
   },
   "relatedConfigs": [

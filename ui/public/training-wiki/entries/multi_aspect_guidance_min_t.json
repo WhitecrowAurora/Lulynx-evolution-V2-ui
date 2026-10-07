@@ -1,0 +1,24 @@
+{
+  "key": "multi_aspect_guidance_min_t",
+  "title": "多维引导 σ 下界",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "多维引导 sigma 下界。",
+    "effect": "引导只在 sigma 高于下界时生效。",
+    "whenToUse": "聚焦高噪声阶段。",
+    "avoidWhen": "默认 0 全程。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

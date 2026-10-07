@@ -1,7 +1,9 @@
 {
   "key": "output_dir",
   "title": "输出目录",
+  "title_en": "Output directory",
   "category": "训练 / 输出",
+  "category_en": "Training / Output",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -14,9 +16,19 @@
     "whenToUse": "每次训练建议使用独立的输出目录，便于区分不同实验的结果。",
     "avoidWhen": "多个训练任务共用同一输出目录时，文件名可能冲突，建议使用不同目录或不同 output_name。"
   },
+  "standard_en": {
+    "summary": "The directory the LoRA weight files are saved in. When training finishes, the final LoRA and every intermediate checkpoint live here.",
+    "effect": "The directory is created if it does not exist. Absolute and relative paths are both supported (relative to the trainer's working directory).",
+    "whenToUse": "A separate output directory per run is recommended, so different experiments' results stay distinguishable.",
+    "avoidWhen": "When several training jobs share one output directory the filenames may collide; use different directories or different output_name values."
+  },
   "advanced": {
     "principle": "输出文件命名规则：{output_name}-{step}.safetensors（中间）/ {output_name}.safetensors（最终）。EMA 文件额外添加 _ema 后缀。",
     "tradeoffs": "磁盘空间需要留足：每个 16-rank LoRA 约 20~80MB，64-rank 约 80~320MB；若频繁保存 checkpoint 需要预留更多空间。"
+  },
+  "advanced_en": {
+    "principle": "Output file naming: {output_name}-{step}.safetensors (intermediate) / {output_name}.safetensors (final). EMA files additionally get an _ema suffix.",
+    "tradeoffs": "Leave enough disk space: a 16-rank LoRA is about 20~80MB, 64-rank about 80~320MB; frequent checkpoint saving needs more headroom."
   },
   "relatedConfigs": [
     "output_name",

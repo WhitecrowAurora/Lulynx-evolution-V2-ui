@@ -1,7 +1,9 @@
 {
   "key": "wandb_api_key",
   "title": "WandB 训练跟踪",
+  "title_en": "WandB API Key",
   "category": "训练 / 日志",
+  "category_en": "Training / Logging",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -19,9 +21,19 @@
     "whenToUse": "需要系统化追踪和对比多次训练实验时使用。适合调参阶段（对比不同 LR/rank/optimizer 的 loss 曲线）。",
     "avoidWhen": "wandb_api_key 不要硬编码到配置文件（有泄露风险），建议通过环境变量或 wandb login 命令设置。不需要远程追踪时保持 None（默认只记录本地日志）。"
   },
+  "standard_en": {
+    "summary": "Configures Weights & Biases (WandB) training tracking: the API key authenticates you and run_name sets the display name for this run. Metrics such as loss, LR and speed are uploaded to the WandB dashboard automatically during training.",
+    "effect": "Once enabled you can watch the training curves live on wandb.ai, compare experiments, and keep a history of training configurations.",
+    "whenToUse": "When you need to track and compare many training experiments systematically. It suits the tuning stage (comparing the loss curves of different LR/rank/optimizer choices).",
+    "avoidWhen": "Do not hard-code wandb_api_key into a configuration file (it risks leaking); setting it through an environment variable or the wandb login command is advisable. Leave it None when you do not need remote tracking (by default only local logs are kept)."
+  },
   "advanced": {
     "principle": "WandB 集成通过 wandb.init() + wandb.log() 实现，log_prefix 给所有指标添加前缀（方便同一项目下多次训练的指标区分）。log_tracker_config 指定额外记录的配置字段（默认记录全部训练配置）。",
     "tradeoffs": "WandB 上传需要网络连接，中断训练时离线缓存的数据会在恢复网络后自动同步。付费计划限制大量数据上传；开源项目可免费使用基本功能。"
+  },
+  "advanced_en": {
+    "principle": "WandB integration is implemented via wandb.init() + wandb.log(); log_prefix prepends a prefix to all metrics (handy for distinguishing runs under the same project). log_tracker_config specifies extra config fields to record (by default all training config is recorded).",
+    "tradeoffs": "WandB upload needs network access; when training is interrupted, offline-cached data syncs automatically once the network recovers. Paid plans limit large data uploads; open-source projects can use the basic features free."
   },
   "relatedConfigs": [
     "output_dir",

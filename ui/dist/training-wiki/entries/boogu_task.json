@@ -1,7 +1,9 @@
 {
   "key": "boogu_task",
   "title": "任务（boogu_task）",
+  "title_en": "Task",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -14,12 +16,24 @@
       "edit": "编辑/TI2I，带参考条件。"
     }
   },
+  "standard_en": {
+    "summary": "Edit is pinned to edit: the TI2I system prompt.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "t2i": "Text to image, the backend default. Boogu base training uses this gear; on the Boogu editing route the backend forces edit and the field cannot be changed.",
+      "edit": "Editing / TI2I, with a reference condition."
+    }
+  },
   "advanced": {
     "principle": "Edit 固定 edit：TI2I system prompt + ref 条件。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Edit is fixed to edit: TI2I system prompt + ref conditioning."
   },
   "relatedConfigs": []
 }

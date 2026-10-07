@@ -1,0 +1,16 @@
+{
+  "key": "universal_dit_probe_mode",
+  "title": "结构探测模式",
+  "category": "Batch / Objective / Forward 契约",
+  "appliesTo": [
+    "universal-dit-lora"
+  ],
+  "standard": {
+    "summary": "static 只检查结构；forward/train_smoke 还要求 probe JSON 能构造模型 forward 所需的全部输入。",
+    "effect": "写入训练配置 universal_dit_probe_mode，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 auto，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

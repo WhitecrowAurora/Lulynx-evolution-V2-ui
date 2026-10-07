@@ -1,0 +1,16 @@
+{
+  "key": "system_prompt",
+  "title": "系统提示词",
+  "category": "Lumina 专用参数",
+  "appliesTo": [
+    "lumina-lora"
+  ],
+  "standard": {
+    "summary": "Lumina 系统提示词。",
+    "effect": "Lumina 文本编码的系统 prompt 前缀。",
+    "whenToUse": "模型卡推荐值优先。",
+    "avoidWhen": "无推荐时留空。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

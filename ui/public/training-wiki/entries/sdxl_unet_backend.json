@@ -1,7 +1,9 @@
 {
   "key": "sdxl_unet_backend",
   "title": "SDXL U-Net 后端",
+  "title_en": "SDXL U-Net Backend",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -17,8 +19,27 @@
       "lulynx_native": "完整原生 wrapper 接管。"
     }
   },
+  "standard_en": {
+    "summary": "diffusers is the stable default",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "diffusers": "The Diffusers UNet, compatibility first.",
+      "native_shadow": "Records the block graph in the shadow, which is not a real takeover.",
+      "native_proxy": "A proxy comparison.",
+      "native_skeleton": "Shows how far the native path reaches, aimed at development.",
+      "lulynx_native": "A full native wrapper takeover."
+    }
+  },
   "advanced": {
     "principle": "diffusers 为稳定默认；native_shadow 记录 block graph；native_proxy 代理参考 U-Net；native_skeleton 报告原生覆盖；lulynx_native 使用完整 provenance wrapper 接管 U-Net",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "diffusers is the stable default; native_shadow records the block graph; native_proxy proxies a reference U-Net; native_skeleton reports native coverage; lulynx_native takes over the U-Net with the full provenance wrapper.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

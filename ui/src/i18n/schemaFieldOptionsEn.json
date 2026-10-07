@@ -165,8 +165,8 @@
   "repa_target_provider|none": "none (target)",
   "runtime_features_detail|full": "Full",
   "runtime_features_detail|off": "Output (Default)",
-  "sample_cache_seam_backend|smoothcache": "SmoothCache (Cache)",
-  "sample_cache_seam_backend|spectrum": "Spectrum (Block Cache)",
+  "sample_cache_seam_backend|smoothcache": "Error-Guided Cache (SmoothCache family)",
+  "sample_cache_seam_backend|spectrum": "Spectrum (Block-Cache Linear Extrapolation)",
   "sample_difficulty_weighting_mode|provided": "Dataset Weight",
   "sample_sampler|dpmsolver++": "dpmsolver++",
   "save_precision|auto": "Auto (Follow / Mixed Precision)",
@@ -235,5 +235,9 @@
   "anima_block_residency|streaming_offload": "Streaming Offload (per-block streaming, lowest VRAM; sparse swap available)",
   "newbie_block_residency|resident": "resident (GPU)",
   "newbie_block_residency|block_cpu_pinned": "Block CPU pinned (trade speed for less VRAM)",
-  "newbie_block_residency|streaming_offload": "Streaming Offload (per-block streaming, lowest VRAM; sparse swap available)"
+  "newbie_block_residency|streaming_offload": "Streaming Offload (per-block streaming, lowest VRAM; sparse swap available)",
+  "distributed_strategy|auto": "auto (infer from GPU count)",
+  "distributed_strategy|none": "none (single process)",
+  "network_module|networks.tlora_flux": "Progressive-Rank LoRA (FLUX)",
+  "parallel_backend|auto": "auto (automatic)"
 }

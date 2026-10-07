@@ -1,7 +1,9 @@
 {
   "key": "ac_stable_rank_consecutive",
   "title": "Stable Rank 连续触发次数",
+  "title_en": "Stable-Rank Consecutive Triggers",
   "category": "训练 / 自动化",
+  "category_en": "Training / Automation",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "默认 10 适合大多数场景。",
     "avoidWhen": "不使用 stable rank 监控时此参数无意义。"
   },
+  "standard_en": {
+    "summary": "How many consecutive steps the stable rank must sit below the collapse threshold before an intervention fires. Default 10.",
+    "effect": "Keeps occasional SVD numerical noise from triggering an intervention -- only a sustained collapse gets a response.",
+    "whenToUse": "The default 10 fits most cases.",
+    "avoidWhen": "Meaningless when stable-rank monitoring is not in use."
+  },
   "advanced": {
     "principle": "维护连续低于阈值计数器，达到后触发干预（通常为降 LR 或告警）。",
     "tradeoffs": "值越大，检测到真实崩溃的延迟越长；值越小，偶发波动越容易误触发。"
+  },
+  "advanced_en": {
+    "principle": "Maintains a consecutive-below-threshold counter; once reached, triggers intervention (usually lowering LR or raising an alert).",
+    "tradeoffs": "Larger values delay detecting a genuine collapse; smaller values false-trigger on sporadic fluctuation."
   },
   "relatedConfigs": [
     "ac_enabled",

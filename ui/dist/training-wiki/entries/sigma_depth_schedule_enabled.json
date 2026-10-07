@@ -1,0 +1,16 @@
+{
+  "key": "sigma_depth_schedule_enabled",
+  "title": "σ 深度调度",
+  "category": "σ 深度调度",
+  "appliesTo": [
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "按当前样本 RF σ 调度本步 DiT 计算深度；跳过的 block 走 identity 残差旁路（不断 grad）。",
+    "effect": "与 Vortex Aircon 正交。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

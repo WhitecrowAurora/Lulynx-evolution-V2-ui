@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { trainApi } from '@/api/trainApi'
 import { unwrap } from '@/api/transport'
 import { Button } from '@/components/primitives'
 import { toast } from '@/stores/toastStore'
+import { useDraftRequestScope } from './useDraftRequestScope'
+import { filterIntentSuggestions } from './trainingIntentSuggestions'
 
 interface IntentProfile {
   label?: string
@@ -69,12 +71,20 @@ export function TrainingIntentProfilePreview({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [appliedCount, setAppliedCount] = useState(0)
+  const captureScope = useDraftRequestScope(config)
+  const generation = useRef(0)
+  const previewScope = useRef<{ data: TrainingIntentPreviewData; isCurrent: () => boolean } | null>(null)
+  const explicitKey = JSON.stringify(explicitFields)
 
   useEffect(() => {
     setPreview(null)
     setError('')
     setAppliedCount(0)
-  }, [intent])
+    setLoading(false)
+    previewScope.current = null
+    generation.current += 1
+    return () => { generation.current += 1 }
+  }, [config, explicitKey])
 
   const applicable = preview?.applicable_suggestions || {}
   const applicableKeys = useMemo(() => Object.keys(applicable), [applicable])
@@ -85,6 +95,9 @@ export function TrainingIntentProfilePreview({
   )
 
   async function requestPreview() {
+    const id = ++generation.current
+    const isCurrent = captureScope()
+    if (!isCurrent()) return
     setLoading(true)
     setError('')
     setAppliedCount(0)
@@ -92,21 +105,28 @@ export function TrainingIntentProfilePreview({
       const data = unwrap<TrainingIntentPreviewData>(
         await trainApi.trainingIntentPreview(config, intent, explicitFields),
       )
+      if (id !== generation.current || !isCurrent()) return
+      previewScope.current = { data, isCurrent }
       setPreview(data)
     } catch (cause) {
+      if (id !== generation.current || !isCurrent()) return
       const message = cause instanceof Error ? cause.message : '训练用途建议预览失败'
       setError(message)
       toast.err(message, 'PROFILE')
     } finally {
-      setLoading(false)
+      if (id === generation.current) setLoading(false)
     }
   }
 
   function applySuggestions() {
-    if (intent === 'normal' || !applicableKeys.length) return
-    onApplySuggestions(applicable)
-    setAppliedCount(applicableKeys.length)
-    toast.ok(`已应用 ${applicableKeys.length} 个未显式设置项`, 'PROFILE')
+    if (intent === 'normal' || previewScope.current?.data !== preview || !previewScope.current?.isCurrent()) return
+    const allowed = filterIntentSuggestions(applicable, explicitFields)
+    const count = Object.keys(allowed).length
+    if (!count) return
+    previewScope.current = null
+    onApplySuggestions(allowed)
+    setAppliedCount(count)
+    toast.ok(`已应用 ${count} 个未显式设置项`, 'PROFILE')
   }
 
   const profile = preview?.intent?.profile

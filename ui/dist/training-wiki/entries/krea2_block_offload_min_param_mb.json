@@ -1,0 +1,17 @@
+{
+  "key": "krea2_block_offload_min_param_mb",
+  "title": "Block Offload 最小参数 MB",
+  "category": "Krea2 Block/Layer Offload",
+  "appliesTo": [
+    "krea2-finetune",
+    "krea2-lora"
+  ],
+  "standard": {
+    "summary": "小于该体积的 block 不 offload。",
+    "effect": "写入训练配置 krea2_block_offload_min_param_mb，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 100，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

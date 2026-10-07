@@ -1,0 +1,17 @@
+{
+  "key": "anima_fixed_qwen3_tokens",
+  "title": "固定 Qwen3 Token 长度",
+  "category": "Anima 高级配置",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "0 = 动态长度；仅约束 Qwen3 hidden states。",
+    "effect": "写入训练配置 anima_fixed_qwen3_tokens，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 0，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

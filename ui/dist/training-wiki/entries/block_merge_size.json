@@ -1,7 +1,9 @@
 {
   "key": "block_merge_size",
   "title": "合并 Block 大小",
+  "title_en": "Merged block size",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,12 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "How many blocks go in each group under merged_block mode; groups do not cross.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "merged_block 模式下每组包含的 block 数，不跨 down/mid/up 阶段边界。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Number of blocks per group in merged_block mode; groups never cross down/mid/up stage boundaries."
   },
   "relatedConfigs": []
 }

@@ -1,7 +1,9 @@
 {
   "key": "scale_guidance_mode",
   "title": "Scale Guidance 模式",
+  "title_en": "Scale Guidance Mode",
   "category": "前沿储备 / 训练",
+  "category_en": "Frontier Reserve / Training",
   "appliesTo": [
     "anima-lora"
   ],
@@ -17,9 +19,25 @@
       "composition": "往构图那头拽，布局稳，局部纹理可能让步。"
     }
   },
+  "standard_en": {
+    "summary": "(Experimental) Scale Guidance: by adjusting the loss weight across noise timesteps, it steers training towards features at a particular frequency (detail / style / composition).",
+    "effect": "detail = raises the training weight on high-frequency features (detail and texture); style = focuses on mid-frequency style features; composition = raises the weight on low-frequency structure and composition; off = standard weighting.",
+    "whenToUse": "Use it when you have a clear training goal (sharper detail -> detail; a consistent compositional style -> composition). An experimental feature.",
+    "avoidWhen": "The default is off. Leave it off when you are not sure of the goal, which uses standard weighting and trains all frequencies evenly.",
+    "optionDescriptions": {
+      "off": "Off.",
+      "detail": "Pulls towards detail: it does get sharper, though sometimes over-sharp.",
+      "style": "Pulls towards style: the style sticks, but the content may drift.",
+      "composition": "Pulls towards composition: the layout holds, though local texture may give way."
+    }
+  },
   "advanced": {
     "principle": "基于信噪比（SNR）的频率域分析：高 SNR 步（低噪声）→ 高频细节；低 SNR 步（高噪声）→ 低频构图。scale_guidance 通过调整不同 SNR 区间的 loss 权重，控制各频段的学习强度。",
     "tradeoffs": "频率域聚焦可能造成其他频率的学习不足，例如 detail 模式强化细节但可能弱化整体构图。建议配合基线对比（无/有 scale_guidance）验证效果。"
+  },
+  "advanced_en": {
+    "principle": "Frequency-domain analysis based on SNR: high-SNR steps (low noise) → high-frequency detail; low-SNR steps (high noise) → low-frequency composition. scale_guidance adjusts loss weights across SNR bands to control learning intensity per frequency band.",
+    "tradeoffs": "Frequency focusing can underlearn other frequencies — detail mode strengthens detail but may weaken overall composition. Validate with a baseline A/B (with/without scale_guidance)."
   },
   "relatedConfigs": [
     "anima_weighting_scheme",

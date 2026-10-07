@@ -1,12 +1,15 @@
 {
   "key": "fp8_base",
   "title": "FP8 基座精度",
+  "title_en": "FP8 base model (legacy)",
   "category": "训练 / 精度",
+  "category_en": "Training / Precision",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
   ],
   "aliases": [
+    "fp8_base_compute",
     "fp8_base_unet",
     "full_bf16",
     "full_fp16",
@@ -20,9 +23,19 @@
     "whenToUse": "flashattn 在支持的环境下最推荐；sdpa 是最安全的通用选择；fp8_base 在极低显存场景（<10GB 训练 SDXL）时考虑。",
     "avoidWhen": "fp8_base 有明显的精度损失，不建议用于需要高质量输出的训练；flashattn 安装复杂，遇到兼容性问题时改用 sdpa/xformers。"
   },
+  "standard_en": {
+    "summary": "Controls training precision and the attention implementation: fp8_base quantises the base model weights to FP8 (saving roughly 50% VRAM); full_bf16/full_fp16 force the whole run into bf16/fp16; the attention implementation (flashattn/sageattn/sdpa/mem_eff_attn/split_attn) selects the kernel that computes attention.",
+    "effect": "fp8_base stores the base in FP8, saving about 50% VRAM with some precision loss; flashattn is FlashAttention v2/v3 (fastest, needing a particular CUDA version); sdpa is PyTorch's built-in scaled_dot_product_attention (the default, stable); sageattn is SageAttention (an optimised variant).",
+    "whenToUse": "flashattn is the top recommendation where the environment supports it; sdpa is the safest general choice; consider fp8_base only in very low VRAM situations (training SDXL under 10GB).",
+    "avoidWhen": "fp8_base has a noticeable precision cost and is not recommended when output quality matters; flashattn is awkward to install, so switch to sdpa or xformers if you hit compatibility problems."
+  },
   "advanced": {
     "principle": "FP8（8位浮点）有 e4m3 和 e5m2 两种：e4m3 精度更高（指数4位，尾数3位），e5m2 范围更大（通常用于梯度）。基座 FP8 量化：forward 时 dequantize（FP8→BF16），backward 梯度仍在 BF16，只有权重存储是 FP8。flashattn 通过 IO-aware 算法将注意力矩阵保留在 SRAM 中，避免 HBM 读写，对长序列效果最好。",
     "tradeoffs": "FP8 训练目前只在 H100 等高端卡有完善支持；A100/A10 等卡 FP8 计算可能回退到 FP16/BF16 仿真（无实际加速）。"
+  },
+  "advanced_en": {
+    "principle": "FP8 (8-bit float) comes in e4m3 and e5m2: e4m3 has higher precision (4 exponent, 3 mantissa bits), e5m2 a larger range (usually for gradients). Base FP8 quantization: dequantize at forward (FP8→BF16), gradients in backward stay BF16 — only the weight storage is FP8. flashattn's IO-aware algorithm keeps the attention matrix in SRAM, avoiding HBM reads/writes, best on long sequences.",
+    "tradeoffs": "FP8 training is currently only fully supported on high-end cards like the H100; on A100/A10-class cards FP8 compute may fall back to FP16/BF16 emulation (no real speedup)."
   },
   "relatedConfigs": [
     "mixed_precision",

@@ -1,7 +1,9 @@
 {
   "key": "step_expert_routing",
   "title": "Step Expert Routing",
+  "title_en": "Step Expert Routing",
   "category": "LoRA / Turbo",
+  "category_en": "LoRA / Turbo",
   "appliesTo": [
     "anima-lora",
     "newbie-lora"
@@ -9,17 +11,33 @@
   "layers": [
     "LoRA Adapter"
   ],
+  "layers_en": [
+    "LoRA adapter"
+  ],
   "standard": {
     "summary": "Step Expert Routing 会按 denoise step 或 timestep 选择不同 LoRA 专家，适合 Turbo/few-step 学生路线。",
     "effect": "不同步数可走不同专家，提升 few-step 适配容量，但 adapter 需要 live routing，不能静态合并成普通 LoRA。",
     "whenToUse": "后续做 DP-DMD/Turbo 学生并有 checkpoint/save-load 路线时。",
     "avoidWhen": "需要可合并、可普通推理端加载的 LoRA；当前尚未注册训练入口。"
   },
+  "standard_en": {
+    "summary": "Step Expert Routing picks a different LoRA expert according to the denoise step or timestep, which suits Turbo/few-step student routes.",
+    "effect": "Different step counts can go through different experts, which raises the few-step adaptation capacity, but the adapter then needs live routing and cannot be merged statically into an ordinary LoRA.",
+    "whenToUse": "When you later build a DP-DMD/Turbo student and have a checkpoint/save-load route.",
+    "avoidWhen": "When you need a LoRA that can be merged and loaded by an ordinary inference frontend; no training entry point is registered yet."
+  },
   "advanced": {
     "principle": "根据 step bucket/timestep 计算专家权重，再组合专家 LoRA delta。",
     "intervention": "Turbo denoise step context → live LoRA expert routing。",
     "expectedImpact": "完整接入后可能改善 few-step 质量，但会增加 adapter 参数和推理端要求。",
     "tradeoffs": "不适合作为普通 LoRA 默认格式。",
+    "codePath": "backend/core/lulynx_trainer/step_expert_routing.py"
+  },
+  "advanced_en": {
+    "principle": "Computes expert weights per step bucket/timestep, then combines expert LoRA deltas.",
+    "intervention": "Turbo denoise step context → live LoRA expert routing.",
+    "expectedImpact": "Once fully wired in, may improve few-step quality, but adds adapter parameters and inference-side requirements.",
+    "tradeoffs": "Not suitable as a default format for ordinary LoRAs.",
     "codePath": "backend/core/lulynx_trainer/step_expert_routing.py"
   },
   "relatedConfigs": [

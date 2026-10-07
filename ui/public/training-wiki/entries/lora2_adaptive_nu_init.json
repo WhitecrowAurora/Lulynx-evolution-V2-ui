@@ -1,0 +1,20 @@
+{
+  "key": "lora2_adaptive_nu_init",
+  "title": "LoRA2 nu 初始值",
+  "category": "LoRA / 网络结构",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "nu 初始值 (控制衰减速度，推荐 1.0)。",
+    "effect": "写入训练配置 lora2_adaptive_nu_init，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 1，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

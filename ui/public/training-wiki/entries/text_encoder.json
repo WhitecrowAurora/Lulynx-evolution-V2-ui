@@ -1,0 +1,17 @@
+{
+  "key": "text_encoder",
+  "title": "文本编码器路径",
+  "category": "训练用模型",
+  "appliesTo": [
+    "hunyuan-dit-lora",
+    "qwen-image-lora"
+  ],
+  "standard": {
+    "summary": "Qwen Image 文本编码器路径，可留空等待后续接入",
+    "effect": "写入训练配置 text_encoder，由训练后端在相应阶段消费。",
+    "whenToUse": "路径留空时走默认解析/该功能不启用。",
+    "avoidWhen": "填错路径会在预检或启动时报错，注意路径有效性。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

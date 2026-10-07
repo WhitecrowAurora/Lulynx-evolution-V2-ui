@@ -1,7 +1,9 @@
 {
   "key": "vortex_strategy",
   "title": "Vortex 策略（vortex_strategy）",
+  "title_en": "Vortex strategy",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -12,6 +14,15 @@
     "avoidWhen": "未做短测对照前不要同时叠多个激进实验档。",
     "optionDescriptions": {
       "standard": "标准策略名。"
+    }
+  },
+  "standard_en": {
+    "summary": "Vortex strategy (vortex_strategy): the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "standard": "The standard strategy name."
     }
   },
   "advanced": {},

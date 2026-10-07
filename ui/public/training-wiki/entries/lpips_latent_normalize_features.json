@@ -1,0 +1,16 @@
+{
+  "key": "lpips_latent_normalize_features",
+  "title": "归一化特征",
+  "category": "图像质量增强",
+  "appliesTo": [
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "是否归一化特征 (L2 norm)。",
+    "effect": "归一化后损失更关注方向而非幅度。",
+    "whenToUse": "默认开启，适合大多数场景。",
+    "avoidWhen": "排查问题想回到原始行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "mixed_precision",
   "title": "混合精度",
+  "title_en": "Mixed precision",
   "category": "精度 / 训练",
+  "category_en": "Precision / Training",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -14,6 +16,10 @@
   "layers": [
     "内存层",
     "计算层"
+  ],
+  "layers_en": [
+    "Memory layer",
+    "Compute layer"
   ],
   "standard": {
     "summary": "混合精度（AMP）在 forward/backward 时使用 FP16 或 BF16 低精度计算，同时保留 FP32 主权重副本用于参数更新。在显存和速度上取得显著优势的同时几乎不影响训练质量。",
@@ -32,11 +38,35 @@
       "fp32": "点名用 fp32，代价跟关 AMP 差不多。"
     }
   },
+  "standard_en": {
+    "summary": "Mixed precision (AMP) computes the forward and backward passes at the lower precision of FP16 or BF16 while keeping an FP32 master copy of the weights for the parameter update. It buys a large gain in VRAM and speed with almost no effect on training quality.",
+    "effect": "BF16 is the first choice on a modern GPU (Ampere A100/RTX 30xx and later) -- its 8-bit exponent gives it a numeric range close to FP32 and it needs no gradient scaling. FP16 has only 5 exponent bits and overflows easily, but it may be faster on an older GPU. VRAM use is roughly half of FP32, and Tensor Core acceleration lifts training speed by 30-50%.",
+    "whenToUse": "Nearly every real training run should have mixed precision on. BF16 is the safest choice. If the loss turns NaN, check first whether you are on FP16 (switching to BF16 usually fixes it immediately).",
+    "avoidWhen": "full_bf16 mode uses BF16 throughout (no FP32 master weights): the fastest, but the accumulated precision loss can degrade convergence quality on a long run (>5000 steps). fp8_base squeezes the frozen weights to FP8 for further VRAM savings but may cost accuracy -- pair it with weight_compression_verify=True to check.",
+    "optionDescriptions": {
+      "no": "High precision throughout: slow and VRAM-hungry, essentially only for checking numbers against.",
+      "fp16": "Half-precision training. Common on old cards; the range is narrow, so it usually needs a loss scale.",
+      "bf16": "BF16. A good fit for 30/40-series cards, with a wider range than fp16.",
+      "fp32": "Explicitly fp32, which costs about the same as turning AMP off."
+    },
+    "recommendedValues": {
+      "bf16": "The first choice. Mandatory on RTX 30xx/40xx/A100/H100. The most numerically stable",
+      "fp16": "For older GPUs without BF16 support, such as GTX 16xx/20xx. Needs gradient scaling",
+      "no": "Only for debugging or verifying precision. The VRAM and speed cost is enormous"
+    }
+  },
   "advanced": {
     "principle": "AMP 通过 torch.autocast 上下文管理器实现。在 autocast 区域内，矩阵乘法（matmul/conv）自动使用 FP16/BF16，而累加和归约操作保持 FP32。FP16 AMP 使用 GradScaler 对 loss 乘以放大因子（默认 65536），防止小梯度在 FP16 下变为 0（下溢），然后在 optimizer.step 前缩放回来。BF16 因为指数位足够多，不需要 GradScaler。",
     "intervention": "training_loop.py 在 forward 和 loss 计算外包一层 with torch.autocast(device_type='cuda', dtype=amp_dtype)。FP16 时额外创建 GradScaler 并在 scaler.scale(loss).backward 和 scaler.step(optimizer) / scaler.update 中管理缩放因子。主权重副本通过 optimizer 的 master_weights 机制维护。",
-    "expectedImpact": "SDXL LoRA 训练中，BF16 AMP 相比 FP32：activation 显存峰值降低约 45%（从 ~4.2GB 降到 ~2.3GB @ 1024px batch=1）；训练速度提升约 35%（RTX 4090 。最终 LoRA 质量差异 < 0.5%（通过 FID 对比）。",
+    "expectedImpact": "SDXL LoRA 训练中，BF16 AMP 相比 FP32：activation 显存峰值降低约 45%（从 ~4.2GB 降到 ~2.3GB @ 1024px batch=1）；训练速度提升约 35%（RTX 4090）。最终 LoRA 质量差异 < 0.5%（通过 FID 对比）。",
     "tradeoffs": "full_bf16 跳过 FP32 主权重，所有运算全程 BF16。好处是再省 ~30% 显存（不需要 FP32 副本），速度再快 ~10%。风险是 AdamW 的 m_t 和 v_t 也在 BF16 中累积，长训练可能精度漂移。loss_precision 参数控制 loss 计算本身的精度（fp32_loss 默认在 FP32 中算 loss 再 cast 回去）。",
+    "codePath": "training_loop.py:training_step → torch.autocast(dtype=amp_dtype) → GradScaler (fp16 only) → optimizer.step"
+  },
+  "advanced_en": {
+    "principle": "AMP is implemented via the torch.autocast context manager. Inside an autocast region, matmuls (matmul/conv) automatically use FP16/BF16 while accumulation and reduction ops stay FP32. FP16 AMP uses a GradScaler to multiply loss by an amplification factor (default 65536), keeping small gradients from underflowing to 0 in FP16, then scales back before optimizer.step. BF16 has enough exponent bits and needs no GradScaler.",
+    "intervention": "training_loop.py wraps forward and loss computation in with torch.autocast(device_type='cuda', dtype=amp_dtype). For FP16, additionally creates a GradScaler managed through scaler.scale(loss).backward and scaler.step(optimizer) / scaler.update. Master weight copies are maintained via the optimizer's master_weights mechanism.",
+    "expectedImpact": "In SDXL LoRA training, BF16 AMP vs FP32: activation VRAM peak down about 45% (~4.2GB → ~2.3GB @ 1024px batch=1); training speed up about 35% (RTX 4090). Final LoRA quality difference < 0.5% (by FID comparison).",
+    "tradeoffs": "full_bf16 skips FP32 master weights, running everything in BF16 end to end. It saves another ~30% VRAM (no FP32 copies) and ~10% more speed. The risk is AdamW's m_t and v_t also accumulating in BF16 — long runs may drift in precision. loss_precision controls the precision of loss computation itself (fp32_loss defaults to computing the loss in FP32 and casting back).",
     "codePath": "training_loop.py:training_step → torch.autocast(dtype=amp_dtype) → GradScaler (fp16 only) → optimizer.step"
   },
   "relatedConfigs": [

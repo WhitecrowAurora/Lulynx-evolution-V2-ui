@@ -1,7 +1,9 @@
 {
   "key": "lora_activation_recompute_mode",
   "title": "LoRA 分支重算（lora_activation_recompute_mode）",
+  "title_en": "LoRA branch recompute",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -15,8 +17,25 @@
       "off": "不重算，峰值高，好做对照。"
     }
   },
+  "standard_en": {
+    "summary": "Lowers the backward activation peak of native DiT LoRA.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "auto": "On routes such as Anima/Newbie, recomputes the LoRA branch as needed to hold the activation peak down.",
+      "on": "Always recomputes: less activation memory, slower backward.",
+      "off": "Never recomputes: a higher peak, good as a control."
+    }
+  },
   "advanced": {
     "principle": "降低原生 DiT LoRA 反传激活峰值。auto 会在 Anima/Newbie 路线默认开启；off 主要用于 benchmark 对比。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Reduces native DiT LoRA backward activation peaks. auto is on by default on the Anima/Newbie routes; off is mainly for benchmark comparisons.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

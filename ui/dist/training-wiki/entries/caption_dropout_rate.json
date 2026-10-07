@@ -1,7 +1,9 @@
 {
   "key": "caption_dropout_rate",
   "title": "Caption 丢弃",
+  "title_en": "Caption Dropout Rate",
   "category": "Caption / 正则",
+  "category_en": "Caption / Regularization",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -12,17 +14,33 @@
     "数据层",
     "文本条件层"
   ],
+  "layers_en": [
+    "Data layer",
+    "Text conditioning layer"
+  ],
   "standard": {
     "summary": "训练时随机丢掉整句 caption 或部分 tag。",
     "effect": "能降低模型对固定文字的依赖，提升触发词和视觉特征的鲁棒性。",
     "whenToUse": "caption 过密、tag 重复、模型过度依赖文本而视觉泛化差时可以小幅开启。",
     "avoidWhen": "数据量很小、caption 本身已经很弱，或已经缓存固定文本编码器输出时谨慎。"
   },
+  "standard_en": {
+    "summary": "Randomly drops a whole caption, or some of its tags, during training.",
+    "effect": "Reduces the model's dependence on fixed text and makes trigger words and visual features more robust.",
+    "whenToUse": "A small amount helps when captions are too dense, tags repeat, or the model leans on text so heavily that visual generalisation suffers.",
+    "avoidWhen": "Be careful with very little data, with captions that are already weak, or when a fixed text-encoder output is already cached."
+  },
   "advanced": {
     "principle": "Caption dropout 是条件扰动正则化。它让同一图像在不同文本条件下参与训练。",
     "intervention": "介入 batch 采样前的 caption 生成，不直接修改图像 latent。",
     "expectedImpact": "降低文本过拟合；过高会让模型学不到关键条件绑定。",
     "tradeoffs": "与 cache_text_encoder_outputs 冲突或需要多变体缓存；比例应从低值开始。"
+  },
+  "advanced_en": {
+    "principle": "Caption dropout is conditional-perturbation regularization: it lets the same image train under different text conditions.",
+    "intervention": "Intervenes in caption generation before batch sampling; does not modify image latents directly.",
+    "expectedImpact": "Reduces text overfitting; too high a rate and the model fails to learn key condition bindings.",
+    "tradeoffs": "Conflicts with cache_text_encoder_outputs or requires multi-variant caching; start the rate low."
   },
   "relatedConfigs": [
     "caption_tag_dropout_rate",

@@ -1,7 +1,9 @@
 {
   "key": "activation_compression_dtype",
   "title": "激活压缩精度",
+  "title_en": "Activation Compression Dtype",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "fp16": "激活压 fp16。",
       "bf16": "激活压 bf16。",
       "fp8_e4m3": "激活压 fp8，最省，误差也最大。"
+    }
+  },
+  "standard_en": {
+    "summary": "Activation compression precision. Each option below says what changing level does.",
+    "effect": "Different values change the algorithm's target, the resources it uses, or export compatibility.",
+    "whenToUse": "Start with the default, then change level according to your VRAM / quality / compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental levels at once before a controlled short test.",
+    "optionDescriptions": {
+      "fp16": "Compress activations to fp16.",
+      "bf16": "Compress activations to bf16.",
+      "fp8_e4m3": "Compress activations to fp8: the largest saving and the largest error."
     }
   },
   "advanced": {},

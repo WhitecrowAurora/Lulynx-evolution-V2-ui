@@ -1,0 +1,20 @@
+{
+  "key": "flow_uniform_base_pixels",
+  "title": "RF 基准像素数",
+  "category": "训练 / 噪声控制",
+  "appliesTo": [
+    "sd-ip-adapter",
+    "sd-lora",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora"
+  ],
+  "standard": {
+    "summary": "分辨率偏移的基准像素数。",
+    "effect": "1024x1024 = 1048576",
+    "whenToUse": "默认 1048576，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

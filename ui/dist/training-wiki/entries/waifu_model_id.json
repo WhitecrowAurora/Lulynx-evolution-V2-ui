@@ -1,0 +1,16 @@
+{
+  "key": "waifu_model_id",
+  "title": "Waifu/CLIP 模型 ID",
+  "category": "特征提取器设置",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "外部 Transformers 图像编码器模型 ID。",
+    "effect": "写入训练配置 waifu_model_id，由训练后端在相应阶段消费。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

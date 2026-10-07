@@ -1,7 +1,9 @@
 {
   "key": "preference_models",
   "title": "偏好评分模型",
+  "title_en": "Preference Scorer Models",
   "category": "质量评估",
+  "category_en": "Quality Assessment",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,10 +12,23 @@
     "whenToUse": "已开启 preference_scoring_enabled 时。",
     "avoidWhen": "偏好评分关闭时（字段本身会隐藏）。"
   },
+  "standard_en": {
+    "summary": "Comma-separated: pickscore,imagereward,hpsv2. Empty = pickscore only.",
+    "effect": "Selects the list of scorers that take part in preference scoring.",
+    "whenToUse": "When preference_scoring_enabled is already on.",
+    "avoidWhen": "When preference scoring is off (the field itself is hidden then)."
+  },
   "advanced": {
     "principle": "WebUI 字符串经 configs_validators 规范为 list[str]。",
     "intervention": "",
     "expectedImpact": "多模型 = 多下载与算力。",
+    "tradeoffs": "",
+    "codePath": "backend/core/configs_validators.py + preference_quality_integration.py"
+  },
+  "advanced_en": {
+    "principle": "WebUI strings are normalized to list[str] by configs_validators.",
+    "intervention": "",
+    "expectedImpact": "More models = more downloads and compute.",
     "tradeoffs": "",
     "codePath": "backend/core/configs_validators.py + preference_quality_integration.py"
   },

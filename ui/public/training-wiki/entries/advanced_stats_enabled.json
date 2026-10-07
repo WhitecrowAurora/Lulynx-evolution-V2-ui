@@ -1,7 +1,9 @@
 {
   "key": "advanced_stats_enabled",
   "title": "高级统计监控",
+  "title_en": "Advanced",
   "category": "训练 / 诊断",
+  "category_en": "Training / Diagnostics",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -20,9 +22,19 @@
     "whenToUse": "训练表现异常（loss 不下降/爆炸/速度慢）时开启对应诊断工具定位问题。正常训练无需开启（额外开销）。",
     "avoidWhen": "所有诊断工具都有不同程度的性能开销（约 1%~10%），不应在追求训练速度时常驻开启。"
   },
+  "standard_en": {
+    "summary": "The advanced diagnostics toolset: advanced_stats records gradient-norm / weight-norm / update-ratio statistics, layer_monitor watches layer by layer, step_phase_profile breaks a step down by phase, and deep_diagnostics is the deep diagnostic mode.",
+    "effect": "Once on, extra statistics appear in the training log or in WandB, which helps diagnose problems such as overfitting, vanishing gradients or an I/O bottleneck.",
+    "whenToUse": "When training misbehaves -- loss not falling, blowing up, or the run being slow -- turn on the matching diagnostic to locate the cause. Normal training does not need it, since it costs extra.",
+    "avoidWhen": "Every diagnostic costs something, roughly 1% to 10%, so none of them should stay on when you are chasing training speed."
+  },
   "advanced": {
     "principle": "fim_scan（Fisher Information Matrix 扫描）估计各参数的重要性（对 loss 的 sensitivity），用于判断哪些层值得使用更高 rank；forgetting_probe 定期评估模型对预训练能力的遗忘程度；bubble_controller 检测并控制优化器的 bubble（无效更新步骤）。layer_monitor 的 mode 控制监控粒度（block/layer/sublayer）。",
     "tradeoffs": "FIM 扫描需要多次 forward pass（估计 Fisher），开销与参数量成正比；layer_monitor 的详细模式需要每层 hook，累积开销随网络深度增加。"
+  },
+  "advanced_en": {
+    "principle": "fim_scan (Fisher Information Matrix scan) estimates each parameter's importance (sensitivity to loss) to judge which layers deserve higher rank; forgetting_probe periodically evaluates how much pretrained capability the model has forgotten; bubble_controller detects and controls optimizer bubbles (ineffective update steps). layer_monitor's mode controls monitoring granularity (block/layer/sublayer).",
+    "tradeoffs": "FIM scanning needs multiple forward passes (to estimate Fisher), with cost proportional to parameter count; layer_monitor's detailed mode needs per-layer hooks whose overhead accumulates with network depth."
   },
   "relatedConfigs": [
     "wandb_api_key",

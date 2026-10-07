@@ -1,0 +1,19 @@
+{
+  "key": "ltx23_fps",
+  "title": "FPS",
+  "category": "训练用模型",
+  "appliesTo": [
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora"
+  ],
+  "standard": {
+    "summary": "LTX FPS。",
+    "effect": "LTX 训练帧率。",
+    "whenToUse": "与素材匹配。",
+    "avoidWhen": "默认 24。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

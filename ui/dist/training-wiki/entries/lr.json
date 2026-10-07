@@ -1,0 +1,16 @@
+{
+  "key": "lr",
+  "title": "学习率",
+  "category": "训练参数",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "学习率（scorer）。",
+    "effect": "aesthetic-scorer 头的训练学习率。",
+    "whenToUse": "评分头较小，2e-4 常用。",
+    "avoidWhen": "默认 2e-4。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

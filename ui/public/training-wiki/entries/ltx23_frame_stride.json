@@ -1,0 +1,19 @@
+{
+  "key": "ltx23_frame_stride",
+  "title": "帧采样步长",
+  "category": "数据集 / 图说",
+  "appliesTo": [
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora"
+  ],
+  "standard": {
+    "summary": "LTX 帧采样步长。",
+    "effect": "每隔几帧取一帧（2 = 12fps @24fps 素材）。",
+    "whenToUse": "长视频降采样时使用。",
+    "avoidWhen": "默认 1 不跳帧。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

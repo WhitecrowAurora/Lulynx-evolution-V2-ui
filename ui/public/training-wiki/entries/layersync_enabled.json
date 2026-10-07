@@ -1,0 +1,17 @@
+{
+  "key": "layersync_enabled",
+  "title": "LayerSync 层自对齐",
+  "category": "训练 / 表征对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "同网络中间层对齐更深层（无外挂编码器）。",
+    "effect": "可能略增激活显存；。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

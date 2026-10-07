@@ -1,7 +1,9 @@
 {
   "key": "preference_scoring_enabled",
   "title": "偏好对齐评分",
+  "title_en": "Preference Alignment Scoring",
   "category": "质量评估",
+  "category_en": "Quality Assessment",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,11 +12,24 @@
     "whenToUse": "需要人类偏好对齐信号、且已开启质量评估时。",
     "avoidWhen": "仅想看 FID/CLIP，或本机尚未准备偏好模型权重时。"
   },
+  "standard_en": {
+    "summary": "Scores the generated images for preference with PickScore / ImageReward / HPSv2 after training. Off by default.",
+    "effect": "With this on, the quality evaluation also runs the preference scorers, which are fairly heavy.",
+    "whenToUse": "When you need a human-preference alignment signal and quality evaluation is already on.",
+    "avoidWhen": "When you only want FID/CLIP, or when the preference model weights are not yet in place on this machine."
+  },
   "advanced": {
     "principle": "default-off；依赖 quality_evaluation_enabled。模型缺失记 skipped，不静默当 0 分。",
     "intervention": "",
     "expectedImpact": "额外 VRAM/下载；metrics 多 preference_* 键。",
     "tradeoffs": "权重大；默认勿开。",
+    "codePath": "backend/core/lulynx_trainer/quality/preference_quality_integration.py"
+  },
+  "advanced_en": {
+    "principle": "Default off; depends on quality_evaluation_enabled. A missing model is recorded as skipped, not silently scored as 0.",
+    "intervention": "",
+    "expectedImpact": "Extra VRAM/downloads; metrics gain several preference_* keys.",
+    "tradeoffs": "Heavy weighting; do not enable by default.",
     "codePath": "backend/core/lulynx_trainer/quality/preference_quality_integration.py"
   },
   "relatedConfigs": [

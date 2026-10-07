@@ -1,0 +1,17 @@
+{
+  "key": "anima_train_self_attn",
+  "title": "训练 Self-Attention",
+  "category": "Anima 高级配置",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "是否把 Self-Attn（q/k/v/out）注入 LoRA。",
+    "effect": "关闭后该族完全不参与训练（不是把学习率设为 0）。",
+    "whenToUse": "默认开启，适合大多数场景。",
+    "avoidWhen": "排查问题想回到原始行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

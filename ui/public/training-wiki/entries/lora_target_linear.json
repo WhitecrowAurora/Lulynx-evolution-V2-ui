@@ -1,7 +1,9 @@
 {
   "key": "lora_target_linear",
   "title": "LoRA 目标线性层",
+  "title_en": "LoRA Target Linear Layers",
   "category": "LoRA / 网络结构",
+  "category_en": "LoRA / Network Structure",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -13,9 +15,19 @@
     "whenToUse": "复杂概念/多角色训练时开启，以获得更强的表达力。简单风格 LoRA 可保持 False。",
     "avoidWhen": "显存紧张时，注入 MLP 线性层会显著增加参数量和显存。"
   },
+  "standard_en": {
+    "summary": "Whether LoRA is injected into every linear layer, the MLP's fc1/fc2 included. Once on the injection surface is wider and expressiveness greater.",
+    "effect": "The default False injects into the attention layers only (Q/K/V/Out); True also injects the MLP's fully connected layers, which raises the parameter count sharply.",
+    "whenToUse": "Turn it on for complex concepts or multi-character training, where the extra expressiveness helps. A simple style LoRA can leave it False.",
+    "avoidWhen": "When VRAM is tight -- injecting the MLP linears adds parameters and memory noticeably."
+  },
   "advanced": {
     "principle": "遍历模型所有 nn.Linear 层（而非只有 attention projection），为每个线性层添加 LoRA 旁路。MLP 层的激活函数位于线性层之间，不受 LoRA 影响。",
     "tradeoffs": "注入 MLP 可以捕获特征空间的变化，不只是注意力路径，但参数量约增加 2~3 倍。"
+  },
+  "advanced_en": {
+    "principle": "Traverses all nn.Linear layers in the model (not just attention projections), adding a LoRA bypass to each. MLP layers' activations sit between linear layers and are untouched by LoRA.",
+    "tradeoffs": "Injecting MLP captures feature-space changes beyond just attention paths, but parameter count grows roughly 2~3×."
   },
   "relatedConfigs": [
     "network_dim",

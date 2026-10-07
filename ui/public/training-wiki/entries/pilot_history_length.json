@@ -1,0 +1,24 @@
+{
+  "key": "pilot_history_length",
+  "title": "Pilot 平滑窗口",
+  "title_en": "Pilot History Window",
+  "category": "训练参数",
+  "category_en": "Training Parameters",
+  "appliesTo": [
+    "all"
+  ],
+  "standard": {
+    "summary": "Pilot 不看瞬时的梯度范数，而是看最近 N 步的中位数，避免单步尖峰误触发。",
+    "effect": "默认 10。设小于 1 启动报错；1 = 完全不平滑。",
+    "whenToUse": "单步尖峰频繁误触发时保持或调大。",
+    "avoidWhen": "窗口太大会让真实的事故响应变慢。"
+  },
+  "standard_en": {
+    "summary": "The Pilot compares thresholds against the median of the last N global grad norms instead of the raw instant, so one-off spikes do not trigger it.",
+    "effect": "Default 10. Below 1 fails closed; 1 = no smoothing.",
+    "whenToUse": "Keep or raise when single-step spikes cause false triggers.",
+    "avoidWhen": "Too wide a window delays real incident response."
+  },
+  "advanced": {},
+  "relatedConfigs": []
+}

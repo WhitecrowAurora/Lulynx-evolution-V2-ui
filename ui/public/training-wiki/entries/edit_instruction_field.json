@@ -1,0 +1,16 @@
+{
+  "key": "edit_instruction_field",
+  "title": "指令字段",
+  "category": "Edit 训练",
+  "appliesTo": [
+    "anima-edit-model"
+  ],
+  "standard": {
+    "summary": "配对编辑样本中的编辑指令字段名。",
+    "effect": "默认 instruction。",
+    "whenToUse": "默认 instruction，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

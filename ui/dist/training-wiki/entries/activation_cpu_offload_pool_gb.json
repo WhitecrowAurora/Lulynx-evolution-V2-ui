@@ -1,0 +1,21 @@
+{
+  "key": "activation_cpu_offload_pool_gb",
+  "title": "Offload Pinned 池 GB",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora"
+  ],
+  "standard": {
+    "summary": "激活 Offload Pinned 池 GB。",
+    "effect": "CPU 侧 pinned memory 池上限，防止吃满内存。",
+    "whenToUse": "RAM 充裕时可调大换更稳的传输。",
+    "avoidWhen": "默认 1GB。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

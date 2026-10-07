@@ -1,0 +1,16 @@
+{
+  "key": "image_size",
+  "title": "特征输入尺寸",
+  "category": "特征提取器设置",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "TorchScript/通用图像提取器输入尺寸。",
+    "effect": "写入训练配置 image_size，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 224，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

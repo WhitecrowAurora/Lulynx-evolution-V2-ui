@@ -1,7 +1,9 @@
 {
   "key": "xformers",
   "title": "xFormers 内存高效注意力",
+  "title_en": "Enable xformers",
   "category": "速度 / 显存",
+  "category_en": "Speed / VRAM",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -12,9 +14,19 @@
     "whenToUse": "高分辨率（1024+）训练时强烈推荐开启（若 xformers 已安装）。显存不足时优先开启。",
     "avoidWhen": "未安装 xformers 包时会报错（需要 pip install xformers）。某些环境下 xformers 与 torch 版本不兼容，遇到错误时禁用。"
   },
+  "standard_en": {
+    "summary": "Enables the xFormers library's memory-efficient attention implementation, which cuts the VRAM cost of attention computation substantially.",
+    "effect": "Once enabled, the memory cost of attention drops from O(n^2) to close to O(n) (using chunked/flash attention). The effect is marked in high-resolution training (1024x1024 can save 30%~50% of the VRAM).",
+    "whenToUse": "Strongly recommended for high-resolution (1024+) training, if xformers is installed. Turn it on first when VRAM is short.",
+    "avoidWhen": "It errors when the xformers package is not installed (pip install xformers is needed). In some environments xformers and the torch version are incompatible, so disable it if you hit an error."
+  },
   "advanced": {
     "principle": "xformers 实现了 Memory Efficient Attention（MEA），将注意力计算分块处理，避免在高分辨率下实例化完整的 n×n 注意力矩阵（n = 序列长度）。底层调用 CUDA 优化 kernel。",
     "tradeoffs": "xformers 注意力计算结果与 PyTorch 原生不完全相同（非确定性实现），可能影响可复现性；但对训练质量的实际影响极小。"
+  },
+  "advanced_en": {
+    "principle": "xformers implements Memory Efficient Attention (MEA), processing attention computation in chunks to avoid instantiating the full n×n attention matrix at high resolution (n = sequence length). Underneath it calls CUDA-optimized kernels.",
+    "tradeoffs": "xformers attention results are not exactly identical to PyTorch native (non-deterministic implementation), which may affect reproducibility; but the actual impact on training quality is minimal."
   },
   "relatedConfigs": [
     "gradient_checkpointing",

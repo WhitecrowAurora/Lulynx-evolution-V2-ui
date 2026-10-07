@@ -1,7 +1,9 @@
 {
   "key": "flow_logit_mean",
   "title": "Flow Matching 时间步均值",
+  "title_en": "Logit Mean",
   "category": "训练 / Flow Matching",
+  "category_en": "Training / Flow Matching",
   "appliesTo": [
     "anima-lora"
   ],
@@ -15,9 +17,19 @@
     "whenToUse": "默认值（mean=0, std=1）是 Anima 官方推荐，通常无需修改。",
     "avoidWhen": "不了解 Flow Matching 时间步分布时保持默认。"
   },
+  "standard_en": {
+    "summary": "The logit-normal timestep sampling parameters for Flow Matching training: mean sets the distribution's centre (which noise level it favours), std its width.",
+    "effect": "mean=0 concentrates sampling on mid noise (sigma around 0.5); mean>0 leans towards higher noise (coarser learning); mean<0 leans towards low noise (finer detail).",
+    "whenToUse": "The defaults (mean=0, std=1) are Anima's official recommendation and rarely need changing.",
+    "avoidWhen": "Keep the defaults if you are not familiar with Flow Matching timestep distributions."
+  },
   "advanced": {
     "principle": "logit-normal 采样：t ~ sigmoid(μ + σ × N(0,1))，μ=logit_mean，σ=logit_std。时间步 t 通过此分布映射到 [0,1] 区间，对应不同 sigma 噪声级别。flow_uncertainty_weighting 基于 EDM2 的不确定性加权思想，按每个 sigma bin 的历史 loss 统计动态调整采样权重。",
     "tradeoffs": "logit_mean 调整影响整体训练偏好，与 anima_weighting_scheme / scale_guidance 存在部分功能重叠，避免同时使用多个时间步加权机制（相互影响难以预测）。"
+  },
+  "advanced_en": {
+    "principle": "logit-normal sampling: t ~ sigmoid(μ + σ × N(0,1)), with μ=logit_mean, σ=logit_std. The timestep t maps through this distribution onto [0,1], corresponding to different sigma noise levels. flow_uncertainty_weighting, based on EDM2's uncertainty-weighting idea, dynamically adjusts sampling weights from historical loss statistics per sigma bin.",
+    "tradeoffs": "logit_mean shifts overall training preference and partially overlaps anima_weighting_scheme / scale_guidance — avoid stacking multiple timestep-weighting mechanisms (their interaction is hard to predict)."
   },
   "relatedConfigs": [
     "anima_weighting_scheme",

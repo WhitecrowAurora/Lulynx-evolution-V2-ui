@@ -1,0 +1,17 @@
+{
+  "key": "dpo_rejected_latent_cache_dir",
+  "title": "Rejected latent 缓存目录",
+  "category": "DPO 偏好对齐",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "按 stem 加载 lose 侧 clean latent 侧车；空=不从盘加载。",
+    "effect": "需与 preferred 同 spatial。",
+    "whenToUse": "按训练目标与显存预算调整。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "anima_fused_qkv",
   "title": "Anima Fused QKV",
+  "title_en": "QKV",
   "category": "速度 / Anima 专用",
+  "category_en": "Speed / Anima-specific",
   "appliesTo": [
     "anima-lora"
   ],
@@ -11,9 +13,19 @@
     "whenToUse": "默认应尝试开启（若模型支持），对 Anima 架构的 native forward 有优化效果。",
     "avoidWhen": "模型的 QKV 权重未融合时（需要 weight merging 操作），或 LoRA 注入方式与 fused QKV 不兼容时会自动 fallback。"
   },
+  "standard_en": {
+    "summary": "Merges the Q, K and V linear projections into one fused matmul, cutting the number of CUDA kernel launches and making attention more efficient.",
+    "effect": "Once on, the QKV projection is done in a single matmul instead of three, cutting launch overhead by roughly 30% and total training time by roughly 2% to 5%.",
+    "whenToUse": "Worth having on by default where the model supports it; it optimises the native forward of the Anima architecture.",
+    "avoidWhen": "It falls back automatically when the model's QKV weights are not fused (a weight merge would be needed) or when the LoRA injection style is incompatible with fused QKV."
+  },
   "advanced": {
     "principle": "Fused QKV 将 W_Q, W_K, W_V 沿 head 维度拼接为一个 W_QKV，单次矩阵乘法 xW_QKV 得到 QKV 拼接结果，再 chunk 分割。减少内存读写次数（W_Q/K/V 分别读取 → 一次读取 W_QKV）。",
     "tradeoffs": "LoRA 注入 fused QKV 时需要特殊处理（拼接 LoRA 权重对应维度），部分 LoRA 实现可能与之不兼容，遇到问题时关闭。"
+  },
+  "advanced_en": {
+    "principle": "Fused QKV concatenates W_Q, W_K, W_V along the head dimension into one W_QKV; a single matmul xW_QKV yields the concatenated QKV, then chunk splits it. Fewer memory reads/writes (three separate W_Q/K/V reads → one W_QKV read).",
+    "tradeoffs": "LoRA injection into fused QKV needs special handling (concatenating LoRA weights along the matching dims); some LoRA implementations may be incompatible — turn it off if problems arise."
   },
   "relatedConfigs": [
     "anima_fixed_visual_tokens",

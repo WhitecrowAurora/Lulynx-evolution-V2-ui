@@ -1,7 +1,9 @@
 {
   "key": "min_snr_gamma",
   "title": "Min-SNR 加权",
+  "title_en": "Min-SNR Gamma",
   "category": "正则 / Loss 加权",
+  "category_en": "Regularization / Loss Weighting",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,6 +13,9 @@
   ],
   "layers": [
     "Loss 层"
+  ],
+  "layers_en": [
+    "Loss layer"
   ],
   "standard": {
     "summary": "对高信噪比（low noise, 容易预测）的 timestep 降低 loss 权重，对低信噪比（high noise, 难以预测）的 timestep 提高权重，让模型均衡学习从纯噪声到清晰图像的所有去噪阶段。",
@@ -23,11 +28,29 @@
     "whenToUse": "SD1.5/SDXL 的 epsilon-prediction 训练中非常推荐开启。发现生成的图像整体模糊、缺乏细节、构图单调时。数据量少于 50 张时尤其有帮助（均衡各 timestep 的信号强度）。",
     "avoidWhen": "FLUX / Flow-matching 架构不使用标准 SNR 加权（它们的 timestep 分布和 loss 计算不同）。v-prediction 模式下的加权逻辑不同（Lulynx 已自动处理，见 advanced）。debiased_estimation_loss 是另一种替代方案，通过 1/(1-α_t) 去偏加权。"
   },
+  "standard_en": {
+    "summary": "Lowers the loss weight on high signal-to-noise (low noise, easy to predict) timesteps and raises it on low signal-to-noise (high noise, hard to predict) ones, so the model learns every denoising stage from pure noise to a clear image evenly.",
+    "effect": "5.0 is the typical value (the paper's recommendation). With it on, the model's mid-level detail (texture, expression, fingers and so on) and its composition improve noticeably, because the timesteps that carry those -- the medium noise levels -- were previously drowned out by the easy high-SNR timesteps.",
+    "whenToUse": "Strongly recommended for SD1.5/SDXL epsilon-prediction training. When you find generated images blurry overall, short on detail, or monotonous in composition. Especially helpful with fewer than 50 images (it evens out the signal strength across timesteps).",
+    "avoidWhen": "FLUX and flow-matching architectures do not use standard SNR weighting (their timestep distribution and loss computation differ). The weighting logic differs under v-prediction (Lulynx handles that automatically, see advanced). debiased_estimation_loss is an alternative, debiasing with a 1/(1-alpha_t) weight.",
+    "recommendedValues": {
+      "recommended": "5.0 (the Min-SNR paper's original recommendation)",
+      "mild": "3.0 (mild weighting, suited to high-quality data)",
+      "strong": "8.0-10.0 (strong weighting, suited to a small dataset where you want to emphasise detail)"
+    }
+  },
   "advanced": {
     "principle": "信噪比 SNR(t) = α_t² / σ_t²，其中 α_t = √(alphas_cumprod[t])，σ_t = √(1 - alphas_cumprod[t])。标准 MSE loss 在高 SNR（小 t，接近清晰图像）时梯度远大于低 SNR（大 t，接近纯噪声），导致模型主要学简单去噪而忽略高噪声阶段。Min-SNR 将权重 clamp 到 min(SNR, γ) / SNR，γ 就是 min_snr_gamma。v-prediction 时 divisor 变为 SNR + 1（因为 v = α·x_0 - σ·ε 的方差结构不同）。",
     "intervention": "training_loop.py 中（line ~3679）：snr = compute_snr(timesteps)；divisor = snr + 1 if v_parameterization else snr；snr_weights = clamp(snr, max=snr_gamma) / divisor；loss = loss * snr_weights。这是 per-sample 加权，在 batch 维度取 mean 前乘上权重。adaptive_loss_weighting 是可学习版本——训练一组 γ/offset/scale 参数自适应调整权重。",
     "expectedImpact": "对中等噪声 timestep（t=200-800）的学习效果改善最显著——这些 timestep 对应图像的中等细节（衣服纹理、背景元素、手部结构）。整体 FID 改善通常在 2-5%。对低噪声 timestep（t<100，对应全局色温和亮度）的影响很小。",
     "tradeoffs": "adaptive_loss_weighting_enabled=True 时会训练一个小的 MLP 来预测最优 SNR 权重——理论上比固定 γ 更灵活，但增加额外参数和优化目标。debiased_estimation_loss 使用 1/(1-α_t) 加权，数学上等价于去偏估计，在大 timestep 端更激进。两者不应同时使用。",
+    "codePath": "training_loop.py:compute_snr() → clamp(snr, max=gamma) / divisor → per-sample loss weighting"
+  },
+  "advanced_en": {
+    "principle": "SNR(t) = α_t² / σ_t², where α_t = √(alphas_cumprod[t]), σ_t = √(1 - alphas_cumprod[t]). Standard MSE loss has far larger gradients at high SNR (small t, near-clean images) than at low SNR (large t, near-pure-noise), so the model mostly learns easy denoising and neglects the high-noise stages. Min-SNR clamps the weight to min(SNR, γ) / SNR, where γ is min_snr_gamma. For v-prediction the divisor becomes SNR + 1 (because v = α·x_0 - σ·ε has a different variance structure).",
+    "intervention": "In training_loop.py (line ~3679): snr = compute_snr(timesteps); divisor = snr + 1 if v_parameterization else snr; snr_weights = clamp(snr, max=snr_gamma) / divisor; loss = loss * snr_weights. This is per-sample weighting, applied before the batch-dimension mean. adaptive_loss_weighting is the learnable version — it trains a set of γ/offset/scale parameters to adapt the weights.",
+    "expectedImpact": "The improvement is most visible on mid-noise timesteps (t=200-800) — corresponding to an image's mid-level detail (clothing texture, background elements, hand structure). Overall FID improvement usually 2-5%. Little effect on low-noise timesteps (t<100, corresponding to global color temperature and brightness).",
+    "tradeoffs": "With adaptive_loss_weighting_enabled=True, a small MLP is trained to predict optimal SNR weights — theoretically more flexible than fixed γ but adding parameters and an optimization objective. debiased_estimation_loss weights by 1/(1-α_t), mathematically a debiased estimator, more aggressive at the large-timestep end. The two should not be used together.",
     "codePath": "training_loop.py:compute_snr() → clamp(snr, max=gamma) / divisor → per-sample loss weighting"
   },
   "relatedConfigs": [

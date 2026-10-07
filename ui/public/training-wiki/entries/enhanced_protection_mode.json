@@ -1,7 +1,9 @@
 {
   "key": "enhanced_protection_mode",
   "title": "增强防护模式",
+  "title_en": "Mode",
   "category": "训练 / 稳定性",
+  "category_en": "Training / Stability",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -14,6 +16,12 @@
     "effect": "开启后训练更稳定但速度可能略慢（约 5~10%）。适合不稳定的训练环境（高 LR、小数据集、不稳定架构）。",
     "whenToUse": "遇到频繁 NaN/Inf 或训练不稳定时作为综合保护措施。",
     "avoidWhen": "稳定训练环境无需开启，避免额外开销。"
+  },
+  "standard_en": {
+    "summary": "With enhanced protection on, the trainer strengthens stability safeguards on several fronts: more frequent gradient checks, automatic LR rollback, memory pressure monitoring and so on. swap_count/ratio control the related swap parameters.",
+    "effect": "Training is steadier but may be around 5-10% slower. It suits unstable settings -- a high LR, a small dataset, an unstable architecture.",
+    "whenToUse": "As an all-round safeguard when you hit frequent NaN/Inf or unstable training.",
+    "avoidWhen": "A stable environment does not need it; leaving it off avoids the overhead."
   },
   "relatedConfigs": [
     "safeguard_enabled",

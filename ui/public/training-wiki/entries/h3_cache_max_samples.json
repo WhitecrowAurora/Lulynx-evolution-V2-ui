@@ -1,0 +1,17 @@
+{
+  "key": "h3_cache_max_samples",
+  "title": "Cache 样本上限",
+  "category": "H3 音视频数据",
+  "appliesTo": [
+    "minimax-h3-finetune",
+    "minimax-h3-lora"
+  ],
+  "standard": {
+    "summary": "H3 Cache 样本上限。",
+    "effect": "缓存样本数量上限，0 = 不限。",
+    "whenToUse": "先用子集试跑时设置。",
+    "avoidWhen": "默认 0。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "anima_train_llm_adapter",
   "title": "训练 LLM Adapter",
+  "title_en": "Training LLM Adapter",
   "category": "训练 / Anima 专用",
+  "category_en": "Training / Anima-specific",
   "appliesTo": [
     "anima-lora"
   ],
@@ -14,9 +16,19 @@
     "whenToUse": "训练需要精确文本响应（如特定触发词绑定、复杂描述）时开启。",
     "avoidWhen": "数据集主要是风格/画风（对文本响应要求不高）时可关闭，节省显存和训练时间。"
   },
+  "standard_en": {
+    "summary": "Whether to train the adapter layers on Anima's LLM side, strengthening text understanding and image-text alignment.",
+    "effect": "Once on, the LLM adapter joins LoRA training, which helps the LLM pick up a specific trigger word or captioning style. VRAM rises by roughly 10%-20%.",
+    "whenToUse": "When the run needs precise text response -- binding a specific trigger word, or handling complex descriptions.",
+    "avoidWhen": "A dataset that is mostly style or art direction (where text response matters little) can leave it off and save both VRAM and time."
+  },
   "advanced": {
     "principle": "Anima 的 LLM（如 T5/LLaMA）处理文本描述后输出 text embedding，LLM Adapter 是连接 LLM 输出与 DiT 条件输入的轻量模块。训练 Adapter 可以调整 LLM 的文本表征以更好地适配目标概念。",
     "tradeoffs": "LLM Adapter 训练会改变 Anima 对所有 LLM 生成文本 embedding 的解读，若训练数据覆盖面窄（<50张），可能引入泛化性问题。"
+  },
+  "advanced_en": {
+    "principle": "Anima's LLM (e.g. T5/LLaMA) processes text descriptions into text embeddings, and the LLM Adapter is the lightweight module connecting LLM output to the DiT condition input. Training the adapter can adjust the LLM's text representations to better fit the target concept.",
+    "tradeoffs": "Training the LLM Adapter changes how Anima interprets all LLM-generated text embeddings; with narrow training data coverage (<50 images), generalization problems can appear."
   },
   "relatedConfigs": [
     "anima_cross_attn_lr",

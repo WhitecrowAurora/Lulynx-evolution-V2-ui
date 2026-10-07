@@ -1,0 +1,16 @@
+{
+  "key": "train_split",
+  "title": "训练 split",
+  "category": "数据集 / 图说",
+  "appliesTo": [
+    "aesthetic-scorer"
+  ],
+  "standard": {
+    "summary": "标注含 split 字段时使用的训练划分名称。",
+    "effect": "写入训练配置 train_split，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 train，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

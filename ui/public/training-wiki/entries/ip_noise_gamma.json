@@ -1,7 +1,9 @@
 {
   "key": "ip_noise_gamma",
   "title": "Input Perturbation 噪声",
+  "title_en": "Input perturbation noise",
   "category": "训练 / 噪声控制",
+  "category_en": "Training / Noise Control",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -20,9 +22,19 @@
     "whenToUse": "alpha_mask 适合透明背景训练数据（角色切图）；color_aug 和 random_crop 是通用数据增强，小数据集时特别有效。",
     "avoidWhen": "ip_noise 值过大（>0.1）会引入过多噪声干扰，降低训练质量；alpha_mask 要求所有训练图像有 Alpha 通道（PNG 格式，背景透明）。"
   },
+  "standard_en": {
+    "summary": "IP (Input Perturbation) noise: adds extra perturbation to the input during training, making the model more robust to noise. ip_noise_gamma sets the strength; ip_noise_gamma_random_strength randomises it.",
+    "effect": "Compared with noise_offset (a global brightness shift), IP noise is a more general input perturbation that adds variety from other directions. alpha_mask uses the image's alpha channel as a loss mask (computing loss only where the image is opaque). color_aug turns on colour augmentation (random brightness, saturation and so on). random_crop replaces the fixed centre crop with a random one.",
+    "whenToUse": "alpha_mask suits training data with transparent backgrounds (cut-out characters); color_aug and random_crop are general augmentations that help most on small datasets.",
+    "avoidWhen": "Too high an ip_noise value (>0.1) introduces so much noise that quality drops; alpha_mask requires every training image to have an alpha channel (PNG with a transparent background)."
+  },
   "advanced": {
     "principle": "IP 噪声：x_noisy = x_t + gamma × N(0, I)，在标准加噪步骤的噪声上再叠加一层扰动。这与 noise_offset（改变全局亮度偏移）不同：IP 噪声改变整体噪声强度但不改变噪声方向。alpha_mask：loss = mean(mask × (pred - target)²) / mean(mask)，只对 Alpha>0 的像素计算 loss。",
     "tradeoffs": "color_aug 和 random_crop 增加数据多样性但改变了每个 epoch 的训练样本分布，与缓存训练（cache_latents）存在矛盾（缓存是固定的，增强是动态的）——开启增强时应关闭 latent 缓存。"
+  },
+  "advanced_en": {
+    "principle": "IP noise: x_noisy = x_t + gamma × N(0, I) — an extra perturbation layered on the standard noising step's noise. Unlike noise_offset (changing the global brightness offset), IP noise changes overall noise strength without changing the noise direction. alpha_mask: loss = mean(mask × (pred - target)²) / mean(mask), computing loss only on pixels with Alpha>0.",
+    "tradeoffs": "color_aug and random_crop add data diversity but change each epoch's sample distribution, conflicting with cached training (cache_latents) — the cache is fixed while augmentation is dynamic; turn off latent caching when enabling augmentation."
   },
   "relatedConfigs": [
     "noise_offset",

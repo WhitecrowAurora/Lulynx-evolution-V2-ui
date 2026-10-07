@@ -1,7 +1,9 @@
 {
   "key": "prefuse_adapter_path",
   "title": "预融合 LoRA 路径",
+  "title_en": "Pre-Fused LoRA Path",
   "category": "训练 / 适配器",
+  "category_en": "Training / Adapters",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -11,11 +13,20 @@
   "layers": [
     "权重层"
   ],
+  "layers_en": [
+    "Weight layer"
+  ],
   "standard": {
     "summary": "训练开始前把一个已有 LoRA 按 prefuse_adapter_scale 直接合并进底座权重，然后在这个「新底座」上训练新 LoRA。留空 = 不预融合。",
     "effect": "模型准备的收尾阶段把该 LoRA 的 delta 权重乘 scale 后加进对应层，日志输出融合层数；被融合的 LoRA 本身不再作为可训练/可卸载的 adapter 存在，效果永久固化在本次训练的底座里。",
     "whenToUse": "想在「底模+画风 LoRA」的组合效果上继续训练角色时；把通用增强 LoRA（细节、手部修复）作为训练起点时。与 network_weights（继续训练同一个 LoRA）语义不同：预融合是改底座，不是续训。",
     "avoidWhen": "希望训练完还能自由开关那个 LoRA 时（融合不可逆，推理时必须同时挂原 LoRA 才能复现训练分布）；与 assistant_lora 同用会冲突（后端有互斥校验）。"
+  },
+  "standard_en": {
+    "summary": "Merges an existing LoRA straight into the base weights at prefuse_adapter_scale before training starts, then trains the new LoRA on that new base. Blank = no prefusion.",
+    "effect": "At the end of model preparation, that LoRA's delta weights are multiplied by scale and added into the matching layers, and the log reports how many layers were fused; the fused LoRA no longer exists as a trainable or unloadable adapter, and its effect is permanently baked into this run's base.",
+    "whenToUse": "When you want to go on training a character on top of a base-plus-style-LoRA combination; when you want a general enhancement LoRA (detail, hand repair) as the starting point. The semantics differ from network_weights (continuing to train the same LoRA): prefusion changes the base, it is not a resume.",
+    "avoidWhen": "When you want to be able to switch that LoRA on and off afterwards (fusion is irreversible: at inference the original LoRA must be loaded too to reproduce the training distribution); it conflicts with assistant_lora (the backend has a mutual-exclusion check)."
   },
   "advanced": {
     "principle": "LoRA 的 ΔW = B·A·(alpha/rank) 可以直接加到基础权重上（W' = W + scale·ΔW）。预融合后训练的新 LoRA 学到的是相对 W' 的残差，因此推理时需要「底模 + 预融合 LoRA(同 scale) + 新 LoRA」三者组合才能还原训练时的分布。",
@@ -23,6 +34,13 @@
     "expectedImpact": "训练起点分布与目标组合一致，新 LoRA 不必重复学习已有 LoRA 的内容，收敛更快、串味更少。",
     "tradeoffs": "融合发生在内存中的本次训练副本，不会写坏磁盘上的底模；但训练产物与预融合 LoRA 形成隐性依赖，分发时需要说明配套关系。",
     "codePath": "trainer_prepare_finalize_mixin.py——prefuse_adapter_into_model(model, prefuse_adapter_path, scale=prefuse_adapter_scale)；configs_monitoring.py 定义"
+  },
+  "advanced_en": {
+    "principle": "A LoRA's ΔW = B·A·(alpha/rank) can be added directly to the base weights (W' = W + scale·ΔW). A LoRA trained after pre-fusion learns the residual relative to W', so inference needs the combination of base model + prefused LoRA (same scale) + new LoRA to reproduce the training-time distribution.",
+    "intervention": "trainer_prepare_finalize_mixin.py: between model loading and adapter injection, when the path is non-empty it calls adapter.adapter_prefusion.prefuse_adapter_into_model(model, path, scale); the path is validated by training_path_contract.py's path legality checks.",
+    "expectedImpact": "The training start distribution matches the target combination, so the new LoRA does not have to relearn the existing LoRA's content — faster convergence and less concept bleed.",
+    "tradeoffs": "The fusion happens on the in-memory copy for this training run and cannot corrupt the base model on disk; but the training artifact and the prefused LoRA form an implicit dependency that must be documented when distributing.",
+    "codePath": "trainer_prepare_finalize_mixin.py — prefuse_adapter_into_model(model, prefuse_adapter_path, scale=prefuse_adapter_scale); defined in configs_monitoring.py"
   },
   "relatedConfigs": [
     "prefuse_adapter_scale",

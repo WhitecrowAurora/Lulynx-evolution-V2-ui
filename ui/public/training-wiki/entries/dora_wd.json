@@ -1,7 +1,9 @@
 {
   "key": "dora_wd",
   "title": "启用 DoRA",
+  "title_en": "DoRA Weight Decay",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Takes effect on the Anima native LoRA route only.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "仅在 Anima 原生 LoRA 路线下生效。DoRA 会把权重分成方向与幅度两部分来训练，通常比普通 LoRA 更接近全量微调表现。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Only takes effect on the Anima native LoRA route. DoRA splits weights into direction and magnitude components for training, usually approaching full fine-tuning quality more closely than plain LoRA.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

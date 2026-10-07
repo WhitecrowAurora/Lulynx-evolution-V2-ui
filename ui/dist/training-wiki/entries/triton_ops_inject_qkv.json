@@ -1,0 +1,17 @@
+{
+  "key": "triton_ops_inject_qkv",
+  "title": "Triton QKV 融合",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "ltx23-lora",
+    "ltx25-lora"
+  ],
+  "standard": {
+    "summary": "仅标准视频 attn1；Perturbed、cross 与 audio 路径跳过。",
+    "effect": "与物理打包同开时 Triton 命中优先，未命中由物理路径回退。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "tome_ratio",
   "title": "ToMe 合并比例",
+  "title_en": "ToMe Merge Ratio",
   "category": "性能 / 加速",
+  "category_en": "Performance / Acceleration",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora"
@@ -9,11 +11,20 @@
   "layers": [
     "前向层"
   ],
+  "layers_en": [
+    "Forward layer"
+  ],
   "standard": {
     "summary": "ToMe 每步合并的 token 比例（0~1），tome_enabled 开启时生效。默认 0.5。",
     "effect": "比例越高参与 attention 的 token 越少、前向越快，但特征分辨率损失越大；0 等效于不合并。",
     "whenToUse": "开启 ToMe 后从 0.3~0.5 起步，观察速度收益与预览图质量的平衡点。",
     "avoidWhen": "tome_enabled 关闭时无意义；比例 >0.6 时细节退化通常肉眼可见，不建议用于最终产出训练。"
+  },
+  "standard_en": {
+    "summary": "The proportion of tokens ToMe merges each step (0~1), effective when tome_enabled is on. Defaults to 0.5.",
+    "effect": "The higher the ratio, the fewer tokens take part in attention and the faster the forward pass, but the more feature resolution is lost; 0 is equivalent to no merging.",
+    "whenToUse": "Start at 0.3~0.5 once ToMe is on, and watch where the speed gain balances against preview image quality.",
+    "avoidWhen": "Meaningless when tome_enabled is off; above 0.6 the detail degradation is usually visible to the eye, so it is inadvisable for training you intend to ship."
   },
   "advanced": {
     "principle": "ToMe 的合并数量 r = ratio × token 数；合并按 token 相似度贪心配对，加权平均后序列长度缩短，attention 复杂度从 O(N²) 降到 O((N-r)²)。",
@@ -21,6 +32,13 @@
     "expectedImpact": "attention 耗时按 (1-ratio)² 量级下降；高分辨率（token 多）时绝对收益更大。",
     "tradeoffs": "速度与质量单调互换；训练时合并、推理时不合并造成的训推差异随 ratio 增大。",
     "codePath": "training_loop.py——build_tome_seam(enabled=True, ratio=float(tome_ratio))；tome_runtime.py"
+  },
+  "advanced_en": {
+    "principle": "ToMe's merge count r = ratio × token count; merging greedily pairs tokens by similarity and averages them weighted, shortening the sequence and dropping attention complexity from O(N²) to O((N-r)²).",
+    "intervention": "training_loop.py:_get_tome_seam passes the ratio into build_tome_seam; tome_runtime.py applies it within the model forward scope.",
+    "expectedImpact": "Attention time falls on the order of (1-ratio)²; the absolute benefit is larger at high resolution (many tokens).",
+    "tradeoffs": "Speed and quality trade off monotonically; the train/inference gap from merging during training but not inference grows with ratio.",
+    "codePath": "training_loop.py — build_tome_seam(enabled=True, ratio=float(tome_ratio)); tome_runtime.py"
   },
   "relatedConfigs": [
     "tome_enabled",

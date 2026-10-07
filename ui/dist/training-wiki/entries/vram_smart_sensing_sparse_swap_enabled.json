@@ -1,0 +1,20 @@
+{
+  "key": "vram_smart_sensing_sparse_swap_enabled",
+  "title": "智能感知稀疏交换候选",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "anima-controlnet",
+    "anima-edit-model",
+    "anima-lora",
+    "flux-finetune",
+    "newbie-lora"
+  ],
+  "standard": {
+    "summary": "智能感知稀疏交换候选。",
+    "effect": "只把「稀疏访问」的块列为交换候选，减少无效换入换出。",
+    "whenToUse": "默认开启，优化交换效率。",
+    "avoidWhen": "排查 swap 行为时可关闭对比。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

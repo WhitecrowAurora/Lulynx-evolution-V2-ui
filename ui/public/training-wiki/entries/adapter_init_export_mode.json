@@ -1,7 +1,9 @@
 {
   "key": "adapter_init_export_mode",
   "title": "初始化导出模式",
+  "title_en": "Init Export Mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -16,12 +18,26 @@
       "approximate": "近似收成标准 LoRA，快一点，精度可能差一点。"
     }
   },
+  "standard_en": {
+    "summary": "auto exports, at final save time, a LoRA that can be loaded onto the original base model.",
+    "whenToUse": "When unsure keep the default, then short-test a few steps before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is on at the same time.",
+    "optionDescriptions": {
+      "auto": "Special initialisation is allowed during training, and the save is folded back into a standard LoRA that loads onto the original base wherever possible.",
+      "raw": "The internal training state is kept as it is -- good for resuming, but some inference frontends will not take it.",
+      "lora_compatible": "Force the save into conventional LoRA key names.",
+      "approximate": "Approximate the standard LoRA form: faster, possibly less accurate."
+    }
+  },
   "advanced": {
     "principle": "auto 会在最终保存时导出成可加载到原始底模的 LoRA；raw 保留精确训练状态用于恢复。",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "auto exports a LoRA at final save that loads back onto the original base model; raw keeps the exact training state for resuming."
   },
   "relatedConfigs": []
 }

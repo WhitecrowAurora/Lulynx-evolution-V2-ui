@@ -1,7 +1,9 @@
 {
   "key": "sdxl_model_prediction_type",
   "title": "Flow 预测目标（sdxl_model_prediction_type）",
+  "title_en": "Flow prediction target",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "epsilon": "预测噪声 ε。",
       "velocity": "预测速度场 v，flow/RF 常见。",
       "sample": "直接预测干净图；高噪声段往往更难训。"
+    }
+  },
+  "standard_en": {
+    "summary": "Flow prediction target (sdxl_model_prediction_type): the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "epsilon": "Predicts the noise epsilon.",
+      "velocity": "Predicts the velocity field v, common in flow/RF.",
+      "sample": "Predicts the clean image directly; the high-noise range is often harder to train."
     }
   },
   "advanced": {},

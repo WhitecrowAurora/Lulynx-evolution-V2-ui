@@ -1,7 +1,9 @@
 {
   "key": "lulynx_freq_texture_enabled",
   "title": "Lulynx 频域纹理锚点",
+  "title_en": "Lulynx Freq Texture Enabled",
   "category": "前沿储备 / 质量",
+  "category_en": "Frontier Reserve / Quality",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -9,7 +11,8 @@
   "aliases": [
     "lulynx_freq_texture_weight",
     "lulynx_latent_anchor_enabled",
-    "lulynx_latent_anchor_weight"
+    "lulynx_latent_anchor_weight",
+    "perceptual_anchor_loss_enabled"
   ],
   "standard": {
     "summary": "（实验性）Lulynx 质量感知辅助 loss 族：频域纹理锚点（freq_texture）通过频域 Gram 矩阵约束纹理风格；Latent 锚点（latent_anchor）通过 EMA latent 参考约束生成稳定性。",
@@ -17,9 +20,19 @@
     "whenToUse": "实验性功能，适合研究探索。对特定纹理风格 LoRA 有潜在收益。",
     "avoidWhen": "默认关闭。增加的辅助 loss 会改变训练动力学，不确定效果时不要开启。"
   },
+  "standard_en": {
+    "summary": "(Experimental) The Lulynx quality-aware auxiliary loss family: the frequency-domain texture anchor (freq_texture) constrains texture style through a frequency-domain Gram matrix; the latent anchor (latent_anchor) constrains generation stability against an EMA latent reference.",
+    "effect": "freq_texture helps hold on to the characteristic texture style of the training data; latent_anchor keeps the output from drifting too far from the stable EMA version (a latent-space counterpart of EMA distillation).",
+    "whenToUse": "An experimental feature suited to research exploration. It may benefit a LoRA aimed at a specific texture style.",
+    "avoidWhen": "Off by default. The extra auxiliary loss changes the training dynamics, so do not enable it while you are unsure of the effect."
+  },
   "advanced": {
     "principle": "freq_texture = 对特征图做 DCT + Gram 矩阵，计算频域风格距离；latent_anchor = EMA latent vs 当前 latent 的 L2 距离，权重 latent_anchor_weight 控制约束强度。",
     "tradeoffs": "两种 loss 的权重需要仔细调整，过大会主导训练目标；过小则效果不明显。建议通过实验对比确定合适权重。"
+  },
+  "advanced_en": {
+    "principle": "freq_texture = DCT + Gram matrix on feature maps, computing a frequency-domain style distance; latent_anchor = L2 distance between the EMA latent and current latent, with latent_anchor_weight controlling constraint strength.",
+    "tradeoffs": "Both losses' weights need careful tuning: too large dominates the training objective, too small has no visible effect. Determine suitable weights experimentally."
   },
   "relatedConfigs": [
     "perceptual_anchor_loss_enabled",

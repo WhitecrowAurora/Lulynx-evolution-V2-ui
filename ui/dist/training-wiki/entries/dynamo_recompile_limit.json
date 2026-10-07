@@ -1,7 +1,9 @@
 {
   "key": "dynamo_recompile_limit",
   "title": "Dynamo 重编译次数上限",
+  "title_en": "Dynamo Recompile Limit",
   "category": "速度 / 编译",
+  "category_en": "Speed / Compilation",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora",
@@ -13,9 +15,19 @@
     "whenToUse": "训练使用动态形状（如变长 caption、bucket 训练）时调整。默认值通常足够。",
     "avoidWhen": "固定形状训练（fixed_visual=1）时几乎不会触发重编译，此参数无意义。"
   },
+  "standard_en": {
+    "summary": "Caps how many times torch.compile may recompile because of changing dynamic shapes. Past the cap it falls back to eager.",
+    "effect": "Too low a cap falls back to eager quickly when shapes change often; too high a cap means long compilation times and high memory use.",
+    "whenToUse": "Adjust it when training with dynamic shapes (variable-length captions, bucket training). The default is usually enough.",
+    "avoidWhen": "Fixed-shape training (fixed_visual=1) almost never triggers recompilation, so the parameter is moot."
+  },
   "advanced": {
     "principle": "TorchDynamo 对不同输入形状会触发不同的编译路径（guard 机制）。超过 recompile_limit 后转为不编译（interpret mode）。",
     "tradeoffs": "提高限制允许更多形状各自获得编译加速，但总编译时间和内存成比例增加。"
+  },
+  "advanced_en": {
+    "principle": "TorchDynamo takes different compile paths for different input shapes (guard mechanism). Past recompile_limit it stops compiling (interpret mode).",
+    "tradeoffs": "Raising the limit lets more shapes each get compile acceleration, but total compile time and memory grow proportionally."
   },
   "relatedConfigs": [
     "torch_compile",

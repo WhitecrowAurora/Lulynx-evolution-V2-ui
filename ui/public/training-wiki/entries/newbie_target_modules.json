@@ -1,0 +1,51 @@
+{
+  "key": "newbie_target_modules",
+  "title": "Newbie LoRA 目标",
+  "title_en": "LoRA Target Preset",
+  "category": "Newbie / 配置",
+  "category_en": "Newbie / Configuration",
+  "appliesTo": [
+    "newbie-lora"
+  ],
+  "layers": [
+    "适配器层"
+  ],
+  "layers_en": [
+    "Adapter layer"
+  ],
+  "standard": {
+    "summary": "Newbie 模型的 LoRA 注入范围预设。minimal 只注入最关键的层；balanced 注入 attention + 部分 FFN；full 注入所有层。",
+    "effect": "minimal 参数最少训练最快；balanced 是推荐默认值；full 参数最多但质量天花板最高。",
+    "whenToUse": "balanced 适合大多数场景。minimal 用于快速原型验证。full 在大数据集上追求最高质量时使用。",
+    "avoidWhen": "full 在数据量少时容易过拟合。"
+  },
+  "standard_en": {
+    "summary": "The LoRA injection-scope preset for a Newbie model. minimal injects only the most critical layers; balanced injects attention plus some of the FFN; full injects every layer.",
+    "effect": "minimal has the fewest parameters and trains fastest; balanced is the recommended default; full has the most parameters and the highest quality ceiling.",
+    "whenToUse": "balanced suits most cases. minimal is for quick prototype validation. full is for chasing the highest quality on a large dataset.",
+    "avoidWhen": "full overfits easily when there is little data."
+  },
+  "advanced": {
+    "principle": "Newbie 使用 Gemma3 作为文本编码器。newbie_gemma3_prompt 可以指定额外的系统 prompt。newbie_use_flash_attn2 启用 Flash Attention 2 加速。newbie_block_residency 控制 DiT block 的 GPU 驻留策略。newbie_adapter_type 可以切换 lora/lora_fa/vera/lokr。",
+    "intervention": "trainer.py 根据 newbie_lora_target 预设决定注入哪些 Transformer 层。",
+    "expectedImpact": "balanced 在参数效率和表达能力之间取得最佳平衡。",
+    "tradeoffs": "newbie_target_modules 允许手动指定目标模块列表（覆盖预设）。newbie_force_cache_only 强制使用缓存路径。",
+    "codePath": "trainer.py:Newbie route → lora_target preset → layer injection"
+  },
+  "advanced_en": {
+    "principle": "Newbie uses Gemma3 as its text encoder. newbie_gemma3_prompt can specify an extra system prompt. newbie_use_flash_attn2 enables Flash Attention 2 acceleration. newbie_block_residency controls the DiT blocks' GPU residency policy. newbie_adapter_type can switch lora/lora_fa/vera/lokr.",
+    "intervention": "trainer.py decides which Transformer layers to inject per the newbie_lora_target preset.",
+    "expectedImpact": "balanced strikes the best balance between parameter efficiency and expressiveness.",
+    "tradeoffs": "newbie_target_modules allows manually specifying the target module list (overriding the preset). newbie_force_cache_only forces the cached path.",
+    "codePath": "trainer.py:Newbie route → lora_target preset → layer injection"
+  },
+  "relatedConfigs": [
+    "newbie_diffusers_path",
+    "newbie_gemma3_prompt",
+    "newbie_block_residency",
+    "newbie_adapter_type"
+  ],
+  "aliases": [
+    "newbie_lora_target"
+  ]
+}

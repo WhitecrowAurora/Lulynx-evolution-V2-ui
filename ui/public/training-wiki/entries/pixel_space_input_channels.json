@@ -1,0 +1,17 @@
+{
+  "key": "pixel_space_input_channels",
+  "title": "像素输入通道",
+  "category": "像素空间训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora"
+  ],
+  "standard": {
+    "summary": "像素输入通道。",
+    "effect": "像素域输入通道数（RGB=3）。",
+    "whenToUse": "特殊成像数据（如 4 通道）时调整。",
+    "avoidWhen": "默认 3。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

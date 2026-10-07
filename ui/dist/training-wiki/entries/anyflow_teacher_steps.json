@@ -1,0 +1,24 @@
+{
+  "key": "anyflow_teacher_steps",
+  "title": "AnyFlow teacher 步数",
+  "category": "采样与优化",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "AnyFlow 专用 teacher ODE 步数；越大越慢。",
+    "effect": "写入训练配置 anyflow_teacher_steps，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 28，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

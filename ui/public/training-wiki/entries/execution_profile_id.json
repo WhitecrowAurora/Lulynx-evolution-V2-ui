@@ -1,7 +1,9 @@
 {
   "key": "execution_profile_id",
   "title": "执行环境 Profile（高级）",
+  "title_en": "Execution Profile (advanced)",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Leave it blank to follow the launcher's current or most recent runtime.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "留空则跟随启动器当前/上次 runtime。仅当需要强制指定非启动环境时填写（如 flash2、sageattention）。填 standard 且启动环境非 standard 时，后端仍会继承启动环境。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Empty = follow the launcher's current/last runtime. Fill in only to force a non-launcher environment (e.g. flash2, sageattention). If set to standard while the launch environment is not standard, the backend still inherits the launch environment.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

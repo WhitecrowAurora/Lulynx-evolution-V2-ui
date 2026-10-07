@@ -1,0 +1,17 @@
+{
+  "key": "model_fused_qkv",
+  "title": "物理 QKV/KV 打包",
+  "category": "速度 / 显存",
+  "appliesTo": [
+    "ltx23-lora",
+    "ltx25-lora"
+  ],
+  "standard": {
+    "summary": "模型级物理 QKV/KV 打包；与 Triton QKV 同开时作为未命中路径的回退。",
+    "effect": "默认关闭。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

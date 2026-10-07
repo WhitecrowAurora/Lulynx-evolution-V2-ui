@@ -1,0 +1,41 @@
+{
+  "key": "adaptive_sample_mining_top_fraction",
+  "title": "困难样本比例",
+  "category": "渐进式 / 分阶段训练",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora",
+    "flux-lora",
+    "flux2-finetune",
+    "flux2-lora",
+    "hunyuan-dit-lora",
+    "krea2-finetune",
+    "krea2-lora",
+    "ltx23-finetune",
+    "ltx23-lora",
+    "ltx25-finetune",
+    "ltx25-lora",
+    "lumina-finetune",
+    "lumina-lora",
+    "newbie-lora",
+    "qwen-image-lora",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "wan22-finetune",
+    "wan22-t2v-a14b-lora",
+    "wan22-ti2v-lora",
+    "zimage-finetune",
+    "zimage-lora"
+  ],
+  "standard": {
+    "summary": "困难样本挖掘比例。",
+    "effect": "按困难度排序取 top 比例的样本进入下一轮加权训练。",
+    "whenToUse": "样本量大、想聚焦困难样本时使用。",
+    "avoidWhen": "小数据集全量参与更好。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

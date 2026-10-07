@@ -1,7 +1,9 @@
 {
   "key": "newbie_block_checkpointing_mode",
   "title": "Newbie Checkpointing 模式（newbie_block_checkpointing_mode）",
+  "title_en": "Newbie checkpointing mode",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -14,8 +16,24 @@
       "selective": "选择性重算:只挑一部分算子存激活,比整块重算多占一点显存、少花一点时间;这条路不被支持时会退回最近的安全档。"
     }
   },
+  "standard_en": {
+    "summary": "The backend currently consumes only block (recomputing whole blocks).",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "block": "Recomputes the whole block (this is what the backend takes today).",
+      "selective": "Selective recomputation: only some operators keep their activations, which costs a little more VRAM than recomputing the whole block and a little less time; when this path is not supported it falls back to the nearest safe gear."
+    }
+  },
   "advanced": {
     "principle": "当前后端仅消费 block（整块重算）。保留字段便于与 Anima 对齐及后续扩展。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "The backend currently only consumes block (full-block recompute). The field is kept for alignment with Anima and future extensions.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

@@ -1,7 +1,9 @@
 {
   "key": "newbie_block_checkpointing",
   "title": "Newbie DiT Block Checkpointing（newbie_block_checkpointing）",
+  "title_en": "Newbie gradient checkpointing (block recompute)",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -10,8 +12,20 @@
     "whenToUse": "不确定时先保持默认，小步数短测后再调。",
     "avoidWhen": "与预检冲突或与其它互斥选项同时开启时。"
   },
+  "standard_en": {
+    "summary": "Recomputes the DiT blocks during training to lower the backward pass's activation peak.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time."
+  },
   "advanced": {
     "principle": "训练时重算 DiT block 以降低反传激活峰值。高分辨率非 resident 驻留会由后端自动启用；手动开启可让预检和配置更直观。",
+    "intervention": "",
+    "expectedImpact": "",
+    "tradeoffs": "",
+    "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "Recomputes DiT blocks during training to lower backward activation peaks. Enabled automatically by the backend for high-resolution non-resident residency; turning it on manually makes preflight and config more explicit.",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",

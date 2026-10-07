@@ -1,7 +1,9 @@
 {
   "key": "lr_scheduler",
   "title": "学习率调度器",
+  "title_en": "Learning rate scheduler",
   "category": "优化器 / 调度",
+  "category_en": "Optimizer / Scheduling",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
@@ -13,6 +15,10 @@
   "layers": [
     "优化器层",
     "训练控制层"
+  ],
+  "layers_en": [
+    "Optimizer layer",
+    "Training control layer"
   ],
   "standard": {
     "summary": "学习率调度器决定训练过程中学习率如何变化。",
@@ -48,11 +54,51 @@
       "cosine_annealing_warm_restarts": "旧名，等价 cosine_with_restarts。"
     }
   },
+  "standard_en": {
+    "summary": "The learning-rate scheduler decides how the learning rate changes over the course of training.",
+    "effect": "The cosine family generally goes high first and low later; the loss-aware schemes hold back or lock the cosine phase according to how much the loss is improving.",
+    "whenToUse": "A normal LoRA can start on cosine/cosine_with_restarts; loss-aware suits experiments where you want to keep the cosine from bottoming out too early.",
+    "avoidWhen": "When you need strict experimental reproducibility, when the loss is very noisy, or when the batch is very small -- loss-aware then needs more conservative guard-rail parameters.",
+    "optionDescriptions": {
+      "linear": "A straight line from the peak down to the floor, the most predictable of them.",
+      "cosine": "Half a cosine, smoothly down from the peak to near the floor; the default choice for a normal LoRA.",
+      "cosine_with_restarts": "Cosine falls to the floor, then jumps back to the peak for another round; on a long run the restarts help escape a local solution. The number of rounds follows lr_scheduler_num_cycles.",
+      "polynomial": "Decay shaped by power: power=1 is the same as linear, while >1 falls more slowly at first and more steeply at the tail.",
+      "constant": "Unchanged throughout, used as a control or to rule out differences the scheduler itself introduces.",
+      "constant_with_warmup": "Warms up to the peak and then stays there.",
+      "adafactor": "Hands the step size over to Adafactor's own relative rule, which means no external schedule; only meaningful when you are using Adafactor.",
+      "inverse_sqrt": "Decays as 1/sqrt(t): fast early, very flat later, which suits training with a very large step count.",
+      "cosine_with_min_lr": "Cosine, but with the floor lifted to min_lr_ratio so there is still a usable step size at the end.",
+      "loss_gated_cosine": "Holds the cosine phase back while the loss is still falling and only advances once it plateaus; it must be paired with the loss_scheduler_* guard rails.",
+      "loss_weighted_annealed_cosine": "As above, but it listens to the loss signal more the later it gets, with the weight rising as the run progresses.",
+      "warmup_stable_decay": "Three segments: warmup -> plateau -> decay (WSD). The plateau's share is set through lr_scheduler_args, which suits a long run where you add data partway through.",
+      "piecewise_constant": "A constant per segment, stepping down at each milestone; the most direct choice when you do not want a smooth curve.",
+      "one_cycle": "Rises to the peak, then falls far below the starting point; for a short sprint of a run. Each parameter group peaks at its own learning rate, so the ratios between groups are not flattened.",
+      "restart_linear": "Linear decay with periodic pull-backs, a little harder-edged than cosine restarts.",
+      "lulynx_exponential_warmup": "Exponential decay after warmup, holding the tail down harder than cosine does.",
+      "cosine_warmup_restarts": "Cosine restarts with warmup, where each cycle can grow longer round by round through cycle_mult.",
+      "rex": "Reflected exponential (REX): leaves the peak more slowly than cosine and closes the tail faster than linear, leaving more usable step size for the middle of the run.",
+      "linear_with_warmup": "Linear decay to the floor after warmup, one segment of start-up protection more than linear.",
+      "chebyshev": "Jumps between a set of multipliers in Chebyshev-node order, an arrangement that is fractal rather than monotonically descending. Out of the box it uses the normalised gear: the configured learning rate is the ceiling and the actual multiplier stays between 0.05 and 1.0. Writing chebyshev_normalize=false in lr_scheduler_args switches to the faithful gear (a 1.0-20.0x amplification), and in that gear you have to lower the base learning rate by the amplification factor yourself, otherwise it amounts to raising the learning rate by an order of magnitude.",
+      "step": "Multiplies by gamma every step_size steps, the most traditional staircase.",
+      "multi_step": "Multiplies by gamma only at the steps listed in milestones, so you place the decay points yourself.",
+      "cyclic": "Swings back and forth between the floor and the ceiling without converging to the bottom; for exploratory training.",
+      "cosine_annealing": "An old name, equivalent to cosine. It is kept so that an old config can still be selected in the dropdown after loading.",
+      "cosine_annealing_with_warmup": "An old name, equivalent to cosine_warmup_restarts.",
+      "cosine_annealing_warm_restarts": "An old name, equivalent to cosine_with_restarts."
+    }
+  },
   "advanced": {
     "principle": "Loss-aware 调度器用 EMA loss 判断有效下降。下降时可保持当前余弦值，平台期再推进；加权版越到后期越重视 loss 信号。",
     "intervention": "只改变 optimizer step 前后的 LR 计算，不改变 loss 本身。",
     "expectedImpact": "可能把学习率停留在对当前数据仍有效的区间，给后期细节更多容量。",
     "tradeoffs": "如果没有 max_hold、min_advance、delta 阈值等护栏，可能形成负反馈循环或过拟合局部噪声。"
+  },
+  "advanced_en": {
+    "principle": "Loss-aware schedulers use EMA loss to judge meaningful decline. While declining, the current cosine value can hold; the phase advances during plateaus. The weighted version weighs the loss signal more heavily as training progresses.",
+    "intervention": "Only changes the LR computation around optimizer step; the loss itself is untouched.",
+    "expectedImpact": "Can hold the learning rate in a range still effective for the current data, leaving more capacity for late-stage detail.",
+    "tradeoffs": "Without guardrails like max_hold, min_advance, and delta thresholds, a negative feedback loop or overfitting to local noise can form."
   },
   "relatedConfigs": [
     "loss_scheduler_ema_alpha",

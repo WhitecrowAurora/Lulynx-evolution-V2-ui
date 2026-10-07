@@ -1,0 +1,24 @@
+{
+  "key": "compression_companion_missing_policy",
+  "title": "无 path 策略",
+  "category": "前沿储备 / 探针",
+  "appliesTo": [
+    "anima-edit-model",
+    "anima-lora",
+    "newbie-lora",
+    "sdxl-controlnet",
+    "sdxl-controlnet-lllite",
+    "sdxl-finetune",
+    "sdxl-ip-adapter",
+    "sdxl-lora",
+    "sdxl-textual-inversion"
+  ],
+  "standard": {
+    "summary": "fail=硬失败（默认，更安全）；downgrade_t1=关 companion 保留压缩并警告，不宣称已恢复精度。",
+    "effect": "写入训练配置 compression_companion_missing_policy，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 fail，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

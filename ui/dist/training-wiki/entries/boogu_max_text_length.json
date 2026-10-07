@@ -1,0 +1,18 @@
+{
+  "key": "boogu_max_text_length",
+  "title": "最大文本长度",
+  "category": "训练用模型",
+  "appliesTo": [
+    "boogu-edit-lora",
+    "boogu-finetune",
+    "boogu-lora"
+  ],
+  "standard": {
+    "summary": "指令 TE pad 上限（token）。",
+    "effect": "写入训练配置 boogu_max_text_length，由训练后端在相应阶段消费。",
+    "whenToUse": "默认 1024，无明确目标时保持默认。",
+    "avoidWhen": "一次只改一项，便于归因效果。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

@@ -1,7 +1,9 @@
 {
   "key": "sds_lora_enabled",
   "title": "SDS-LoRA（奇异值分解 LoRA）",
+  "title_en": "SDS-LoRA (Singular-Value-Free Gradients)",
   "category": "LoRA 变体 / SDS",
+  "category_en": "LoRA Variants / SDS",
   "appliesTo": [
     "anima-lora",
     "sdxl-lora"
@@ -12,9 +14,19 @@
     "whenToUse": "实验性功能，实现已完成并验证（7/7 smoke 通过）。与标准 LoRA parity 兼容，默认 off。",
     "avoidWhen": "默认关闭。SDS-LoRA 在 LLM/ViT 上验证，DiT（Anima）未全面验证，建议先实验确认效果再用于正式训练。"
   },
+  "standard_en": {
+    "summary": "(Experimental) SDS-LoRA (Spectral Decomposed Symmetric LoRA): it spectrally decomposes LoRA's A/B matrices and orthogonalises them to keep the LoRA update isotropic, which prevents the singular-value skew that appears during training (a few directions dominating the update).",
+    "effect": "Once enabled the LoRA update is more even across directions (the anisotropy is removed), which helps stabilise training and stops particular feature directions from overfitting.",
+    "whenToUse": "An experimental feature; the implementation is finished and verified (7/7 smokes pass). It keeps parity with standard LoRA and is off by default.",
+    "avoidWhen": "Off by default. SDS-LoRA was verified on LLMs and ViTs, not fully on DiT (Anima), so experiment and confirm the effect before using it for real training."
+  },
   "advanced": {
     "principle": "维护 Q_A/Q_B 的 detached buffer（不参与 autograd），对 A/B 做定期 QR 刷新（orthogonalization）使梯度条件数降低（实测从 8.28 → 2.71）。warmup 阶段先做 SVD 重参数化，确保训练初期权重已正交化。系数 1/(2s) 而非论文的 1/√(2s)（原论文有笔误）。",
     "tradeoffs": "QR 刷新有额外计算开销（每 N 步一次 SVD/QR，约 1~5ms）；orthogonalization 改变了梯度传播路径，与标准 LoRA 的训练轨迹不同（虽然初始权重 parity）。"
+  },
+  "advanced_en": {
+    "principle": "Maintains detached buffers of Q_A/Q_B (not part of autograd) and periodically QR-refreshes A/B (orthogonalization), lowering the gradient condition number (measured 8.28 → 2.71). A warmup phase does SVD reparameterization first, ensuring weights are orthogonalized early in training. The coefficient is 1/(2s), not the paper's 1/√(2s) (a typo in the original paper).",
+    "tradeoffs": "QR refreshes add compute (one SVD/QR every N steps, about 1~5ms); orthogonalization changes the gradient propagation path, so the training trajectory differs from standard LoRA (even though the initial weights are at parity)."
   },
   "relatedConfigs": [
     "network_dim",

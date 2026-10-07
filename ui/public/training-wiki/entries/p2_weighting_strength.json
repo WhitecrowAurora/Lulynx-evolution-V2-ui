@@ -1,7 +1,9 @@
 {
   "key": "p2_weighting_strength",
-  "title": "P2 加权强度",
+  "title": "感知加权强度",
+  "title_en": "Perceptual Weighting Strength",
   "category": "正则 / Loss",
+  "category_en": "Regularization / Loss",
   "appliesTo": [
     "sdxl-lora",
     "anima-lora",
@@ -10,11 +12,20 @@
   "layers": [
     "Loss 层"
   ],
+  "layers_en": [
+    "Loss layer"
+  ],
   "standard": {
-    "summary": "P2 感知加权的强度系数：0 = 关闭（权重恒等 1，位级 parity），典型 0.25~1.0。",
-    "effect": "决定 structure/detail 模式下权重曲线偏离 1 的幅度。0 时即使 p2_weighting_mode 已选 structure/detail 也不产生任何影响。",
-    "whenToUse": "确定了加权方向（structure 或 detail）后，从 0.25~0.5 起步微调；scale_guidance 预设会给出经过验证的组合值（detail 0.5 / style 0.4 / composition 0.3）。",
+    "summary": "感知加权的强度系数：0 = 关闭（权重恒等 1，位级 parity），典型 0.25~1.0。",
+    "effect": "决定 lulynx_structure/lulynx_detail 模式下权重曲线偏离 1 的幅度。0 时即使 p2_weighting_mode 已选 lulynx_structure/lulynx_detail 也不产生任何影响。",
+    "whenToUse": "确定了加权方向（lulynx_structure 或 lulynx_detail）后，从 0.25~0.5 起步微调；scale_guidance 预设会给出经过验证的组合值（detail 0.5 / style 0.4 / composition 0.3）。",
     "avoidWhen": "p2_weighting_mode=off 时无意义；超过 1.0 后另一端 timestep 的学习被过度压制，容易顾此失彼。"
+  },
+  "standard_en": {
+    "summary": "The strength coefficient of the perceptual weighting: 0 = off (the weight is identically 1, bit-level parity), with 0.25~1.0 being typical.",
+    "effect": "It decides how far the weight curve departs from 1 in lulynx_structure/lulynx_detail mode. At 0 it has no effect at all, even with p2_weighting_mode already set to lulynx_structure or lulynx_detail.",
+    "whenToUse": "Once you have settled the weighting direction (lulynx_structure or lulynx_detail), start tuning from 0.25~0.5; the scale_guidance presets offer validated combinations (detail 0.5 / style 0.4 / composition 0.3).",
+    "avoidWhen": "It is meaningless while p2_weighting_mode=off; above 1.0 the learning at the other end of the timestep range is suppressed too hard and you gain one thing at the other's expense."
   },
   "advanced": {
     "principle": "强度作为权重函数的插值系数：weight(sigma) 在恒等 1 与完整 P2 曲线之间按 strength 插值，使加权效果可以连续调节并保证 0 点严格回到基线。",
@@ -22,6 +33,13 @@
     "expectedImpact": "小强度（0.25）温和倾斜、风险低；接近 1.0 时目标阶段梯度显著放大，loss 曲线形态明显改变。",
     "tradeoffs": "与其它乘性 loss 加权（min-SNR、wavelet 调度）叠加时效果相乘，实际倾斜幅度会超出单项直觉，建议一次只调一项。",
     "codePath": "configs_dataset.py:p2_weighting_strength 定义；training_step_loss_execution_core.py 传参给 p2_perception_weight"
+  },
+  "advanced_en": {
+    "principle": "Strength is the interpolation coefficient of the weight function: weight(sigma) interpolates between identity 1 and the full P2 curve according to strength, so the weighting effect is continuously adjustable and strength 0 returns exactly to the baseline.",
+    "intervention": "training_step_loss_execution_core.py passes strength into p2_weighting.p2_perception_weight; the config default and semantic comments are in configs_dataset.py (strength=0 → weight is identity 1).",
+    "expectedImpact": "A small strength (0.25) tilts gently with low risk; near 1.0 the target stage's gradients are amplified significantly and the loss curve shape changes noticeably.",
+    "tradeoffs": "When stacked with other multiplicative loss weightings (min-SNR, wavelet scheduling) the effects multiply, and the actual tilt can exceed per-item intuition; adjust one thing at a time.",
+    "codePath": "configs_dataset.py:p2_weighting_strength definition; training_step_loss_execution_core.py passes it to p2_perception_weight"
   },
   "relatedConfigs": [
     "p2_weighting_mode",

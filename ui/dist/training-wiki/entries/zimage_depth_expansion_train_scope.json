@@ -1,12 +1,17 @@
 {
   "key": "zimage_depth_expansion_train_scope",
   "title": "Z-Image 扩层训练范围",
+  "title_en": "Training Scope",
   "category": "Z-Image / 高级",
+  "category_en": "Z-Image / Advanced",
   "appliesTo": [
     "zimage-finetune"
   ],
   "layers": [
     "模型结构层"
+  ],
+  "layers_en": [
+    "Model structure layer"
   ],
   "standard": {
     "summary": "控制扩层后哪些参数参与训练：new_layers 只训练新增层（标准 DUS 配方）；new_layers_periphery 额外训练外围模块；all 训练全部参数。",
@@ -14,11 +19,24 @@
     "whenToUse": "默认 new_layers 最稳；需要输入/输出适配一起动时用 new_layers_periphery；数据充足且资源允许时才考虑 all。",
     "avoidWhen": "all 范围显存开销最大且容易破坏原模型能力，小数据集慎用。"
   },
+  "standard_en": {
+    "summary": "Controls which parameters take part in training after expansion: new_layers trains only the new layers (the standard DUS recipe); new_layers_periphery additionally trains the peripheral modules; all trains every parameter.",
+    "effect": "new_layers: the original layers are frozen and only the new layers are trainable; new_layers_periphery: on top of that it unfreezes all_x_embedder, all_final_layer, t_embedder and cap_embedder; all: the whole DiT takes part in training (the most expensive).",
+    "whenToUse": "The default new_layers is the most stable; use new_layers_periphery when the input/output adaptation needs to move too; only consider all when you have plenty of data and the resources allow it.",
+    "avoidWhen": "The all scope costs the most VRAM and can easily damage the original model's ability, so use it carefully on a small dataset."
+  },
   "advanced": {
     "principle": "冻结源层保持原有能力不漂移，新增层从恒等起点学习增量容量；外围模块解冻用于适配新深度下的输入输出分布。",
     "intervention": "zimage/zimage_depth_expansion_runtime.py：apply_train_scope 按元数据设置 requires_grad 并输出 trainable_ratio。",
     "expectedImpact": "训练范围越大可塑性越强、成本与遗忘风险也越高。",
     "tradeoffs": "new_layers 最省显存但容量增量有限；all 等价于扩层后全参微调。",
+    "codePath": "zimage/zimage_depth_expansion_runtime.py"
+  },
+  "advanced_en": {
+    "principle": "Freezing the source layers keeps original capabilities from drifting, while the new layers learn incremental capacity from the identity starting point; peripheral modules are unfrozen to adapt to the input/output distribution at the new depth.",
+    "intervention": "zimage/zimage_depth_expansion_runtime.py: apply_train_scope sets requires_grad per the metadata and reports trainable_ratio.",
+    "expectedImpact": "The larger the training scope, the greater the plasticity — and the cost and forgetting risk.",
+    "tradeoffs": "new_layers is the most VRAM-frugal but has limited capacity gain; all is equivalent to full-parameter finetuning after expansion.",
     "codePath": "zimage/zimage_depth_expansion_runtime.py"
   },
   "relatedConfigs": [

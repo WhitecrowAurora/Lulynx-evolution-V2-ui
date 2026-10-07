@@ -1,7 +1,9 @@
 {
   "key": "smart_noise_enabled",
   "title": "Smart Noise Scheduler",
+  "title_en": "Smart Noise Scheduler",
   "category": "训练 / Anima 专用",
+  "category_en": "Training / Anima-specific",
   "appliesTo": [
     "anima-lora"
   ],
@@ -9,11 +11,21 @@
     "时间步采样",
     "训练循环"
   ],
+  "layers_en": [
+    "Timestep sampling",
+    "Training loop"
+  ],
   "standard": {
     "summary": "Anima 的 default-off logSNR 混合采样器：在均匀 logSNR 基线与可配置 Gaussian focus 之间逐样本混合。",
     "effect": "focus_strength=0 与关闭时保持基线采样；提高 strength 会把更多训练样本集中到 logsnr_focus 附近。",
     "whenToUse": "只在相同模型、数据、seed 与步数的短 A/B 已证明目标噪声区间有收益时启用。",
     "avoidWhen": "已经启用其它会覆盖时间步分布的采样器，或尚未确认当前数据集需要聚焦特定 logSNR 区域时。"
+  },
+  "standard_en": {
+    "summary": "Anima's default-off logSNR mixture sampler: it mixes per sample between a uniform logSNR baseline and a configurable Gaussian focus.",
+    "effect": "focus_strength=0 keeps baseline sampling, as does leaving it off; raising the strength concentrates more training samples near logsnr_focus.",
+    "whenToUse": "Only enable it once a short A/B with the same model, data, seed and step count has shown a gain in the target noise range.",
+    "avoidWhen": "When another sampler that overrides the timestep distribution is already enabled, or when you have not yet confirmed that this dataset needs a particular logSNR region focused."
   },
   "advanced": {
     "principle": "从 U[-6,6] 与 N(logsnr_focus, focus_spread) 的混合分布采样 logSNR，再用 sigma=sigmoid(-logSNR/2) 转为训练 sigma。本仓实现是可运行的工程启发式，不能据摘要声明与 arXiv:2407.03297 公式等价。",
@@ -21,6 +33,13 @@
     "expectedImpact": "可能增加目标噪声区间的样本密度；质量与收敛影响必须本地 A/B 验证。",
     "tradeoffs": "聚焦过强会减少其它噪声阶段覆盖；与其它 timestep sampler 同时配置时应确认实际优先级。",
     "codePath": "backend/core/lulynx_trainer/anima/anima_flow.py；smart_noise_scheduler.py；trainer/trainer_execution_loop_builder.py"
+  },
+  "advanced_en": {
+    "principle": "Samples logSNR from a mixture of U[-6,6] and N(logsnr_focus, focus_spread), then converts it to a training sigma via sigma=sigmoid(-logSNR/2). This repo's implementation is a runnable engineering heuristic and cannot be claimed, from the abstract, to be equivalent to the arXiv:2407.03297 formulas.",
+    "intervention": "The existing request/config fields enter Anima flow's highest-priority sampling branch via TrainingLoop; with smart_noise_enabled=false the default path is unchanged.",
+    "expectedImpact": "May increase sample density in the target noise range; quality and convergence impact must be locally A/B verified.",
+    "tradeoffs": "Too strong a focus reduces coverage of other noise stages; when combined with another timestep sampler, confirm the actual priority.",
+    "codePath": "backend/core/lulynx_trainer/anima/anima_flow.py; smart_noise_scheduler.py; trainer/trainer_execution_loop_builder.py"
   },
   "relatedConfigs": [
     "smart_noise_logsnr_focus",

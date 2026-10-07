@@ -1,7 +1,9 @@
 {
   "key": "concept_geometry_embedding_provider",
   "title": "Embedding 提供方",
+  "title_en": "Embedding",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -14,6 +16,17 @@
       "local_path": "本地路径加载。",
       "auto_download": "缺了就下。",
       "api": "走远程 API。"
+    }
+  },
+  "standard_en": {
+    "summary": "Embedding provider: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "local_path": "Loads from a local path.",
+      "auto_download": "Downloads it if it is missing.",
+      "api": "Goes through a remote API."
     }
   },
   "advanced": {},

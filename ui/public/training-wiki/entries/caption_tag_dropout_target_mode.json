@@ -1,7 +1,9 @@
 {
   "key": "caption_tag_dropout_target_mode",
   "title": "指定 Tag 处理方式",
+  "title_en": "Tag",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [],
   "layers": [],
   "standard": {
@@ -14,12 +16,24 @@
       "random_n": "命中里随机扔 N 个。"
     }
   },
+  "standard_en": {
+    "summary": "drop_all removes them all; random_n only acts on tags that match.",
+    "whenToUse": "When unsure keep the default; run a short low-step test before changing it.",
+    "avoidWhen": "When it conflicts with preflight, or when a mutually exclusive option is enabled at the same time.",
+    "optionDescriptions": {
+      "drop_all": "Throws away every matching tag.",
+      "random_n": "Throws away N at random from the matches."
+    }
+  },
   "advanced": {
     "principle": "drop_all 全部移除，random_n 仅在命中 tag 中随机丢弃 N 个",
     "intervention": "",
     "expectedImpact": "",
     "tradeoffs": "",
     "codePath": ""
+  },
+  "advanced_en": {
+    "principle": "drop_all removes all matches; random_n randomly drops N of the matched tags."
   },
   "relatedConfigs": []
 }

@@ -1,0 +1,16 @@
+{
+  "key": "allow_tokenizer_only_clip",
+  "title": "允许 tokenizer-only CLIP",
+  "category": "蒸馏参数",
+  "appliesTo": [
+    "lab-distiller"
+  ],
+  "standard": {
+    "summary": "兼容部分不完整 CLIP/Jina CLIP 资源。",
+    "effect": "写入训练配置 allow_tokenizer_only_clip，由训练后端在相应阶段消费。",
+    "whenToUse": "需要该行为时开启。",
+    "avoidWhen": "默认关闭；不确定影响时先保持关闭观察。"
+  },
+  "advanced": null,
+  "relatedConfigs": []
+}

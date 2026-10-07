@@ -1,7 +1,9 @@
 {
   "key": "distillation_objective",
   "title": "蒸馏目标",
+  "title_en": "Distillation objective tag",
   "category": "训练参数",
+  "category_en": "Training Parameters",
   "appliesTo": [
     "all"
   ],
@@ -13,6 +15,16 @@
     "optionDescriptions": {
       "dp_dmd_turbo": "DMD/Turbo 那类蒸馏目标。",
       "anyflow": "AnyFlow 目标。"
+    }
+  },
+  "standard_en": {
+    "summary": "Distillation objective: the values below include what changing gear does.",
+    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
+    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
+    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "optionDescriptions": {
+      "dp_dmd_turbo": "A DMD/Turbo style distillation objective.",
+      "anyflow": "The AnyFlow objective."
     }
   },
   "advanced": {},

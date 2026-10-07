@@ -1,7 +1,9 @@
 {
   "key": "discrete_flow_shift",
   "title": "Flow Shift (流偏移)",
+  "title_en": "Flow Shift",
   "category": "DiT / Flow",
+  "category_en": "DiT / Flow",
   "appliesTo": [
     "flux-lora",
     "finetune"
@@ -9,17 +11,33 @@
   "layers": [
     "噪声调度层"
   ],
+  "layers_en": [
+    "Noise schedule layer"
+  ],
   "standard": {
     "summary": "FLUX/SD3 Flow Matching 模型的时间步偏移参数。控制噪声调度的分布形状——哪些 timestep 被更多地采样。",
     "effect": "默认值 3.0。增大 shift 让模型更多关注中等噪声的 timestep（中间细节），减小则更多关注高噪声（全局结构）。",
     "whenToUse": "FLUX 训练默认 3.0 通常就够用。如果发现中间细节不够好可适当增大。",
     "avoidWhen": "SD1.5/SDXL 不使用此参数。设极端值（<1 或 >10）可能导致训练不稳定。"
   },
+  "standard_en": {
+    "summary": "The timestep shift parameter for FLUX/SD3 Flow Matching models. It shapes the noise schedule's distribution -- which timesteps get sampled more.",
+    "effect": "The default is 3.0. A larger shift points the model at mid-noise timesteps (mid-level detail); a smaller one points it at high noise (global structure).",
+    "whenToUse": "The FLUX default of 3.0 is usually enough. Raise it a little if mid-level detail comes out weak.",
+    "avoidWhen": "SD1.5/SDXL do not use this parameter. Extreme values (<1 or >10) can destabilise training."
+  },
   "advanced": {
     "principle": "Flow Matching 的 timestep t 通常从均匀分布采样。discrete_flow_shift 对 t 做 logit-normal 变换：t' = σ(shift * logit(t) + mean)。shift > 1 使分布集中在中间，shift < 1 使分布更均匀。FLUX.1 论文推荐 shift=3.0。",
     "intervention": "training_step 中对采样的 timestep 施加 shift 变换。",
     "expectedImpact": "影响模型对不同噪声级别的关注程度。shift=3 通常是最优的。",
     "tradeoffs": "flow_logit_mean 和 flow_logit_std 进一步控制 logit-normal 分布的形状。",
+    "codePath": "training_loop.py:discrete_flow_shift → logit-normal timestep sampling"
+  },
+  "advanced_en": {
+    "principle": "Flow Matching's timestep t is usually sampled uniformly. discrete_flow_shift applies a logit-normal transform: t' = σ(shift * logit(t) + mean). shift > 1 concentrates the distribution in the middle; shift < 1 makes it more uniform. The FLUX.1 paper recommends shift=3.0.",
+    "intervention": "Applies the shift transform to sampled timesteps in training_step.",
+    "expectedImpact": "Affects how much the model attends to different noise levels. shift=3 is usually optimal.",
+    "tradeoffs": "flow_logit_mean and flow_logit_std further shape the logit-normal distribution.",
     "codePath": "training_loop.py:discrete_flow_shift → logit-normal timestep sampling"
   },
   "relatedConfigs": [
