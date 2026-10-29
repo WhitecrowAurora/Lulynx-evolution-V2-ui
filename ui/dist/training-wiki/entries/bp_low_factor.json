@@ -21,8 +21,7 @@
     "principle": "下采样倍数。2 = 半分辨率（64→32），4 = 四分之一分辨率。越大省显存越多但精度略降。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Downsampling factor. 2 = half resolution (64→32), 4 = quarter resolution. Larger saves more VRAM at a slight precision cost."

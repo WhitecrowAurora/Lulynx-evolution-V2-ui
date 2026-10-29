@@ -33,7 +33,7 @@ html[data-theme='editorial'] body {
 
 /* 版式:标题更狠、字距收紧 */
 html[data-theme='editorial'] .lx-page-title { letter-spacing: -0.03em; }
-html[data-theme='editorial'] .lx-page-title .line.outline {
+html[data-theme='editorial'] .lx-page-title .line.is-outline {
   -webkit-text-stroke: 2px var(--lx-text);
   color: transparent;
 }

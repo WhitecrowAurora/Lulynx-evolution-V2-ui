@@ -31,15 +31,13 @@
     "principle": "控制 native SDXL 冻结 base 权重的驻留策略。显存足够选常驻 GPU；显存紧张可选 CPU pinned，Conv2d 模式更省显存但可能略慢。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Controls the residency policy for native SDXL frozen base weights. Choose GPU-resident when VRAM suffices; when VRAM is tight choose CPU pinned — the Conv2d mode saves more VRAM but may be slightly slower.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

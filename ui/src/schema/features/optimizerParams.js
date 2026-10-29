@@ -51,7 +51,7 @@ export const OPTIMIZER_SPECIFIC_FIELDS = [
     defaultValue: 0, min: 0, step: 10,
     visibleWhen: isOpt('adamwschedulefree', 'radamschedulefree', 'sgdschedulefree') },
   { key: 'opt_sf_beta', type: 'number', label: 'Schedule-Free β (beta)',
-    desc: '内置动量 β，推荐 0.9。影响参数平均的平滑程度。',
+    desc: '内置动量 β，推荐 0.9。后端映射为 AdamW/RAdam 的 betas=(β, 0.999) 或 SGD 的 momentum。',
     defaultValue: 0.9, min: 0, max: 1, step: 0.01,
     visibleWhen: isOpt('adamwschedulefree', 'radamschedulefree', 'sgdschedulefree') },
 
@@ -96,10 +96,10 @@ export const OPTIMIZER_SPECIFIC_FIELDS = [
     visibleWhen: isOpt('lion', 'lion8bit', 'pagedlion8bit') },
 
   // ── ADOPT / KahanAdamW（frontier 候选）───────────────────────────────────
-  { key: 'opt_adopt_clip_lambda', type: 'number', label: 'ADOPT clip_lambda',
-    desc: '梯度裁剪系数 λ，防止早期步的梯度爆炸。',
+  { key: 'opt_adopt_clip_lambda', type: 'number', label: 'ADOPT clip λ (→ normalized_grad_clip)',
+    desc: '梯度裁剪系数 λ；后端按 normalized_grad_clip = 1/λ 映射（默认 0.1 → 10.0，0 = 关闭裁剪）。',
     defaultValue: 0.1, min: 0, step: 0.01,
-    visibleWhen: isOpt('adopt', 'kahanadamw', 'kahanadamw8bit') },
+    visibleWhen: isOpt('adopt') },
   { key: 'opt_adopt_eps', type: 'number', label: 'ADOPT eps',
     desc: 'ADOPT 数值稳定 epsilon。',
     defaultValue: 1e-6, min: 0, step: 1e-8,
@@ -202,6 +202,16 @@ export const OPTIMIZER_SPECIFIC_FIELDS = [
       'dadaptadagrad', 'dadaptadan', 'dadaptadanip') },
 
   // ── Muon（frontier 候选） ─────────────────────────────────────────────────
+  { key: 'lulynx_matrix_transform', type: 'select', label: '矩阵更新变换',
+    desc: '极分解使用原 Muon 路径；能量平衡交替缩放行列平方能量（Sinkhorn），保留符号与更新范数，改变优化算法，需收敛对照。仅适用于内置 Muon。',
+    defaultValue: 'polar', options: [{ value: 'polar', label: '极分解（默认）' }, { value: 'energy_balance', label: '行列能量平衡' }],
+    visibleWhen: isOpt('muon') },
+  { key: 'lulynx_balance_rounds', type: 'number', label: '行列平衡轮数',
+    desc: '每轮依次缩放行和列。有限轮数或零行/列不保证精确平衡。', defaultValue: 5, min: 1, max: 64, step: 1,
+    visibleWhen: (c) => isOpt('muon')(c) && c.lulynx_matrix_transform === 'energy_balance' },
+  { key: 'lulynx_balance_floor', type: 'number', label: '行列能量下限',
+    desc: '在预归一化的平方能量上限制分母，避免零行列除零。', defaultValue: 1e-12, min: 1e-20, max: 1, step: 1e-12,
+    visibleWhen: (c) => isOpt('muon')(c) && c.lulynx_matrix_transform === 'energy_balance' },
   { key: 'opt_muon_momentum', type: 'number', label: 'Muon momentum',
     desc: 'Muon 动量系数，推荐 0.95。',
     defaultValue: 0.95, min: 0, max: 1, step: 0.01,

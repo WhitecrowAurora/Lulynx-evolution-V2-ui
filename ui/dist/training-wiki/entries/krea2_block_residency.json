@@ -31,15 +31,13 @@
     "principle": "resident=全 GPU；block_offload=按 block LRU；layer_offload=按层 offload。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "resident = all-GPU; block_offload = per-block LRU; layer_offload = per-layer offload.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

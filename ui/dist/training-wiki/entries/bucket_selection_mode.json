@@ -46,15 +46,13 @@
     "principle": "后端 dataset_bucketing.py:111-129 对每个候选桶算一个 diff 再取最小：area/pixel/pixels 用 |原图面积 - 桶面积|；larger/ceil/no_downscale 先跳过任一维小于原图的桶、再用 桶面积 - 原图面积；smaller/floor/no_upscale 先跳过任一维大于原图的桶、再用 原图面积 - 桶面积；其余（含 aspect）用 |原图宽高比 - 桶宽高比|。",
     "intervention": "改本字段不需要重建缓存桶表，但会改变已有图片落到哪个桶，等价于换了一次数据分布。",
     "expectedImpact": "对 loss 曲线通常是二阶影响；对「训练图有没有被拉伸/留边」是一阶影响。",
-    "tradeoffs": "aspect 保构图但可能改变有效分辨率；area 保细节量但可能轻微拉伸；larger/smaller 各自单边牺牲。",
-    "codePath": "backend/core/lulynx_trainer/dataset_bucketing.py:111-129"
+    "tradeoffs": "aspect 保构图但可能改变有效分辨率；area 保细节量但可能轻微拉伸；larger/smaller 各自单边牺牲。"
   },
   "advanced_en": {
     "principle": "The backend (dataset_bucketing.py:111-129) computes one diff per candidate bucket and takes the minimum: area/pixel/pixels use |image area - bucket area|; larger/ceil/no_downscale first skip any bucket with a dimension smaller than the image, then use bucket area - image area; smaller/floor/no_upscale first skip any bucket with a dimension larger than the image, then use image area - bucket area; the rest (including aspect) use |image aspect ratio - bucket aspect ratio|.",
     "intervention": "Changing this field does not require rebuilding the cached bucket table, but it changes which bucket existing images fall into — equivalent to swapping the data distribution once.",
     "expectedImpact": "Usually a second-order effect on the loss curve; a first-order effect on whether training images get stretched or letterboxed.",
-    "tradeoffs": "aspect preserves composition but can change effective resolution; area preserves detail volume but can stretch slightly; larger/smaller each sacrifice one side.",
-    "codePath": "backend/core/lulynx_trainer/dataset_bucketing.py:111-129"
+    "tradeoffs": "aspect preserves composition but can change effective resolution; area preserves detail volume but can stretch slightly; larger/smaller each sacrifice one side."
   },
   "relatedConfigs": [
     "enable_bucket",

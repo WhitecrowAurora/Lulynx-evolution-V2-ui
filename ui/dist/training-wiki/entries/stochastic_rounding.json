@@ -33,15 +33,13 @@
     "principle": "标准随机舍入需要精确值 x 与目标 dtype 的上下相邻可表示值。若输入本身已经是 BF16/FP16，x 的残差已经丢失，任何后处理都不能证明无偏。",
     "intervention": "通用 wrapper 保持 reserve/fail-fast；source-aware helper 仅接受显式 source_fp32。",
     "expectedImpact": "当前通用路径无质量收益声明；需要先完成 optimizer-owned FP32 update contract。",
-    "tradeoffs": "启用旧通用开关会在 optimizer setup 阶段明确拒绝。",
-    "codePath": "stochastic_rounding.py: stochastic_round_(..., source_fp32=...)；Rose 使用独立 FP32 update source"
+    "tradeoffs": "启用旧通用开关会在 optimizer setup 阶段明确拒绝。"
   },
   "advanced_en": {
     "principle": "Standard stochastic rounding requires the exact value x and the adjacent representable values of the target dtype. If the input is already BF16/FP16, x's residual is lost, and no post-processing can prove unbiasedness.",
     "intervention": "The generic wrapper keeps reserve/fail-fast; the source-aware helper only accepts explicit source_fp32.",
     "expectedImpact": "The current generic path claims no quality benefit; the optimizer-owned FP32 update contract must land first.",
-    "tradeoffs": "Enabling the old generic switch is explicitly rejected at optimizer setup.",
-    "codePath": "stochastic_rounding.py: stochastic_round_(..., source_fp32=...); Rose uses an independent FP32 update source"
+    "tradeoffs": "Enabling the old generic switch is explicitly rejected at optimizer setup."
   },
   "relatedConfigs": [
     "mixed_precision",

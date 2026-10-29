@@ -31,15 +31,13 @@
     "principle": "标准 beta schedule 的 alphas_cumprod[-1] 约 0.005（不是 0），意味着最后一个 timestep 仍保留少量信号。zero_terminal_snr 重新调整 beta 使得 alphas_cumprod[-1] = 0，SNR[-1] = 0。这确保了训练和推理在 t=T 时的行为一致。",
     "intervention": "在 noise_scheduler 初始化后修改 betas/alphas_cumprod 使终端 SNR 归零。",
     "expectedImpact": "改善大 timestep 的学习，对整体质量影响约 1-2%。与 min_snr_gamma 配合时改善更明显。",
-    "tradeoffs": "需要重新训练——不能在已有 checkpoint 上直接开启。",
-    "codePath": "trainer.py:zero_terminal_snr → adjust betas → alphas_cumprod[-1] = 0"
+    "tradeoffs": "需要重新训练——不能在已有 checkpoint 上直接开启。"
   },
   "advanced_en": {
     "principle": "The standard beta schedule's alphas_cumprod[-1] is about 0.005 (not 0), meaning the last timestep still retains a little signal. zero_terminal_snr readjusts beta so that alphas_cumprod[-1] = 0 and SNR[-1] = 0, ensuring training and inference behave consistently at t=T.",
     "intervention": "After noise_scheduler initialization, modifies betas/alphas_cumprod to zero the terminal SNR.",
     "expectedImpact": "Improves learning at large timesteps, about 1-2% on overall quality. More evident when paired with min_snr_gamma.",
-    "tradeoffs": "Requires retraining — cannot be enabled directly on an existing checkpoint.",
-    "codePath": "trainer.py:zero_terminal_snr → adjust betas → alphas_cumprod[-1] = 0"
+    "tradeoffs": "Requires retraining — cannot be enabled directly on an existing checkpoint."
   },
   "relatedConfigs": [
     "min_snr_gamma",

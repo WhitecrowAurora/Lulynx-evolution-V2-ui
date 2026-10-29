@@ -34,15 +34,13 @@
     "principle": "训练前按 validation_split 比例随机划分数据集。验证集不参与梯度更新，只用于计算 loss。validation_every_n_epochs 控制验证频率。validation_loss_only=True 时只计算 loss（不生成样本）。eval_data_dir 可以使用独立的验证数据集。",
     "intervention": "DataLoader 划分后，每 N epoch 在验证集上 forward 计算 loss。",
     "expectedImpact": "提供过拟合的早期预警。不直接影响训练质量。",
-    "tradeoffs": "validation_seed 控制划分的随机性。max_validation_steps 限制验证步数。",
-    "codePath": "training_loop.py:validation_split → subset dataset → per-epoch validation loss"
+    "tradeoffs": "validation_seed 控制划分的随机性。max_validation_steps 限制验证步数。"
   },
   "advanced_en": {
     "principle": "Before training, the dataset is randomly split by the validation_split ratio. The validation set takes no part in gradient updates and is used only to compute loss. validation_every_n_epochs controls validation frequency. With validation_loss_only=True only the loss is computed (no samples generated). eval_data_dir can use a separate validation dataset.",
     "intervention": "After the DataLoader split, every N epochs a forward computes the loss on the validation set.",
     "expectedImpact": "Provides early warning of overfitting. Does not directly affect training quality.",
-    "tradeoffs": "validation_seed controls the split's randomness. max_validation_steps limits the number of validation steps.",
-    "codePath": "training_loop.py:validation_split → subset dataset → per-epoch validation loss"
+    "tradeoffs": "validation_seed controls the split's randomness. max_validation_steps limits the number of validation steps."
   },
   "relatedConfigs": [
     "validation_every_n_epochs",

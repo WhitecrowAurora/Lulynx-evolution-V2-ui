@@ -4,6 +4,7 @@ import type { SchemaField, SchemaFieldOption } from '@/schema/schemaIndex'
 import { FieldShell, Input, Select, Slider, Switch, Textarea } from '@/components/form'
 import { Button } from '@/components/primitives'
 import { ConceptDirectionPairs } from './ConceptDirectionPairs'
+import { GradientClippingControl } from './GradientClippingControl'
 import { trainApi } from '@/api/trainApi'
 import { unwrap } from '@/api/transport'
 import { candidatesForField, countCandidatesForField } from '@/lib/inventoryAutofill'
@@ -19,6 +20,7 @@ import {
   isDatasetFolderField,
 } from '@/lib/recentDatasetPaths'
 import { useTrainConfigStore, useDraft } from '@/stores/configStore'
+import { COMPANION_HANDLERS, useCompanionToolStore } from '@/stores/companionToolStore'
 import {
   attentionBackendBlockReason,
   makeAttentionOptions,
@@ -133,11 +135,13 @@ function PathFieldRow({
   value,
   onChange,
   disabled = false,
+  invalid = false,
 }: {
   field: SchemaField
   value: string
   onChange: (raw: unknown) => void
   disabled?: boolean
+  invalid?: boolean
 }) {
   const { t } = useI18n()
   const typeId = useTrainConfigStore((s) => s.typeId)
@@ -265,7 +269,7 @@ function PathFieldRow({
           disabled={disabled}
           placeholder={field.placeholder || (field.type === 'folder' ? t('common.path_dir') : t('common.path_file'))}
           onChange={(e) => onChange(e.target.value)}
-          aria-invalid={bad || undefined}
+          aria-invalid={bad || invalid || undefined}
         />
         <Button size="sm" disabled={disabled} onClick={() => void browsePath(field, onChange)}>
           {allowModelDirectory ? '选择文件' : t('field.browse')}
@@ -367,11 +371,13 @@ function OutputNameField({
   value,
   onChange,
   disabled = false,
+  invalid = false,
 }: {
   field: SchemaField
   value: string
   onChange: (raw: unknown) => void
   disabled?: boolean
+  invalid?: boolean
 }) {
   const { t } = useI18n()
   const draft = useDraft()
@@ -398,7 +404,7 @@ function OutputNameField({
 
   return (
     <div className="lx-output-name-field">
-      <Input disabled={disabled} value={value} placeholder={field.placeholder || t('common.output_name_ph')} onChange={(e) => onChange(e.target.value)} />
+      <Input disabled={disabled} value={value} placeholder={field.placeholder || t('common.output_name_ph')} aria-invalid={invalid || undefined} onChange={(e) => onChange(e.target.value)} />
       {hint ? <div className="lx-path-hint is-warn">{hint}</div> : null}
     </div>
   )
@@ -411,6 +417,8 @@ export function FieldControl({
   onHelp,
   disabled: disabledProp = false,
   disabledReason: disabledReasonProp = '',
+  required = false,
+  invalid = false,
 }: {
   field: SchemaField
   value: unknown
@@ -418,9 +426,14 @@ export function FieldControl({
   onHelp: (field: SchemaField) => void
   disabled?: boolean
   disabledReason?: string
+  /** 后端硬闸要求这个字段(或它的同组字段)必须有值 */
+  required?: boolean
+  /** 必填但当前为空 */
+  invalid?: boolean
 }) {
   const { t, language } = useI18n()
   const draft = useDraft()
+  const openCompanionTool = useCompanionToolStore((s) => s.open)
   const runtime = useRuntimeStore()
   const activeTrainingType = useTrainConfigStore((s) => s.typeId)
   if (field.type === 'hidden') return null
@@ -459,6 +472,11 @@ export function FieldControl({
     </span>
   )
 
+  if (field.clippingControl === true) {
+    return <GradientClippingControl key={activeTrainingType} field={field} value={value} onChange={onChange}
+      help={helpBtn} desc={desc} disabled={disabled} disabledReason={disabledReason} />
+  }
+
   if (field.type === 'boolean') {
     return (
       <div className={['lx-field', 'lx-field-bool', disabled ? 'is-profile-managed' : ''].filter(Boolean).join(' ')} title={rawDesc || field.key}>
@@ -478,7 +496,7 @@ export function FieldControl({
   if (field.type === 'action') {
     const buttonText = String(field.buttonLabel || field.title || label)
     const handler = String(field.handler || '')
-    const implemented = handler === 'openAnimaFolderScanner'
+    const implemented = handler === 'openAnimaFolderScanner' || Boolean(COMPANION_HANDLERS[handler])
     if (!implemented) return null
     const onAction = () => {
       if (handler === 'openAnimaFolderScanner') {
@@ -487,6 +505,7 @@ export function FieldControl({
           .catch((e) => toast.warn((e as Error).message || 'scan failed', 'SCAN'))
         return
       }
+      openCompanionTool(handler, draft)
     }
     return (
       <div className="lx-field" title={field.desc || ''}>
@@ -589,6 +608,12 @@ export function FieldControl({
             : 'launcher 启动时未指定显卡，留空将使用全部可见显卡'
       control = (
         <>
+          {['lulynx_optimization_features', 'turbocore_optimizer_algorithms'].includes(field.key) ? (
+            <div className="lx-choice-actions">
+              <button type="button" disabled={disabled} onClick={() => onChange(opts.filter((option) => !option.disabled).map((option) => option.value).join(','))}>{en ? 'Select all' : '全选'}</button>
+              <button type="button" disabled={disabled} onClick={() => onChange('')}>{en ? 'Clear' : '清空'}</button>
+            </div>
+          ) : null}
           <div className="lx-multi-select" role="group" aria-label={label}>
             {opts.map((option) => (
               <label key={option.value} className="lx-multi-select-option" title={option.title}>
@@ -647,32 +672,37 @@ export function FieldControl({
       break
     }
     case 'textarea':
-      control = <Textarea rows={3} disabled={disabled} value={str} placeholder={field.placeholder} onChange={(e) => onChange(e.target.value)} />
+      control = <Textarea rows={3} disabled={disabled} value={str} placeholder={field.placeholder} aria-invalid={invalid || undefined} onChange={(e) => onChange(e.target.value)} />
       break
     case 'file':
     case 'folder':
-      control = <PathFieldRow field={field} value={str} onChange={onChange} disabled={disabled} />
+      control = <PathFieldRow field={field} value={str} onChange={onChange} disabled={disabled} invalid={invalid} />
       break
     default:
       if (field.key === 'output_name') {
-        control = <OutputNameField field={field} value={str} onChange={onChange} disabled={disabled} />
+        control = <OutputNameField field={field} value={str} onChange={onChange} disabled={disabled} invalid={invalid} />
       } else {
         // string / text / 未知类型兜底
-        control = <Input disabled={disabled} value={str} placeholder={field.placeholder} onChange={(e) => onChange(e.target.value)} />
+        control = <Input disabled={disabled} value={str} placeholder={field.placeholder} aria-invalid={invalid || undefined} onChange={(e) => onChange(e.target.value)} />
       }
   }
 
   return (
     <FieldShell
+      group={field.type === 'csvMultiSelect' || field.type === 'multiSelect'}
       label={label}
       desc={desc || undefined}
       right={helpBtn}
+      required={required}
+      invalid={invalid}
       className={[
+        ['lulynx_optimization_features', 'turbocore_optimizer_algorithms'].includes(field.key) ? 'lx-optimization-choices' : '',
         field.type === 'textarea' ? 'lx-span-full' : field.type === 'file' || field.type === 'folder' ? 'lx-span-2' : '',
         disabled ? 'is-profile-managed' : '',
       ].filter(Boolean).join(' ') || undefined}
     >
       <div title={rawDesc || ''}>{control}</div>
+      {invalid ? <span className="lx-field-invalid-note">{t('field.required_missing')}</span> : null}
       {disabledReason ? <span className="lx-profile-managed-note">{disabledReason}</span> : null}
     </FieldShell>
   )

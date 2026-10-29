@@ -183,6 +183,11 @@ html[data-theme='glass'] .lx-type-btn.on { box-shadow: 0 4px 18px var(--lx-accen
 .lx-cfg-section { margin-bottom: 18px; }
 .lx-cfg-desc { color: var(--lx-dim); font-size: 12px; line-height: 1.55; margin: -4px 0 12px; max-width: 70ch; }
 .lx-cfg-grid { display: flex; flex-direction: column; }
+.lx-cfg-grid > .lx-gradient-clipping {
+  margin-left: 16px;
+  padding-left: 12px;
+  border-left: 2px solid var(--lx-grid-line);
+}
 
 /* 每个字段一行:标签占主宽,控件靠右;行间发丝分割线(用户明确要,防"糊成一坨") */
 .lx-cfg-grid > .lx-field:not(.lx-field-bool) {
@@ -577,3 +582,12 @@ html[data-theme='editorial'] .lx-actionbar-menu { border-width: 2px; box-shadow:
 .lx-intent-lists li code { color: var(--lx-accent); word-break: break-all; }
 .lx-intent-lists li span { color: var(--lx-dim); text-align: right; word-break: break-word; }
 .lx-intent-lists p { margin: 8px 0 0; color: var(--lx-dim); font-size: 11px; }
+
+/* Optimization permissions: readable choices rather than inline checkbox text. */
+.lx-cfg-grid > .lx-field.lx-optimization-choices:not(.lx-field-bool) { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.lx-optimization-choices > .lx-field-label { margin-bottom: 12px; }
+.lx-optimization-choices .lx-multi-select { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 8px; }
+.lx-optimization-choices .lx-multi-select-option { display: flex; align-items: flex-start; gap: 8px; padding: 10px; border: 1px solid var(--lx-border); border-radius: var(--lx-radius); background: var(--lx-field-bg); cursor: pointer; line-height: 1.5; }
+.lx-optimization-choices input[type="checkbox"] { flex: none; margin-top: 3px; accent-color: var(--lx-accent); }
+.lx-choice-actions { display: flex; gap: 8px; margin-bottom: 10px; }
+.lx-choice-actions button { padding: 5px 12px; border: 1px solid var(--lx-border); border-radius: var(--lx-radius); background: var(--lx-field-bg); color: var(--lx-text); cursor: pointer; }

@@ -30,15 +30,13 @@
     "principle": "DiT 使用 AdaLN 将时间步和条件信号调制成 scale/shift/gate 三组参数。adaln_guidance 在调制信号上叠加一个可学习偏置向量 Δ = init_scale × learnable_params，使模型可以在不改变主干的情况下微调条件控制强度。这比重新训练 AdaLN 层更轻量。",
     "intervention": "在 DiT block 的 AdaLN modulation 输出上叠加偏置。",
     "expectedImpact": "允许更精细的条件控制。参数量很少（每层一个偏置向量）。",
-    "tradeoffs": "adaln_guidance_init_scale 控制初始影响强度。0 表示从零开始学习。",
-    "codePath": "core/lulynx/ → DiT AdaLN modulation + learnable bias"
+    "tradeoffs": "adaln_guidance_init_scale 控制初始影响强度。0 表示从零开始学习。"
   },
   "advanced_en": {
     "principle": "DiT uses AdaLN to modulate the timestep and condition signals into scale/shift/gate parameter groups. adaln_guidance overlays a learnable bias vector Δ = init_scale × learnable_params on the modulation signal, letting the model fine-tune condition-control strength without touching the backbone. Lighter than retraining the AdaLN layers.",
     "intervention": "Overlays the bias on the AdaLN modulation output of each DiT block.",
     "expectedImpact": "Enables finer condition control. Very few parameters (one bias vector per layer).",
-    "tradeoffs": "adaln_guidance_init_scale controls the initial influence strength. 0 = learn from zero.",
-    "codePath": "core/lulynx/ → DiT AdaLN modulation + learnable bias"
+    "tradeoffs": "adaln_guidance_init_scale controls the initial influence strength. 0 = learn from zero."
   },
   "relatedConfigs": [
     "adaln_guidance_init_scale"

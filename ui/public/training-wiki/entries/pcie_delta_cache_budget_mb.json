@@ -1,27 +1,52 @@
 {
   "key": "pcie_delta_cache_budget_mb",
-  "title": "PCIe Cache v0 预算 MB",
+  "title": "权重缓存显存预算（MiB）",
   "category": "速度 / 显存",
   "appliesTo": [
-    "anima-edit-model",
-    "anima-lora",
-    "newbie-lora",
-    "sdxl-addift",
-    "sdxl-controlnet",
-    "sdxl-controlnet-lllite",
-    "sdxl-finetune",
-    "sdxl-ileco",
-    "sdxl-ip-adapter",
+    "moss-image-lora",
+    "krea2-lora",
+    "flux-lora",
+    "flux2-lora",
+    "flux3-lora",
+    "qwen-image-lora",
+    "qwen-image-2-lora",
+    "zimage-lora",
+    "wan22-ti2v-lora",
+    "wan22-t2v-a14b-lora",
+    "ltx23-lora",
+    "ltx25-lora",
+    "boogu-lora",
+    "boogu-edit-lora",
+    "minimax-h3-lora",
+    "sd-lora",
     "sdxl-lora",
-    "sdxl-multi-addift",
-    "sdxl-textual-inversion"
+    "anima-lora",
+    "newbie-lora"
   ],
   "standard": {
-    "summary": "GPU 缓存预算。",
-    "effect": "建议 256MB 起步。0 表示不启用。",
-    "whenToUse": "默认 256，无明确目标时保持默认。",
-    "avoidWhen": "一次只改一项，便于归因效果。"
+    "summary": "按 GPU 实际 dtype 和偏置大小计费的缓存额度。1 MiB = 1048576 字节。",
+    "effect": "0 关闭缓存；预算放不下的层继续原有卸载。此值不是训练总显存上限。",
+    "whenToUse": "建议从 256～512 MiB 开始。Wan 双专家将此总预算平均分给两塔，第二塔未加载时其额度预留。",
+    "avoidWhen": "不能把整卡空闲显存全部分给权重缓存；激活、优化器和预览仍需显存。"
   },
-  "advanced": null,
-  "relatedConfigs": []
+  "advanced": {
+    "principle": "MOSS、Krea2 等分块卸载复用同一控制器；Krea2 支持逐层缓存，传统 swap 支持冻结 Linear/Conv2d。新接线仅选择普通 FP16/BF16/FP32 冻结参数；特殊量化格式继续原卸载。Anima、Newbie 和 Native SDXL 保留已有缓存路径。",
+    "tradeoffs": "当前按显式预算静态选择，不是动态 I/O 预测。运行报告包含实际缓存量、选中层和命中次数。"
+  },
+  "relatedConfigs": [
+    "pcie_delta_cache_enabled",
+    "pcie_delta_cache_mode"
+  ],
+  "title_en": "Weight cache VRAM budget (MiB)",
+  "standard_en": {
+    "summary": "Cache allowance using actual GPU dtypes, including biases. 1 MiB = 1048576 bytes.",
+    "effect": "Zero disables caching. Layers that do not fit continue through the original offloader. This is not a limit on total training VRAM.",
+    "whenToUse": "Start with 256–512 MiB. Wan dual experts split this total allowance equally; the lazy secondary tower has a reserved half.",
+    "avoidWhen": "Leave room for activations, optimizer state and previews."
+  },
+  "category_en": "Speed / VRAM",
+  "advanced_en": {
+    "principle": "Shared block offload, Krea2 layer offload and traditional Linear/Conv2d swap use the same planner. New adapters select plain frozen FP16/BF16/FP32 parameters; specialized quantized formats keep their existing path. Anima, Newbie and native SDXL retain their existing caches.",
+    "tradeoffs": "Selection is static within the explicit budget, not dynamic I/O prediction. Runtime reports include actual bytes, selected layers and hits."
+  }
 }

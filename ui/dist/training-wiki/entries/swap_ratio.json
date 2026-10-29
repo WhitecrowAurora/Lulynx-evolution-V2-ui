@@ -21,15 +21,13 @@
     "principle": "按原始 block/layer 总数计算交换比例。0 表示只在 auto 或 swap_count 下生效。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Swap ratio computed against the original block/layer total. 0 = only takes effect under auto or swap_count.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

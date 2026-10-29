@@ -21,15 +21,13 @@
     "principle": "每 N 个候选 block 跳过 1 个。0 表示按比例自动推导；大于 0 时优先于上方比例。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Skips 1 of every N candidate blocks. 0 means derive automatically from the ratio; values above 0 take priority over the ratio above.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

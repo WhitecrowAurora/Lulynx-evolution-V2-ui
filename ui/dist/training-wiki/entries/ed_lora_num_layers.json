@@ -21,15 +21,13 @@
     "principle": "Text encoder transformer 层数 (CLIP 默认 12)。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Number of text-encoder transformer layers (CLIP defaults to 12).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

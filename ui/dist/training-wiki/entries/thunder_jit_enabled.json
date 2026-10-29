@@ -21,15 +21,13 @@
     "principle": "⚡ PyTorch 官方 Thunder JIT 引擎，比 torch.compile 更激进的算子融合。预期加速 10-15%。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "⚡ PyTorch's official Thunder JIT engine, with more aggressive op fusion than torch.compile. Expected 10-15% speedup.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

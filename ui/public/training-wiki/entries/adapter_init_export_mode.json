@@ -33,8 +33,7 @@
     "principle": "auto 会在最终保存时导出成可加载到原始底模的 LoRA；raw 保留精确训练状态用于恢复。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "auto exports a LoRA at final save that loads back onto the original base model; raw keeps the exact training state for resuming."

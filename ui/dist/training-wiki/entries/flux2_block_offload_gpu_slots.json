@@ -21,15 +21,13 @@
     "principle": "同时保留在 GPU 的 block 数。默认 4；16G 以下可降到 3。slots=6 在 16G@1024 易 OOM。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Number of blocks kept on the GPU at once. Default 4; below 16G you can drop to 3. slots=6 OOMs easily at 16G@1024.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

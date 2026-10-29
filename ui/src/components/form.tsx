@@ -11,6 +11,9 @@ export function FieldShell({
   desc,
   children,
   className,
+  group = false,
+  required = false,
+  invalid = false,
 }: {
   label: ReactNode
   en?: string
@@ -18,13 +21,24 @@ export function FieldShell({
   desc?: string
   children: ReactNode
   className?: string
+  group?: boolean
+  /** 必填:标签后追加红色 * */
+  required?: boolean
+  /** 必填但当前为空:字段级红框 + 提示 */
+  invalid?: boolean
 }) {
+  const Container = group ? 'div' : 'label'
   return (
-    <label className={['lx-field', className].filter(Boolean).join(' ')}>
+    <Container
+      className={['lx-field', invalid ? 'is-invalid' : '', className].filter(Boolean).join(' ')}
+      data-required={required || undefined}
+      data-invalid={invalid || undefined}
+    >
       <span className="lx-field-label">
         <span className="lx-field-label-text">
           <span>
             {label}
+            {required ? <span className="lx-required-mark" aria-hidden>*</span> : null}
             {en ? <span style={{ opacity: 0.65 }}> · {en}</span> : null}
           </span>
           {desc ? <span className="lx-field-desc">{desc}</span> : null}
@@ -32,7 +46,7 @@ export function FieldShell({
         {right}
       </span>
       {children}
-    </label>
+    </Container>
   )
 }
 

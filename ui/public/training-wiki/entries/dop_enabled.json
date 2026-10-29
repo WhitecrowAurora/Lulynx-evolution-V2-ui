@@ -32,15 +32,13 @@
     "principle": "训练开始前对每个 timestep 记录一次底模的输出（reference）。训练中每 dop_interval 步计算当前输出与 reference 的差异，作为额外的正则化 loss。dop_detach_reference=True 时 reference 不参与梯度，只做监督信号。",
     "intervention": "training_step 中额外计算 dop_loss = MSE(current_output, reference_output) * dop_weight。",
     "expectedImpact": "在多概念训练中保持底模特性的能力更强。对单一概念训练效果不明显。",
-    "tradeoffs": "dop_target='output' 比较最终预测，'features' 比较中间特征（更强约束但开销更大）。",
-    "codePath": "training_loop.py:DOP loss = MSE(pred, reference) * dop_weight"
+    "tradeoffs": "dop_target='output' 比较最终预测，'features' 比较中间特征（更强约束但开销更大）。"
   },
   "advanced_en": {
     "principle": "Before training starts, records one output per timestep from the base model (the reference). During training, every dop_interval steps computes the difference between the current output and the reference as an extra regularization loss. With dop_detach_reference=True the reference carries no gradient — pure supervision.",
     "intervention": "training_step additionally computes dop_loss = MSE(current_output, reference_output) * dop_weight.",
     "expectedImpact": "Better at preserving base-model traits in multi-concept training. Barely noticeable on single-concept training.",
-    "tradeoffs": "dop_target='output' compares final predictions; 'features' compares intermediate features (stronger constraint, higher cost).",
-    "codePath": "training_loop.py:DOP loss = MSE(pred, reference) * dop_weight"
+    "tradeoffs": "dop_target='output' compares final predictions; 'features' compares intermediate features (stronger constraint, higher cost)."
   },
   "relatedConfigs": [
     "dop_weight",

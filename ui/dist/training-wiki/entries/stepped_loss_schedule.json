@@ -21,15 +21,13 @@
     "principle": "JSON 数组，例如 [{\"step\":0,\"loss_type\":\"l2\",\"weight\":1.0},{\"step\":500,\"loss_type\":\"huber\",\"weight\":0.8}]。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "JSON array, e.g. [{\"step\":0,\"loss_type\":\"l2\",\"weight\":1.0},{\"step\":500,\"loss_type\":\"huber\",\"weight\":0.8}].",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

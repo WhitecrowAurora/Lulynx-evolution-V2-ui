@@ -29,15 +29,13 @@
     "principle": "把「适配一个新 DiT」拆成可探测的三要素：结构（哪些是 attention/MLP 线性层）、目标（flow/epsilon 等训练目标模板）、输入契约（probe inputs）；用运行时探测代替逐模型手写适配器，换取覆盖面、牺牲专属优化。",
     "intervention": "trainer_prepare_mixin.py：model_arch=universal_dit 时强制校验本开关；training_capabilities/universal_dit.py:build 读取 enabled/probe_mode/target_policy 组装 profile；universal_dit/runtime.py 按 policy 与 target_modules_json 解析注入点；services/training/prepare_context.py 在路由阶段读取。",
     "expectedImpact": "解锁任意 DiT 的 LoRA 化训练尝试；显存/速度优化（block swap、编译等）按通用能力集提供，弱于专属家族。",
-    "tradeoffs": "探测失败或目标模板不匹配时训练目标可能错误；allow_remote_download/trust_remote_code 等配套开关有安全含义，默认都关。",
-    "codePath": "trainer_prepare_mixin.py：universal_dit_enabled 强制校验；training_capabilities/universal_dit.py：profile 组装；universal_dit/runtime.py：目标模块解析"
+    "tradeoffs": "探测失败或目标模板不匹配时训练目标可能错误；allow_remote_download/trust_remote_code 等配套开关有安全含义，默认都关。"
   },
   "advanced_en": {
     "principle": "Splits \"adapting a new DiT\" into three probeable elements: structure (which linears are attention/MLP), objective (training-target templates such as flow/epsilon), and input contract (probe inputs); runtime probing replaces hand-written per-model adapters, trading bespoke optimizations for coverage.",
     "intervention": "trainer_prepare_mixin.py: when model_arch=universal_dit this switch is force-validated; training_capabilities/universal_dit.py:build reads enabled/probe_mode/target_policy to assemble the profile; universal_dit/runtime.py resolves injection points by policy and target_modules_json; services/training/prepare_context.py reads it at the routing stage.",
     "expectedImpact": "Unlocks LoRA-training attempts on arbitrary DiTs; VRAM/speed optimizations (block swap, compile, etc.) are provided per the generic capability set, weaker than the dedicated families.",
-    "tradeoffs": "On probe failure or target-template mismatch the training objective may be wrong; companion switches like allow_remote_download/trust_remote_code have security implications and are all off by default.",
-    "codePath": "trainer_prepare_mixin.py: universal_dit_enabled force-validation; training_capabilities/universal_dit.py: profile assembly; universal_dit/runtime.py: target module resolution"
+    "tradeoffs": "On probe failure or target-template mismatch the training objective may be wrong; companion switches like allow_remote_download/trust_remote_code have security implications and are all off by default."
   },
   "relatedConfigs": [
     "universal_dit_probe_mode",

@@ -21,15 +21,13 @@
     "principle": "生成训练/LoRA 诊断分享卡。可先用 Analyzer 得到指标，再填入这里。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Generates a training/LoRA diagnostic share card. Run the Analyzer first to get metrics, then fill them in here.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

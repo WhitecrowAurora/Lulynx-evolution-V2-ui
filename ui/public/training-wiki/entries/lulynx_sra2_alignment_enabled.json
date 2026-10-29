@@ -33,15 +33,13 @@
     "principle": "SRA2 在 DiT 的指定层捕获隐藏状态，与 VAE 编码的 GT latent 做对齐；本仓 schedule 只实现 start/stop、linear decay 与 plateau stop。没有找到能唯一对应 HASTE 的权威论文，因此这是 lulynx heuristic，不是 HASTE 论文复现。",
     "intervention": "DiT forward 中捕获中间层特征 → 计算对齐 loss → lulynx heuristic 调度权重 → 加到总 loss。",
     "expectedImpact": "理论上提升 latent 空间的表示质量。实际效果需 验证。",
-    "tradeoffs": "decay_start_step/decay_end_step 控制衰减窗口。",
-    "codePath": "core/lulynx_trainer/sra2_haste_alignment_facade.py → sra2_haste_alignment_loss + haste_alignment_schedule.py；用户配置使用 lulynx_sra2_alignment_*"
+    "tradeoffs": "decay_start_step/decay_end_step 控制衰减窗口。"
   },
   "advanced_en": {
     "principle": "SRA2 captures hidden states at designated DiT layers and aligns them with the VAE-encoded GT latent; this repo's schedule implements only start/stop, linear decay, and plateau stop. No authoritative paper uniquely corresponding to HASTE was found, so this is a lulynx heuristic, not a HASTE reproduction.",
     "intervention": "Captures intermediate-layer features during DiT forward → computes the alignment loss → lulynx-heuristic scheduled weight → added to total loss.",
     "expectedImpact": "Theoretically improves latent-space representation quality. Actual effect needs verification.",
-    "tradeoffs": "decay_start_step/decay_end_step control the decay window.",
-    "codePath": "core/lulynx_trainer/sra2_haste_alignment_facade.py → sra2_haste_alignment_loss + haste_alignment_schedule.py; user config uses lulynx_sra2_alignment_*"
+    "tradeoffs": "decay_start_step/decay_end_step control the decay window."
   },
   "relatedConfigs": [
     "lulynx_sra2_alignment_capture_layers",

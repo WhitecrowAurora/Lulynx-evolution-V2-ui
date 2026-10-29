@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
 import { create } from 'zustand'
 
-export type RouteId = 'train' | 'generate' | 'monitor' | 'queue' | 'resources' | 'gallery'
+export type RouteId = 'train' | 'generate' | 'monitor' | 'queue' | 'resources' | 'workbench' | 'gallery'
 
 export const ROUTES: { id: RouteId; zh: string; en: string; idx: string; dev?: boolean }[] = [
   { id: 'train', zh: '训练', en: 'Train', idx: '01' },
@@ -9,6 +9,7 @@ export const ROUTES: { id: RouteId; zh: string; en: string; idx: string; dev?: b
   { id: 'monitor', zh: '监控', en: 'Monitor', idx: '03' },
   { id: 'queue', zh: '队列', en: 'Queue', idx: '04' },
   { id: 'resources', zh: '资源', en: 'Resources', idx: '05' },
+  { id: 'workbench', zh: '工作台', en: 'Workbench', idx: '06' },
   { id: 'gallery', zh: '画廊', en: 'Gallery', idx: 'DEV', dev: true },
 ]
 

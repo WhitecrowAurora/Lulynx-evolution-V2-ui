@@ -6,6 +6,28 @@
 import { validateConfig } from './configValidator'
 
 describe('validateConfig', () => {
+  test('N:M W4A16 compile 与 sequential offload 同时启用时阻止提交', () => {
+    const result = validateConfig({ quantization_enabled: true, quantization_type: 'w4a16_2_4', execution_backend: 'torch_compile', enable_sequential_cpu_offload: true })
+    expect(result.errors.some((error) => error.message.includes('N:M W4A16'))).toBe(true)
+  })
+
+  test('N:M W4A16 单独启用 compile 或 sequential offload 均不触发互斥错误', () => {
+    const compileOnly = validateConfig({ quantization_enabled: true, quantization_type: 'w4a16_2_4', execution_backend: 'torch_compile', enable_sequential_cpu_offload: false })
+    const offloadOnly = validateConfig({ quantization_enabled: true, quantization_type: 'w4a16_2_4', execution_backend: 'optimized', enable_sequential_cpu_offload: true })
+    expect(compileOnly.errors.some((error) => error.message.includes('N:M W4A16'))).toBe(false)
+    expect(offloadOnly.errors.some((error) => error.message.includes('N:M W4A16'))).toBe(false)
+  })
+
+  test('training quantization alias 优先决定 N:M 互斥', () => {
+    const result = validateConfig({ quantization_enabled: true, quantization_type: 'qlora_nf4', training_quantization_enabled: true, training_quantization_type: 'w4a16_2_4', execution_backend: 'thunder', enable_sequential_cpu_offload: true })
+    expect(result.errors.some((error) => error.message.includes('N:M W4A16'))).toBe(true)
+  })
+
+  test('非 N:M 量化不受 compile/offload 互斥影响', () => {
+    const result = validateConfig({ quantization_enabled: true, quantization_type: 'qlora_nf4', execution_backend: 'torch_compile', enable_sequential_cpu_offload: true })
+    expect(result.errors.some((error) => error.message.includes('N:M W4A16'))).toBe(false)
+  })
+
   test('冲突 1: Gradient Release Full + TurboCore → 自动 fallback 到 post_step', () => {
     const config = {
       turbocore_enabled: true,

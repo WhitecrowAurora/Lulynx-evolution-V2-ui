@@ -32,15 +32,13 @@
     "principle": "目标 token 的 query 可以 attend 到 target+condition keys，并通过条件列 bias 控制强度。",
     "intervention": "colorize_preprocess 产线稿/灰度控制图 → colorize_cond_cache 用真 Qwen-Image VAE 把控制图编码成 cond-latent sidecar → AnimaCachedDataset 加载 sidecar → 训练步把 condition 喂给两路 patch → adapter 随 LoRA 存（easycontrol_v2.* 前缀）。",
     "expectedImpact": "默认关时不改变训练性能（bitwise parity）；开启后增加少量条件 token 和 LoRA/gate 计算，并让出图按控制图配色。",
-    "tradeoffs": "v1 easy_control_enabled 仍是独立低风险 fallback，v2 不应静默替换 v1。无控制图的样本回退到 cache-first 派生参考（仅机制可用，非控制质量）。",
-    "codePath": "backend/core/lulynx_trainer/easycontrol_v2_anima_patch.py + colorize_cond_cache.py + anima_colorize_inference.py"
+    "tradeoffs": "v1 easy_control_enabled 仍是独立低风险 fallback，v2 不应静默替换 v1。无控制图的样本回退到 cache-first 派生参考（仅机制可用，非控制质量）。"
   },
   "advanced_en": {
     "principle": "Target tokens' queries can attend to target+condition keys, with strength controlled by a condition-column bias.",
     "intervention": "colorize_preprocess produces line-art/grayscale control images → colorize_cond_cache encodes them into cond-latent sidecars with the real Qwen-Image VAE → AnimaCachedDataset loads the sidecar → the training step feeds the condition to both patch routes → the adapter is saved with the LoRA (easycontrol_v2.* prefix).",
     "expectedImpact": "Off by default, no change to training performance (bitwise parity); when on, adds a few condition tokens and LoRA/gate compute and makes output follow the control image's colors.",
-    "tradeoffs": "v1 easy_control_enabled remains a separate low-risk fallback; v2 must not silently replace v1. Samples without control images fall back to cache-first derived reference (mechanism availability only, not control quality).",
-    "codePath": "backend/core/lulynx_trainer/easycontrol_v2_anima_patch.py + colorize_cond_cache.py + anima_colorize_inference.py"
+    "tradeoffs": "v1 easy_control_enabled remains a separate low-risk fallback; v2 must not silently replace v1. Samples without control images fall back to cache-first derived reference (mechanism availability only, not control quality)."
   },
   "relatedConfigs": [
     "easycontrol_v2_task",

@@ -21,15 +21,13 @@
     "principle": "空=训练目录下 concept_geometry.json（兼容旧 h_lora_geometry.json）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Empty = concept_geometry.json under the training directory (legacy h_lora_geometry.json also accepted).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -21,15 +21,13 @@
     "principle": "向前预取几个 block。original 固定深度；adaptive 在此基础上在线调整。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "How many blocks to prefetch ahead. original uses a fixed depth; adaptive adjusts it online on top of this.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

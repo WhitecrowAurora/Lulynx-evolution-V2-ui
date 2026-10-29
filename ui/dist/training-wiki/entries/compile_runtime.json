@@ -49,15 +49,13 @@
     "principle": "compile: torch.compile 捕获 FX graph → Inductor 编译为 CUDA kernel。compile_cache: 将编译产物保存到 compile_cache_root 目录。cudagraph: 在前几步 warmup 后录制 CUDA Graph，后续直接回放录制的 kernel 序列，消除所有 CPU 端 kernel launch 开销。compile_cudagraph 组合两者。",
     "intervention": "trainer.py 在模型构建后根据 compile_runtime 选择编译策略。",
     "expectedImpact": "compile 提速 10-30%。cudagraph 额外提速 10-20%。总计可达 30-50%。",
-    "tradeoffs": "compile_probe_enabled 在训练前做 3 步性能探测，确认加速有效才继续使用。compile_contract_strict 在训练前检查 compile 与当前配置的兼容性。",
-    "codePath": "trainer.py:compile_runtime dispatch → torch.compile / CUDAGraph record-replay"
+    "tradeoffs": "compile_probe_enabled 在训练前做 3 步性能探测，确认加速有效才继续使用。compile_contract_strict 在训练前检查 compile 与当前配置的兼容性。"
   },
   "advanced_en": {
     "principle": "compile: torch.compile captures the FX graph → Inductor compiles to CUDA kernels. compile_cache: saves compilation artifacts under compile_cache_root. cudagraph: after a few warmup steps, records a CUDA Graph and then replays the recorded kernel sequence, eliminating all CPU-side kernel-launch overhead. compile_cudagraph combines both.",
     "intervention": "trainer.py picks the compile strategy per compile_runtime after model construction.",
     "expectedImpact": "compile speeds up 10-30%. cudagraph adds 10-20%. Up to 30-50% total.",
-    "tradeoffs": "compile_probe_enabled runs a 3-step performance probe before training and keeps compiling only if acceleration is confirmed. compile_contract_strict checks compile-vs-config compatibility before training.",
-    "codePath": "trainer.py:compile_runtime dispatch → torch.compile / CUDAGraph record-replay"
+    "tradeoffs": "compile_probe_enabled runs a 3-step performance probe before training and keeps compiling only if acceleration is confirmed. compile_contract_strict checks compile-vs-config compatibility before training."
   },
   "relatedConfigs": [
     "torch_compile",

@@ -29,15 +29,13 @@
     "principle": "block 顺序执行使「下一个 block 的权重搬运」可以与「当前 block 的计算」并行；async 用事件同步保证权重就位，pipeline 进一步预取多个 block（显存换潜在延迟余量），在 PCIe 带宽已饱和时不产生额外收益。",
     "intervention": "trainer_prepare_mixin.py：config.block_swap_strategy = h3_block_swap_strategy 传给通用 block swap 机制；configs_h3.py：取值校验（auto/async/pipeline/sync）。",
     "expectedImpact": "async 相对 sync 通常有明显吞吐优势；pipeline 相对 async 当前无收益且 +0.75GB reserved。",
-    "tradeoffs": "异步路径的显存峰值略高于 sync（在途 block 副本）；调试数值问题时 sync 的确定性更好。",
-    "codePath": "trainer_prepare_mixin.py：h3_block_swap_strategy → block_swap_strategy；configs_h3.py 取值校验"
+    "tradeoffs": "异步路径的显存峰值略高于 sync（在途 block 副本）；调试数值问题时 sync 的确定性更好。"
   },
   "advanced_en": {
     "principle": "Sequential block execution lets \"transferring the next block's weights\" run in parallel with \"computing the current block\"; async uses event synchronization to guarantee weights are in place, and pipeline further prefetches several blocks (VRAM traded for latency headroom) — no extra benefit once PCIe bandwidth is saturated.",
     "intervention": "trainer_prepare_mixin.py: config.block_swap_strategy = h3_block_swap_strategy passed to the generic block-swap mechanism; configs_h3.py: value validation (auto/async/pipeline/sync).",
     "expectedImpact": "async usually has a clear throughput advantage over sync; pipeline currently adds nothing over async and costs +0.75GB reserved.",
-    "tradeoffs": "The async path's VRAM peak is slightly above sync (in-flight block copies); sync is more deterministic when debugging numerical issues.",
-    "codePath": "trainer_prepare_mixin.py: h3_block_swap_strategy → block_swap_strategy; validated in configs_h3.py"
+    "tradeoffs": "The async path's VRAM peak is slightly above sync (in-flight block copies); sync is more deterministic when debugging numerical issues."
   },
   "relatedConfigs": [
     "h3_blocks_to_swap",

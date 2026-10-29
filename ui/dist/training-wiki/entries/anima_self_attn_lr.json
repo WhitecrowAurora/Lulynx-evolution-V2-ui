@@ -21,8 +21,7 @@
     "principle": "Anima DiT Self-Attention 层的独立学习率。0 = 使用全局学习率。高级用户可针对不同层设置不同学习率。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Standalone learning rate for the Anima DiT Self-Attention layers. 0 = use the global learning rate. Advanced users can set different learning rates per layer group."

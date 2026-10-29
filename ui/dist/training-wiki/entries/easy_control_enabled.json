@@ -30,15 +30,13 @@
     "principle": "将条件图像（如 Canny 边缘图）缩放到与训练图像相同分辨率，然后作为额外通道拼接到输入图像上。UNet 的第一个卷积层会自动扩展以接收额外通道。easy_control_channels=3 时输入从 4 通道扩展到 7 通道。这种方式不需要额外的 ControlNet 模型，但控制力弱于专门的 ControlNet。",
     "intervention": "DataLoader 中读取条件图像 → 缩放到训练分辨率 → 拼接到输入图像通道上。",
     "expectedImpact": "实现基本的图像条件控制。文件增量约等于输入通道的扩展。",
-    "tradeoffs": "ip_adapter_enabled 提供更丰富的图像条件控制。",
-    "codePath": "dataset/elements.py:easy_control → read control image → concat to input channels"
+    "tradeoffs": "ip_adapter_enabled 提供更丰富的图像条件控制。"
   },
   "advanced_en": {
     "principle": "Scales the conditioning image (e.g. a Canny edge map) to the training image's resolution, then concatenates it as extra channels onto the input image. The UNet's first conv layer auto-expands to accept the extra channels. With easy_control_channels=3, input grows from 4 to 7 channels. No separate ControlNet model needed, but control is weaker than a dedicated ControlNet.",
     "intervention": "DataLoader reads the conditioning image → scales to training resolution → concatenates onto input channels.",
     "expectedImpact": "Basic image-conditioned control. File-size growth roughly equals the input-channel expansion.",
-    "tradeoffs": "ip_adapter_enabled offers richer image conditioning.",
-    "codePath": "dataset/elements.py:easy_control → read control image → concat to input channels"
+    "tradeoffs": "ip_adapter_enabled offers richer image conditioning."
   },
   "relatedConfigs": [
     "control_image_dir",

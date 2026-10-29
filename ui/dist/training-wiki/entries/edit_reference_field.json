@@ -21,15 +21,13 @@
     "principle": "训练 batch 中作为源图参考 latent 的字段名。正式配对数据默认 source_latents。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "The batch field name used as the source-image reference latent. Properly paired data defaults to source_latents.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -29,15 +29,13 @@
     "principle": "ti2v-5b 单塔 / t2v-a14b 双塔（high|low|both）。VAE 与 latent C 按变体 fail-closed。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "ti2v-5b single-tower / t2v-a14b dual-tower (high|low|both). VAE and latent C are fail-closed per variant.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

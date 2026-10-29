@@ -148,19 +148,19 @@ const S_LAYERED_ALPHA = [
 // Anima 时间步采样策略 (timestep_sampling_strategy)。控制训练时采样哪些时间步。
 // 默认 'disabled' 全范围均匀采样=传统训练=parity。'simple' 限制到指定范围，'advanced' 支持分段权重采样。
 const S_TIMESTEP_SAMPLING_STRATEGY = [
-  { key: 'timestep_sampling_mode', type: 'select', label: '时间步采样模式', desc: '时间步采样分布（logit_normal/shift 等策略）。', defaultValue: 'disabled', options: [
+  { key: 'timestep_sampling_mode', type: 'select', label: '时间步采样模式', desc: '时间步采样分布（logit_normal/shift 等策略）。simple 真的收窄范围、或 advanced 写了分段时，这个先验会整段替换下方的「时间步采样分布」；范围留 0–1000 等于不过滤，此时按 disabled 处理。', defaultValue: 'disabled', options: [
     { value: 'disabled', label: 'Disabled (全范围均匀采样，传统训练)' },
     { value: 'simple', label: 'Simple (范围限制)' },
     { value: 'advanced', label: 'Advanced (分段权重采样)' },
   ] },
-  { key: 'min_timestep', type: 'number', label: '最小时间步', title: 'min_timestep', desc: '时间步下界，低于该噪声水平的步不参与。', defaultValue: 0, min: 0, max: 1000, step: 1, visibleWhen: (c) => c.timestep_sampling_mode === 'simple' },
-  { key: 'max_timestep', type: 'number', label: '最大时间步', title: 'max_timestep', desc: '训练时采样的最大时间步（不包含）。', defaultValue: 1000, min: 0, max: 1000, step: 1, visibleWhen: (c) => c.timestep_sampling_mode === 'simple' },
+  { key: 'min_timestep', type: 'number', label: '最小时间步', title: 'min_timestep', desc: '时间步下界，低于该噪声水平的步不参与。下界 0 且上界 1000 表示不过滤，等同于 disabled。', defaultValue: 0, min: 0, max: 1000, step: 1, visibleWhen: (c) => c.timestep_sampling_mode === 'simple' },
+  { key: 'max_timestep', type: 'number', label: '最大时间步', title: 'max_timestep', desc: '训练时采样的最大时间步（不包含）。下界 0 且上界 1000 表示不过滤，等同于 disabled。', defaultValue: 1000, min: 0, max: 1000, step: 1, visibleWhen: (c) => c.timestep_sampling_mode === 'simple' },
   { key: 'timestep_segments', type: 'textarea', label: '分段配置', title: 'timestep_segments', desc: '时间步分段采样', defaultValue: '', placeholder: '例如: 0:300:0.2, 300:700:0.6, 700:1000:0.2', visibleWhen: (c) => c.timestep_sampling_mode === 'advanced' },
-  // ── Anima Flow 时间步分布 (独立于上方的范围过滤) ──
+  // ── Anima Flow 时间步分布：上面的先验一旦真的生效，这一整组会被整段替换 ──
   // 选项必须覆盖后端 anima/anima_flow.py 的全部分支（:131-:169）。原先只给 shift，
   // 导致 qwen_shift/ideogram4_shift/logsnr 三个真实模式选不到，而且下方
   // anima_sigmoid_scale 锚的 'sigmoid'、flow_logit_* 锚的 'logit_normal' 都是死锚。
-  { key: 'timestep_sampling', type: 'select', label: '时间步采样分布', title: 'timestep_sampling', desc: '时间步采样策略', defaultValue: 'shift', options: [
+  { key: 'timestep_sampling', type: 'select', label: '时间步采样分布', title: 'timestep_sampling', desc: '时间步采样策略。注意：上面的「时间步采样模式」选 simple 且范围真的收窄，或选 advanced 并写了分段后，先验会整段替换这里的分布，本组本次不生效。', defaultValue: 'shift', options: [
     { value: 'shift', label: 'shift（推荐，sigmoid 偏置 + flow shift）' },
     { value: 'sigma', label: 'sigma（传统均匀，torch.rand）' },
     { value: 'uniform', label: 'uniform（均匀 linspace）' },

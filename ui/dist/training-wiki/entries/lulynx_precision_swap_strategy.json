@@ -31,15 +31,13 @@
     "principle": "balanced 优先 output/mid 高收益 block；aggressive 会选择更多候选 block",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "balanced prioritizes high-yield output/mid blocks; aggressive selects more candidate blocks.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

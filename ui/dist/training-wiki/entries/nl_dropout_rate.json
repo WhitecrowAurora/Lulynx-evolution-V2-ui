@@ -21,15 +21,13 @@
     "principle": "对结构化 JSON caption 中的 NL（自然语言描述）部分整块丢弃的概率，与 tag dropout 独立。0 = 不丢弃",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Probability of dropping the NL (natural-language description) part of structured JSON captions wholesale, independent of tag dropout. 0 = never drop.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

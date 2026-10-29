@@ -1,0 +1,8 @@
+.lx-resource-cost { border: 1px solid var(--lx-line); border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+.lx-resource-cost p { color: var(--lx-dim); font-size: 12px; margin: 8px 0; }
+.lx-resource-scroll { overflow-x: auto; }
+.lx-resource-cost table { border-collapse: collapse; width: 100%; font-size: 12px; }
+.lx-resource-cost th, .lx-resource-cost td { text-align: left; padding: 8px; border-bottom: 1px solid var(--lx-line); white-space: nowrap; }
+.lx-resource-cost fieldset { border: 1px solid var(--lx-line); padding: 10px; margin-top: 12px; }
+.lx-resource-cost label { display: flex; align-items: center; gap: 8px; margin: 8px 0; font-size: 12px; }
+.lx-resource-cost input, .lx-resource-cost select { background: var(--lx-bg); color: var(--lx-text); border: 1px solid var(--lx-line); border-radius: 4px; padding: 6px; min-width: 0; flex: 1; }

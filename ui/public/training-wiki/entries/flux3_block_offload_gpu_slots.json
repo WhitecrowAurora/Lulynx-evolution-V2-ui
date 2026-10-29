@@ -1,0 +1,28 @@
+{
+  "key": "flux3_block_offload_gpu_slots",
+  "title": "FLUX.3 Block Offload GPU 槽位",
+  "title_en": "FLUX.3 Block Offload GPU Slots",
+  "category": "FLUX.3 / 显存",
+  "category_en": "FLUX.3 / VRAM",
+  "appliesTo": [
+    "flux3-lora",
+    "flux3-finetune"
+  ],
+  "standard": {
+    "summary": "Block Offload 时同时驻留 GPU 的 Transformer block 数。默认 2。",
+    "effect": "控制 GPU 同时保留的 FLUX.3 Transformer block 数量。",
+    "whenToUse": "显存允许时可增加槽位以减少 CPU/GPU 换入；显存紧张时保持较低值。",
+    "avoidWhen": "显存余量不足时不要盲目增加。"
+  },
+  "standard_en": {
+    "summary": "Number of Transformer blocks kept on the GPU during block offload. Default: 2.",
+    "effect": "Controls how many FLUX.3 Transformer blocks remain on the GPU at once.",
+    "whenToUse": "Increase it when VRAM allows to reduce CPU/GPU transfers; keep it low when VRAM is tight.",
+    "avoidWhen": "Do not increase it without enough free VRAM."
+  },
+  "advanced": null,
+  "relatedConfigs": [
+    "flux3_block_residency",
+    "flux3_block_offload_prefetch_depth"
+  ]
+}

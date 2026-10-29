@@ -33,15 +33,13 @@
     "principle": "PyTorch autograd 在 forward 时保存中间激活用于 backward 计算。这些激活通常是 FP32/BF16 且占用大量显存。activation_compression 拦截 save_for_backward，将激活转换为低精度（FP16/BF16/FP8），backward 时自动反量化。fp8_e4m3 可将激活显存减少 75%（FP32→FP8），但精度损失更大。min_tensor_mb 避免压缩太小的张量（开销不划算）。",
     "intervention": "hook autograd save_for_backward → dtype cast to lower precision → dequantize on backward access。",
     "expectedImpact": "激活显存减少 50-75%。对训练质量的影响取决于 dtype 和模型。",
-    "tradeoffs": "FP8 压缩可能影响梯度质量。建议先用 FP16/BF16。",
-    "codePath": "training_loop.py:activation_compression → save_for_backward hook → dtype cast → dequantize on backward"
+    "tradeoffs": "FP8 压缩可能影响梯度质量。建议先用 FP16/BF16。"
   },
   "advanced_en": {
     "principle": "PyTorch autograd saves intermediate activations during forward for backward computation. These activations are usually FP32/BF16 and consume a lot of VRAM. activation_compression intercepts save_for_backward, casting activations to lower precision (FP16/BF16/FP8), with automatic dequantization on backward access. fp8_e4m3 can cut activation VRAM by 75% (FP32→FP8) at a larger precision cost. min_tensor_mb avoids compressing tensors too small to be worth it.",
     "intervention": "hook autograd save_for_backward → dtype cast to lower precision → dequantize on backward access.",
     "expectedImpact": "Activation VRAM reduced 50-75%. Impact on training quality depends on dtype and model.",
-    "tradeoffs": "FP8 compression can affect gradient quality. Start with FP16/BF16.",
-    "codePath": "training_loop.py:activation_compression → save_for_backward hook → dtype cast → dequantize on backward"
+    "tradeoffs": "FP8 compression can affect gradient quality. Start with FP16/BF16."
   },
   "relatedConfigs": [
     "activation_compression_dtype",

@@ -21,15 +21,13 @@
     "principle": "在 ai-toolkit 和 sd-scripts 格式之间转换 FLUX LoRA。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Converts a FLUX LoRA between ai-toolkit and sd-scripts formats.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

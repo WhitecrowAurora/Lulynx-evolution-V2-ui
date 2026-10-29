@@ -29,15 +29,13 @@
     "principle": "控制 Krea-2 block offload 的默认 GPU 常驻档位。Standard = 4 个 GPU slots，作为默认平衡档；Aggressive = 3 个 GPU slots，进一步压低显存占用但步时会略慢一些。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Controls the default GPU-resident tier for Krea-2 block offload. Standard = 4 GPU slots, the default balance tier; Aggressive = 3 GPU slots, pushing VRAM usage lower at a slightly slower step time.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

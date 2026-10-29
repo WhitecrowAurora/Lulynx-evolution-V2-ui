@@ -21,15 +21,13 @@
     "principle": "噪声强度。relative 时为相对 RMS 倍率；absolute 时为绝对标准差。常用 0.01~0.017（默认 0.0125）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Noise strength. In relative mode it is a multiplier on RMS; in absolute mode an absolute standard deviation. Common range 0.01~0.017 (default 0.0125).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

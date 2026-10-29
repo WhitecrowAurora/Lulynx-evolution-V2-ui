@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
 import { request } from './transport'
+import type { ComparisonJob } from './comparisonApi'
 
 /* 队列/任务域 API */
 
@@ -43,6 +44,7 @@ export interface QueuePayload {
 
 export const queueApi = {
   tasks: () => request<{ tasks?: TaskRecord[] }>('/api/tasks'),
+  jobs: () => request<{ jobs?: ComparisonJob[] }>('/api/jobs'),
   workbench: () => request<QueuePayload>('/train/queue'),
   editContext: (runId: string) => request<{ revision: number; run_id: string; config: Record<string, unknown>; queue_item?: QueueRun }>(`/train/queue/${encodeURIComponent(runId)}/edit-context`),
   edit: (runId: string, revision: number, patch: Record<string, unknown>) =>

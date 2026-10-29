@@ -29,15 +29,13 @@
     "principle": "H3 发布权重内嵌了 CFG 蒸馏（模型输出 ≈ cond + s·(cond−uncond)）；naive 微调把「蒸馏后的输出」当作 conditional 目标学习，等价于每步削弱一点内嵌 guidance。CFG 保真训练用 uncond 分支按 s 反解出 raw conditional 目标，让微调作用在正确的语义上。",
     "intervention": "minimax_h3/train_step.py：preserve_cfg = h3_cfg_preservation_enabled 且 configured_cfg_scale > 1 时启用 uncond 无梯度前向与目标重构；configs_h3.py：拒绝无消费端的 h3_training_adapter_path，并校验 h3_cfg_scale 范围 [1,16]。",
     "expectedImpact": "长训后底模的 few-step/无 CFG 生成能力保持完好；每步多一次无梯度前向，吞吐下降约与前向占比成比例。",
-    "tradeoffs": "需要缓存/编码 unconditional 文本张量（h3_cache_text_encoder_outputs 默认包含）；cfg_scale 与推理端习惯不匹配时保真效果打折。",
-    "codePath": "minimax_h3/train_step.py：preserve_cfg 分支；configs_h3.py：h3_training_adapter_path fail-closed 校验"
+    "tradeoffs": "需要缓存/编码 unconditional 文本张量（h3_cache_text_encoder_outputs 默认包含）；cfg_scale 与推理端习惯不匹配时保真效果打折。"
   },
   "advanced_en": {
     "principle": "H3's released weights embed CFG distillation (model output ≈ cond + s·(cond−uncond)); naive fine-tuning learns the \"distilled output\" as the conditional target, effectively weakening the embedded guidance a little every step. CFG-faithful training uses the uncond branch to back-solve the raw conditional target with s, so fine-tuning acts on the correct semantics.",
     "intervention": "minimax_h3/train_step.py: preserve_cfg activates when h3_cfg_preservation_enabled and configured_cfg_scale > 1, running a no-grad uncond forward and target reconstruction; configs_h3.py: rejects h3_training_adapter_path with no consumer and validates h3_cfg_scale in [1,16].",
     "expectedImpact": "After long runs the base model's few-step / no-CFG generation stays intact; one extra no-grad forward per step, with throughput dropping roughly in proportion to that forward's share.",
-    "tradeoffs": "Requires caching/encoding the unconditional text tensor (h3_cache_text_encoder_outputs includes it by default); a cfg_scale mismatched with inference habits dilutes the fidelity benefit.",
-    "codePath": "minimax_h3/train_step.py: preserve_cfg branch; configs_h3.py: fail-closed validation of h3_training_adapter_path"
+    "tradeoffs": "Requires caching/encoding the unconditional text tensor (h3_cache_text_encoder_outputs includes it by default); a cfg_scale mismatched with inference habits dilutes the fidelity benefit."
   },
   "relatedConfigs": [
     "h3_cfg_scale",

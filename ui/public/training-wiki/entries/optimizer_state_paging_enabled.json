@@ -35,15 +35,13 @@
     "principle": "optimizer.step() 前将符合阈值的 state 恢复到参数设备和原计算 dtype，step 后停放到 storage_device。pinned 模式复用持久 CPU mirror 与独立 CUDA copy stream；step 标量保持原 dtype。",
     "intervention": "包装既有 optimizer，不移动模型权重；同一 wrapper 负责运行、checkpoint metadata、resume 和 telemetry。",
     "expectedImpact": "真实 Anima 1-block/2-step 短测中峰值 GPU 使用约下降 255MB，steady step 增加约 0.21s；结果依赖 state 规模和 PCIe，不能外推。",
-    "tradeoffs": "这是显存换 RAM/PCIe。bf16/fp16 storage 会量化 state；pinned mirror 增加锁页内存，param_device 模式不节省显存。",
-    "codePath": "optimizer_state_paging.py → trainer_execution_optimizer_setup.py → optimizer execution profile / run manifest"
+    "tradeoffs": "这是显存换 RAM/PCIe。bf16/fp16 storage 会量化 state；pinned mirror 增加锁页内存，param_device 模式不节省显存。"
   },
   "advanced_en": {
     "principle": "Before optimizer.step(), states above the threshold are restored to the parameter device and original compute dtype; after the step they are parked on storage_device. pinned mode reuses a persistent CPU mirror and a dedicated CUDA copy stream; step scalars keep their original dtype.",
     "intervention": "Wraps an existing optimizer without moving model weights; the same wrapper handles running, checkpoint metadata, resume, and telemetry.",
     "expectedImpact": "In a real Anima 1-block/2-step short test, peak GPU usage dropped by roughly 255MB and steady-state steps got about 0.21s slower; results depend on state size and PCIe and must not be extrapolated.",
-    "tradeoffs": "This trades VRAM for RAM/PCIe. bf16/fp16 storage quantizes the state; the pinned mirror adds page-locked memory; the param_device mode saves no VRAM.",
-    "codePath": "optimizer_state_paging.py → trainer_execution_optimizer_setup.py → optimizer execution profile / run manifest"
+    "tradeoffs": "This trades VRAM for RAM/PCIe. bf16/fp16 storage quantizes the state; the pinned mirror adds page-locked memory; the param_device mode saves no VRAM."
   },
   "relatedConfigs": [
     "optimizer_state_paging_min_tensor_mb",

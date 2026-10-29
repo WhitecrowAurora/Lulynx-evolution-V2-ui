@@ -21,15 +21,13 @@
     "principle": "逗号分隔模块名。空 + 下方 auto 开 → 后端按族选单层 mid（省 hook 税）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Comma-separated module names. Empty + auto on above → the backend picks a single mid layer per family (saves hook overhead).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -21,15 +21,13 @@
     "principle": "启用分层学习率训练（只支持网络模块 networks.lora）。开启后可在下方分别设置 U-Net Encoder / Mid / Decoder 各层的学习率权重，精细控制模型各部分的训练强度",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Enables per-layer learning-rate training (only supports the networks.lora network module). When on, you can set learning-rate weights separately for each U-Net Encoder / Mid / Decoder layer to finely control training intensity per part of the model.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": [],
   "aliases": [

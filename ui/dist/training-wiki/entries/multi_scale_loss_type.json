@@ -29,15 +29,13 @@
     "principle": "MSE=均方误差; Cosine=余弦距离 (1 - cosine_similarity)。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "MSE = mean squared error; Cosine = cosine distance (1 - cosine_similarity).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -33,15 +33,13 @@
     "principle": "两种 l2 模式共享 O(B^2) 距离矩阵。standard 用 Hungarian 求全局最优双射；lulynx_greedy 按样本顺序选择未使用的最小距离。cosine 是独立的 flow OT 近似，不受 assignment mode 影响。",
     "intervention": "immiscible_assignment_mode=standard|lulynx_greedy 由既有 request/config 进入 training_step_noise_timestep_handler.py → immiscible_diffusion.py。",
     "expectedImpact": "standard 与 lulynx 模式的速度、收敛和质量必须按相同模型、数据、seed、步数做 A/B；不能从论文外推 lulynx 结果。",
-    "tradeoffs": "需要 batch 内计算配对距离，有 O(N²) 排序开销。",
-    "codePath": "backend/core/lulynx_trainer/training_step_noise_timestep_handler.py → immiscible_diffusion.py"
+    "tradeoffs": "需要 batch 内计算配对距离，有 O(N²) 排序开销。"
   },
   "advanced_en": {
     "principle": "The two l2 modes share an O(B²) distance matrix. standard uses Hungarian matching for the globally optimal bijection; lulynx_greedy picks the smallest unused distance in sample order. cosine is an independent flow-OT approximation, unaffected by assignment mode.",
     "intervention": "immiscible_assignment_mode=standard|lulynx_greedy enters training_step_noise_timestep_handler.py → immiscible_diffusion.py via the existing request/config path.",
     "expectedImpact": "standard vs lulynx modes' speed, convergence, and quality must be A/B'd on the same model, data, seed, and step count; do not extrapolate paper results to the lulynx mode.",
-    "tradeoffs": "Requires computing pairing distances within the batch, with O(N²) sorting overhead.",
-    "codePath": "backend/core/lulynx_trainer/training_step_noise_timestep_handler.py → immiscible_diffusion.py"
+    "tradeoffs": "Requires computing pairing distances within the batch, with O(N²) sorting overhead."
   },
   "relatedConfigs": [
     "immiscible_metric",

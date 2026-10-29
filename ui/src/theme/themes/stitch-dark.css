@@ -23,6 +23,8 @@ html[data-theme='stitch-dark'] body {
   --lx-warn: #d08b1f;
   --lx-danger: #e0483f;
   --lx-danger-glow: rgba(224, 72, 63, 0.2);
+  --lx-danger-fill: #c8102e;     /* 整块危险态填充:色相偏绯红,和 PyTorch 橙拉开 */
+  --lx-danger-contrast: #ffffff;
   --lx-field-bg: #1c1b1b;        /* inputs */
   --lx-bar-bg: #2a2a2a;
   --lx-grid-line: #232322;       /* 行间发丝线 */

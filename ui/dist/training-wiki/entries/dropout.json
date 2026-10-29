@@ -21,15 +21,13 @@
     "principle": "LyCORIS 主 dropout 概率。当前后端在 LoCon / LoHa / LoKr / Full 路线消费该字段。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Main LyCORIS dropout probability. Currently consumed by the backend on the LoCon / LoHa / LoKr / Full routes.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -21,8 +21,7 @@
     "principle": "缓存路线自动调 workers/prefetch/pin_memory。默认开启。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Auto-tunes workers/prefetch/pin_memory on the cached path. On by default."

@@ -31,15 +31,13 @@
     "principle": "epsilon prediction: 模型预测噪声 ε。v-prediction: 模型预测 v = √α · x_0 - √(1-α) · ε。v 是 x_0 和 ε 的加权组合，在大 timestep（α→0）时 v ≈ -ε，在小 timestep（α→1）时 v ≈ x_0。loss 计算也不同：L_v = ||v_pred - v_target||²。min_snr_gamma 的 divisor 在 v-pred 时变为 SNR+1。",
     "intervention": "trainer.py 根据 v_parameterization 切换 loss target 和 SNR 加权逻辑。",
     "expectedImpact": "匹配底模参数化时训练正确。不匹配时训练完全失败。",
-    "tradeoffs": "scale_v_pred_loss_like_noise_pred 对 v-pred loss 做额外缩放以接近 epsilon pred 的行为。",
-    "codePath": "trainer.py:v_parameterization → v_target = alpha * x0 - sigma * eps → MSE loss"
+    "tradeoffs": "scale_v_pred_loss_like_noise_pred 对 v-pred loss 做额外缩放以接近 epsilon pred 的行为。"
   },
   "advanced_en": {
     "principle": "epsilon prediction: the model predicts noise ε. v-prediction: the model predicts v = √α · x_0 - √(1-α) · ε. v is a weighted combination of x_0 and ε: at large timesteps (α→0) v ≈ -ε, at small timesteps (α→1) v ≈ x_0. The loss also differs: L_v = ||v_pred - v_target||². With v-pred, min_snr_gamma's divisor becomes SNR+1.",
     "intervention": "trainer.py switches the loss target and SNR weighting logic based on v_parameterization.",
     "expectedImpact": "Training is correct when it matches the base model's parameterization; mismatched, training fails completely.",
-    "tradeoffs": "scale_v_pred_loss_like_noise_pred applies extra scaling to the v-pred loss to approach epsilon-pred behavior.",
-    "codePath": "trainer.py:v_parameterization → v_target = alpha * x0 - sigma * eps → MSE loss"
+    "tradeoffs": "scale_v_pred_loss_like_noise_pred applies extra scaling to the v-pred loss to approach epsilon-pred behavior."
   },
   "relatedConfigs": [
     "min_snr_gamma",

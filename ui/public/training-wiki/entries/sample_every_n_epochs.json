@@ -21,15 +21,13 @@
     "principle": "每训练 N 个 epoch 生成一次预览图。留空则仅在 epoch 结束时按默认频率生成",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Generates preview images every N training epochs. When empty, previews are generated at the default frequency at epoch end.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

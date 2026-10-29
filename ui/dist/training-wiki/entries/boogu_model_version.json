@@ -29,8 +29,7 @@
     "principle": "当前产品默认 Base 0.1。Edit 见 boogu-edit-lora（Phase C）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "The current product default is Base 0.1. For Edit see boogu-edit-lora (Phase C)."

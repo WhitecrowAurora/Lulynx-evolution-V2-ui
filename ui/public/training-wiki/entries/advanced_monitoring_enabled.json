@@ -34,15 +34,13 @@
     "principle": "attn_entropy_interval 监控 attention weight 的熵（低熵 = 关注点集中）。act_drift_interval 监控 activation 分布的漂移。hessian_trace_interval 估算 loss Hessian 的 trace（曲率信息）。grad_cosine_enabled 计算连续梯度之间的余弦相似度（低相似度 = 优化不稳定）。lr_finder_enabled 在训练前自动搜索最优学习率。forgetting_probe_enabled 检测灾难性遗忘。manifold_enabled 追踪权重流形变化。",
     "intervention": "在 training_step 后按各自间隔执行诊断计算并写入日志。",
     "expectedImpact": "不直接影响训练质量。提供问题诊断和超参数调优的数据支持。",
-    "tradeoffs": "各诊断有独立的计算开销。Hessian trace 开销最大。",
-    "codePath": "training_loop.py:per-step diagnostics → attention entropy / activation drift / Hessian trace / gradient cosine"
+    "tradeoffs": "各诊断有独立的计算开销。Hessian trace 开销最大。"
   },
   "advanced_en": {
     "principle": "attn_entropy_interval monitors the entropy of attention weights (low entropy = concentrated focus). act_drift_interval monitors drift in activation distributions. hessian_trace_interval estimates the trace of the loss Hessian (curvature). grad_cosine_enabled computes cosine similarity between consecutive gradients (low similarity = unstable optimization). lr_finder_enabled auto-searches the optimal learning rate before training. forgetting_probe_enabled detects catastrophic forgetting. manifold_enabled tracks weight-manifold changes.",
     "intervention": "Runs each diagnostic on its own interval after training_step and writes to the log.",
     "expectedImpact": "Does not directly affect training quality. Provides data support for problem diagnosis and hyperparameter tuning.",
-    "tradeoffs": "Each diagnostic has its own compute cost; the Hessian trace is the most expensive.",
-    "codePath": "training_loop.py:per-step diagnostics → attention entropy / activation drift / Hessian trace / gradient cosine"
+    "tradeoffs": "Each diagnostic has its own compute cost; the Hessian trace is the most expensive."
   },
   "relatedConfigs": [
     "attn_entropy_interval",

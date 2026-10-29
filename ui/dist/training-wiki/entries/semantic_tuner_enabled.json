@@ -30,15 +30,13 @@
     "principle": "Semantic Tuner 使用预训练 LLM 提取图像和文本的语义表示，通过 projector 将语义信息注入到底模微调过程中。hybrid 模式同时使用标准 diffusion loss 和语义对齐 loss；pure 模式只使用语义信号。semantic_llm_path 指定 LLM 模型路径，semantic_projector_path 指定投影层路径。",
     "intervention": "在 forward 中额外计算语义对齐 loss，与标准 loss 加权合并。",
     "expectedImpact": "理论上提升语义对齐质量。实际效果高度依赖 LLM 和 projector 的质量。",
-    "tradeoffs": "计算开销大（需要额外 LLM forward）。实验性特性。",
-    "codePath": "core/semantic_tuner/ → LLM semantic extraction → projector → semantic alignment loss"
+    "tradeoffs": "计算开销大（需要额外 LLM forward）。实验性特性。"
   },
   "advanced_en": {
     "principle": "Semantic Tuner uses a pretrained LLM to extract semantic representations of images and text, injecting the semantic information into base-model finetuning through a projector. hybrid mode uses both the standard diffusion loss and a semantic alignment loss; pure mode uses only the semantic signal. semantic_llm_path specifies the LLM model path, semantic_projector_path the projector path.",
     "intervention": "During the forward pass it additionally computes the semantic alignment loss, merged with the standard loss by weighted sum.",
     "expectedImpact": "In theory improves semantic alignment quality; actual effect depends heavily on the quality of the LLM and projector.",
-    "tradeoffs": "High compute cost (needs an extra LLM forward). Experimental feature.",
-    "codePath": "core/semantic_tuner/ → LLM semantic extraction → projector → semantic alignment loss"
+    "tradeoffs": "High compute cost (needs an extra LLM forward). Experimental feature."
   },
   "relatedConfigs": [
     "semantic_llm_path",

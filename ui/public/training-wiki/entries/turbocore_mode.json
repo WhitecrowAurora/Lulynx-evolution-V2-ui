@@ -31,15 +31,13 @@
     "principle": "由顶栏启用 TurboCore 后生效。profile=性能分析；native_experimental=实验性加速。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Takes effect only after TurboCore is enabled in the top bar. profile = performance analysis; native_experimental = experimental acceleration. Off by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

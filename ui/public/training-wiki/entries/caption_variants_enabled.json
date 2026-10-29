@@ -34,15 +34,13 @@
     "principle": "caption_variants 是 JSON 数组：每个变体指定 suffix（文件后缀）、shuffle（是否打乱）、dropout（丢弃率）。caption_variant_schedule 控制切换策略：alternate 交替、ratio 按比例、curriculum 先易后难、custom 自定义序列。caption_variant_loss_adaptive 根据每个变体的 loss 动态调整比例。",
     "intervention": "DataLoader 每步按 schedule 选择变体 → 读取对应文件 → 应用该变体的 shuffle/dropout 设置。",
     "expectedImpact": "增强 prompt 灵活性。在同时使用 danbooru tag 和自然语言推理的场景下效果显著。",
-    "tradeoffs": "与 cache_text_encoder_outputs 配合时，每种变体需要单独缓存。",
-    "codePath": "dataset/elements.py:CaptionVariantManager → per-step variant selection"
+    "tradeoffs": "与 cache_text_encoder_outputs 配合时，每种变体需要单独缓存。"
   },
   "advanced_en": {
     "principle": "caption_variants is a JSON array: each variant specifies suffix (file suffix), shuffle (whether to shuffle), dropout (drop rate). caption_variant_schedule controls switching: alternate rotation, ratio by proportion, curriculum easy-to-hard, custom sequence. caption_variant_loss_adaptive dynamically adjusts ratios from each variant's loss.",
     "intervention": "Each step the DataLoader selects a variant by schedule → reads the corresponding file → applies that variant's shuffle/dropout settings.",
     "expectedImpact": "Enhances prompt flexibility. Especially effective when mixing danbooru tags with natural-language inference.",
-    "tradeoffs": "Combined with cache_text_encoder_outputs, each variant needs its own cache.",
-    "codePath": "dataset/elements.py:CaptionVariantManager → per-step variant selection"
+    "tradeoffs": "Combined with cache_text_encoder_outputs, each variant needs its own cache."
   },
   "relatedConfigs": [
     "caption_variants",

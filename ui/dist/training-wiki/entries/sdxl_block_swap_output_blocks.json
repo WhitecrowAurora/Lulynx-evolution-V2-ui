@@ -21,15 +21,13 @@
     "principle": "推荐第一步尝试。交换 U-Net output blocks，通常速度影响最小；如果本来能跑，就不建议开",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Recommended to try first. Swaps U-Net output blocks — usually the least speed impact; if training already fits, don't enable it.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -21,15 +21,13 @@
     "principle": "仅 cache_v0 手动实验使用；会映射到底层 PCIe Delta/Cache 预算。0 表示不分配真实缓存。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Only for cache_v0 manual experiments; maps onto the underlying PCIe Delta/Cache budget. 0 = no real cache allocated.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

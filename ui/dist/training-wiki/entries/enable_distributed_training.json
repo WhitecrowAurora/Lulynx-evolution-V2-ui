@@ -21,15 +21,13 @@
     "principle": "启用分布式启动。当前为最小实现，支持多进程/多机拉起，以及 worker 最小配置与缺失资源同步",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Enables distributed launch. Currently a minimal implementation: multi-process/multi-node bring-up, minimal worker configuration, and missing-resource synchronization.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

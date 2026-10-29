@@ -29,15 +29,13 @@
     "principle": "蒸馏权重内嵌的有效 guidance 是训练时固定的；反解 raw conditional 需要假设一个 s 值，s 与蒸馏时的真实值越接近，重构的目标越准确。4 是该 checkpoint 家族的实测校准值。",
     "intervention": "minimax_h3/train_step.py：configured_cfg_scale 参与 preserve_cfg 激活判定与目标重构；configs_h3.py：Field(ge=1, le=16) 校验。",
     "expectedImpact": "正确的 s 下长训不损伤内嵌 guidance；偏差过大的 s 会引入系统性目标误差。",
-    "tradeoffs": "s 不可从 checkpoint 直接读出，只能依赖校准经验值；改动后建议用固定 seed 预览对比验证。",
-    "codePath": "minimax_h3/train_step.py：configured_cfg_scale 使用；configs_h3.py：h3_cfg_scale 范围校验"
+    "tradeoffs": "s 不可从 checkpoint 直接读出，只能依赖校准经验值；改动后建议用固定 seed 预览对比验证。"
   },
   "advanced_en": {
     "principle": "The effective guidance embedded in distilled weights is fixed at their training time; back-solving the raw conditional requires assuming an s value — the closer s is to the true distillation value, the more accurate the reconstructed target. 4 is the measured calibration for this checkpoint family.",
     "intervention": "minimax_h3/train_step.py: configured_cfg_scale participates in the preserve_cfg activation check and target reconstruction; configs_h3.py: Field(ge=1, le=16) validation.",
     "expectedImpact": "With the correct s, long runs do not damage the embedded guidance; a badly off s introduces systematic target error.",
-    "tradeoffs": "s cannot be read directly from the checkpoint and relies on calibration experience; after changing it, verify with fixed-seed preview comparisons.",
-    "codePath": "minimax_h3/train_step.py: configured_cfg_scale usage; configs_h3.py: h3_cfg_scale range validation"
+    "tradeoffs": "s cannot be read directly from the checkpoint and relies on calibration experience; after changing it, verify with fixed-seed preview comparisons."
   },
   "relatedConfigs": [
     "h3_cfg_preservation_enabled",

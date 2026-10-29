@@ -21,15 +21,13 @@
     "principle": "Tensor-Ring 残差 rank R (0=使用 network_dim)。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Tensor-Ring residual rank R (0 = use network_dim).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

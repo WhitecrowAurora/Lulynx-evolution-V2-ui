@@ -39,15 +39,13 @@
     "principle": "latent 磁盘缓存保存精度。auto 会尽量保留运行时 dtype；fp16 更省空间，fp32 兼容性更高。若选择 npz + bf16，后端会自动回退为 fp32",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Precision for the on-disk latent cache. auto keeps the runtime dtype where possible; fp16 saves more space, fp32 is more compatible. With npz + bf16 the backend automatically falls back to fp32.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

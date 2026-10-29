@@ -21,15 +21,13 @@
     "principle": "逗号分隔：fid,clip_score,lpips。无真图目录时 FID 可能跳过。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Comma-separated: fid,clip_score,lpips. FID may be skipped when no ground-truth image directory is available.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

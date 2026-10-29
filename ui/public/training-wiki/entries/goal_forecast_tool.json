@@ -21,15 +21,13 @@
     "principle": "读取已训练 run 的 loss / 验证 loss / L2 时序，做饱和幂律趋势外推，判定收敛/发散并预测达到目标阈值所需步数，回答\"按当前趋势能否在总步数内达标\"。纯只读建议，不改动训练参数、不进入训练主链。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Reads the loss / validation loss / L2 time series of finished runs, fits a saturating power-law trend, judges convergence/divergence, and predicts the number of steps needed to reach a target threshold — answering \"can the goal be met within total steps at the current trend\". Read-only advisory; changes no training parameters and stays out of the main training chain.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

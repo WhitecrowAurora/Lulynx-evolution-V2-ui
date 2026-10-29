@@ -29,8 +29,7 @@
     "principle": "step = 阶跃开关（sigma > threshold 直接下采样）；cosine = 余弦平滑过渡（更平滑但稍复杂）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "step = step switch (downsample directly when sigma > threshold); cosine = smooth cosine transition (smoother but slightly more complex)."

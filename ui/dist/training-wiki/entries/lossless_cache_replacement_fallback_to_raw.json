@@ -21,15 +21,13 @@
     "principle": "sidecar 缺失/损坏时回退原版 npz 而非崩训练。关闭=strict 硬失败。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Falls back to the original npz instead of crashing training when a sidecar is missing/corrupt. Off = strict hard failure.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

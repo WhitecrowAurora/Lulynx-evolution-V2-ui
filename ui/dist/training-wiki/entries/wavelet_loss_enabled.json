@@ -33,15 +33,13 @@
     "principle": "对 pred 和 target 做 2D DWT（Haar 小波），得到 LL（低频近似）、LH（水平细节）、HL（垂直细节）、HH（对角细节）四个子带。分别计算每个子带的 loss，加权求和。wavelet_loss_base_loss 控制子带内用的 loss 函数（l2 或 l1）。",
     "intervention": "training_step 中 loss 计算后叠加 wavelet loss。",
     "expectedImpact": "高频细节改善明显（发丝、织物纹理）。可能略微降低整体构图稳定性。",
-    "tradeoffs": "与 min_snr_gamma 组合效果更好。wavelet_loss_approx_weight 控制 LL 子带权重（通常设 0 因为标准 loss 已覆盖）。",
-    "codePath": "training_loop.py:wavelet_loss(pred, target, levels, high_freq_weight) → add to main loss"
+    "tradeoffs": "与 min_snr_gamma 组合效果更好。wavelet_loss_approx_weight 控制 LL 子带权重（通常设 0 因为标准 loss 已覆盖）。"
   },
   "advanced_en": {
     "principle": "A 2D DWT (Haar wavelet) of pred and target yields four subbands: LL (low-frequency approximation), LH (horizontal detail), HL (vertical detail), HH (diagonal detail). Each subband's loss is computed separately and summed with weights. wavelet_loss_base_loss controls the per-subband loss function (l2 or l1).",
     "intervention": "In training_step, the wavelet loss is stacked after the loss computation.",
     "expectedImpact": "Noticeable high-frequency detail improvement (hair strands, fabric textures). May slightly reduce overall composition stability.",
-    "tradeoffs": "Combines well with min_snr_gamma. wavelet_loss_approx_weight controls the LL subband weight (usually 0 because the standard loss already covers it).",
-    "codePath": "training_loop.py:wavelet_loss(pred, target, levels, high_freq_weight) → add to main loss"
+    "tradeoffs": "Combines well with min_snr_gamma. wavelet_loss_approx_weight controls the LL subband weight (usually 0 because the standard loss already covers it)."
   },
   "relatedConfigs": [
     "wavelet_loss_levels",

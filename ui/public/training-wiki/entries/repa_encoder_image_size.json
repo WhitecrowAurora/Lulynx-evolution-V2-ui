@@ -21,15 +21,13 @@
     "principle": "0=编码器默认（dino≈224 / jina≈512）；>0 强制 resize，可降 CPU 成本。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "0 = encoder default (dino ≈ 224 / jina ≈ 512); >0 forces a resize, which can lower CPU cost.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

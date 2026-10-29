@@ -34,15 +34,13 @@
     "principle": "LoRA 模式只创建可训练的 adapter 层（network_dim × in/out），底模权重被冻结不参与梯度计算。Finetune 模式所有参数都参与训练，使用标准的 SGD/AdamW 更新。Anima finetune 支持渐进式解冻（anima_progressive_full_finetune_schedule）。",
     "intervention": "trainer 根据 training_type 决定构建 LoRA adapter 还是加载全参。",
     "expectedImpact": "LoRA 文件通常 10-200MB。Finetune 输出完整模型权重（数 GB）。",
-    "tradeoffs": "anima_full_finetune_phase 控制 Anima 全参微调的阶段策略。",
-    "codePath": "trainer.py:training_type dispatch → LoRA adapter creation / full parameter training"
+    "tradeoffs": "anima_full_finetune_phase 控制 Anima 全参微调的阶段策略。"
   },
   "advanced_en": {
     "principle": "LoRA mode only creates trainable adapter layers (network_dim × in/out); the base model weights are frozen and take no part in gradient computation. Finetune mode trains all parameters with standard SGD/AdamW updates. Anima finetune supports progressive unfreezing (anima_progressive_full_finetune_schedule).",
     "intervention": "The trainer builds a LoRA adapter or loads full parameters depending on training_type.",
     "expectedImpact": "LoRA files are usually 10-200MB. Finetune outputs full model weights (several GB).",
-    "tradeoffs": "anima_full_finetune_phase controls the phase strategy of Anima full-parameter finetuning.",
-    "codePath": "trainer.py:training_type dispatch → LoRA adapter creation / full parameter training"
+    "tradeoffs": "anima_full_finetune_phase controls the phase strategy of Anima full-parameter finetuning."
   },
   "relatedConfigs": [
     "network_dim",

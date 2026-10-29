@@ -39,15 +39,13 @@
     "principle": "标准 gradient checkpointing 在 backward 时重算整个 forward。Selective Activation Checkpointing (SAC) 分析每个操作的 FLOPs/内存比：高 FLOPs 操作（matmul/SDPA）保留激活不重算，低 FLOPs 操作（elementwise/layernorm）丢弃激活在 backward 时重算。anima_block_checkpointing_interval=1 表示所有 block 都做 checkpoint；=2 表示每隔一个 block 做 checkpoint（一半 block 保留完整激活）。anima_block_prefetch_mode='adaptive' 根据 blockskip 策略和在线深度自适应调整预取深度。",
     "intervention": "DiT block forward 时根据 mode 决定哪些操作保留激活。",
     "expectedImpact": "selective 比 block 模式速度提升约 15-25%，显存多约 10-15%。interval=2 进一步提速但显存增加更多。",
-    "tradeoffs": "interval > 1 时部分 block 不做 checkpoint，显存占用更高。",
-    "codePath": "core/lulynx_trainer/ → Anima DiT block checkpoint → selective SAC / interval control"
+    "tradeoffs": "interval > 1 时部分 block 不做 checkpoint，显存占用更高。"
   },
   "advanced_en": {
     "principle": "Standard gradient checkpointing recomputes the whole forward during backward. Selective Activation Checkpointing (SAC) analyzes each op's FLOPs/memory ratio: high-FLOPs ops (matmul/SDPA) keep activations without recompute, low-FLOPs ops (elementwise/layernorm) drop activations and recompute them in backward. anima_block_checkpointing_interval=1 checkpoints every block; =2 checkpoints every other block (half the blocks keep full activations). anima_block_prefetch_mode='adaptive' adjusts prefetch depth online based on the blockskip strategy.",
     "intervention": "At DiT block forward, the mode decides which ops keep activations.",
     "expectedImpact": "selective is about 15-25% faster than block mode with roughly 10-15% more VRAM. interval=2 speeds up further but increases VRAM more.",
-    "tradeoffs": "With interval > 1 some blocks are not checkpointed, so VRAM usage is higher.",
-    "codePath": "core/lulynx_trainer/ → Anima DiT block checkpoint → selective SAC / interval control"
+    "tradeoffs": "With interval > 1 some blocks are not checkpointed, so VRAM usage is higher."
   },
   "relatedConfigs": [
     "anima_block_checkpointing",

@@ -21,15 +21,13 @@
     "principle": "正则化数据集路径。默认留空，不使用正则化图像。适用于全量训练，轻量 LoRA 可忽略",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Regularization dataset path. Leave empty by default to not use regularization images. Relevant for full fine-tuning; lightweight LoRA can ignore it.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

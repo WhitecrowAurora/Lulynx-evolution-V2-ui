@@ -21,8 +21,7 @@
     "principle": "按 block 做 LRU 进出 GPU，与 streaming offload 互斥。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "LRU block-level swap in/out of GPU; mutually exclusive with streaming offload. Off by default."

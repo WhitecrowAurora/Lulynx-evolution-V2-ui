@@ -31,15 +31,13 @@
     "principle": "compatible=支持梯度累积的安全档；full=立即释放（更省显存，不兼容 accum/clip/fp16）；post_step=基线。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "compatible = safe tier that supports gradient accumulation; full = release immediately (saves more VRAM, incompatible with accum/clip/fp16); post_step = baseline.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

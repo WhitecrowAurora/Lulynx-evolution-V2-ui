@@ -21,15 +21,13 @@
     "principle": "可填本地 Gemma/Jina CLIP/文本模型目录；留空使用 runner 默认。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Can point to a local Gemma / Jina CLIP / text model directory; empty uses the runner default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

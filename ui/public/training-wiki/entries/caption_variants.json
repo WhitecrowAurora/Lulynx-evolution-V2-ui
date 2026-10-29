@@ -21,8 +21,7 @@
     "principle": "JSON 数组，例如 [{\"suffix\":\".tag\",\"shuffle\":true,\"dropout\":0.1},{\"suffix\":\".",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "JSON array, e.g. [{\"suffix\":\".tag\",\"shuffle\":true,\"dropout\":0.1},{\"suffix\":\"."

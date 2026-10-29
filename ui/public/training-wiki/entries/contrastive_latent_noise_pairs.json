@@ -21,15 +21,13 @@
     "principle": "当前训练仅使用当前批次的 1 对，不增加额外前向传播。请保持 1；大于 1 的值保留兼容，但不会增加采样对数。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Current training only uses 1 pair from the current batch, with no extra forward passes. Keep it at 1; values above 1 are kept for compatibility but do not increase sampled pairs.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

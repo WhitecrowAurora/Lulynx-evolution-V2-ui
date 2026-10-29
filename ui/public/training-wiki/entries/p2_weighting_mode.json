@@ -31,15 +31,13 @@
     "principle": "mode=p2 使用 SNR=((1-sigma)/sigma)^2 与 w=(k+SNR)^(-gamma)；lulynx_structure/detail 使用 exp(±strength*tanh(log(SNR)/tau)) 的本仓饱和工程权重。两者不是同一公式。",
     "intervention": "training_step_loss_execution_core.py：主 loss 计算后、其它 reweight（memory-gap、HNM）之前，p2_mode != off 时调用 p2_weighting.p2_perception_weight(sigmas, mode, strength) 得到逐样本权重相乘。",
     "expectedImpact": "收益必须用相同模型、数据、seed 和步数做 A/B 验证，不能把论文 P2 结果外推到 lulynx 模式。",
-    "tradeoffs": "strength 过大（>1.0）会明显牺牲另一端（结构↔细节此消彼长）；scale_guidance 预设（detail/style/composition 模式）会自动写入本键，手动值可能被预设覆盖或冲突。",
-    "codePath": "training_step_loss_execution_core.py——loss = loss * p2_perception_weight(sigmas, mode, strength)；p2_weighting.py；scale_guidance.py 预设注入"
+    "tradeoffs": "strength 过大（>1.0）会明显牺牲另一端（结构↔细节此消彼长）；scale_guidance 预设（detail/style/composition 模式）会自动写入本键，手动值可能被预设覆盖或冲突。"
   },
   "advanced_en": {
     "principle": "mode=p2 uses SNR=((1-sigma)/sigma)^2 with w=(k+SNR)^(-gamma); lulynx_structure/detail uses the repo's own saturating engineering weight exp(±strength*tanh(log(SNR)/tau)). The two are not the same formula.",
     "intervention": "training_step_loss_execution_core.py: after the main loss computation and before the other reweighting (memory-gap, HNM), when p2_mode != off it calls p2_weighting.p2_perception_weight(sigmas, mode, strength) to get per-sample weights and multiplies.",
     "expectedImpact": "Gains must be A/B-verified with the same model, data, seed, and step count; do not extrapolate the paper's P2 results to the lulynx modes.",
-    "tradeoffs": "Too large a strength (>1.0) visibly sacrifices the other end (structure vs detail is a trade-off); scale_guidance presets (detail/style/composition modes) write this key automatically and manual values may be overwritten by or conflict with a preset.",
-    "codePath": "training_step_loss_execution_core.py — loss = loss * p2_perception_weight(sigmas, mode, strength); p2_weighting.py; scale_guidance.py preset injection"
+    "tradeoffs": "Too large a strength (>1.0) visibly sacrifices the other end (structure vs detail is a trade-off); scale_guidance presets (detail/style/composition modes) write this key automatically and manual values may be overwritten by or conflict with a preset."
   },
   "relatedConfigs": [
     "p2_weighting_strength",

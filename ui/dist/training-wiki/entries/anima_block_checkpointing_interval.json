@@ -21,8 +21,7 @@
     "principle": "每 N 个 DiT block 设一个检查点。1 = 全部重算最省显存；2-4 显存略高但更快。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Place a checkpoint every N DiT blocks. 1 = recompute everything, most VRAM-friendly; 2-4 uses a bit more VRAM but runs faster."

@@ -33,15 +33,13 @@
     "principle": "仅 orthogonal_redistribute 使用：center_peak=中间层更高；ascending=深层更高；descending=浅层更高；flat=平坦。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Only used by orthogonal_redistribute: center_peak = middle layers higher; ascending = deeper layers higher; descending = shallower layers higher; flat = uniform.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

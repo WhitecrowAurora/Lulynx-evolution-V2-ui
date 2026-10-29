@@ -35,15 +35,13 @@
     "principle": "该字段只决定 lulynx 自研 hidden-state prompt embedding 的初始数值，不改变 post-forward 拼接位置与运行时契约。",
     "intervention": "安装 prompt module 时初始化 embedding；配置层只接受 normal、uniform、zeros。",
     "expectedImpact": "影响训练初期的附加 hidden-state 幅度，不改变参数量。",
-    "tradeoffs": "zeros 初始扰动最小，但可能让早期梯度动态与随机初始化不同；应通过短测选择。",
-    "codePath": "configs_training_methods.py → prefix_tuning.py::_initialize_embedding"
+    "tradeoffs": "zeros 初始扰动最小，但可能让早期梯度动态与随机初始化不同；应通过短测选择。"
   },
   "advanced_en": {
     "principle": "This field only decides the initial values of lulynx's own hidden-state prompt embedding; it does not change the post-forward concatenation position or the runtime contract.",
     "intervention": "Initializes the embedding when installing the prompt module; the config layer accepts only normal, uniform, zeros.",
     "expectedImpact": "Affects the extra hidden states' magnitude early in training; does not change parameter count.",
-    "tradeoffs": "zeros has the smallest initial perturbation but early gradient dynamics may differ from random initialization; choose via short tests.",
-    "codePath": "configs_training_methods.py → prefix_tuning.py::_initialize_embedding"
+    "tradeoffs": "zeros has the smallest initial perturbation but early gradient dynamics may differ from random initialization; choose via short tests."
   },
   "relatedConfigs": [
     "lulynx_hidden_state_prelude_length",

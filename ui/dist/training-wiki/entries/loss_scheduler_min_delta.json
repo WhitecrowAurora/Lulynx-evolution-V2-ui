@@ -21,15 +21,13 @@
     "principle": "EMA loss 至少下降这么多才算“仍在变好”。默认偏保守，避免微小波动长期锁住余弦。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "The EMA loss must drop at least this much to count as \"still improving\". The default is conservative, keeping tiny fluctuations from locking the cosine for a long time.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -21,15 +21,13 @@
     "principle": "LoftQ 首版使用 fake-quant/dequant 权重残差初始化；不是持久 4bit base runtime。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "LoftQ v1 uses fake-quant/dequant weight-residual initialization; it is not a persistent 4-bit base runtime.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

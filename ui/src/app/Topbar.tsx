@@ -7,6 +7,8 @@ import { Dot } from '@/components/primitives'
 import { useI18n } from '@/i18n/useI18n'
 import { useLocaleStore } from '@/stores/localeStore'
 import { usePerfModeStore } from '@/stores/perfModeStore'
+import { useTrainConfigStore } from '@/stores/configStore'
+import { TURBOCORE_NATIVE_OPTIMIZERS, turbocoreUnsupportedOptimizer } from '@/lib/turbocoreOptimizerSupport'
 
 type Health = 'unknown' | 'ok' | 'down'
 
@@ -23,10 +25,17 @@ export function Topbar() {
   const [health, setHealth] = useState<Health>('unknown')
   const [mode, setMode] = useState('')
 
-  const lulynxOpt = usePerfModeStore((s) => s.lulynxOptimization)
-  const turbocore = usePerfModeStore((s) => s.turbocore)
+  const defaultLulynxOpt = usePerfModeStore((s) => s.lulynxOptimization)
+  const defaultTurbocore = usePerfModeStore((s) => s.turbocore)
+  const lulynxOpt = useTrainConfigStore((s) => s.drafts[s.typeId]?.lulynx_optimization_enabled) ?? defaultLulynxOpt
+  const turbocore = useTrainConfigStore((s) => s.drafts[s.typeId]?.turbocore_enabled) ?? defaultTurbocore
+  const setValue = useTrainConfigStore((s) => s.setValue)
   const setLulynxOptimization = usePerfModeStore((s) => s.setLulynxOptimization)
   const setTurbocore = usePerfModeStore((s) => s.setTurbocore)
+  // 只订阅当前训练类型草稿的优化器两个字段,改其他表单项不触发顶栏重渲染
+  const optimizerType = useTrainConfigStore((s) => s.drafts[s.typeId]?.optimizer_type)
+  const optimizerArgsCustom = useTrainConfigStore((s) => s.drafts[s.typeId]?.optimizer_args_custom)
+  const unsupportedOptimizer = turbocore ? turbocoreUnsupportedOptimizer(optimizerType, optimizerArgsCustom) : ''
   useEffect(() => {
     let alive = true
     const ping = async () => {
@@ -67,18 +76,24 @@ export function Topbar() {
           <button
             type="button"
             className={['lx-pill', 'lx-pill-toggle', lulynxOpt ? 'on' : ''].filter(Boolean).join(' ')}
-            aria-pressed={lulynxOpt}
-            onClick={() => setLulynxOptimization(!lulynxOpt)}
-            title={lulynxOpt ? 'Lulynx 优化已开启(Triton 融合内核)。点击切换到经典兼容路径。' : 'Lulynx 优化已关闭(经典兼容路径)。点击启用 Triton 融合内核。'}
+            aria-pressed={Boolean(lulynxOpt)}
+            onClick={() => { setLulynxOptimization(!lulynxOpt); setValue('lulynx_optimization_enabled', !lulynxOpt) }}
+            title={lulynxOpt ? 'Lulynx 优化：已开启，点击关闭。' : 'Lulynx 优化：已关闭，点击开启。'}
           >
             LULYNX 优化
           </button>
           <button
             type="button"
-            className={['lx-pill', 'lx-pill-toggle', turbocore ? 'on' : ''].filter(Boolean).join(' ')}
-            aria-pressed={turbocore}
-            onClick={() => setTurbocore(!turbocore)}
-            title={turbocore ? 'TurboCore CUDA 优化器已开启(Lulynx Triton 优化器自动置 off)。点击切换到标准 PyTorch 优化器。' : 'TurboCore 已关闭(标准 PyTorch 优化器)。点击启用 TurboCore CUDA 优化器。'}
+            className={['lx-pill', 'lx-pill-toggle', turbocore ? 'on' : '', unsupportedOptimizer ? 'unsupported' : ''].filter(Boolean).join(' ')}
+            aria-pressed={Boolean(turbocore)}
+            onClick={() => { setTurbocore(!turbocore); setValue('turbocore_enabled', !turbocore) }}
+            title={
+              !turbocore
+                ? 'TurboCore：已关闭，点击开启。'
+                : unsupportedOptimizer
+                  ? `TurboCore：当前优化器 ${unsupportedOptimizer} 不受支持，训练时将退回 PyTorch 优化器（标准核心）。支持：${TURBOCORE_NATIVE_OPTIMIZERS.join(' / ')}。点击关闭。`
+                  : 'TurboCore：已开启，点击关闭。'
+            }
           >
             TURBOCORE
           </button>

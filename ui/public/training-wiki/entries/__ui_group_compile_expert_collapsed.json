@@ -21,8 +21,7 @@
     "principle": "基础 Compile 运行策略可在普通模式选择；shape / target / cudagraph 等复杂覆盖项仍收在专家模式。关闭专家模式时不会发送 shape/target 等复杂覆盖项，后端会继续按显式启动参数优先并自动 fallback。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "The base Compile run strategy can be selected in normal mode; complex overrides such as shape / target / cudagraph stay tucked away in expert mode. When expert mode is off, those complex overrides are not sent, and the backend keeps prioritizing explicit launch arguments with automatic fallback."

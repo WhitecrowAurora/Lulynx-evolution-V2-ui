@@ -31,15 +31,13 @@
     "principle": "Rectified Flow 使用线性插值 x_t = (1-t)·x_0 + t·ε，目标是预测 velocity v = ε - x_0。CFM 引入条件最优传输耦合（flow_use_ot=True）。cfm_lambda 控制 CFM 的对比项权重。sdxl_flow_weighting_scheme 控制 flow matching 的 timestep 加权（sigma_sqrt/cosmap/mode/logit_normal）。",
     "intervention": "training_loop.py 根据 flow_model 切换到对应的 loss 计算和 timestep 采样逻辑。",
     "expectedImpact": "在某些数据集上 Rectified Flow 可能改善 1-3% FID。",
-    "tradeoffs": "sdxl_flow_shift 控制 discrete flow 的偏移。flow_uniform_shift 启用基于分辨率的均匀偏移。",
-    "codePath": "training_loop.py:flow_model dispatch → standard/rectified_flow/cfm loss computation"
+    "tradeoffs": "sdxl_flow_shift 控制 discrete flow 的偏移。flow_uniform_shift 启用基于分辨率的均匀偏移。"
   },
   "advanced_en": {
     "principle": "Rectified Flow uses linear interpolation x_t = (1-t)·x_0 + t·ε with the target of predicting velocity v = ε - x_0. CFM introduces conditional optimal-transport coupling (flow_use_ot=True). cfm_lambda controls CFM's contrastive-term weight. sdxl_flow_weighting_scheme controls flow matching's timestep weighting (sigma_sqrt/cosmap/mode/logit_normal).",
     "intervention": "training_loop.py switches the loss computation and timestep-sampling logic per flow_model.",
     "expectedImpact": "Rectified Flow may improve FID by 1-3% on some datasets.",
-    "tradeoffs": "sdxl_flow_shift controls the discrete flow's shift. flow_uniform_shift enables resolution-based uniform shift.",
-    "codePath": "training_loop.py:flow_model dispatch → standard/rectified_flow/cfm loss computation"
+    "tradeoffs": "sdxl_flow_shift controls the discrete flow's shift. flow_uniform_shift enables resolution-based uniform shift."
   },
   "relatedConfigs": [
     "flow_logit_mean",

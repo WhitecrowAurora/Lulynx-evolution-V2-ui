@@ -92,7 +92,7 @@ export function PageHead({
       </div>
       <h1 className="lx-page-title">
         {lines.map((l, i) => (
-          <span key={i} className={['line', l.outline ? 'outline' : ''].filter(Boolean).join(' ')}>
+          <span key={i} className={['line', l.outline ? 'is-outline' : ''].filter(Boolean).join(' ')}>
             {l.text}
           </span>
         ))}

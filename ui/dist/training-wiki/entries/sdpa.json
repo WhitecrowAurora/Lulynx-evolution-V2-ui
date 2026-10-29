@@ -22,15 +22,13 @@
     "principle": "高级覆盖：强制 SDPA。默认关闭（不写死 sdpa），由运行时 profile 决定。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Advanced override: force SDPA. Off by default (does not hard-code sdpa); decided by the runtime profile.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

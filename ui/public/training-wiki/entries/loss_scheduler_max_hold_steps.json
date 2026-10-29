@@ -21,15 +21,13 @@
     "principle": "连续不推进余弦相位的最大步数。0 表示自动保护上限（约 5% 有效训练步，最多 200 步），避免训练 loss 形成负反馈循环。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Maximum number of consecutive steps without advancing the cosine phase. 0 = automatic guard cap (about 5% of effective training steps, at most 200), preventing a negative feedback loop in training loss.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

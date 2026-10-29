@@ -21,15 +21,13 @@
     "principle": "推荐最后再尝试。交换 U-Net input blocks，显存收益较大，但通常速度损失最大",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Recommended to try last. Swaps U-Net input blocks — large VRAM savings, but usually the biggest speed loss.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

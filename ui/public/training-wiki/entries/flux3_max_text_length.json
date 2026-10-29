@@ -1,0 +1,27 @@
+{
+  "key": "flux3_max_text_length",
+  "title": "FLUX.3 最大文本长度",
+  "title_en": "FLUX.3 Maximum Text Length",
+  "category": "FLUX.3 / 文本编码",
+  "category_en": "FLUX.3 / Text Encoding",
+  "appliesTo": [
+    "flux3-lora",
+    "flux3-finetune"
+  ],
+  "standard": {
+    "summary": "限制 Qwen3-VL 文本条件的最大序列长度。修改后应重新构建文本缓存。",
+    "effect": "控制 FLUX.3 文本编码和缓存使用的最大 token 长度。",
+    "whenToUse": "按数据集中 caption 的长度和显存预算设置；不确定时保持默认。",
+    "avoidWhen": "已有文本缓存时不要只改长度后继续复用旧缓存。"
+  },
+  "standard_en": {
+    "summary": "Maximum sequence length for Qwen3-VL text conditioning. Rebuild text caches after changing it.",
+    "effect": "Controls the maximum token length used for FLUX.3 text encoding and caching.",
+    "whenToUse": "Choose it based on caption lengths and VRAM budget; keep the default when unsure.",
+    "avoidWhen": "Do not reuse an existing text cache after changing the length."
+  },
+  "advanced": null,
+  "relatedConfigs": [
+    "flux3_block_residency"
+  ]
+}

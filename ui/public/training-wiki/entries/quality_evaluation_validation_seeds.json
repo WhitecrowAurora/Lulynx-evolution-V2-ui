@@ -32,15 +32,13 @@
     "principle": "生成式评估的方差主要来自采样随机性；固定 seeds 把评估变成确定性函数，分数差异才能归因于权重变化。种子数 × prompt 数 = 评估样本量，受 quality_evaluation_num_samples 上限截断。",
     "intervention": "configs_validators.py：从配置块或扁平字符串解析整数列表（两种来源都支持）；quality/validation_suite.py：seeds = quality_evaluation_validation_seeds or [sample_seed or 42]，进入验证用例矩阵。",
     "expectedImpact": "评估可重复性从「±几个点的随机波动」提升到确定性；评估耗时随种子数线性增长。",
-    "tradeoffs": "种子太少（1~2 个）评估对该种子的特异性敏感；建议 3~5 个平衡成本与代表性。",
-    "codePath": "quality/validation_suite.py：seeds 解析与用例组装；configs_validators.py：字符串→整数列表归一化"
+    "tradeoffs": "种子太少（1~2 个）评估对该种子的特异性敏感；建议 3~5 个平衡成本与代表性。"
   },
   "advanced_en": {
     "principle": "Generative evaluation variance comes mainly from sampling randomness; fixed seeds turn evaluation into a deterministic function so score differences can be attributed to weight changes. Seed count × prompt count = evaluation sample size, capped by quality_evaluation_num_samples.",
     "intervention": "configs_validators.py: parses an integer list from either a config block or a flat string; quality/validation_suite.py: seeds = quality_evaluation_validation_seeds or [sample_seed or 42], entering the validation case matrix.",
     "expectedImpact": "Evaluation repeatability goes from \"±a few points of random fluctuation\" to deterministic; evaluation time grows linearly with seed count.",
-    "tradeoffs": "Too few seeds (1~2) makes the evaluation sensitive to that seed's idiosyncrasies; 3~5 is recommended to balance cost and representativeness.",
-    "codePath": "quality/validation_suite.py: seeds parsing and case assembly; configs_validators.py: string → integer list normalization"
+    "tradeoffs": "Too few seeds (1~2) makes the evaluation sensitive to that seed's idiosyncrasies; 3~5 is recommended to balance cost and representativeness."
   },
   "relatedConfigs": [
     "quality_evaluation_suite_id",

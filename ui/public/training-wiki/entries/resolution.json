@@ -46,15 +46,13 @@
     "principle": "分辨率 → VAE encode → latent 空间维度。SDXL VAE 下采样 8 倍：1024px → 128×128 latent（4 channels × 128 × 128 = 65536 元素）。UNet forward 的 attention 计算是 O(n²)，n = latent 面积 = (resolution/8)²。所以分辨率从 1024→2048，attention 计算量翻 16 倍（不是 4 倍）。Flash Attention 将 attention 从 O(n²) 降到 O(n)，所以高分辨率时 Flash2/SageAttn 的收益更大。",
     "intervention": "resolution 传入 DataLoader 的 resize target 和 BucketManager 的面积基准。VAE encode 输出的 latent shape 直接取决于输入分辨率。staged_resolution 在训练过程中动态切换分辨率——例如前 500 步用 512 快速学构图，后 1500 步用 1024 学细节。",
     "expectedImpact": "高分辨率对纹理细节（皮肤、织物、毛发）影响最大。SDXL 在 512px 训练的 LoRA 生成 1024px 图像时会出现重复纹理和模糊。对构图和色彩的影响较小——这些在低分辨率也能学好。",
-    "tradeoffs": "staged_resolution_steps 和 staged_resolution_values 控制阶段分辨率训练。例如 '500,1500' + '512,1024' 表示前 500 步 512px，后 1500 步 1024px。staged_resolution_ratio_* 系列参数按面积比例控制。这比固定分辨率节省约 20-30% 训练时间且质量接近。",
-    "codePath": "dataset_loader.py:resize/crop → VAE encode → latent (C, H/8, W/8) → UNet forward"
+    "tradeoffs": "staged_resolution_steps 和 staged_resolution_values 控制阶段分辨率训练。例如 '500,1500' + '512,1024' 表示前 500 步 512px，后 1500 步 1024px。staged_resolution_ratio_* 系列参数按面积比例控制。这比固定分辨率节省约 20-30% 训练时间且质量接近。"
   },
   "advanced_en": {
     "principle": "Resolution → VAE encode → latent space dimensions. The SDXL VAE downsamples 8x: 1024px → 128×128 latent (4 channels × 128 × 128 = 65536 elements). The UNet forward's attention compute is O(n²) with n = latent area = (resolution/8)². So going 1024→2048 multiplies attention compute 16-fold (not 4-fold). Flash Attention reduces attention from O(n²) to O(n), so Flash2/SageAttn benefit more at high resolution.",
     "intervention": "resolution feeds the DataLoader's resize target and the BucketManager's area baseline. The VAE encode output's latent shape depends directly on input resolution. staged_resolution switches resolution dynamically during training — e.g. the first 500 steps at 512 to learn composition quickly, then 1500 steps at 1024 to learn detail.",
     "expectedImpact": "High resolution matters most for texture detail (skin, fabric, hair). A LoRA trained at 512px on SDXL shows repeating textures and blur when generating 1024px images. Effects on composition and color are smaller — those are learnable at low resolution too.",
-    "tradeoffs": "staged_resolution_steps and staged_resolution_values control staged-resolution training, e.g. '500,1500' + '512,1024' means the first 500 steps at 512px then 1500 steps at 1024px. The staged_resolution_ratio_* parameters control it by area ratio. This saves about 20-30% training time versus fixed resolution at near-identical quality.",
-    "codePath": "dataset_loader.py:resize/crop → VAE encode → latent (C, H/8, W/8) → UNet forward"
+    "tradeoffs": "staged_resolution_steps and staged_resolution_values control staged-resolution training, e.g. '500,1500' + '512,1024' means the first 500 steps at 512px then 1500 steps at 1024px. The staged_resolution_ratio_* parameters control it by area ratio. This saves about 20-30% training time versus fixed resolution at near-identical quality."
   },
   "relatedConfigs": [
     "enable_bucket",

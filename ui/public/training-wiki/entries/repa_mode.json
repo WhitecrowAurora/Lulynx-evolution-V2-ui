@@ -29,15 +29,13 @@
     "principle": "absolute=同维 cosine/L2；relational=Gram（维可不齐，latent_identity 推荐）。默认 absolute。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "absolute = same-dimension cosine/L2; relational = Gram (dimensions need not match; recommended with latent_identity). Default absolute.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

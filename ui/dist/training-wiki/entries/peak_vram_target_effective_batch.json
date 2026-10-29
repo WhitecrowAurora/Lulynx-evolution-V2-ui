@@ -21,15 +21,13 @@
     "principle": "目标等效 batch。填写 0 表示关闭；填写后会优先通过梯度累积去逼近该等效 batch，而不是直接抬高单步 batch。通常先调这个，再考虑更重的兜底项",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Target effective batch. 0 disables it; when set, gradient accumulation is preferred to approach the effective batch instead of raising the per-step batch directly. Usually tune this first before reaching for the heavier fallbacks.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

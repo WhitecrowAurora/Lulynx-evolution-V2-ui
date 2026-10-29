@@ -32,15 +32,13 @@
     "principle": "LoRA 的 ΔW = B·A·(alpha/rank) 可以直接加到基础权重上（W' = W + scale·ΔW）。预融合后训练的新 LoRA 学到的是相对 W' 的残差，因此推理时需要「底模 + 预融合 LoRA(同 scale) + 新 LoRA」三者组合才能还原训练时的分布。",
     "intervention": "trainer_prepare_finalize_mixin.py：模型加载与 adapter 注入之间，路径非空时调用 adapter.adapter_prefusion.prefuse_adapter_into_model(model, path, scale)；路径受 training_path_contract.py 的路径合法性校验。",
     "expectedImpact": "训练起点分布与目标组合一致，新 LoRA 不必重复学习已有 LoRA 的内容，收敛更快、串味更少。",
-    "tradeoffs": "融合发生在内存中的本次训练副本，不会写坏磁盘上的底模；但训练产物与预融合 LoRA 形成隐性依赖，分发时需要说明配套关系。",
-    "codePath": "trainer_prepare_finalize_mixin.py——prefuse_adapter_into_model(model, prefuse_adapter_path, scale=prefuse_adapter_scale)；configs_monitoring.py 定义"
+    "tradeoffs": "融合发生在内存中的本次训练副本，不会写坏磁盘上的底模；但训练产物与预融合 LoRA 形成隐性依赖，分发时需要说明配套关系。"
   },
   "advanced_en": {
     "principle": "A LoRA's ΔW = B·A·(alpha/rank) can be added directly to the base weights (W' = W + scale·ΔW). A LoRA trained after pre-fusion learns the residual relative to W', so inference needs the combination of base model + prefused LoRA (same scale) + new LoRA to reproduce the training-time distribution.",
     "intervention": "trainer_prepare_finalize_mixin.py: between model loading and adapter injection, when the path is non-empty it calls adapter.adapter_prefusion.prefuse_adapter_into_model(model, path, scale); the path is validated by training_path_contract.py's path legality checks.",
     "expectedImpact": "The training start distribution matches the target combination, so the new LoRA does not have to relearn the existing LoRA's content — faster convergence and less concept bleed.",
-    "tradeoffs": "The fusion happens on the in-memory copy for this training run and cannot corrupt the base model on disk; but the training artifact and the prefused LoRA form an implicit dependency that must be documented when distributing.",
-    "codePath": "trainer_prepare_finalize_mixin.py — prefuse_adapter_into_model(model, prefuse_adapter_path, scale=prefuse_adapter_scale); defined in configs_monitoring.py"
+    "tradeoffs": "The fusion happens on the in-memory copy for this training run and cannot corrupt the base model on disk; but the training artifact and the prefused LoRA form an implicit dependency that must be documented when distributing."
   },
   "relatedConfigs": [
     "prefuse_adapter_scale",

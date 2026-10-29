@@ -45,15 +45,13 @@
     "principle": "标准扩散训练：noisy = √α * x_0 + √(1-α) * ε，其中 ε ~ N(0,1)。noise_offset 在 ε 上加一个常数：ε' = ε + offset，等价于把训练噪声分布从 N(0,1) 平移到 N(offset, 1)。这迫使模型学习从偏移噪声中去噪，扩展了对非标准亮度输入的泛化能力。adaptive_noise_scale 更进一步：对每张图计算 mean_brightness，然后 offset = adaptive_scale * (brightness - 0.5)，让偏移方向与图像亮度相关。",
     "intervention": "training_loop.py 的 _add_noise() 方法中：if noise_offset > 0: noise = noise + noise_offset。adaptive 模式下在 per-sample 基础上调整。multires_noise_iterations 在多个分辨率层（通过 F.interpolate 缩放）分别叠加噪声偏移，让模型在不同空间尺度上都学到亮度泛化。",
     "expectedImpact": "对明暗泛化改善显著——特别是在训练数据偏向某一亮度范围时。对正常亮度范围的生成质量影响可忽略（< 0.3% FID 差异）。perlin_noise_offset 使用 Perlin 噪声代替常数偏移，产生空间相关的亮度变化，适合纹理丰富的场景但计算开销更大。",
-    "tradeoffs": "noise_offset_random_strength=True 时，每步在 [0, noise_offset] 之间随机采样偏移强度，增加训练多样性但降低可复现性。spectral_noise_blend 在频率域混合低频噪声（通过高斯模糊），与 noise_offset 互补——noise_offset 影响全局亮度，spectral 影响低频结构。",
-    "codePath": "training_loop.py:_add_noise() → noise += noise_offset; adaptive: noise += scale * (brightness - 0.5)"
+    "tradeoffs": "noise_offset_random_strength=True 时，每步在 [0, noise_offset] 之间随机采样偏移强度，增加训练多样性但降低可复现性。spectral_noise_blend 在频率域混合低频噪声（通过高斯模糊），与 noise_offset 互补——noise_offset 影响全局亮度，spectral 影响低频结构。"
   },
   "advanced_en": {
     "principle": "Standard diffusion training: noisy = √α * x_0 + √(1-α) * ε with ε ~ N(0,1). noise_offset adds a constant to ε: ε' = ε + offset — shifting the training noise distribution from N(0,1) to N(offset, 1), forcing the model to denoise from offset noise and extending generalization to non-standard brightness inputs. adaptive_noise_scale goes further: computes mean_brightness per image, then offset = adaptive_scale * (brightness - 0.5), correlating the offset direction with image brightness.",
     "intervention": "In training_loop.py's _add_noise(): if noise_offset > 0: noise = noise + noise_offset. In adaptive mode, adjusted per sample. multires_noise_iterations stacks noise offsets at multiple resolution levels (scaled via F.interpolate), teaching brightness generalization at different spatial scales.",
     "expectedImpact": "Marked improvement in brightness generalization — especially when training data skews toward one brightness range. Negligible effect on normal-brightness generation quality (< 0.3% FID difference). perlin_noise_offset uses Perlin noise instead of a constant offset, producing spatially correlated brightness changes — good for texture-rich scenes but costlier.",
-    "tradeoffs": "With noise_offset_random_strength=True, each step randomly samples the offset strength in [0, noise_offset], adding training diversity but reducing reproducibility. spectral_noise_blend blends low-frequency noise in the frequency domain (via Gaussian blur), complementing noise_offset — noise_offset affects global brightness, spectral affects low-frequency structure.",
-    "codePath": "training_loop.py:_add_noise() → noise += noise_offset; adaptive: noise += scale * (brightness - 0.5)"
+    "tradeoffs": "With noise_offset_random_strength=True, each step randomly samples the offset strength in [0, noise_offset], adding training diversity but reducing reproducibility. spectral_noise_blend blends low-frequency noise in the frequency domain (via Gaussian blur), complementing noise_offset — noise_offset affects global brightness, spectral affects low-frequency structure."
   },
   "relatedConfigs": [
     "adaptive_noise_scale",

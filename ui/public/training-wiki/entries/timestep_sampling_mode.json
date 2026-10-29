@@ -31,15 +31,13 @@
     "principle": "disabled=全范围均匀采样(默认，传统训练)；simple=限制到指定范围；advanced=自定义分段权重采样。用途：风格 LoRA 可集中训练高噪声阶段(500-1000)，细节修复 LoRA 可集中训练低噪声阶段(0-300)。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "disabled = uniform sampling over the full range (default, traditional training); simple = restrict to a specified range; advanced = custom per-segment weighted sampling. Use cases: style LoRA can concentrate on the high-noise phase (500-1000), detail-repair LoRA on the low-noise phase (0-300).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

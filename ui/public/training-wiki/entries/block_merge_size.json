@@ -21,8 +21,7 @@
     "principle": "merged_block 模式下每组包含的 block 数，不跨 down/mid/up 阶段边界。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Number of blocks per group in merged_block mode; groups never cross down/mid/up stage boundaries."

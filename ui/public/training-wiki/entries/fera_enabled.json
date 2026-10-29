@@ -31,15 +31,13 @@
     "principle": "在 LoRA 增量上添加逐输出通道可学习门控 g：output = base_output + g · lora_delta。g 初始化为 fera_gate_init（默认 1.0），训练中可按通道调整增量强度。",
     "intervention": "LoRA forward 增量乘以逐输出通道可学习门控向量后叠加到基模型输出。",
     "expectedImpact": "训练初期更稳定，减少因 LoRA 初始化不当导致的 loss spike。",
-    "tradeoffs": "每层增加一个长度等于输出通道数的可训练门控向量。",
-    "codePath": "core/lulynx/ → FeRA gated LoRA output"
+    "tradeoffs": "每层增加一个长度等于输出通道数的可训练门控向量。"
   },
   "advanced_en": {
     "principle": "Adds a per-output-channel learnable gate g to the LoRA increment: output = base_output + g · lora_delta. g initializes to fera_gate_init (default 1.0) and can adjust increment strength per channel during training.",
     "intervention": "LoRA forward multiplies the increment by the per-channel learnable gate vector before adding to the base model output.",
     "expectedImpact": "More stable early training, reducing loss spikes from poor LoRA initialization.",
-    "tradeoffs": "Adds one trainable gate vector of output-channel length per layer.",
-    "codePath": "core/lulynx/ → FeRA gated LoRA output"
+    "tradeoffs": "Adds one trainable gate vector of output-channel length per layer."
   },
   "relatedConfigs": [
     "fera_gate_init"

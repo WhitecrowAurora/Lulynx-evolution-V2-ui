@@ -34,15 +34,13 @@
     "principle": "flip_aug: 50% 概率水平翻转图像（和对应的 loss mask）。color_aug: 随机调整亮度、对比度、饱和度（±10-20%）。random_crop: 在 bucket resize 后进行随机偏移裁切而非中心裁切。albumentations_enabled 提供更强大的增强管线（GaussianBlur、ElasticTransform 等）。",
     "intervention": "DataLoader __getitem__ 时在 PIL image 上施加 torchvision transforms。",
     "expectedImpact": "flip_aug 在 < 50 张数据时可减少 10-20% 过拟合。color_aug 对风格学习帮助大。",
-    "tradeoffs": "albumentations_mask_replay 确保同一张图的 mask 和 image 受到相同的空间变换。",
-    "codePath": "dataset/image_preprocess.py:augmentation pipeline → PIL transforms → tensor"
+    "tradeoffs": "albumentations_mask_replay 确保同一张图的 mask 和 image 受到相同的空间变换。"
   },
   "advanced_en": {
     "principle": "flip_aug: 50% chance of horizontal flip (and the corresponding loss mask). color_aug: random brightness/contrast/saturation adjustment (±10-20%). random_crop: after bucket resize, random-offset cropping instead of center cropping. albumentations_enabled provides a more powerful pipeline (GaussianBlur, ElasticTransform, etc.).",
     "intervention": "Applies torchvision transforms to the PIL image at DataLoader __getitem__ time.",
     "expectedImpact": "With < 50 images, flip_aug reduces overfitting by 10-20%. color_aug helps style learning a lot.",
-    "tradeoffs": "albumentations_mask_replay ensures the same image's mask and image receive identical spatial transforms.",
-    "codePath": "dataset/image_preprocess.py:augmentation pipeline → PIL transforms → tensor"
+    "tradeoffs": "albumentations_mask_replay ensures the same image's mask and image receive identical spatial transforms."
   },
   "relatedConfigs": [
     "flip_aug",

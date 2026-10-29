@@ -18,11 +18,12 @@ function isTerminal(status: string) {
   return TERMINAL.has(status.trim().toLowerCase())
 }
 
-function PreviewImage({ item, taskId, unavailable }: {
+function PreviewMedia({ item, taskId, unavailable }: {
   item: TrainingPreviewItem; taskId: string; unavailable: string
 }) {
   const [failed, setFailed] = useState(false)
   const [url, setUrl] = useState('')
+  const video = item.media_type === 'video' || /\.(mp4|webm)$/i.test(item.name)
   useEffect(() => {
     const controller = new AbortController()
     let ownedUrl = ''
@@ -42,15 +43,17 @@ function PreviewImage({ item, taskId, unavailable }: {
   }, [taskId, item.name, item.mtime])
   return (
     <figure style={{ margin: 0, minWidth: 0 }}>
-      <a href={url || undefined} target="_blank" rel="noreferrer" aria-label={item.name}>
         {failed ? (
           <span role="status" style={{ display: 'block', padding: 24 }}>{unavailable}</span>
         ) : url ? (
-          <img src={url} alt={item.name} loading="lazy" decoding="async"
+          video ? <video src={url} controls playsInline preload="metadata" aria-label={item.name}
             onError={() => setFailed(true)}
             style={{ width: '100%', height: 220, objectFit: 'contain', background: 'var(--lx-bg)' }} />
+          : <a href={url} target="_blank" rel="noreferrer" aria-label={item.name}>
+            <img src={url} alt={item.name} loading="lazy" decoding="async"
+            onError={() => setFailed(true)}
+            style={{ width: '100%', height: 220, objectFit: 'contain', background: 'var(--lx-bg)' }} /></a>
         ) : <span role="status" style={{ display: 'block', height: 220 }}>…</span>}
-      </a>
       <figcaption style={{ padding: '8px 0', overflowWrap: 'anywhere', fontSize: 11 }}>
         <div>{item.name}</div>
         <small style={{ color: 'var(--lx-dim)' }}>
@@ -139,12 +142,12 @@ export function TrainingPreviewPanel({ taskId, runStatus }: { taskId: string; ru
         <p role="status" style={{ color: 'var(--lx-dim)', padding: '20px 0' }}>
           {!taskId.trim() ? (en ? 'Select a training run to view previews.' : '请选择训练记录以查看预览。')
             : busy ? (en ? 'Loading previews…' : '正在加载预览…')
-            : (en ? 'No preview images yet.' : '暂无预览图片。')}
+            : (en ? 'No previews yet.' : '暂无预览。')}
         </p>
       ) : null}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 16 }}>
-        {items.map(item => <PreviewImage key={`${taskId}:${item.name}:${item.mtime}:${refresh}`}
-          item={item} taskId={taskId} unavailable={en ? 'Image unavailable' : '图片暂不可用'} />)}
+        {items.map(item => <PreviewMedia key={`${taskId}:${item.name}:${item.mtime}:${refresh}`}
+          item={item} taskId={taskId} unavailable={en ? 'Preview unavailable' : '预览暂不可用'} />)}
       </div>
       {payload ? (
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12, marginTop: 12 }}>

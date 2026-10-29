@@ -29,15 +29,13 @@
     "principle": "observe 只记录低显存信号；protect 会在触发阈值时偏向保守 prefetch 和缓存预算。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "observe only records low-VRAM signals; protect leans toward conservative prefetch and cache budgets once the threshold triggers.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

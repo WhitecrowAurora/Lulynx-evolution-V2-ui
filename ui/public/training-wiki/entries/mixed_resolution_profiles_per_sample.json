@@ -29,15 +29,13 @@
     "principle": "free-fit 缓存为每个样本预编码多个分辨率 profile 的 latent；本键决定训练时每样本轮换使用的档位子集大小，等价于按样本粒度做多尺度数据增强，epoch 有效样本量随之放大。",
     "intervention": "anima_free_fit_epoch.py:resolve_profiles_per_sample——requested = int(config.mixed_resolution_profiles_per_sample or 2)，返回 min(max(requested, 2), profile_count)。",
     "expectedImpact": "档位数越多每 epoch 遍历成本越高（同一样本多次出现）；多尺度一致性提升。",
-    "tradeoffs": "缓存体积随 profile 数增长；档位过多时单一分辨率的有效步数被稀释。",
-    "codePath": "anima_free_fit_epoch.py:resolve_profiles_per_sample（clamp 到 [2, 活跃 profile 数]）"
+    "tradeoffs": "缓存体积随 profile 数增长；档位过多时单一分辨率的有效步数被稀释。"
   },
   "advanced_en": {
     "principle": "The free-fit cache pre-encodes latents at multiple resolution profiles per sample; this key decides how large a subset of profiles each sample cycles through during training — effectively multi-scale data augmentation at per-sample granularity, amplifying the epoch's effective sample count.",
     "intervention": "anima_free_fit_epoch.py:resolve_profiles_per_sample — requested = int(config.mixed_resolution_profiles_per_sample or 2), returns min(max(requested, 2), profile_count).",
     "expectedImpact": "More profiles raise per-epoch traversal cost (the same sample appears multiple times); multi-scale consistency improves.",
-    "tradeoffs": "Cache size grows with the profile count; too many profiles dilute the effective step count at any single resolution.",
-    "codePath": "anima_free_fit_epoch.py:resolve_profiles_per_sample (clamped to [2, active profile count])"
+    "tradeoffs": "Cache size grows with the profile count; too many profiles dilute the effective step count at any single resolution."
   },
   "relatedConfigs": [
     "mixed_resolution_strategy",

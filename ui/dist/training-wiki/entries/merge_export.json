@@ -32,15 +32,13 @@
     "principle": "合并公式：W_merged = W_base + scale × (A·B)，其中 A 和 B 是 LoRA 的 down/up 矩阵，scale = alpha/dim。合并后模型推理时不需要额外的 LoRA 加载步骤。anima_merge_export 对 Anima DiT 有特殊处理（可能涉及 Qwen3 LLM adapter 的合并）。prefuse_adapter_path 允许在训练前先将已有 LoRA 合并到底模中。",
     "intervention": "训练结束后遍历所有 LoRA 权重，计算 delta 并加到底模对应权重上。",
     "expectedImpact": "导出完整模型。文件增大到完整底模大小。",
-    "tradeoffs": "base_weight 和 base_weights_multiplier 支持多 LoRA 加权合并。",
-    "codePath": "trainer.py:merge_export → LoRA delta computation → weight addition → full model save"
+    "tradeoffs": "base_weight 和 base_weights_multiplier 支持多 LoRA 加权合并。"
   },
   "advanced_en": {
     "principle": "Merge formula: W_merged = W_base + scale × (A·B), where A and B are the LoRA's down/up matrices and scale = alpha/dim. The merged model needs no extra LoRA loading step at inference. anima_merge_export has special handling for Anima DiT (possibly involving Qwen3 LLM adapter merging). prefuse_adapter_path lets an existing LoRA be merged into the base model before training.",
     "intervention": "After training, traverses all LoRA weights, computes deltas, and adds them to the base model's corresponding weights.",
     "expectedImpact": "Exports a full model. File grows to full base-model size.",
-    "tradeoffs": "base_weight and base_weights_multiplier support weighted multi-LoRA merging.",
-    "codePath": "trainer.py:merge_export → LoRA delta computation → weight addition → full model save"
+    "tradeoffs": "base_weight and base_weights_multiplier support weighted multi-LoRA merging."
   },
   "relatedConfigs": [
     "anima_merge_export",

@@ -33,15 +33,13 @@
     "principle": "constant 固定；exponential/snr 随训练/SNR 变化；auto 按 batch 残差分位估计。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "constant = fixed; exponential/snr vary with training progress/SNR; auto estimates from batch residual quantiles.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -21,15 +21,13 @@
     "principle": "启用动态显存自动保护。仅在显存波动、偶发 OOM、或后台抢显存时建议开启；能稳定训练就可关闭以减少额外干预",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Enables dynamic VRAM auto-protection. Only recommended when VRAM fluctuates, OOMs are sporadic, or background processes grab VRAM; if training is stable, keep it off to reduce extra intervention.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

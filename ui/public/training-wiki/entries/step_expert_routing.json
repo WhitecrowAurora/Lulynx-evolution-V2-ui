@@ -30,15 +30,13 @@
     "principle": "根据 step bucket/timestep 计算专家权重，再组合专家 LoRA delta。",
     "intervention": "Turbo denoise step context → live LoRA expert routing。",
     "expectedImpact": "完整接入后可能改善 few-step 质量，但会增加 adapter 参数和推理端要求。",
-    "tradeoffs": "不适合作为普通 LoRA 默认格式。",
-    "codePath": "backend/core/lulynx_trainer/step_expert_routing.py"
+    "tradeoffs": "不适合作为普通 LoRA 默认格式。"
   },
   "advanced_en": {
     "principle": "Computes expert weights per step bucket/timestep, then combines expert LoRA deltas.",
     "intervention": "Turbo denoise step context → live LoRA expert routing.",
     "expectedImpact": "Once fully wired in, may improve few-step quality, but adds adapter parameters and inference-side requirements.",
-    "tradeoffs": "Not suitable as a default format for ordinary LoRAs.",
-    "codePath": "backend/core/lulynx_trainer/step_expert_routing.py"
+    "tradeoffs": "Not suitable as a default format for ordinary LoRAs."
   },
   "relatedConfigs": [
     "step_expert_enabled",

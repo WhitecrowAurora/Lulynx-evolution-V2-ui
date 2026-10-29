@@ -35,15 +35,13 @@
     "principle": "diffusers 为稳定默认；native_shadow 记录 block graph；native_proxy 代理参考 U-Net；native_skeleton 报告原生覆盖；lulynx_native 使用完整 provenance wrapper 接管 U-Net",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "diffusers is the stable default; native_shadow records the block graph; native_proxy proxies a reference U-Net; native_skeleton reports native coverage; lulynx_native takes over the U-Net with the full provenance wrapper.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

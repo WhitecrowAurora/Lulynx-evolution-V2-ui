@@ -32,15 +32,13 @@
     "principle": "固定阈值在训练前期（残差普遍大）和后期（残差普遍小）语义不一致；按分位数定义阈值等于固定「压制残差最大的 (1-p) 比例样本」，让鲁棒化强度与训练阶段解耦。",
     "intervention": "training_loop_loss_mixin.py：schedule=auto 分支计算 per_sample = 残差.flatten(1).norm(dim=1)，torch.quantile(per_sample, huber_auto_percentile) 后 clamp 到下限再乘 scale，扩展成逐样本 delta。",
     "expectedImpact": "训练全程保持稳定比例的离群压制，loss 曲线尖峰显著减少且不需要针对模型族重调绝对阈值。",
-    "tradeoffs": "阈值依赖 batch 统计，梯度对 batch 组成更敏感；p 调低（如 0.7）会压制过多正常样本，拖慢收敛。",
-    "codePath": "training_loop_loss_mixin.py——torch.quantile(per_sample, huber_auto_percentile).clamp(min=huber_c*huber_scale)*huber_scale"
+    "tradeoffs": "阈值依赖 batch 统计，梯度对 batch 组成更敏感；p 调低（如 0.7）会压制过多正常样本，拖慢收敛。"
   },
   "advanced_en": {
     "principle": "A fixed threshold means different things early in training (residuals generally large) and late (generally small); defining the threshold by percentile fixes \"suppress the largest (1-p) fraction of residual samples\", decoupling robustification strength from training stage.",
     "intervention": "training_loop_loss_mixin.py: the schedule=auto branch computes per_sample = residual.flatten(1).norm(dim=1), then torch.quantile(per_sample, huber_auto_percentile), clamps to a floor, multiplies by scale, and expands to per-sample deltas.",
     "expectedImpact": "Keeps a stable suppression fraction throughout training — markedly fewer loss-curve spikes and no need to retune absolute thresholds per model family.",
-    "tradeoffs": "The threshold depends on batch statistics, so gradients are more sensitive to batch composition; lowering p (e.g. 0.7) suppresses too many normal samples and slows convergence.",
-    "codePath": "training_loop_loss_mixin.py — torch.quantile(per_sample, huber_auto_percentile).clamp(min=huber_c*huber_scale)*huber_scale"
+    "tradeoffs": "The threshold depends on batch statistics, so gradients are more sensitive to batch composition; lowering p (e.g. 0.7) suppresses too many normal samples and slows convergence."
   },
   "relatedConfigs": [
     "huber_schedule",

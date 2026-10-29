@@ -21,15 +21,13 @@
     "principle": "推荐第二步尝试。交换 U-Net middle block，通常仍比较划算，但依然会拖慢训练",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Recommended to try second. Swaps the U-Net middle block — usually still worthwhile, but it does slow training.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

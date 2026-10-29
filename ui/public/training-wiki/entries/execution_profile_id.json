@@ -21,15 +21,13 @@
     "principle": "留空则跟随启动器当前/上次 runtime。仅当需要强制指定非启动环境时填写（如 flash2、sageattention）。填 standard 且启动环境非 standard 时，后端仍会继承启动环境。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Empty = follow the launcher's current/last runtime. Fill in only to force a non-launcher environment (e.g. flash2, sageattention). If set to standard while the launch environment is not standard, the backend still inherits the launch environment.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

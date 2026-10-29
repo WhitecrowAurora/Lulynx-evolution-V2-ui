@@ -21,15 +21,13 @@
     "principle": "启用共享条件生成协议。当前为兼容层，后续会逐步接管 SDXL cache-first 热路径",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Enables the shared condition-generation protocol. Currently a compatibility layer that will gradually take over the SDXL cache-first hot path.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

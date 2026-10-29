@@ -21,15 +21,13 @@
     "principle": "每次预览后销毁 pipeline 并释放缓存，避免 VAE/TE 长期污染训练显存",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Destroys the pipeline and releases cache after each preview, preventing VAE/TE from polluting training VRAM long-term.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

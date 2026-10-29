@@ -33,15 +33,13 @@
     "principle": "albumentations_pipeline 是 JSON 数组：[{\"name\": \"GaussianBlur\", \"params\": {\"blur_limit\": 7, \"p\": 0.3}}, ...]。每个操作指定名称、参数和概率。albumentations_mask_replay=True 时用 A.ReplayCompose 确保图像和 mask 受到相同的空间变换。",
     "intervention": "在 DataLoader 的 image preprocess 阶段插入 Albumentations transform pipeline。",
     "expectedImpact": "在数据量极少（<20 张）时通过增强有效扩充数据多样性。",
-    "tradeoffs": "需要 albumentations 包已安装。某些变换（如弹性变换）计算开销较大。",
-    "codePath": "dataset/image_preprocess.py:AlbumentationsPipeline → A.ReplayCompose(transforms)"
+    "tradeoffs": "需要 albumentations 包已安装。某些变换（如弹性变换）计算开销较大。"
   },
   "advanced_en": {
     "principle": "albumentations_pipeline is a JSON array: [{\"name\": \"GaussianBlur\", \"params\": {\"blur_limit\": 7, \"p\": 0.3}}, ...]. Each op specifies a name, parameters, and probability. With albumentations_mask_replay=True, A.ReplayCompose ensures images and masks receive identical spatial transforms.",
     "intervention": "Inserts the Albumentations transform pipeline at the DataLoader's image-preprocess stage.",
     "expectedImpact": "With very little data (<20 images), augmentation effectively expands data diversity.",
-    "tradeoffs": "Requires the albumentations package installed. Some transforms (e.g. elastic) are computationally expensive.",
-    "codePath": "dataset/image_preprocess.py:AlbumentationsPipeline → A.ReplayCompose(transforms)"
+    "tradeoffs": "Requires the albumentations package installed. Some transforms (e.g. elastic) are computationally expensive."
   },
   "relatedConfigs": [
     "albumentations_pipeline",

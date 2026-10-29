@@ -34,15 +34,13 @@
     "principle": "设置 torch.manual_seed、torch.cuda.manual_seed_all、numpy.random.seed、random.seed。确保所有随机源一致。DataLoader 的 worker 使用 seed + worker_id 作为各自的种子。",
     "intervention": "训练启动时设置全局种子。",
     "expectedImpact": "确保完全可复现。不影响训练质量。",
-    "tradeoffs": "某些 CUDA 操作（如 atomicAdd）在不同 GPU 架构上可能不完全确定性。",
-    "codePath": "entry_train.py:torch.manual_seed(seed) → all random sources"
+    "tradeoffs": "某些 CUDA 操作（如 atomicAdd）在不同 GPU 架构上可能不完全确定性。"
   },
   "advanced_en": {
     "principle": "Sets torch.manual_seed, torch.cuda.manual_seed_all, numpy.random.seed, and random.seed, ensuring all random sources agree. DataLoader workers use seed + worker_id as their own seeds.",
     "intervention": "Sets the global seed at training startup.",
     "expectedImpact": "Ensures full reproducibility; does not affect training quality.",
-    "tradeoffs": "Some CUDA operations (e.g. atomicAdd) may not be fully deterministic across GPU architectures.",
-    "codePath": "entry_train.py:torch.manual_seed(seed) → all random sources"
+    "tradeoffs": "Some CUDA operations (e.g. atomicAdd) may not be fully deterministic across GPU architectures."
   },
   "relatedConfigs": [
     "sample_seed",

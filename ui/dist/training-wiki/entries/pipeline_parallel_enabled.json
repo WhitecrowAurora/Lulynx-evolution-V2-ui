@@ -36,15 +36,13 @@
     "principle": "Pipeline Parallelism 将模型的不同层分配到不同 GPU 上。每个 GPU 只负责部分层的计算，层与层之间通过通信传递中间激活。pipeline_parallel_chunks 控制切分数量。split_points 允许手动指定切分位置。",
     "intervention": "在模型构建时将 layers 按 split_points 分配到不同 device/rank。",
     "expectedImpact": "训练速度接近线性提升（N 卡约 N 倍速）。需要 GPU 间通信。",
-    "tradeoffs": "通信开销随切分数量增加。需要足够大的 batch 来分摊通信成本。",
-    "codePath": "core/pipeline_parallel/ → layer split → device assignment → inter-GPU communication"
+    "tradeoffs": "通信开销随切分数量增加。需要足够大的 batch 来分摊通信成本。"
   },
   "advanced_en": {
     "principle": "Pipeline Parallelism assigns different layers of the model to different GPUs. Each GPU computes only its subset of layers, passing intermediate activations between layers via communication. pipeline_parallel_chunks controls the number of splits; split_points allows manually specifying split locations.",
     "intervention": "At model construction, layers are assigned to different devices/ranks according to split_points.",
     "expectedImpact": "Training speed improves near-linearly (about N-fold with N cards). Requires inter-GPU communication.",
-    "tradeoffs": "Communication overhead grows with the number of splits. Needs a large enough batch to amortize communication cost.",
-    "codePath": "core/pipeline_parallel/ → layer split → device assignment → inter-GPU communication"
+    "tradeoffs": "Communication overhead grows with the number of splits. Needs a large enough batch to amortize communication cost."
   },
   "relatedConfigs": [
     "pipeline_parallel_chunks",

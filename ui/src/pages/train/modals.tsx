@@ -16,6 +16,9 @@ import {
 import { useTrainConfigStore } from '@/stores/configStore'
 import { toast } from '@/stores/toastStore'
 import { useI18n } from '@/i18n/useI18n'
+import { ResourceCostPanel } from './ResourceCostPanel'
+import type { ResourceCost } from '@/lib/resourceCost'
+import type { ComparisonRequest } from '@/api/comparisonApi'
 
 /* 预检报告弹层 + 保存参数管理弹层 */
 
@@ -38,6 +41,7 @@ export function PreflightModal({
   onClose,
   buildPayload,
   onReport,
+  onCompare,
 }: {
   open: boolean
   onClose: () => void
@@ -45,6 +49,7 @@ export function PreflightModal({
   /* 预检报告回传:提交时 TrainPage 需要把 dataset_validation_bypass 记录
      显式带回 /api/run,否则旁路证据只存在于预检响应里。 */
   onReport?: (report: Record<string, unknown> | null) => void
+  onCompare?: (request: ComparisonRequest) => Promise<void>
 }) {
   const { t, language } = useI18n()
   const [state, setState] = useState<'idle' | 'running' | 'done' | 'failed'>('idle')
@@ -118,6 +123,10 @@ export function PreflightModal({
           <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
             {hasProblems ? <Badge tone="warn">{t('preflight.has_problems')}</Badge> : <Badge tone="ok">{t('preflight.passed')}</Badge>}
           </div>
+          <ResourceCostPanel cost={(report.resource_cost ??
+            (report.training_advisor as { resource_cost?: ResourceCost } | undefined)?.resource_cost) as ResourceCost | undefined}
+            onApply={(edits) => { useTrainConfigStore.getState().applyValues(edits); runPreflight() }}
+            onCompare={onCompare} />
           {(() => {
             const capabilities = (report.training_capabilities || {}) as Record<string, unknown>
             const universal = (capabilities.universal_dit || {}) as Record<string, unknown>

@@ -21,15 +21,13 @@
     "principle": "按 cosine OT 重新配对 latent 与噪声。batch 大于 1 时才有实际收益",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Re-pairs latents and noise via cosine OT. Only pays off when batch size is above 1.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -21,15 +21,13 @@
     "principle": "把两个 LoRA 重建到 dense delta 后按比例融合，再 SVD 回目标 rank。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Reconstructs two LoRAs into dense deltas, blends them by ratio, then SVD-decomposes back to the target rank.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

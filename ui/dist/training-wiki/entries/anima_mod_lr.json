@@ -21,8 +21,7 @@
     "principle": "Anima DiT Modulation（AdaLN）层的独立学习率。0 = 使用全局学习率。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Standalone learning rate for the Anima DiT Modulation (AdaLN) layers. 0 = use the global learning rate."

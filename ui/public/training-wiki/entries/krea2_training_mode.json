@@ -33,15 +33,13 @@
     "principle": "Turbo 默认 de_turbo（蒸馏纠偏，推理常需 20-30 步）。Raw 推荐 standard（标准 RF）；若仍选 de_turbo，prepare 会自动落到 standard。frozen_delta：冻底模只训 LoRA（偏保 Turbo 快推）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Turbo defaults to de_turbo (distillation correction; inference usually needs 20-30 steps). Raw recommends standard (standard RF); if de_turbo is still selected, prepare automatically falls back to standard. frozen_delta: freezes the base model and trains only the LoRA (favoring Turbo's fast inference).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

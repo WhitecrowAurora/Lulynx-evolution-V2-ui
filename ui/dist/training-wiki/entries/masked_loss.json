@@ -33,15 +33,13 @@
     "principle": "loss_mask 被 resize 到 latent 空间分辨率，然后在 loss 计算时逐像素乘上 mask：loss = loss * mask / mask.mean()。alpha_mask=True 时自动从 PNG alpha 通道提取 mask。strict_masked_loss=True 时如果 batch 中任何样本缺少 mask 会抛出 RuntimeError。",
     "intervention": "training_step 中在 loss 计算后乘上 loss_mask。",
     "expectedImpact": "在有精确 mask 的数据上可显著改善主体学习质量，减少背景干扰。",
-    "tradeoffs": "与 concept_geometry_loss_weighting 可以叠加——区域 mask × 概念权重。",
-    "codePath": "training_loop.py:loss = loss * loss_mask / loss_mask.mean()"
+    "tradeoffs": "与 concept_geometry_loss_weighting 可以叠加——区域 mask × 概念权重。"
   },
   "advanced_en": {
     "principle": "loss_mask is resized to latent-space resolution, then multiplied pixel-wise into the loss: loss = loss * mask / mask.mean(). With alpha_mask=True, the mask is auto-extracted from the PNG alpha channel. With strict_masked_loss=True, any sample in the batch missing a mask raises RuntimeError.",
     "intervention": "In training_step, the loss is multiplied by loss_mask after computation.",
     "expectedImpact": "With precise masks, markedly improves subject learning quality and reduces background interference.",
-    "tradeoffs": "Stacks with concept_geometry_loss_weighting — region mask × concept weight.",
-    "codePath": "training_loop.py:loss = loss * loss_mask / loss_mask.mean()"
+    "tradeoffs": "Stacks with concept_geometry_loss_weighting — region mask × concept weight."
   },
   "relatedConfigs": [
     "alpha_mask",

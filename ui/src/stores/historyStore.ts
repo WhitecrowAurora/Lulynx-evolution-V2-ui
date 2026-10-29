@@ -16,6 +16,7 @@ export interface RunRecord {
   typeId: string
   at: number
   config: Record<string, unknown>
+  comparisonSourceRunId?: string
 }
 
 export interface RunHistoryPayload {
@@ -55,6 +56,7 @@ function sanitizeRecord(raw: unknown): RunRecord | null {
     typeId: String(r.typeId ?? r.type_id ?? ''),
     at: Number(r.at) || 0,
     config: { ...config },
+    ...(typeof r.comparisonSourceRunId === 'string' ? { comparisonSourceRunId: r.comparisonSourceRunId } : {}),
   }
 }
 
@@ -94,10 +96,12 @@ function scheduleDiskWrite(records: RunRecord[]) {
 /** 提交成功后记录;runResponse 里能挖到 run_id/task_id 就带上 */
 export function addRunRecord(typeId: string, config: Record<string, unknown>, runResponse: unknown) {
   const resp = runResponse as Record<string, unknown> | null
-  const id = String(resp?.run_id ?? resp?.task_id ?? resp?.id ?? '')
+  const comparisonId = String(resp?.comparison_job_id ?? '')
+  const id = comparisonId || String(resp?.run_id ?? resp?.task_id ?? resp?.id ?? '')
   const name = String(config.output_name ?? config.config_name ?? typeId)
   const records = loadLocal().filter((r) => !(id && r.id === id))
-  records.unshift({ id, name, typeId, at: Date.now(), config: { ...config } })
+  records.unshift({ id, name, typeId, at: Date.now(), config: { ...config },
+    ...(comparisonId ? { comparisonSourceRunId: String(resp?.comparison_source_run_id ?? '') } : {}) })
   const next = records.slice(0, CAP)
   saveLocal(next)
   scheduleDiskWrite(next)

@@ -34,15 +34,13 @@
     "principle": "gpu_duty_cycle < 1.0 时，每个训练步骤后插入 sleep((1-duty_cycle) * step_time) 的空闲时间。闭环控制：每步读取 GPU 温度传感器，如果温度 > target_temp_c 则降低占空比，如果温度 < target_temp_c 则增加占空比。gpu_lock_clocks_mhz 通过 nvidia-smi -lgc 限制核心频率上限（减少功耗和发热，但需要管理员权限）。",
     "intervention": "训练循环中每步后根据占空比/温度插入 sleep。",
     "expectedImpact": "精确控制 GPU 温度在安全范围内。",
-    "tradeoffs": "占空比 < 1.0 直接降低训练速度。闭环控制比固定占空比更智能但需要 GPU 温度传感器支持。",
-    "codePath": "training_loop.py:gpu_duty_cycle → per-step sleep → closed-loop temperature control"
+    "tradeoffs": "占空比 < 1.0 直接降低训练速度。闭环控制比固定占空比更智能但需要 GPU 温度传感器支持。"
   },
   "advanced_en": {
     "principle": "With gpu_duty_cycle < 1.0, each training step is followed by sleep((1-duty_cycle) * step_time) of idle. Closed-loop control: reads the GPU temperature sensor each step — if temperature > target_temp_c, lower the duty cycle; if < target_temp_c, raise it. gpu_lock_clocks_mhz caps core frequency via nvidia-smi -lgc (less power and heat; needs admin rights).",
     "intervention": "The training loop inserts sleep per step based on duty cycle/temperature.",
     "expectedImpact": "Precisely keeps GPU temperature within a safe range.",
-    "tradeoffs": "Duty cycle < 1.0 directly lowers training speed. Closed-loop control is smarter than a fixed duty cycle but needs GPU temperature-sensor support.",
-    "codePath": "training_loop.py:gpu_duty_cycle → per-step sleep → closed-loop temperature control"
+    "tradeoffs": "Duty cycle < 1.0 directly lowers training speed. Closed-loop control is smarter than a fixed duty cycle but needs GPU temperature-sensor support."
   },
   "relatedConfigs": [
     "gpu_target_temp_c",

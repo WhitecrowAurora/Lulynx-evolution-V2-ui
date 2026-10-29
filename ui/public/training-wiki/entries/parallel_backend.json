@@ -44,15 +44,13 @@
     "principle": "取值由 resolve_ddp_backend 解析：auto 在非 Windows 且 torch.cuda.is_available() 时给 nccl，否则给 gloo；显式取值原样返回，只有 Windows 上的 nccl 会降级成 gloo。解析结果直接交给 torch.distributed.init_process_group，所以它只能是 torch 认识的后端名。历史上这个键还接受 cuda_direct，那不是后端而是一组 NCCL P2P/IPC 环境提示（NCCL_P2P_LEVEL/NCCL_SHM_DISABLE/NCCL_P2P_DISABLE），只在张量并行那条路上被归一化；走 DDP 时它会原样到 init_process_group 并当场报错，所以现在在配置解析期就被拒收并给出理由。",
     "intervention": "起进程组时选后端；nccl_proto 之类的传输提示在同一处应用。",
     "expectedImpact": "梯度与权重逐位不受影响；每步的通信时间随后端与互联而变。",
-    "tradeoffs": "声明默认值是 auto，与三个读点的兜底值一致 —— 这一点是判据钉住的：声明曾经是 nccl，而物化后的配置压过声明，于是无 CUDA 的 Linux 主机上进程组起不来。",
-    "codePath": "core/lulynx_trainer/distributed_process_group.py:resolve_ddp_backend → init_process_group"
+    "tradeoffs": "声明默认值是 auto，与三个读点的兜底值一致 —— 这一点是判据钉住的：声明曾经是 nccl，而物化后的配置压过声明，于是无 CUDA 的 Linux 主机上进程组起不来。"
   },
   "advanced_en": {
     "principle": "The value is resolved by resolve_ddp_backend: auto yields nccl when not on Windows and torch.cuda.is_available(), otherwise gloo; explicit values are returned as-is, and only nccl on Windows is downgraded to gloo. The resolved result goes straight to torch.distributed.init_process_group, so it can only be a backend name torch recognizes. Historically this key also accepted cuda_direct, which is not a backend but a set of NCCL P2P/IPC environment hints (NCCL_P2P_LEVEL/NCCL_SHM_DISABLE/NCCL_P2P_DISABLE) normalized only on the tensor-parallel path; on the DDP path it reached init_process_group verbatim and failed immediately, so it is now rejected at config parse time with a reason.",
     "intervention": "Choose the backend when starting the process group; transport hints such as nccl_proto are applied in the same place.",
     "expectedImpact": "Gradients and weights are unaffected bit-for-bit; per-step communication time varies with backend and interconnect.",
-    "tradeoffs": "The declared default is auto, consistent with the fallbacks at the three read sites — this is the pinned judgment criterion: the declaration used to be nccl, and the materialized config overrode the declaration, so the process group failed to start on CUDA-less Linux hosts.",
-    "codePath": "core/lulynx_trainer/distributed_process_group.py:resolve_ddp_backend → init_process_group"
+    "tradeoffs": "The declared default is auto, consistent with the fallbacks at the three read sites — this is the pinned judgment criterion: the declaration used to be nccl, and the materialized config overrode the declaration, so the process group failed to start on CUDA-less Linux hosts."
   },
   "relatedConfigs": [
     "multi_gpu",

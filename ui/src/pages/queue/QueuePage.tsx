@@ -17,6 +17,8 @@ import { useRouteStore } from '@/stores/routeStore'
 import { toast } from '@/stores/toastStore'
 import './queue.css'
 import { useI18n } from '@/i18n/useI18n'
+import { ComparisonTasksPanel } from './ComparisonTasksPanel'
+import type { ComparisonJob } from '@/api/comparisonApi'
 
 /* 队列/历史页:/api/tasks 聚合列表 + 终止/删除 + 本地历史参数复制 */
 
@@ -81,7 +83,7 @@ function QueueEditModal({ run, onClose, onSaved }: { run: QueueRun | null; onClo
   }, [run, t])
 
   const save = async () => {
-    if (!run || revision == null) return
+    if (!run || revision == null || busy) return
     let parsed: unknown
     try { parsed = JSON.parse(text) } catch {
       toast.err(t('queue.edit_invalid_json'), t('queue.edit_fail'))
@@ -104,12 +106,12 @@ function QueueEditModal({ run, onClose, onSaved }: { run: QueueRun | null; onClo
   }
 
   return (
-    <Modal open={!!run} title={t('queue.edit_title', { id: run ? queueRunId(run) : '' })} onClose={onClose} width={720}>
+    <Modal open={!!run} title={t('queue.edit_title', { id: run ? queueRunId(run) : '' })} onClose={onClose} width={720} busy={busy}>
       {run ? <>
         <p className="lx-queue-edit-note">{t('queue.edit_hint')}</p>
         <textarea className="lx-queue-config-editor" value={text} onChange={(event) => setText(event.target.value)} disabled={revision == null || busy} spellCheck={false} />
         <div className="lx-queue-modal-actions">
-          <Button onClick={onClose}>{t('common.cancel')}</Button>
+          <Button onClick={onClose} disabled={busy}>{t('common.cancel')}</Button>
           <Button variant="primary" disabled={revision == null || busy} onClick={() => void save()}>{busy ? t('common.loading') : t('common.save')}</Button>
         </div>
       </> : null}
@@ -117,7 +119,7 @@ function QueueEditModal({ run, onClose, onSaved }: { run: QueueRun | null; onClo
   )
 }
 
-function QueueWorkbenchPanel({ payload, onChanged }: { payload: QueuePayload | null; onChanged: () => void }) {
+function QueueWorkbenchPanel({ payload, error, onChanged }: { payload: QueuePayload | null; error: string; onChanged: () => void }) {
   const { t } = useI18n()
   const [editing, setEditing] = useState<QueueRun | null>(null)
   const [busy, setBusy] = useState<string | null>(null)
@@ -148,6 +150,7 @@ function QueueWorkbenchPanel({ payload, onChanged }: { payload: QueuePayload | n
   return <>
     <Panel title={t('queue.workbench_title')} idx="00" panelId="QUEUE.WORKBENCH"
       right={currentId ? <Button size="sm" disabled={busy === 'pause'} onClick={() => void togglePause()}>{currentStatus === 'paused' ? t('queue.resume') : t('queue.pause')}</Button> : null}>
+      {error ? <p role="alert">{error} <Button size="sm" onClick={onChanged}>{t('common.refresh')}</Button></p> : null}
       {queued.length ? <ul className="lx-task-list">{queued.map((run, index) => {
         const id = queueRunId(run)
         const label = String(run.config_name ?? id)
@@ -161,7 +164,7 @@ function QueueWorkbenchPanel({ payload, onChanged }: { payload: QueuePayload | n
           </div>
           <Button size="sm" disabled={busy != null} onClick={() => setEditing(run)}>{t('queue.edit')}</Button>
         </li>
-      })}</ul> : <Empty title={t('queue.workbench_empty')} desc={t('queue.workbench_empty_desc')} />}
+      })}</ul> : !error ? <Empty title={payload ? t('queue.workbench_empty') : t('common.loading')} desc={payload ? t('queue.workbench_empty_desc') : undefined} /> : null}
     </Panel>
     <QueueEditModal run={editing} onClose={() => setEditing(null)} onSaved={onChanged} />
   </>
@@ -317,9 +320,14 @@ export default function QueuePage() {
   const ref = usePageEntrance()
   const { t } = useI18n()
   const [tasks, setTasks] = useState<TaskRecord[]>([])
+  const [comparisonJobs, setComparisonJobs] = useState<ComparisonJob[]>([])
+  const [comparisonError, setComparisonError] = useState('')
+  const [refreshTick, setRefreshTick] = useState(0)
   const [filter, setFilter] = useState<Filter>('all')
   const [detail, setDetail] = useState<TaskRecord | null>(null)
   const [loaded, setLoaded] = useState(false)
+  const [tasksError, setTasksError] = useState('')
+  const [workbenchError, setWorkbenchError] = useState('')
   const [workbench, setWorkbench] = useState<QueuePayload | null>(null)
   const refreshState = useRef({
     generation: 0,
@@ -345,20 +353,28 @@ export default function QueuePage() {
     }
     state.tasksInFlight = true
     try {
-      const data = unwrap<{ tasks?: TaskRecord[] }>(await queueApi.tasks())
+      const [taskResult, jobResult] = await Promise.allSettled([queueApi.tasks(), queueApi.jobs()])
+      if (state.disposed || generation !== state.generation) return
+      if (jobResult.status === 'fulfilled') {
+        setComparisonJobs(unwrap<{ jobs?: ComparisonJob[] }>(jobResult.value).jobs ?? [])
+        setComparisonError('')
+      } else setComparisonError(String(jobResult.reason?.message || jobResult.reason))
+      setRefreshTick((tick) => tick + 1)
+      if (taskResult.status === 'rejected') throw taskResult.reason
+      const data = unwrap<{ tasks?: TaskRecord[] }>(taskResult.value)
       const list = [...(data?.tasks ?? [])]
       list.sort((a, b) => String(b.created_at ?? '').localeCompare(String(a.created_at ?? '')))
       if (state.disposed || generation !== state.generation) return
       setTasks(list)
-    } catch {
-      /* 后端未起,顶栏已示警 */
+      setTasksError('')
+      setLoaded(true)
+    } catch (error) {
+      if (!state.disposed && generation === state.generation) setTasksError(String((error as Error).message || error))
     } finally {
       state.tasksInFlight = false
       if (state.tasksQueued && !state.disposed) {
         state.tasksQueued = false
         void refresh()
-      } else if (!state.disposed && generation === state.generation) {
-        setLoaded(true)
       }
     }
   }
@@ -376,8 +392,9 @@ export default function QueuePage() {
       const payload = unwrap<QueuePayload>(await queueApi.workbench())
       if (state.disposed || generation !== state.generation) return
       setWorkbench(payload)
-    } catch {
-      if (!state.disposed && generation === state.generation) setWorkbench(null)
+      setWorkbenchError('')
+    } catch (error) {
+      if (!state.disposed && generation === state.generation) setWorkbenchError(String((error as Error).message || error))
     } finally {
       state.workbenchInFlight = false
       if (state.workbenchQueued && !state.disposed) {
@@ -388,6 +405,7 @@ export default function QueuePage() {
   }
 
   useEffect(() => {
+    refreshState.current.disposed = false
     void refresh()
     void refreshWorkbench()
     const t = window.setInterval(() => { void refresh(); void refreshWorkbench() }, 8000)
@@ -437,7 +455,8 @@ export default function QueuePage() {
         sub={t('queue.sub', { running: counts.running, total: tasks.length })}
       />
 
-      <QueueWorkbenchPanel payload={workbench} onChanged={refreshAll} />
+      <QueueWorkbenchPanel payload={workbench} error={workbenchError} onChanged={refreshAll} />
+      <ComparisonTasksPanel jobs={comparisonJobs} refreshTick={refreshTick} error={comparisonError} onRefresh={refreshAll} />
 
       <Panel
         title={t('queue.records_title')}
@@ -459,18 +478,19 @@ export default function QueuePage() {
           </div>
         }
       >
+        {tasksError ? <p role="alert">{tasksError} <Button size="sm" onClick={() => void refresh()}>{t('common.refresh')}</Button></p> : null}
         {shown.length ? (
           <ul className="lx-task-list">
             {shown.map((t, i) => (
               <TaskRow key={taskId(t) || i} task={t} onDetail={setDetail} onChanged={refreshAll} />
             ))}
           </ul>
-        ) : (
+        ) : !tasksError ? (
           <Empty
             title={loaded ? t('queue.empty_title') : t('common.loading')}
             desc={loaded ? t('queue.empty_desc') : undefined}
           />
-        )}
+        ) : null}
       </Panel>
 
       <DetailModal task={detail} onClose={() => setDetail(null)} />

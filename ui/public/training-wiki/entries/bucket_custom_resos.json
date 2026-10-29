@@ -21,8 +21,7 @@
     "principle": "一行一个，支持 1024x1024、1024,1536。仅在 custom_only 时生效",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "One per line; supports 1024x1024 and 1024,1536. Only takes effect with custom_only."

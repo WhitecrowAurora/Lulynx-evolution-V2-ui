@@ -34,15 +34,13 @@
     "principle": "DDP 在每张 GPU 上运行完整的训练循环，每步 optimizer.step() 前通过 NCCL AllReduce 同步所有 GPU 的梯度。ddp_gradient_as_bucket_view=True 将梯度放入连续内存桶中减少通信开销。ddp_static_graph=True 在图不变时进一步优化。ddp_find_unused_parameters 检测未使用的参数（调试用，训练时关闭）。",
     "intervention": "entry_train.py 通过 torch.distributed.launch 启动多进程。",
     "expectedImpact": "接近线性的加速比。2 GPU ≈ 1.85x，4 GPU ≈ 3.5x。",
-    "tradeoffs": "main_process_ip/port 配置多机训练的网络。nccl_socket_ifname 指定网络接口。",
-    "codePath": "entry_train.py:torch.distributed.launch → DDP(model) → AllReduce gradients"
+    "tradeoffs": "main_process_ip/port 配置多机训练的网络。nccl_socket_ifname 指定网络接口。"
   },
   "advanced_en": {
     "principle": "DDP runs the full training loop on every GPU, syncing all GPUs' gradients via NCCL AllReduce before each optimizer.step(). ddp_gradient_as_bucket_view=True puts gradients into contiguous memory buckets to cut communication overhead. ddp_static_graph=True optimizes further when the graph is fixed. ddp_find_unused_parameters detects unused parameters (for debugging; keep off in training).",
     "intervention": "entry_train.py launches multiple processes via torch.distributed.launch.",
     "expectedImpact": "Near-linear scaling. 2 GPUs ≈ 1.85×, 4 GPUs ≈ 3.5×.",
-    "tradeoffs": "main_process_ip/port configures multi-node networking. nccl_socket_ifname specifies the network interface.",
-    "codePath": "entry_train.py:torch.distributed.launch → DDP(model) → AllReduce gradients"
+    "tradeoffs": "main_process_ip/port configures multi-node networking. nccl_socket_ifname specifies the network interface."
   },
   "relatedConfigs": [
     "num_processes",

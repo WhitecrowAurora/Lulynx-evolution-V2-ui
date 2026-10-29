@@ -29,15 +29,13 @@
     "principle": "当前后端仅消费 block（整块重算）。保留字段便于与 Anima 对齐及后续扩展。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "The backend currently only consumes block (full-block recompute). The field is kept for alignment with Anima and future extensions.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

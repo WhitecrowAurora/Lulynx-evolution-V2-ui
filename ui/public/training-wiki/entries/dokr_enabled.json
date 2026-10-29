@@ -21,15 +21,13 @@
     "principle": "LoKr Kronecker 方向 + DoRA magnitude 分解。默认关闭， 。比 baseline 收敛快 ~2%。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "LoKr Kronecker direction + DoRA magnitude decomposition. Off by default. Converges ~2% faster than baseline.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

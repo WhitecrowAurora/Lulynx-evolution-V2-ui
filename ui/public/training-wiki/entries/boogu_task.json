@@ -29,8 +29,7 @@
     "principle": "Edit 固定 edit：TI2I system prompt + ref 条件。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Edit is fixed to edit: TI2I system prompt + ref conditioning."

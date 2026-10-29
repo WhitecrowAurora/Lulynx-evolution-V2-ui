@@ -32,15 +32,13 @@
     "principle": "VeRA: W' = W + diag(d) · R_random · diag(b)，其中 R_random 是固定的随机矩阵（不训练），d 和 b 是可训练的缩放向量。vera_d_initial 控制 d 的初始值。随机矩阵由 vera_prng_key 种子生成，确保可复现。",
     "intervention": "替换 LoRA 的 矩阵为固定随机矩阵 + 可训练缩放向量。",
     "expectedImpact": "参数量减少 90%+，但质量天花板较低。适合简单任务。",
-    "tradeoffs": "可与 LoRA 组合使用——部分层用 LoRA，部分层用 VeRA。",
-    "codePath": "core/training_components/vera.py → fixed random projection + trainable scaling"
+    "tradeoffs": "可与 LoRA 组合使用——部分层用 LoRA，部分层用 VeRA。"
   },
   "advanced_en": {
     "principle": "VeRA: W' = W + diag(d) · R_random · diag(b), where R_random is a fixed random matrix (not trained) and d and b are trainable scaling vectors. vera_d_initial controls d's initial value. The random matrix is generated from the vera_prng_key seed, ensuring reproducibility.",
     "intervention": "Replaces the LoRA matrices with a fixed random matrix + trainable scaling vectors.",
     "expectedImpact": "Over 90% fewer parameters, but a lower quality ceiling. Suited to simple tasks.",
-    "tradeoffs": "Can be combined with LoRA — some layers use LoRA, others VeRA.",
-    "codePath": "core/training_components/vera.py → fixed random projection + trainable scaling"
+    "tradeoffs": "Can be combined with LoRA — some layers use LoRA, others VeRA."
   },
   "relatedConfigs": [
     "vera_d_initial",

@@ -31,15 +31,13 @@
     "principle": "standard 默认；low_vram 更保守；extreme 更激进。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "standard is the default; low_vram is more conservative; extreme is more aggressive.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

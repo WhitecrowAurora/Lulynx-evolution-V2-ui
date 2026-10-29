@@ -30,15 +30,13 @@
     "principle": "在 Flow Matching 训练中，guidance_scale 控制 conditioned vs unconditioned 预测的混合比例。pred = uncond + scale * (cond - uncond)。scale=1 等价于标准训练。",
     "intervention": "training_step 中在 loss 计算前混合 conditioned/unconditioned 预测。",
     "expectedImpact": "影响 prompt 跟随强度。过高导致过拟合文本条件。",
-    "tradeoffs": "与 discrete_flow_shift 交互——两者共同决定 flow matching 的训练行为。",
-    "codePath": "training_loop.py:pred = uncond + guidance_scale * (cond - uncond)"
+    "tradeoffs": "与 discrete_flow_shift 交互——两者共同决定 flow matching 的训练行为。"
   },
   "advanced_en": {
     "principle": "In Flow Matching training, guidance_scale controls the mix of conditioned vs unconditioned predictions: pred = uncond + scale * (cond - uncond). scale=1 equals standard training.",
     "intervention": "Mixes conditioned/unconditioned predictions before loss computation in training_step.",
     "expectedImpact": "Affects prompt-following strength. Too high overfits text conditions.",
-    "tradeoffs": "Interacts with discrete_flow_shift — together they shape flow-matching training behavior.",
-    "codePath": "training_loop.py:pred = uncond + guidance_scale * (cond - uncond)"
+    "tradeoffs": "Interacts with discrete_flow_shift — together they shape flow-matching training behavior."
   },
   "relatedConfigs": [
     "discrete_flow_shift",

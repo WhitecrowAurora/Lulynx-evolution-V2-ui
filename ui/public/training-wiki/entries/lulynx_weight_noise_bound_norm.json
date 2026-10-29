@@ -21,15 +21,13 @@
     "principle": "加噪后把张量范数缩回加噪前，抑制 long-run 范数漂移（尤其 relative）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "After adding noise, rescales the tensor norm back to its pre-noise value, suppressing long-run norm drift (especially with relative mode).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

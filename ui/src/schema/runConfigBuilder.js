@@ -1,5 +1,7 @@
+import { applyOptimizationSelection } from '../../../../lora-scripts-ui-main/ui/src/features/optimizationSettings.js';
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
 import { SCHEDULER_VALUE_TO_TYPE } from './features/settingsOptions.js';
+import { normalizeSubsetTimestepOffsets } from './features/subsetTimestepOffsets.js';
 import { OPT_FIELD_ARG_KEYS } from './features/optimizerParams.js';
 import {
   normalizeAdapterEntityMutex,
@@ -616,6 +618,11 @@ function passthroughTopbarPerfToggles(payload, config) {
 export function buildRunConfigFromSections(config, typeId, { getSectionsForType, isFieldVisible }) {
   const resolvedTypeId = typeId || config.model_train_type || 'sdxl-lora';
   const payload = collectVisiblePayload(config, resolvedTypeId, getSectionsForType, isFieldVisible);
+  if ('subset_timestep_offsets' in payload) {
+    const offsets = normalizeSubsetTimestepOffsets(payload.subset_timestep_offsets);
+    if (Object.values(offsets).some(value => value !== 0)) payload.subset_timestep_offsets = offsets;
+    else delete payload.subset_timestep_offsets;
+  }
   for (const key of [
     'semantic_region_weighting_enabled',
     'semantic_segmentation_provider',
@@ -635,5 +642,5 @@ export function buildRunConfigFromSections(config, typeId, { getSectionsForType,
   normalizeAnimaVramOptimizer(payload);
   normalizeLayeredAlpha(payload);
   normalizeUniversalDitRoute(payload);
-  return payload;
+  return applyOptimizationSelection(payload, config);
 }

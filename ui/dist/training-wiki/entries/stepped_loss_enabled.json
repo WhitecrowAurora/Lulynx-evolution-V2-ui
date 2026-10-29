@@ -33,15 +33,13 @@
     "principle": "在训练循环中根据当前 step 查找 stepped_loss_schedule 中最近的一个节点，切换 loss_type 和 weight。支持 l2/l1/huber/smooth_l1 之间的切换以及 weight 缩放。",
     "intervention": "training_step 中根据 step 索引 stepped_loss_schedule 选择当前 loss 配置。",
     "expectedImpact": "灵活的 loss 调度可以实现更精细的训练控制。效果取决于具体调度策略。",
-    "tradeoffs": "需要经验来设计好的调度方案。建议先做短测对比。",
-    "codePath": "training_loop.py:stepped_loss_schedule[step] → current loss_type + weight"
+    "tradeoffs": "需要经验来设计好的调度方案。建议先做短测对比。"
   },
   "advanced_en": {
     "principle": "In the training loop, finds the nearest node in stepped_loss_schedule for the current step and switches loss_type and weight. Supports switching between l2/l1/huber/smooth_l1 and weight scaling.",
     "intervention": "In training_step, selects the current loss configuration by indexing stepped_loss_schedule with the step.",
     "expectedImpact": "A flexible loss schedule enables finer training control; effectiveness depends on the specific schedule.",
-    "tradeoffs": "Designing a good schedule takes experience; start with short-run comparisons.",
-    "codePath": "training_loop.py:stepped_loss_schedule[step] → current loss_type + weight"
+    "tradeoffs": "Designing a good schedule takes experience; start with short-run comparisons."
   },
   "relatedConfigs": [
     "stepped_loss_schedule",

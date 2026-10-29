@@ -29,7 +29,6 @@
   },
   "relatedConfigs": [
     "ac_enabled",
-    "ac_enable_auto_lr_adjustment",
-    "ac_target_loss"
+    "ac_enable_auto_lr_adjustment"
   ]
 }

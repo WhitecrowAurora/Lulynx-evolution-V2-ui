@@ -21,15 +21,13 @@
     "principle": "训后一次：X=已保存的 epoch/step 产品权重，Y=预览测试组（或验证提示词）；输出 quality_xy_grid.png。中间保存越多 X 轴越密；仅最终权重时也是 1 列网格。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Once after training: X = saved epoch/step artifact weights, Y = preview groups (or validation prompts); outputs quality_xy_grid.png. More intermediate saves make the X axis denser; with only the final weight it is still a 1-column grid.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -32,15 +32,13 @@
     "principle": "与 CFG 训练同源：以概率 p 用空条件替换真实条件，让模型同时拟合有条件与无条件分布，改善推理时 CFG 外推的质量。按样本粒度共享同一份丢弃掩码，保证同一样本的所有条件张量（hs/pooled/mask）一致地被置空。",
     "intervention": "training_loop_loss_mixin.py 的条件组装阶段：te_dropout > 0 时 _sample_drop_mask 生成掩码，_drop_tensor_samples 依次作用于 encoder_hs、pooled、attn_mask、qwen3_hs、qwen3_mask；Anima cached 路线由 trainer 侧解析出「有效 te dropout」（_resolve_anima_cached_effective_te_dropout）再注入循环。",
     "expectedImpact": "无条件/低 CFG 生成质量提升，条件泛化更好；触发词响应强度可能轻微下降。",
-    "tradeoffs": "丢弃率越高无条件分支越强、条件精度越弱；Anima cached 训练需要缓存里存有无条件张量，后端会按缓存能力换算实际生效的丢弃率。",
-    "codePath": "training_loop_loss_mixin.py：te_dropout 掩码采样与逐张量置空；trainer_execution_optimizer_setup.py:effective_te_dropout 解析（Anima cached 特殊处理）"
+    "tradeoffs": "丢弃率越高无条件分支越强、条件精度越弱；Anima cached 训练需要缓存里存有无条件张量，后端会按缓存能力换算实际生效的丢弃率。"
   },
   "advanced_en": {
     "principle": "Same origin as CFG training: with probability p the real condition is replaced by an empty condition, letting the model fit both the conditional and unconditional distributions and improving the quality of CFG extrapolation at inference. The drop mask is shared per sample so all of a sample's condition tensors (hs/pooled/mask) are consistently blanked.",
     "intervention": "In training_loop_loss_mixin.py's condition assembly stage: when te_dropout > 0, _sample_drop_mask generates the mask and _drop_tensor_samples applies it in turn to encoder_hs, pooled, attn_mask, qwen3_hs, qwen3_mask; for the Anima cached route, the trainer side resolves the \"effective te dropout\" (_resolve_anima_cached_effective_te_dropout) and injects it into the loop.",
     "expectedImpact": "Better unconditional/low-CFG generation quality and conditional generalization; trigger-word response strength may drop slightly.",
-    "tradeoffs": "The higher the drop rate, the stronger the unconditional branch and the weaker conditional precision; Anima cached training requires the cache to contain unconditional tensors, and the backend converts the actually effective drop rate according to cache capability.",
-    "codePath": "training_loop_loss_mixin.py: te_dropout mask sampling and per-tensor blanking; trainer_execution_optimizer_setup.py:effective_te_dropout resolution (Anima cached special handling)"
+    "tradeoffs": "The higher the drop rate, the stronger the unconditional branch and the weaker conditional precision; Anima cached training requires the cache to contain unconditional tensors, and the backend converts the actually effective drop rate according to cache capability."
   },
   "relatedConfigs": [
     "clip_l_dropout_rate",

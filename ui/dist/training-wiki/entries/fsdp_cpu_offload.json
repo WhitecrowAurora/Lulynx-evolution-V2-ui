@@ -35,15 +35,13 @@
     "principle": "FSDP2 的 offload_policy 决定分片副本存放位置。CPUOffloadPolicy 把 shard 与梯度放在 pinned host memory，前向/反向前按需搬入显存、用完搬出，等于把参数与梯度的常驻显存换成每步的 PCIe 传输。",
     "intervention": "distributed_fsdp_policy.py:build_fsdp2_shard_kwargs 把这个键翻成 offload_policy kwarg，distributed_runtime.py:_wrap_fsdp2 在两处 fully_shard 调用上一起带上。默认关闭时这个函数返回空 dict，也就是与接线前逐字节相同的 fully_shard(module) 调用 —— default-off parity 由 fsdp2_shard_policy_contract_smoke.py 钉住。",
     "expectedImpact": "显存下降幅度取决于分片后参数与梯度的占比；步时上升取决于 PCIe 带宽与每步搬运量，通常是数十个百分点量级。",
-    "tradeoffs": "与 block swap、模块 offload 一类显存优化机制重叠，叠加只会重复搬运。CPUOffloadPolicy 不可用时本实现选择报错，理由是「要了 offload 却没给」比慢更危险。",
-    "codePath": "configs_base.py:fsdp_cpu_offload 声明；distributed_fsdp_policy.py:build_fsdp2_shard_kwargs 归一化；distributed_runtime.py:_wrap_fsdp2 两处 fully_shard 消费；判据 backend/smoke/functional/runtime/fsdp2_shard_policy_contract_smoke.py"
+    "tradeoffs": "与 block swap、模块 offload 一类显存优化机制重叠，叠加只会重复搬运。CPUOffloadPolicy 不可用时本实现选择报错，理由是「要了 offload 却没给」比慢更危险。"
   },
   "advanced_en": {
     "principle": "FSDP2's offload_policy decides where shard replicas live. CPUOffloadPolicy puts shards and gradients in pinned host memory, moving them into VRAM before forward/backward as needed and out after use — trading resident parameter/gradient VRAM for per-step PCIe transfers.",
     "intervention": "distributed_fsdp_policy.py:build_fsdp2_shard_kwargs translates this key into the offload_policy kwarg, and distributed_runtime.py:_wrap_fsdp2 carries it on both fully_shard call sites. When off by default the function returns an empty dict — i.e. a fully_shard(module) call byte-identical to pre-wiring; the default-off parity is pinned by fsdp2_shard_policy_contract_smoke.py.",
     "expectedImpact": "The VRAM drop depends on the post-shard share of parameters and gradients; the step-time rise depends on PCIe bandwidth and per-step transfer volume — usually tens of percent.",
-    "tradeoffs": "Overlaps with VRAM-optimization mechanisms like block swap and module offload; stacking only duplicates transfers. When CPUOffloadPolicy is unavailable this implementation errors out — \"asked for offload but didn't get it\" is more dangerous than slow.",
-    "codePath": "configs_base.py:fsdp_cpu_offload declaration; distributed_fsdp_policy.py:build_fsdp2_shard_kwargs normalization; distributed_runtime.py:_wrap_fsdp2 two fully_shard consumers; criterion backend/smoke/functional/runtime/fsdp2_shard_policy_contract_smoke.py"
+    "tradeoffs": "Overlaps with VRAM-optimization mechanisms like block swap and module offload; stacking only duplicates transfers. When CPUOffloadPolicy is unavailable this implementation errors out — \"asked for offload but didn't get it\" is more dangerous than slow."
   },
   "relatedConfigs": [
     "distributed_strategy",

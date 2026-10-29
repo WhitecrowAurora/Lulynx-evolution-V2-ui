@@ -50,7 +50,7 @@ const RELEVANT_KEYS = [
   'noise_weighting_enabled', 'noise_weighting_mode', 'noise_weighting_strength',
   'sample_difficulty_weighting_enabled', 'sample_difficulty_weighting_mode',
   'sample_difficulty_weighting_strength', 'sample_difficulty_weighting_min',
-  'sample_difficulty_weighting_max', 'masked_loss', 'alpha_mask_enabled',
+  'sample_difficulty_weighting_max', 'masked_loss', 'alpha_mask', 'alpha_mask_enabled',
   'semantic_region_weighting_enabled',
 ]
 

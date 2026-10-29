@@ -21,15 +21,13 @@
     "principle": "仅用于 Loss 加权退火余弦。未锁定或触发保护上限时，每步至少推进多少余弦相位，避免后期完全停住。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Only for the loss-weighted annealing cosine. When unlocked or after the guard cap triggers, the minimum cosine phase advanced per step, keeping late training from stalling completely.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

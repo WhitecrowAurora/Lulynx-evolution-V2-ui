@@ -31,15 +31,13 @@
     "principle": "逐块编译把大图拆成 N 个小图，索引子集进一步允许 eager 与 compiled block 混跑：编译时间与缓存体积随选中块数线性下降，也让「哪个 block 编译出问题」可以二分。",
     "intervention": "runtime_optimizations_attention_compile.py 解析字符串（支持逗号与连字符区间），解析异常时写入 plan.warnings 并返回空选择；model_compile_registry.py:resolve_compile_block_selection 提供解析语义；编译报告记录 requested_block_indices 与实际 block_selection。",
     "expectedImpact": "编译预热时间和编译缓存占用下降；只编译部分 block 时整体加速比例也按比例缩水。",
-    "tradeoffs": "失败语义是「宁可全不编译」——填错格式会导致整个 per_block 编译静默失去加速（有 warning），排查时先看编译报告里的 block_selection。",
-    "codePath": "runtime_optimizations_attention_compile.py：解析与告警；model_compile_registry.py:resolve_compile_block_selection；configs_performance.py 定义"
+    "tradeoffs": "失败语义是「宁可全不编译」——填错格式会导致整个 per_block 编译静默失去加速（有 warning），排查时先看编译报告里的 block_selection。"
   },
   "advanced_en": {
     "principle": "Per-block compilation splits one large graph into N small graphs, and an index subset further allows eager and compiled blocks to run mixed: compile time and cache size fall linearly with the number of selected blocks, and it also makes \"which block has a compile problem\" bisectable.",
     "intervention": "runtime_optimizations_attention_compile.py parses the string (supporting commas and hyphen ranges); on a parse error it writes plan.warnings and returns an empty selection; model_compile_registry.py:resolve_compile_block_selection provides the parsing semantics; the compile report records requested_block_indices versus the actual block_selection.",
     "expectedImpact": "Compile warmup time and cache footprint drop; with only some blocks compiled the overall speedup also shrinks proportionally.",
-    "tradeoffs": "The failure semantics are \"prefer compiling nothing\" — a malformed string silently loses the whole per_block speedup (with a warning); when troubleshooting, check block_selection in the compile report first.",
-    "codePath": "runtime_optimizations_attention_compile.py: parsing and warnings; model_compile_registry.py:resolve_compile_block_selection; defined in configs_performance.py"
+    "tradeoffs": "The failure semantics are \"prefer compiling nothing\" — a malformed string silently loses the whole per_block speedup (with a warning); when troubleshooting, check block_selection in the compile report first."
   },
   "relatedConfigs": [
     "torch_compile_scope",

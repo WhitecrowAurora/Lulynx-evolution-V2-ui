@@ -27,15 +27,13 @@
     "principle": "当前后端实现为 lora_delta：约束负面提示词下 LoRA 开启与关闭的预测差异。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "The current backend implements lora_delta: constraining the prediction difference between LoRA on and off under the negative prompt.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

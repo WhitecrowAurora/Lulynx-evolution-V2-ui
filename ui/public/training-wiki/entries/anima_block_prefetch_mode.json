@@ -29,8 +29,7 @@
     "principle": "original=固定深度预取（默认，与历史字节路径一致）；adaptive=感知 blockskip / 在线调深度。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "original = fixed-depth prefetch (default, byte-identical to the historical path); adaptive = blockskip-aware / online depth tuning."

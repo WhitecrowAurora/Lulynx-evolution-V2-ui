@@ -33,15 +33,13 @@
     "principle": "frontier provenance 路线只允许基于论文/数学定义/本地 spec 的独立参考验证，不复制第三方实现，也不通过常规训练入口启用。",
     "intervention": "无产品侧操作。若需要研究验证，走 backend/core/lulynx_trainer/frontier/frontier_optimizer_provider.py 的内部 smoke 路线。",
     "expectedImpact": "尚未产品承诺；需要真实短训或工具 fixture、owner approval、release-hold clearance 后才能讨论暴露。",
-    "tradeoffs": "提前暴露会破坏 默认关闭、runtime/request 边界和 provenance 审计链。",
-    "codePath": "backend/core/lulynx_trainer/frontier_* governance + frontier_optimizer_provider.py internal-only"
+    "tradeoffs": "提前暴露会破坏 默认关闭、runtime/request 边界和 provenance 审计链。"
   },
   "advanced_en": {
     "principle": "The frontier provenance route only allows independent reference verification based on papers/mathematical definitions/local specs — no copying third-party implementations and no enabling through regular training entry points.",
     "intervention": "No product-side operation. For research verification, use the internal smoke route at backend/core/lulynx_trainer/frontier/frontier_optimizer_provider.py.",
     "expectedImpact": "No product commitment yet; exposure can only be discussed after real short runs or tool fixtures, owner approval, and release-hold clearance.",
-    "tradeoffs": "Premature exposure would break default-off, the runtime/request boundary, and the provenance audit chain.",
-    "codePath": "backend/core/lulynx_trainer/frontier_* governance + frontier_optimizer_provider.py internal-only"
+    "tradeoffs": "Premature exposure would break default-off, the runtime/request boundary, and the provenance audit chain."
   },
   "relatedConfigs": [
     "muon_momentum",

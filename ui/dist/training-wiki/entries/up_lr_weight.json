@@ -21,15 +21,13 @@
     "principle": "U-Net Decoder 各层的学习率权重，逗号分隔共 12 个值。设为 0 可冻结该层",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Per-layer learning-rate weights for the U-Net decoder, 12 comma-separated values. Set a layer to 0 to freeze it.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

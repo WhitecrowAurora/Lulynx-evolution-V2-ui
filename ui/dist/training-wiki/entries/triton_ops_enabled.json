@@ -1,14 +1,15 @@
 {
   "key": "triton_ops_enabled",
   "title": "Triton Ops (融合内核)",
-  "title_en": "Enable LTX Triton Ops",
+  "title_en": "Enable Triton Ops",
   "category": "性能 / 内核",
   "category_en": "Performance / Kernels",
   "appliesTo": [
     "sdxl-lora",
     "sd-lora",
     "anima-lora",
-    "newbie-lora"
+    "newbie-lora",
+    "flux3-lora"
   ],
   "layers": [
     "性能层"
@@ -17,14 +18,14 @@
     "Performance layer"
   ],
   "standard": {
-    "summary": "使用 Triton 编写的融合 CUDA 内核替代 PyTorch 原生操作，覆盖 LoRA 计算、QKV 投影和 AdaLN 调制，减少 kernel launch 开销。",
-    "effect": "triton_ops_inject_lora 替换 LoRA 的 down/up 矩阵乘法为融合 kernel。triton_ops_inject_qkv 融合 Q/K/V 投影。triton_ops_inject_adaln 融合 AdaLN 调制。triton_ops_fp32_backward 在 backward 中保持 FP32 精度。",
+    "summary": "按模型支持范围使用 Triton 融合 CUDA 内核，减少 LoRA 或注意力路径中的 kernel launch 开销。FLUX.3 LoRA 使用兼容 BF16 的融合 LoRA 前向与 Q/K/V 分支。",
+    "effect": "具体注入由模型训练路径决定。FLUX.3 LoRA 开启后仅对满足条件的 LoRA 层尝试融合前向与 Q/K/V LoRA；不适用的层回退原实现，不改变模型权重格式。",
     "whenToUse": "追求极致训练速度时。需要 Triton 环境支持。",
     "avoidWhen": "Triton 环境不完整时。默认关闭（triton_ops_enabled=False）。"
   },
   "standard_en": {
-    "summary": "Replaces native PyTorch operations with fused CUDA kernels written in Triton, covering the LoRA computation, the QKV projection and AdaLN modulation, which cuts kernel-launch overhead.",
-    "effect": "triton_ops_inject_lora replaces LoRA's down/up matrix multiplications with a fused kernel. triton_ops_inject_qkv fuses the Q/K/V projections. triton_ops_inject_adaln fuses AdaLN modulation. triton_ops_fp32_backward keeps FP32 precision in the backward pass.",
+    "summary": "Uses Triton fused CUDA kernels supported by the selected model path to reduce kernel-launch overhead in LoRA or attention operations. FLUX.3 LoRA uses fused LoRA forward and Q/K/V branches on compatible BF16 paths.",
+    "effect": "The model training path determines which kernels are injected. For FLUX.3 LoRA, only eligible LoRA layers try fused forward and Q/K/V LoRA; unsupported layers fall back to the original implementation, and model weight format is unchanged.",
     "whenToUse": "When chasing the last of the training speed. It needs a working Triton environment.",
     "avoidWhen": "When the Triton environment is incomplete. Off by default (triton_ops_enabled=False)."
   },
@@ -32,15 +33,13 @@
     "principle": "Triton 是 OpenAI 开发的高性能 GPU 编程框架。Lulynx 用 Triton 编写了三个融合 kernel：(1) LoRA fusion: 将 x·A^T·B^T + scale 合并为单次 kernel 调用；(2) QKV fusion: 将 Q/K/V 三个线性投影融合为一次 GEMM；(3) AdaLN fusion: 将 scale/shift/gate 调制合并。这减少了 kernel launch 次数和显存中间分配。",
     "intervention": "替换对应的 PyTorch nn.Linear forward 为 Triton kernel 调用。",
     "expectedImpact": "LoRA fusion 提速约 15-25%。QKV fusion 提速约 10-20%。",
-    "tradeoffs": "需要 CUDA + Triton 环境。可能与 torch.compile 冲突。",
-    "codePath": "core/triton_ops/ → fused LoRA/QKV/AdaLN Triton kernels"
+    "tradeoffs": "需要 CUDA + Triton 环境。可能与 torch.compile 冲突。"
   },
   "advanced_en": {
     "principle": "Triton is OpenAI's high-performance GPU programming framework. Lulynx wrote three fused Triton kernels: (1) LoRA fusion: merges x·A^T·B^T + scale into a single kernel call; (2) QKV fusion: fuses the Q/K/V linear projections into one GEMM; (3) AdaLN fusion: merges the scale/shift/gate modulation. This reduces kernel launch count and intermediate VRAM allocations.",
     "intervention": "Replaces the corresponding PyTorch nn.Linear forwards with Triton kernel calls.",
     "expectedImpact": "LoRA fusion speeds up about 15-25%. QKV fusion about 10-20%.",
-    "tradeoffs": "Requires a CUDA + Triton environment. May conflict with torch.compile.",
-    "codePath": "core/triton_ops/ → fused LoRA/QKV/AdaLN Triton kernels"
+    "tradeoffs": "Requires a CUDA + Triton environment. May conflict with torch.compile."
   },
   "relatedConfigs": [
     "triton_ops_inject_lora",

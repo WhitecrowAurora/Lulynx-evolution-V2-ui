@@ -31,15 +31,13 @@
     "principle": "full=方向+magnitude, style=magnitude only, structure=方向 only。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "full = direction + magnitude; style = magnitude only; structure = direction only.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

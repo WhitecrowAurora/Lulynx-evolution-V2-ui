@@ -35,15 +35,13 @@
     "principle": "当前实现对所有 optimizer-owned 参数应用梯度范数重缩放，不移除 LoRA dropout/scaling，也不保证论文 ALLoRA 的 LoRA-only、per-sample 完整语义。",
     "intervention": "trainer_optimizer_factory.py:_maybe_wrap_allora 在优化器构建后包装；包装器在 optimizer.step 前就地改写 param.grad。与 gradient_release 模式组合时由 flux_trainer_optimization_mixin 分支处理。",
     "expectedImpact": "各层收敛更均衡，对欠训练的层有提速效果；总体质量提升幅度依赖数据与 rank 配置。",
-    "tradeoffs": "改变了梯度的数值语义，与依赖原始梯度范数的功能（梯度裁剪阈值、梯度监控指标）解释性变差；runtime profile 会记录 wired/default_off 契约便于审计。",
-    "codePath": "trainer_optimizer_factory.py:_maybe_wrap_allora；allora_optimizer_wrapper.py（use_allora 主开关、allora_eps、allora_norm_threshold）"
+    "tradeoffs": "改变了梯度的数值语义，与依赖原始梯度范数的功能（梯度裁剪阈值、梯度监控指标）解释性变差；runtime profile 会记录 wired/default_off 契约便于审计。"
   },
   "advanced_en": {
     "principle": "The current implementation applies gradient-norm rescaling to all optimizer-owned parameters; it does not remove LoRA dropout/scaling and does not guarantee the paper ALLoRA's LoRA-only, per-sample full semantics.",
     "intervention": "trainer_optimizer_factory.py:_maybe_wrap_allora wraps after optimizer construction; the wrapper rewrites param.grad in place before optimizer.step. When combined with the gradient_release mode, the flux_trainer_optimization_mixin branch handles it.",
     "expectedImpact": "More balanced per-layer convergence and faster progress on under-trained layers; overall quality gain depends on data and rank configuration.",
-    "tradeoffs": "Changes the numerical semantics of gradients, making features that rely on raw gradient norms (clip thresholds, gradient-monitoring metrics) harder to interpret; the runtime profile records the wired/default_off contract for auditability.",
-    "codePath": "trainer_optimizer_factory.py:_maybe_wrap_allora; allora_optimizer_wrapper.py (use_allora master switch, allora_eps, allora_norm_threshold)"
+    "tradeoffs": "Changes the numerical semantics of gradients, making features that rely on raw gradient norms (clip thresholds, gradient-monitoring metrics) harder to interpret; the runtime profile records the wired/default_off contract for auditability."
   },
   "relatedConfigs": [
     "allora_eps",

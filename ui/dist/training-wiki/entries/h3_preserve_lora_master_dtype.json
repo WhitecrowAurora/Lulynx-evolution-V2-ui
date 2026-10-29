@@ -29,15 +29,13 @@
     "principle": "BF16 在数值 1.0 附近的分辨率约 0.008，学习率 1e-5 的单步更新远小于半个 ulp，直接以 BF16 累积会被舍入归零（更新饥饿）。FP32 master + 低精度计算副本是混合精度训练的标准解法，此处按 H3 的 INT8/BF16 主干场景显式提供开关。",
     "intervention": "trainer_prepare_mixin.py：config.preserve_lora_master_dtype = h3_preserve_lora_master_dtype，传给通用的 LoRA 参数 dtype 管理；configs_h3.py 默认 True。",
     "expectedImpact": "小学习率下 LoRA 实际学得动；显存增量 = LoRA 参数量 × 2 字节，通常几十 MB 内。",
-    "tradeoffs": "前向多一次 dtype 转换（开销可忽略）；与随机舍入（stochastic_rounding）是解决同一问题的两条路，FP32 master 更彻底。",
-    "codePath": "trainer_prepare_mixin.py：h3_preserve_lora_master_dtype → preserve_lora_master_dtype；configs_h3.py 定义"
+    "tradeoffs": "前向多一次 dtype 转换（开销可忽略）；与随机舍入（stochastic_rounding）是解决同一问题的两条路，FP32 master 更彻底。"
   },
   "advanced_en": {
     "principle": "BF16's resolution near 1.0 is about 0.008; a single update at lr 1e-5 is far below half an ulp, so accumulating directly in BF16 gets rounded to zero (update starvation). FP32 master + low-precision compute copies is the standard mixed-precision solution; this switch exposes it explicitly for H3's INT8/BF16 backbone scenario.",
     "intervention": "trainer_prepare_mixin.py: config.preserve_lora_master_dtype = h3_preserve_lora_master_dtype, passed to the generic LoRA parameter dtype management; configs_h3.py defaults to True.",
     "expectedImpact": "At small learning rates the LoRA actually learns; VRAM increase = LoRA parameter count × 2 bytes, usually within a few dozen MB.",
-    "tradeoffs": "One extra dtype conversion per forward (negligible); stochastic rounding is the other road to the same problem — FP32 master is the more thorough one.",
-    "codePath": "trainer_prepare_mixin.py: h3_preserve_lora_master_dtype → preserve_lora_master_dtype; defined in configs_h3.py"
+    "tradeoffs": "One extra dtype conversion per forward (negligible); stochastic rounding is the other road to the same problem — FP32 master is the more thorough one."
   },
   "relatedConfigs": [
     "stochastic_rounding",

@@ -21,8 +21,7 @@
     "principle": "loss-driven 与 uniform 混合 (1=纯 loss-driven)。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Blend between loss-driven and uniform (1 = pure loss-driven)."

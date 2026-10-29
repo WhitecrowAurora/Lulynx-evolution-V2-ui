@@ -24,15 +24,13 @@
     "principle": "使用哪些 DiT 层特征，逗号分隔 (如 \"4,8,12\")。需与 Multi-Scale 层对齐。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Which DiT layer features to use, comma-separated (e.g. \"4,8,12\"). Must align with the Multi-Scale layers.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

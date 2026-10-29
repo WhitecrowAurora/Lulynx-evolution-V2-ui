@@ -45,15 +45,13 @@
     "principle": "runtime 将 timestep/sigma/flow 值归一为 0..1 phase。phase=1 表示高噪声结构阶段，phase=0 表示低噪声细节阶段。",
     "intervention": "edit_injection_strategy 消费 schedule 输出，而不是直接读取 raw timestep。",
     "expectedImpact": "让保结构和可编辑之间有可控切换，减少 copy source 或大幅漂移两种极端。",
-    "tradeoffs": "不同模型族的 timestep 方向可能不同；需要 adapter 级校准后再做质量声明。",
-    "codePath": "core/lulynx_trainer/edit_timestep_schedule.py"
+    "tradeoffs": "不同模型族的 timestep 方向可能不同；需要 adapter 级校准后再做质量声明。"
   },
   "advanced_en": {
     "principle": "The runtime normalizes timestep/sigma/flow values into a 0..1 phase. phase=1 is the high-noise structure stage; phase=0 the low-noise detail stage.",
     "intervention": "edit_injection_strategy consumes the schedule's output rather than reading raw timesteps.",
     "expectedImpact": "Gives controllable switching between structure preservation and editability, avoiding the two extremes of photocopying the source or drifting wildly.",
-    "tradeoffs": "Timestep direction may differ across model families; calibrate at the adapter level before making quality claims.",
-    "codePath": "core/lulynx_trainer/edit_timestep_schedule.py"
+    "tradeoffs": "Timestep direction may differ across model families; calibrate at the adapter level before making quality claims."
   },
   "relatedConfigs": [
     "edit_timestep_schedule",

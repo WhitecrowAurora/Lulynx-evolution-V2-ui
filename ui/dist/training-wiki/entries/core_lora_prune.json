@@ -21,15 +21,13 @@
     "principle": "按区块保留或移除 LoRA 张量，生成新的 safetensors。默认不覆盖源文件。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Keeps or removes LoRA tensors per block and writes a new safetensors file. The source file is not overwritten by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

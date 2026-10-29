@@ -30,15 +30,13 @@
     "principle": "先统计窗口、warmup 和 stop-caching 阶段的可跳过性，避免无质量证据就改变输出。",
     "intervention": "GenerationRequest → Spectrum step context → executable subset telemetry。",
     "expectedImpact": "当前仅有极小 telemetry 开销；真实加速需要后续 cache/skip 执行。",
-    "tradeoffs": "探针不等于推理加速完成。",
-    "codePath": "backend/core/lulynx_trainer/spectrum_probe.py"
+    "tradeoffs": "探针不等于推理加速完成。"
   },
   "advanced_en": {
     "principle": "First measures skippability over the window, warmup, and stop-caching phases, so outputs are never changed without quality evidence.",
     "intervention": "GenerationRequest → Spectrum step context → executable subset telemetry.",
     "expectedImpact": "Currently only minimal telemetry overhead; real speedup requires subsequent cache/skip execution.",
-    "tradeoffs": "A probe is not a finished inference acceleration.",
-    "codePath": "backend/core/lulynx_trainer/spectrum_probe.py"
+    "tradeoffs": "A probe is not a finished inference acceleration."
   },
   "relatedConfigs": [
     "spectrum_probe",

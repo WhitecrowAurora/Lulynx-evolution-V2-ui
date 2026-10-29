@@ -30,15 +30,13 @@
     "principle": "ToMe（Bolya et al.）基于相邻 token 的相似度做双向匹配合并，attention 在缩短后的序列上计算，随后再展开。计算量随合并比例近似线性下降，而扩散模型的特征冗余使小比例合并的质量损失可控。",
     "intervention": "training_loop.py:_get_tome_seam 按模型族校验后调用 build_tome_seam(enabled=True, ratio=tome_ratio)；tome_runtime.py 用 ContextVar 在每次模型前向的作用域内发布 seam，前向结束自动复位；被运行时阻断时逐名告警并按未合并执行。",
     "expectedImpact": "attention 阶段耗时随 ratio 下降；质量随 ratio 上升逐渐受损，建议从 0.3~0.5 起测。",
-    "tradeoffs": "训练与推理的 token 拓扑不一致可能引入轻微分布偏移；parity 红线保证默认关闭时零影响。",
-    "codePath": "training_loop.py:_get_tome_seam；tome_runtime.py:build_tome_seam（默认关不构建 seam，前向位级一致）"
+    "tradeoffs": "训练与推理的 token 拓扑不一致可能引入轻微分布偏移；parity 红线保证默认关闭时零影响。"
   },
   "advanced_en": {
     "principle": "ToMe (Bolya et al.) merges tokens by bidirectional matching on neighboring-token similarity; attention runs on the shortened sequence, which is then expanded back. Compute falls roughly linearly with the merge ratio, and diffusion models' feature redundancy keeps the quality loss of small-ratio merging manageable.",
     "intervention": "training_loop.py:_get_tome_seam calls build_tome_seam(enabled=True, ratio=tome_ratio) after per-model-family validation; tome_runtime.py publishes the seam via a ContextVar scoped to each model forward and resets it automatically when the forward ends; when blocked by the runtime it warns by name and executes unmerged.",
     "expectedImpact": "Attention-stage time falls with ratio; quality degrades gradually as ratio rises — start testing from 0.3~0.5.",
-    "tradeoffs": "The token-topology mismatch between training and inference may introduce slight distribution shift; the parity red line guarantees zero impact when off by default.",
-    "codePath": "training_loop.py:_get_tome_seam; tome_runtime.py:build_tome_seam (off by default builds no seam, forward is bitwise identical)"
+    "tradeoffs": "The token-topology mismatch between training and inference may introduce slight distribution shift; the parity red line guarantees zero impact when off by default."
   },
   "relatedConfigs": [
     "tome_ratio",

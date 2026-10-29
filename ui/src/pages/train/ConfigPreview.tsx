@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import { buildRunConfig } from '@/schema/schemaIndex.js'
 import { toast } from '@/stores/toastStore'
 import { useI18n } from '@/i18n/useI18n'
+import { TrainingVisualization } from './TrainingVisualization'
 
 /* 实时 config.json 预览:随草稿变化重新 buildRunConfig 并美化输出。
    与提交走同一 buildRunConfig,所以预览即真实 payload,无二次口径。 */
@@ -17,13 +18,13 @@ export function ConfigPreview({
   const { t } = useI18n()
   const [collapsed, setCollapsed] = useState(false)
 
-  const { text, count, error } = useMemo(() => {
+  const { text, count, error, payload } = useMemo(() => {
     try {
       const payload = buildRunConfig(draft, typeId) as Record<string, unknown>
       const json = JSON.stringify(payload, null, 2)
-      return { text: json, count: Object.keys(payload).length, error: '' }
+      return { text: json, count: Object.keys(payload).length, error: '', payload }
     } catch (e) {
-      return { text: '', count: 0, error: (e as Error).message }
+      return { text: '', count: 0, error: (e as Error).message, payload: null }
     }
   }, [draft, typeId])
 
@@ -57,7 +58,10 @@ export function ConfigPreview({
         error ? (
           <div className="lx-config-preview-error">{error}</div>
         ) : (
-          <pre className="lx-config-preview-body">{text}</pre>
+          <div className="lx-config-preview-content">
+            {payload ? <TrainingVisualization config={payload} schemaId={typeId} /> : null}
+            <pre className="lx-config-preview-body">{text}</pre>
+          </div>
         )
       ) : null}
     </aside>

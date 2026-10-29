@@ -21,8 +21,7 @@
     "principle": "将 latent 缓存持久化到磁盘，跨训练 run 复用。适合大数据集或多次反复训练同一批数据。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Persists latents to disk for reuse across training runs. Good for large datasets or repeated training on the same data."

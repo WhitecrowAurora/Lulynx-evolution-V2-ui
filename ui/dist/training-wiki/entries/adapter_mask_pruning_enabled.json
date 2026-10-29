@@ -21,8 +21,7 @@
     "principle": "训练中按 adapter rank 重要性更新稳定 mask。只做逻辑 mask，不改变 tensor shape 或 optimizer state。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "During training, updates a stable mask based on adapter rank importance. Logic mask only — tensor shapes and optimizer state are untouched. Off by default."

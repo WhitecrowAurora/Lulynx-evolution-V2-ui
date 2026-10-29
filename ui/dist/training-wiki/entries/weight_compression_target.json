@@ -33,15 +33,13 @@
     "principle": "none/backbone/text_encoder/both。预设会覆盖此值；手动启用时有效。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "none/backbone/text_encoder/both. Presets override this value; effective when enabled manually.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

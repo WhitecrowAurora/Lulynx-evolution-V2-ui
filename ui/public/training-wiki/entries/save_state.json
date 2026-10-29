@@ -34,15 +34,13 @@
     "principle": "state 包含：(1) optimizer.state_dict()（包括 m_t 和 v_t）；(2) scheduler.state_dict()；(3) torch.random.get_rng_state()；(4) CUDA rng state。resume 时按顺序恢复这些状态，确保从断点继续训练的行为与不间断训练一致。",
     "intervention": "checkpoint_manager 在 save_model 后额外 torch.save(state_dict, path)。",
     "expectedImpact": "确保 resume 后的训练行为与不间断训练完全一致。",
-    "tradeoffs": "save_state_on_train_end 在训练正常结束时也保存状态。save_last_n_epochs_state/save_last_n_steps_state 控制保留多少个历史状态。",
-    "codePath": "training_loop.py:save_state() → torch.save(optimizer + scheduler + rng state)"
+    "tradeoffs": "save_state_on_train_end 在训练正常结束时也保存状态。save_last_n_epochs_state/save_last_n_steps_state 控制保留多少个历史状态。"
   },
   "advanced_en": {
     "principle": "state includes: (1) optimizer.state_dict() (including m_t and v_t); (2) scheduler.state_dict(); (3) torch.random.get_rng_state(); (4) CUDA rng state. On resume these are restored in order so behavior after resuming matches uninterrupted training.",
     "intervention": "checkpoint_manager does an extra torch.save(state_dict, path) after save_model.",
     "expectedImpact": "Ensures resumed training behaves exactly like uninterrupted training.",
-    "tradeoffs": "save_state_on_train_end also saves state at normal training end. save_last_n_epochs_state/save_last_n_steps_state control how many historical states to keep.",
-    "codePath": "training_loop.py:save_state() → torch.save(optimizer + scheduler + rng state)"
+    "tradeoffs": "save_state_on_train_end also saves state at normal training end. save_last_n_epochs_state/save_last_n_steps_state control how many historical states to keep."
   },
   "relatedConfigs": [
     "resume_path",

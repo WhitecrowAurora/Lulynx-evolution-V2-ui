@@ -20,6 +20,9 @@ html[data-theme='stitch-light'] body {
   --lx-warn: #a06a00;
   --lx-danger: #c81e1e;
   --lx-danger-glow: rgba(200, 30, 30, 0.18);
+  /* 整块危险态填充:色相偏绯红,和 PyTorch 橙强调色拉开 */
+  --lx-danger-fill: #c8102e;
+  --lx-danger-contrast: #ffffff;
   /* 蓝:仅 Sync Active 徽标 + focus ring */
   --lx-sync: #3B82F6;
   --lx-sync-soft: rgba(59, 130, 246, 0.12);
@@ -53,7 +56,7 @@ html[data-theme='stitch-light'] .lx-range::-webkit-slider-thumb { box-shadow: no
 
 /* 页标题降到 18px/600(非 editorial 超大版式) */
 html[data-theme='stitch-light'] .lx-page-title { font-weight: 600; letter-spacing: -0.01em; text-transform: none; }
-html[data-theme='stitch-light'] .lx-page-title .line.outline { -webkit-text-stroke: 0; color: var(--lx-text); }
+html[data-theme='stitch-light'] .lx-page-title .line.is-outline { -webkit-text-stroke: 0; color: var(--lx-text); }
 
 /* 主按钮:橙底白字实心 */
 html[data-theme='stitch-light'] .lx-btn.primary { background: var(--lx-accent); border-color: var(--lx-accent); color: var(--lx-accent-contrast); }

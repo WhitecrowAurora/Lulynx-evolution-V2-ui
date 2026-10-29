@@ -33,15 +33,13 @@
     "principle": "分离「基准阈值」与「全局缩放」两个自由度：schedule 模式（exponential/snr/auto）会在 huber_c 基础上做逐 timestep 或逐样本调制，huber_scale 则在最外层统一乘上去，便于跨 schedule 比较实验。",
     "intervention": "training_loop_loss_mixin.py 阈值解析：scale = max(huber_scale, 1e-6)；auto 模式下 delta = clamp(分位数, min=huber_c×huber_scale) × huber_scale。",
     "expectedImpact": "与直接改 huber_c 等效的鲁棒性调节，但在 auto 模式下额外影响分位数下限，防止阈值塌缩到 0。",
-    "tradeoffs": "auto 模式中缩放被应用两次（下限与乘子），调得过大时阈值增长比直觉快，建议 0.5~2.0 区间内微调。",
-    "codePath": "training_loop_loss_mixin.py:_huber 阈值解析——scale=max(float(huber_scale),1e-6)，auto 分支 clamp(min=base*scale)*scale"
+    "tradeoffs": "auto 模式中缩放被应用两次（下限与乘子），调得过大时阈值增长比直觉快，建议 0.5~2.0 区间内微调。"
   },
   "advanced_en": {
     "principle": "Separates two degrees of freedom — \"base threshold\" and \"global scaling\": schedule modes (exponential/snr/auto) modulate per-timestep or per-sample on top of huber_c, and huber_scale multiplies uniformly at the outermost level, easing cross-schedule experiment comparison.",
     "intervention": "training_loop_loss_mixin.py threshold resolution: scale = max(huber_scale, 1e-6); in auto mode delta = clamp(quantile, min=huber_c×huber_scale) × huber_scale.",
     "expectedImpact": "Equivalent robustness tuning to changing huber_c directly, but in auto mode it additionally raises the quantile floor, keeping the threshold from collapsing to 0.",
-    "tradeoffs": "In auto mode the scale is applied twice (floor and multiplier), so the threshold grows faster than intuition suggests when set large — fine-tune within 0.5~2.0.",
-    "codePath": "training_loop_loss_mixin.py:_huber threshold resolution — scale=max(float(huber_scale),1e-6), auto branch clamp(min=base*scale)*scale"
+    "tradeoffs": "In auto mode the scale is applied twice (floor and multiplier), so the threshold grows faster than intuition suggests when set large — fine-tune within 0.5~2.0."
   },
   "relatedConfigs": [
     "huber_c",

@@ -21,15 +21,13 @@
     "principle": "传给 LyCORIS 库的 preset。通常留空即可，等同于使用其默认 preset。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Preset passed to the LyCORIS library. Usually leave empty, which equals using its default preset.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

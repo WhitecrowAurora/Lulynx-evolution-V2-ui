@@ -39,15 +39,13 @@
     "principle": "第一版不引入 VLM/CLIP reward 依赖，只在已有 diffusion target loss 上叠加确定性的 mask/preserve delta，避免训练路径膨胀。",
     "intervention": "loss execution stage 在基础 target loss 后追加 edit loss delta，并记录小型 edit_loss 报告。",
     "expectedImpact": "让模型把学习容量集中到目标编辑区域，同时减少非编辑区域漂移。",
-    "tradeoffs": "preserve loss 目前复用 target-space 误差；source-vs-target latent preservation 需要后续 source encode 路径。",
-    "codePath": "core/lulynx_trainer/edit_loss_plan.py"
+    "tradeoffs": "preserve loss 目前复用 target-space 误差；source-vs-target latent preservation 需要后续 source encode 路径。"
   },
   "advanced_en": {
     "principle": "V1 introduces no VLM/CLIP reward dependency — only deterministic mask/preserve deltas stacked on the existing diffusion target loss, avoiding training-path bloat.",
     "intervention": "The loss execution stage appends the edit loss delta after the base target loss and records a small edit_loss report.",
     "expectedImpact": "Concentrates the model's learning capacity on the target edit region while reducing drift elsewhere.",
-    "tradeoffs": "The preserve loss currently reuses target-space error; source-vs-target latent preservation needs a later source-encode path.",
-    "codePath": "core/lulynx_trainer/edit_loss_plan.py"
+    "tradeoffs": "The preserve loss currently reuses target-space error; source-vs-target latent preservation needs a later source-encode path."
   },
   "relatedConfigs": [
     "edit_loss_plan",

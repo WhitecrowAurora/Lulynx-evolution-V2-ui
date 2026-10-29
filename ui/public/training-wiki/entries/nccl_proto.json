@@ -33,15 +33,13 @@
     "principle": "NCCL 有三种数据传输协议：LL（low latency，用 8 字节 flag 做同步，延迟最低但有效带宽最低）、LL128（128 字节粒度，NVLink 上兼顾延迟与带宽）、Simple（不做 flag 同步，大消息带宽最高、小消息延迟最高）。留空时 NCCL 按消息大小与拓扑自己在三者之间切换，阈值由它的调优表决定。",
     "intervention": "训练进程启动时按这个键设置 NCCL_PROTO 环境变量；因为是环境变量，作用域是整个进程而不是某一条通信路径。",
     "expectedImpact": "视拓扑与消息大小而定，没有通用结论。NVLink 机器上 LL128 常见有利；PCIe / V100 一类机器上要与 Simple 实测对照才能判断。",
-    "tradeoffs": "写死一个协议会挡掉 NCCL 按消息大小自动切换的能力：某个尺寸上快了，另一个尺寸上就可能更慢。",
-    "codePath": "configs_base.py 声明 nccl_proto；分布式进程组初始化时注入 NCCL_PROTO 环境变量；三分叉 schemaFieldGroups.js 的 S_DISTRIBUTED 暴露"
+    "tradeoffs": "写死一个协议会挡掉 NCCL 按消息大小自动切换的能力：某个尺寸上快了，另一个尺寸上就可能更慢。"
   },
   "advanced_en": {
     "principle": "NCCL has three data-transfer protocols: LL (low latency, 8-byte flag sync — lowest latency but lowest effective bandwidth), LL128 (128-byte granularity, balancing latency and bandwidth on NVLink), and Simple (no flag sync — highest bandwidth for large messages, highest latency for small ones). When unset, NCCL switches among the three itself based on message size and topology, with thresholds from its tuning tables.",
     "intervention": "Sets the NCCL_PROTO environment variable from this key at training-process start; being an environment variable, its scope is the whole process rather than any single communication path.",
     "expectedImpact": "Depends on topology and message size — no universal answer. On NVLink machines LL128 is often favorable; on PCIe / V100-class machines compare against Simple empirically.",
-    "tradeoffs": "Pinning one protocol disables NCCL's auto-switching by message size: faster at one size, possibly slower at another.",
-    "codePath": "configs_base.py declares nccl_proto; injected as the NCCL_PROTO env var at distributed process-group initialization; exposed in the three-way schemaFieldGroups.js S_DISTRIBUTED"
+    "tradeoffs": "Pinning one protocol disables NCCL's auto-switching by message size: faster at one size, possibly slower at another."
   },
   "relatedConfigs": [
     "enable_distributed_training",

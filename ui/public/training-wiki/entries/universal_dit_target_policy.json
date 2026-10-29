@@ -29,15 +29,13 @@
     "principle": "LoRA 注入面决定可学习子空间的位置：attention 投影层控制「往哪看/怎么混合」，MLP 控制「逐 token 变换」；attention_mlp 组合是社区验证的默认最优覆盖。通用路线用命名/形状启发式识别这些层，融合 QKV（单个大线性层）需要特殊处理故默认排除。",
     "intervention": "universal_dit/runtime.py：policy = universal_dit_target_policy，allow_fused = universal_dit_allow_fused_qkv，explicit_paths 解析 universal_dit_target_modules_json；training_capabilities/universal_dit.py：取值校验（_TARGET_POLICIES 白名单，非法回落 attention_mlp）。",
     "expectedImpact": "注入面越大表达力与显存/产物体积越大；显式 JSON 模式可精确控制但维护成本高。",
-    "tradeoffs": "自动策略对非常规命名的模型可能识别不全；建议先跑 probe 模式看识别报告再正式训练。",
-    "codePath": "universal_dit/runtime.py：target_policy / allow_fused_qkv / target_modules_json 解析；training_capabilities/universal_dit.py：白名单校验"
+    "tradeoffs": "自动策略对非常规命名的模型可能识别不全；建议先跑 probe 模式看识别报告再正式训练。"
   },
   "advanced_en": {
     "principle": "The LoRA injection surface decides where the learnable subspace sits: attention projection layers control \"where to look / how to mix\", MLP controls \"per-token transformation\"; the attention_mlp combination is the community-validated default best coverage. The generic route identifies these layers by name/shape heuristics; fused QKV (a single large linear) needs special handling and is excluded by default.",
     "intervention": "universal_dit/runtime.py: policy = universal_dit_target_policy, allow_fused = universal_dit_allow_fused_qkv, explicit paths parsed from universal_dit_target_modules_json; training_capabilities/universal_dit.py: value validation (_TARGET_POLICIES whitelist, illegal values fall back to attention_mlp).",
     "expectedImpact": "The larger the injection surface, the greater the expressiveness and the VRAM/artifact size; the explicit JSON mode gives precise control but is costly to maintain.",
-    "tradeoffs": "Automatic policies may miss layers in unusually named models; run probe mode first and review the identification report before training for real.",
-    "codePath": "universal_dit/runtime.py: target_policy / allow_fused_qkv / target_modules_json parsing; training_capabilities/universal_dit.py: whitelist validation"
+    "tradeoffs": "Automatic policies may miss layers in unusually named models; run probe mode first and review the identification report before training for real."
   },
   "relatedConfigs": [
     "universal_dit_enabled",

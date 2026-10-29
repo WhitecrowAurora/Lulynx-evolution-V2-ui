@@ -55,14 +55,14 @@ export function useModelCodeTrust(typeId: string, config: Record<string, unknown
       if (fingerprint !== JSON.stringify(modelCodePreviewConfig(buildRunConfig(current.config, current.typeId)))
         || !session.offer(ticket, current, data?.model_code?.sources)) {
         session.reset()
-        setError('未返回可确认的代码来源，或配置已变更；授权保持关闭。')
+        setError('无法确认代码来源，已关闭授权。')
       } else {
         previewFingerprint.current = fingerprint
       }
     } catch (failure) {
       if (epoch === requestEpoch.current) {
         session.reset()
-        setError(failure instanceof Error ? failure.message : '无法读取模型代码来源，授权保持关闭。')
+        setError(failure instanceof Error ? failure.message : '无法确认代码来源，已关闭授权。')
       }
     } finally {
       if (epoch === requestEpoch.current) { setBusy(false); changed() }
@@ -102,7 +102,7 @@ export function ModelCodeTrustControl({ trust, disabled }: {
             onChange={(event) => { if (event.target.checked) void trust.requestConfirmation(); else trust.reset() }} />
           {' '}允许加载模型自定义代码（高风险）
         </label>
-        <p>{trust.busy ? '正在核对实际代码来源…' : '默认关闭，仅本次提交有效；修改或导入配置后需重新确认。不会允许不安全 pickle 加载。'}</p>
+        <p>{trust.busy ? '正在核对实际代码来源…' : '每次提交需重新确认，默认关闭。不会允许不安全 pickle 加载。'}</p>
         {trust.error && <p role="alert">{trust.error}</p>}
       </div>
       <Modal open={trust.sources.length > 0} title="确认允许模型代码在本机执行" onClose={trust.reset}>

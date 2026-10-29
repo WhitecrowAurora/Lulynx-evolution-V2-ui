@@ -29,15 +29,13 @@
     "principle": "概念编辑（iLECO/ADDifT）的核心算法与模型族解耦，但前向、噪声调度、条件编码都依赖具体家族；该键是路由开关，让统一的 concept-edit 训练类型分发到家族特化实现。",
     "intervention": "config_adapter_conversion_core.py：training_type=concept-edit 时读取本键推断 model_type；trainer_side_train_runtime.py：运行时 base_model = config.concept_edit_base_model（默认 anima）选择训练分支。",
     "expectedImpact": "决定显存、速度与可用的辅助功能（如 Anima 路线支持的 timestep 课程）。",
-    "tradeoffs": "各家族的成熟度不同：anima 路线功能最全，其余家族按各自 mixin 的实现覆盖度提供。",
-    "codePath": "trainer_side_train_runtime.py：base_model 解析与分支；config_adapter_conversion_core.py：由 concept_edit_base_model 推断 model_type；configs_anima.py 定义"
+    "tradeoffs": "各家族的成熟度不同：anima 路线功能最全，其余家族按各自 mixin 的实现覆盖度提供。"
   },
   "advanced_en": {
     "principle": "The core concept-edit (iLECO/ADDifT) algorithms are decoupled from model families, but the forward pass, noise schedule, and condition encoding all depend on the specific family; this key is the routing switch that dispatches the unified concept-edit training type to family-specialized implementations.",
     "intervention": "config_adapter_conversion_core.py: when training_type=concept-edit, this key is read to infer model_type; trainer_side_train_runtime.py: at runtime base_model = config.concept_edit_base_model (default anima) selects the training branch.",
     "expectedImpact": "Determines VRAM, speed, and which auxiliary features are available (e.g. the timestep curriculum supported by the Anima route).",
-    "tradeoffs": "Family maturity differs: the anima route is the most feature-complete; the other families provide whatever their own mixins implement.",
-    "codePath": "trainer_side_train_runtime.py: base_model resolution and branching; config_adapter_conversion_core.py: infers model_type from concept_edit_base_model; defined in configs_anima.py"
+    "tradeoffs": "Family maturity differs: the anima route is the most feature-complete; the other families provide whatever their own mixins implement."
   },
   "relatedConfigs": [
     "concept_edit_method",

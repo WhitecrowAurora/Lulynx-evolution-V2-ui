@@ -21,15 +21,13 @@
     "principle": "启用 micro-batch 拆分执行。很强的保命项，但通常会明显降低速度；只有单步 batch 接近 OOM 时再开",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Enables micro-batch split execution. A very strong life-saver, but usually slows things down noticeably; only turn it on when a single-step batch is close to OOM.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -21,15 +21,13 @@
     "principle": "实验性窗口注意力。auto 会优先尊重启动器/预检解析后的 attention backend；不支持窗口实现时再 fallback。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Experimental window attention. auto first respects the attention backend resolved by the launcher/preflight, then falls back when a windowed implementation is unavailable.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

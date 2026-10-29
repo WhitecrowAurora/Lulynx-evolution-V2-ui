@@ -25,17 +25,15 @@
   },
   "advanced": {
     "principle": "每 ac_warmup_steps 步后启动，每 ac_loss_plateau_window 步评估一次损失趋势、CLIP 漂移、梯度 stable rank。根据多种信号联合决策触发相应干预。",
-    "intervention": "可触发：智能早停（long-term loss 无改善）/ 学习率衰减（loss 平台期）/ 自动 TE 冻结（指定步数后）/ 动态损失缩放 / 自动 LR 调整（GSNR/目标 loss）。",
+    "intervention": "可触发：智能早停（long-term loss 无改善）/ 目标损失早停（窗口平均 loss 达标）/ 学习率衰减（loss 平台期）/ 自动 TE 冻结（指定步数后）/ 自动 LR 调整（GSNR）。",
     "expectedImpact": "正常收敛训练几乎不会触发任何干预；平台期或过拟合时自动介入，节省无效训练时间。",
-    "tradeoffs": "参数组合复杂，各干预策略叠加时行为难以预测。建议先开启基本版（只开早停+LR衰减），熟悉后再开启 GSNR/CLIP 等高级监控。",
-    "codePath": "core/lulynx_trainer/auto_controller.py → AutoControllerMixin"
+    "tradeoffs": "参数组合复杂，各干预策略叠加时行为难以预测。建议先开启基本版（只开早停+LR衰减），熟悉后再开启 GSNR/CLIP 等高级监控。"
   },
   "advanced_en": {
     "principle": "Starts after ac_warmup_steps and every ac_loss_plateau_window steps evaluates loss trend, CLIP drift, and gradient stable rank. Joint decisions across multiple signals trigger the corresponding interventions.",
-    "intervention": "Can trigger: smart early stopping (long-term loss without improvement) / LR decay (loss plateau) / automatic TE freeze (after a set step count) / dynamic loss scaling / automatic LR adjustment (GSNR / target loss).",
+    "intervention": "Can trigger: smart early stopping (long-term loss without improvement) / target-loss stop (window-mean loss reached) / LR decay (loss plateau) / automatic TE freeze (after a set step count) / automatic LR adjustment (GSNR).",
     "expectedImpact": "Normally converging training almost never triggers any intervention; during plateaus or overfitting it steps in automatically, saving wasted training time.",
-    "tradeoffs": "The parameter combinations are complex and behavior is hard to predict when intervention strategies stack. Start with the basic set (early stopping + LR decay only), then enable GSNR/CLIP and other advanced monitoring once familiar.",
-    "codePath": "core/lulynx_trainer/auto_controller.py → AutoControllerMixin"
+    "tradeoffs": "The parameter combinations are complex and behavior is hard to predict when intervention strategies stack. Start with the basic set (early stopping + LR decay only), then enable GSNR/CLIP and other advanced monitoring once familiar."
   },
   "relatedConfigs": [
     "ac_warmup_steps",

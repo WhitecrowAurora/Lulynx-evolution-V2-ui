@@ -32,15 +32,13 @@
     "principle": "评估分数只有在验证条件（prompt、seed、采样参数、指标权重）完全一致时才可比；suite_id 把这组条件命名为稳定标识，避免「改了 prompts 还在对比旧分数」的错误结论。",
     "intervention": "configs_validators.py 支持从 quality_evaluation 配置块的 suite_id 归一化；quality/validation_suite.py:build_validation_suite 以 suite_id 组装验证清单（prompts、seeds、metrics、negative、采样参数、compare_base）。",
     "expectedImpact": "评估结果可追溯、可横向对比；对训练本身无影响。",
-    "tradeoffs": "改了 prompts/seeds 却沿用旧 ID 会污染对比语义——修改清单内容时应同步换 ID。",
-    "codePath": "quality/validation_suite.py：suite_id=quality_evaluation_suite_id 组装套件；configs_validators.py 归一化"
+    "tradeoffs": "改了 prompts/seeds 却沿用旧 ID 会污染对比语义——修改清单内容时应同步换 ID。"
   },
   "advanced_en": {
     "principle": "Evaluation scores are only comparable when the validation conditions (prompts, seeds, sampling parameters, metric weights) are fully identical; suite_id names that set of conditions as a stable identifier, avoiding wrong conclusions like \"comparing against old scores after changing the prompts\".",
     "intervention": "configs_validators.py supports normalizing suite_id from the quality_evaluation config block; quality/validation_suite.py:build_validation_suite assembles the validation checklist (prompts, seeds, metrics, negatives, sampling parameters, compare_base) under suite_id.",
     "expectedImpact": "Evaluation results become traceable and horizontally comparable; no effect on training itself.",
-    "tradeoffs": "Changing prompts/seeds while keeping the old ID pollutes the comparison semantics — change the ID whenever the checklist content changes.",
-    "codePath": "quality/validation_suite.py: suite_id=quality_evaluation_suite_id assembles the suite; configs_validators.py normalization"
+    "tradeoffs": "Changing prompts/seeds while keeping the old ID pollutes the comparison semantics — change the ID whenever the checklist content changes."
   },
   "relatedConfigs": [
     "quality_evaluation_enabled",

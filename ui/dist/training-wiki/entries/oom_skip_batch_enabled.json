@@ -21,15 +21,13 @@
     "principle": "自动跳过 OOM (显存不足) 的 batch，而不是直接崩溃。适合显存紧张的情况",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Automatically skips batches that hit OOM (out of memory) instead of crashing outright. Useful when VRAM is tight.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -1,0 +1,34 @@
+{
+  "key": "subset_timestep_offsets",
+  "title": "子集时间步偏移",
+  "title_en": "Subset timestep offsets",
+  "category": "数据集 / 噪声分布",
+  "category_en": "Dataset / Noise distribution",
+  "standard": {
+    "summary": "为训练数据集的每个子集单独设置噪声分布偏移。先选择数据集目录，再点击扫描数据集子集；根目录的子集 ID 为 .。",
+    "effect": "默认 0 保持原采样。负值偏向低噪声，正值偏向高噪声，范围为 -1000 至 1000。验证和正则化样本不加偏移。",
+    "whenToUse": "当前模型和 logit_normal 采样支持此功能时，可小幅调整某个素材子集的噪声偏好。界面显示实际生效状态和原因。",
+    "avoidWhen": "Krea2、MOSS 等独立时间步模块不支持此偏移；ANT、Smart Noise、时间步先验也会接管采样。此调节不保证提升画质。"
+  },
+  "standard_en": {
+    "summary": "Set a noise-distribution offset per training subset. Select a dataset directory and scan subsets; the root subset ID is .",
+    "effect": "Default 0 keeps the original sampler. Negative values favor lower noise, positive values higher noise, within -1000 to 1000. Validation and regularization remain unbiased.",
+    "whenToUse": "Use small adjustments when the current model and logit_normal sampler support offsets. The UI reports whether they apply and why.",
+    "avoidWhen": "Dedicated timestep modules such as Krea2 and MOSS do not consume offsets. ANT, Smart Noise and timestep priors own their sampling. Offsets do not guarantee better image quality."
+  },
+  "advanced": {
+    "principle": "偏移按 1000 步归一化域计量，在 sigmoid 前加上 4 × offset / 1000。offset=-100 对应 logit bias=-0.4，并非将最终时间步减去 100。分布预览使用后端采样公式。",
+    "tradeoffs": "全部子集预览按发现的样本数及目录重复次数加权；自定义采样、验证划分可能改变实际占比。更换目录后仍保留已保存偏移，但未找到的子集需要清除或选回原数据集。"
+  },
+  "advanced_en": {
+    "principle": "Offsets use a normalized 1000-step domain and add 4 × offset / 1000 before sigmoid. An offset of -100 gives a logit bias of -0.4, rather than subtracting 100 from final timesteps. The preview uses backend sampler formulas.",
+    "tradeoffs": "The all-subsets preview weights discovered samples by folder repeats. Custom sampling and validation splits may change actual proportions. Saved offsets survive directory changes; clear missing subsets or reselect the original dataset."
+  },
+  "relatedConfigs": [
+    "timestep_sampling",
+    "ddpm_timestep_sampling",
+    "flow_logit_mean",
+    "flow_logit_std",
+    "train_data_dir"
+  ]
+}

@@ -40,15 +40,13 @@
     "principle": "DiT 推理中相邻 step 的输出特征可能相似；本地 Cache Seam 在满足条件时跳过完整 forward 并复用缓存。lulynx 线性外推使用 sample_spectrum_window_size，lulynx 误差缓存使用相邻 step relative-L1 与 sample_smoothcache_error_threshold。它们不是论文算法的逐项复现。",
     "intervention": "采样循环中根据 backend 策略决定是否跳过当前 step 的完整计算。",
     "expectedImpact": "可能减少预览采样计算，但收益和漂移取决于模型与阈值；不使用未经本地 A/B 证实的论文速度/质量数字。",
-    "tradeoffs": "sample_cache_seam_window_size 控制缓存窗口大小。smoothcache 和 spectrum 有各自的 warmup 控制。",
-    "codePath": "backend/core/lulynx_trainer/sampler.py → cache seam backend dispatch → spectrum/smoothcache/deepcache/teacache"
+    "tradeoffs": "sample_cache_seam_window_size 控制缓存窗口大小。smoothcache 和 spectrum 有各自的 warmup 控制。"
   },
   "advanced_en": {
     "principle": "In DiT inference, outputs from adjacent steps can be similar; the local Cache Seam skips the full forward and reuses cache when conditions are met. The lulynx linear extrapolation uses sample_spectrum_window_size; the lulynx error cache uses adjacent-step relative-L1 with sample_smoothcache_error_threshold. These are not item-for-item reproductions of the paper algorithms.",
     "intervention": "In the sampling loop, the backend strategy decides whether to skip the current step's full computation.",
     "expectedImpact": "May reduce preview sampling compute, but the benefit and drift depend on the model and thresholds; do not use paper speed/quality numbers without local A/B verification.",
-    "tradeoffs": "sample_cache_seam_window_size controls the cache window size. smoothcache and spectrum each have their own warmup controls.",
-    "codePath": "backend/core/lulynx_trainer/sampler.py → cache seam backend dispatch → spectrum/smoothcache/deepcache/teacache"
+    "tradeoffs": "sample_cache_seam_window_size controls the cache window size. smoothcache and spectrum each have their own warmup controls."
   },
   "relatedConfigs": [
     "sample_spectrum_probe",

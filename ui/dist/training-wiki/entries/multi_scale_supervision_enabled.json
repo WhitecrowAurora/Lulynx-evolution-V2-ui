@@ -21,15 +21,13 @@
     "principle": "在 DiT 中间层 (4/8/12) 上做 student-teacher 自蒸馏，引导网络学习更平滑的语义空间。需要两次 forward，显存开销较大。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Student-teacher self-distillation on DiT intermediate layers (4/8/12), guiding the network toward a smoother semantic space. Needs two forward passes; VRAM cost is significant. Off by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

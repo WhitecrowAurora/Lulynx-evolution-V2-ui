@@ -29,15 +29,13 @@
     "principle": "扩层后的最优训练自由度是个层级：只训新层保证原能力零损失（原层参数字面不变）；外围模块是深度改变后最需要重校准的接口层；全参则把扩层当作普通微调的更大起点。",
     "intervention": "config_adapter_conversion_context.py：scope 归一化（new_layers/new_layers_periphery/all，enabled 时非法值抛错）；anima_depth_expansion_runtime.py：按 scope 设置 requires_grad 集合。",
     "expectedImpact": "new_layers 显存最省（优化器状态只覆盖新层）、行为最可控；all 显存与遗忘风险最大。",
-    "tradeoffs": "范围越大需要的正则与数据越多；periphery 是性价比折中，但输出头解冻后原模型的输出分布也开始漂移。",
-    "codePath": "config_adapter_conversion_context.py：train_scope 校验；anima_depth_expansion_runtime.py：TRAIN_SCOPES 与 requires_grad 划分"
+    "tradeoffs": "范围越大需要的正则与数据越多；periphery 是性价比折中，但输出头解冻后原模型的输出分布也开始漂移。"
   },
   "advanced_en": {
     "principle": "Post-expansion training freedom is a hierarchy: training only new layers guarantees zero loss of original capability (original-layer parameters literally unchanged); periphery modules are the interface layers most needing recalibration after a depth change; all treats the expanded model as a bigger starting point for ordinary fine-tuning.",
     "intervention": "config_adapter_conversion_context.py: scope normalization (new_layers/new_layers_periphery/all; illegal values raise when enabled); anima_depth_expansion_runtime.py: sets the requires_grad set per scope.",
     "expectedImpact": "new_layers uses the least VRAM (optimizer state covers only new layers) and is the most controllable; all has the highest VRAM and forgetting risk.",
-    "tradeoffs": "Larger scopes need more regularization and data; periphery is the value-for-money compromise, but once output heads unfreeze the original model's output distribution starts drifting too.",
-    "codePath": "config_adapter_conversion_context.py: train_scope validation; anima_depth_expansion_runtime.py: TRAIN_SCOPES and requires_grad partitioning"
+    "tradeoffs": "Larger scopes need more regularization and data; periphery is the value-for-money compromise, but once output heads unfreeze the original model's output distribution starts drifting too."
   },
   "relatedConfigs": [
     "anima_depth_expansion_enabled",

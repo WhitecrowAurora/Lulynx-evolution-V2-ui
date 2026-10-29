@@ -52,15 +52,13 @@
     "principle": "LoHa: ΔW = (A⊙B)·(C⊙D)，用 Hadamard 积表达更丰富的权重更新。LoKr: ΔW = A⊗B，Kronecker 积在保持参数量的同时表达力更强。lycoris_lokr_factor 控制 Kronecker 分解比例。IA³: 只学习 per-channel 缩放向量。Diag-OFT: 对权重施加正交变换。lycoris_conv_dim/conv_alpha 控制卷积层的独立 rank。",
     "intervention": "network_module 设为 lycoris.locon 时激活 LyCORIS 注入，lycoris_algo 选择具体算法。",
     "expectedImpact": "LoHa/LoKr 比标准 LoRA 质量提升约 3-10%，但文件体积可能增加 2-4 倍。",
-    "tradeoffs": "lycoris_train_norm 允许训练 LayerNorm 层。lycoris_use_effective_conv 为兼容性保留：本项目 LoHa 的 effective-conv 优化已由 Khatri-Rao 因子化路径等效替代（见 lycoris_loha），该字段不改变计算；卷积层适配请用 lycoris.locon。",
-    "codePath": "lycoris/ → algorithm dispatch → LoHa/LoKr/IA3/OFT/LoCon layer injection"
+    "tradeoffs": "lycoris_train_norm 允许训练 LayerNorm 层。lycoris_use_effective_conv 为兼容性保留：本项目 LoHa 的 effective-conv 优化已由 Khatri-Rao 因子化路径等效替代（见 lycoris_loha），该字段不改变计算；卷积层适配请用 lycoris.locon。"
   },
   "advanced_en": {
     "principle": "LoHa: ΔW = (A⊙B)·(C⊙D), using Hadamard products for richer weight updates. LoKr: ΔW = A⊗B — the Kronecker product is more expressive at equal parameter count. lycoris_lokr_factor controls the Kronecker factorization ratio. IA³: learns only per-channel scaling vectors. Diag-OFT: applies orthogonal transforms to weights. lycoris_conv_dim/conv_alpha control independent ranks for conv layers.",
     "intervention": "LyCORIS injection activates when network_module is lycoris.locon, with lycoris_algo choosing the algorithm.",
     "expectedImpact": "LoHa/LoKr improve quality about 3-10% over standard LoRA, but file size may grow 2-4×.",
-    "tradeoffs": "lycoris_train_norm allows training LayerNorm layers. lycoris_use_effective_conv is kept for compatibility: this project's LoHa effective-conv optimization has been equivalently replaced by the Khatri-Rao factorized path (see lycoris_loha), and the field no longer changes computation; use lycoris.locon for conv-layer adaptation.",
-    "codePath": "lycoris/ → algorithm dispatch → LoHa/LoKr/IA3/OFT/LoCon layer injection"
+    "tradeoffs": "lycoris_train_norm allows training LayerNorm layers. lycoris_use_effective_conv is kept for compatibility: this project's LoHa effective-conv optimization has been equivalently replaced by the Khatri-Rao factorized path (see lycoris_loha), and the field no longer changes computation; use lycoris.locon for conv-layer adaptation."
   },
   "relatedConfigs": [
     "network_module",

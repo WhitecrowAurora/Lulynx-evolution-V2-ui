@@ -30,15 +30,13 @@
     "principle": "记录 self/cross-attention 位置和满足条件的候选 block。",
     "intervention": "GenerationRequest → sampler context → Anima attention telemetry。",
     "expectedImpact": "当前无可宣称推理性能收益；后续若跳过深层 cross-attention 才可能降低 token 计算。",
-    "tradeoffs": "不能和 Spectrum 一样被当作已完成的加速开关。",
-    "codePath": "backend/core/lulynx_trainer/tgate.py"
+    "tradeoffs": "不能和 Spectrum 一样被当作已完成的加速开关。"
   },
   "advanced_en": {
     "principle": "Records self/cross-attention positions and candidate blocks meeting the conditions.",
     "intervention": "GenerationRequest → sampler context → Anima attention telemetry.",
     "expectedImpact": "No claimable inference performance benefit currently; only once deep cross-attention can be skipped might token compute drop.",
-    "tradeoffs": "It must not be treated as a finished acceleration switch the way Spectrum is.",
-    "codePath": "backend/core/lulynx_trainer/tgate.py"
+    "tradeoffs": "It must not be treated as a finished acceleration switch the way Spectrum is."
   },
   "relatedConfigs": [
     "tgate_probe",

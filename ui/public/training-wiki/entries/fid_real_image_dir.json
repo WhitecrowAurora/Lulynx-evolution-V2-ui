@@ -32,15 +32,13 @@
     "principle": "FID 是两组图像在 Inception 特征空间的 Fréchet 距离，需要足够数量的真实样本估计协方差（几十张以上才有统计意义）；LPIPS 是逐对感知距离，依赖文件名匹配建立真实-生成对应关系。",
     "intervention": "trainer_quality_runtime.py 读入；quality/quality_evaluation_metrics.py：_match_real_images 做真实图匹配，FID/LPIPS 分支在目录为空时 warning + return None（上层记 skipped）。",
     "expectedImpact": "补齐参照后 FID/LPIPS 可用；评估耗时增加（真实集特征提取）。",
-    "tradeoffs": "小参照集（<50 张）的 FID 波动大；LPIPS 的文件名匹配约定要求生成侧命名与真实侧对应。",
-    "codePath": "quality/quality_evaluation_metrics.py：fid_real_image_dir 判空跳过 + _match_real_images；trainer_quality_runtime.py 读取"
+    "tradeoffs": "小参照集（<50 张）的 FID 波动大；LPIPS 的文件名匹配约定要求生成侧命名与真实侧对应。"
   },
   "advanced_en": {
     "principle": "FID is the Fréchet distance between two image sets in Inception feature space and needs enough real samples to estimate covariance (only statistically meaningful above a few dozen); LPIPS is a pairwise perceptual distance relying on filename matching to pair real and generated images.",
     "intervention": "Read in by trainer_quality_runtime.py; quality/quality_evaluation_metrics.py: _match_real_images does real-image matching, and the FID/LPIPS branches warn + return None when the directory is empty (the caller records skipped).",
     "expectedImpact": "With a reference set supplied, FID/LPIPS become usable; evaluation takes longer (real-set feature extraction).",
-    "tradeoffs": "FID on small reference sets (<50 images) fluctuates heavily; LPIPS's filename-matching convention requires generated-side names to correspond to the real side.",
-    "codePath": "quality/quality_evaluation_metrics.py: fid_real_image_dir empty-check skip + _match_real_images; read by trainer_quality_runtime.py"
+    "tradeoffs": "FID on small reference sets (<50 images) fluctuates heavily; LPIPS's filename-matching convention requires generated-side names to correspond to the real side."
   },
   "relatedConfigs": [
     "quality_evaluation_metrics",

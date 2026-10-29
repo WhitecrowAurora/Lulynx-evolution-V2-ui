@@ -21,15 +21,13 @@
     "principle": "启用后优先读 latent/TE 缓存（*_flux2.npz）。需先构建 cache；cached 步跳过 live TE/VAE。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "When on, latent/TE caches (*_flux2.npz) are read preferentially. The cache must be built first; cached steps skip live TE/VAE.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

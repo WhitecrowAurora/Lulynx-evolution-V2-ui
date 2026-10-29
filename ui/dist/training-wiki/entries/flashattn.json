@@ -21,15 +21,13 @@
     "principle": "高级覆盖：强制 FlashAttention 2。默认跟随启动环境（flash2 runtime 无需勾选）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Advanced override: force FlashAttention 2. By default follows the launch environment (the flash2 runtime does not need this checked).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

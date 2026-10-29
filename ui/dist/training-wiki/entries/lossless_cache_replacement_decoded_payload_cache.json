@@ -21,15 +21,13 @@
     "principle": "将解码后的 latent 载荷驻留在 CPU 内存，减少重复磁盘 IO（data-bound 场景有效）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Resident-decodes latent payloads in CPU memory, reducing repeated disk IO (effective in data-bound scenarios).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

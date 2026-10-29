@@ -21,15 +21,13 @@
     "principle": "开启后可按模块类型（自注意力/交叉注意力/MLP/调制/LLM Adapter）分别设置 LoRA alpha，而不是全局统一。留空的组仍使用上方的全局 Network Alpha。关闭 = 所有组统一 = 传统 LoRA。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "When on, LoRA alpha can be set separately per module type (self-attention / cross-attention / MLP / modulation / LLM Adapter) instead of one global value. Groups left empty still use the global Network Alpha above. Off = all groups unified = traditional LoRA.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

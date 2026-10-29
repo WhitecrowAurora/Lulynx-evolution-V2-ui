@@ -29,15 +29,13 @@
     "principle": "DreamBooth 论文原始形态是全参微调 + 先验保持；LoRA 模式把可训练自由度替换为低秩残差，先验保持损失同样作用于 LoRA 化的前向，大幅降低显存与产物体积，代价是表达能力受 rank 上限约束。",
     "intervention": "trainer_prepare_train_mode_mixin.py：training_type=dreambooth 时读取 use_lora，True 则记录「DreamBooth + LoRA mode」并继续进入常规 adapter 注入流程；training_queue_support.py 在配置解析阶段把 lora_rank 映射为 network_dim。",
     "expectedImpact": "LoRA 模式显存需求降到常规 LoRA 训练量级、产物几十 MB；全参模式保真上限更高但需数 GB 产物与更多显存。",
-    "tradeoffs": "同样的步数下 LoRA 模式收敛特性与全参不同（学习率区间也不同：LoRA 常用 1e-4 量级，全参 1e-6~1e-5 量级），切换模式时学习率要一起改。",
-    "codePath": "trainer_prepare_train_mode_mixin.py：dreambooth 分支 use_lora 判定；training_queue_support.py：use_lora 时 network_dim=lora_rank"
+    "tradeoffs": "同样的步数下 LoRA 模式收敛特性与全参不同（学习率区间也不同：LoRA 常用 1e-4 量级，全参 1e-6~1e-5 量级），切换模式时学习率要一起改。"
   },
   "advanced_en": {
     "principle": "The DreamBooth paper's original form is full-parameter finetuning + prior preservation; LoRA mode replaces the trainable degrees of freedom with a low-rank residual, and the prior-preservation loss likewise acts on the LoRA-ized forward, greatly reducing VRAM and artifact size at the cost of expressiveness capped by rank.",
     "intervention": "trainer_prepare_train_mode_mixin.py: when training_type=dreambooth it reads use_lora; True records \"DreamBooth + LoRA mode\" and continues into the normal adapter injection flow; training_queue_support.py maps lora_rank to network_dim at config parse time.",
     "expectedImpact": "LoRA mode brings VRAM down to ordinary LoRA training levels with artifacts of tens of MB; full-parameter mode has a higher fidelity ceiling but needs multi-GB artifacts and more VRAM.",
-    "tradeoffs": "At the same step count, LoRA mode converges differently from full-parameter (and the learning rate ranges differ: LoRA commonly at 1e-4 scale, full-parameter at 1e-6~1e-5) — change the learning rate together when switching modes.",
-    "codePath": "trainer_prepare_train_mode_mixin.py: dreambooth branch use_lora check; training_queue_support.py: network_dim=lora_rank when use_lora"
+    "tradeoffs": "At the same step count, LoRA mode converges differently from full-parameter (and the learning rate ranges differ: LoRA commonly at 1e-4 scale, full-parameter at 1e-6~1e-5) — change the learning rate together when switching modes."
   },
   "relatedConfigs": [
     "lora_rank",

@@ -29,15 +29,13 @@
     "principle": "flow 系模型的 shift 参数把均匀 timestep 重映射为偏向某噪声端的分布（shift 越大越偏高噪声/结构端）。视频模型的结构（运动、时序）主要在高噪声段建立，checkpoint 的固有映射是 12；训练分布向低噪声偏移等于把学习容量挪给细节。",
     "intervention": "minimax_h3/train_step.py：按样本帧数选择键——video.shape[2]==1 用 h3_image_timestep_shift（默认 1.0），否则用 h3_timestep_shift（默认 12.0），对采样的 t 做 shift 变换。",
     "expectedImpact": "12：对齐推理、均衡；8：细节增强、运动结构风险；两者差异随训练步数放大。",
-    "tradeoffs": "与 h3_video_sigma_shift（模型固有映射，别动）语义不同：前者是训练分布选择，后者是 checkpoint 属性。",
-    "codePath": "minimax_h3/train_step.py：按帧数分派 h3_timestep_shift / h3_image_timestep_shift；configs_h3.py 定义（gt=0）"
+    "tradeoffs": "与 h3_video_sigma_shift（模型固有映射，别动）语义不同：前者是训练分布选择，后者是 checkpoint 属性。"
   },
   "advanced_en": {
     "principle": "Flow-family models' shift parameter remaps uniform timesteps toward one noise end (larger shift leans toward high noise / structure). A video model's structure (motion, temporal coherence) is established mainly in the high-noise segment, and the checkpoint's inherent mapping is 12; shifting the training distribution toward low noise equals reallocating learning capacity to detail.",
     "intervention": "minimax_h3/train_step.py: selects the key by sample frame count — video.shape[2]==1 uses h3_image_timestep_shift (default 1.0), otherwise h3_timestep_shift (default 12.0), applying the shift transform to the sampled t.",
     "expectedImpact": "12: aligned with inference, balanced; 8: detail-enhanced with motion-structure risk; the difference widens with training steps.",
-    "tradeoffs": "Different in meaning from h3_video_sigma_shift (the model's inherent mapping — don't touch): the former is a training-distribution choice, the latter a checkpoint property.",
-    "codePath": "minimax_h3/train_step.py: dispatches h3_timestep_shift / h3_image_timestep_shift by frame count; defined in configs_h3.py (gt=0)"
+    "tradeoffs": "Different in meaning from h3_video_sigma_shift (the model's inherent mapping — don't touch): the former is a training-distribution choice, the latter a checkpoint property."
   },
   "relatedConfigs": [
     "h3_image_timestep_shift",

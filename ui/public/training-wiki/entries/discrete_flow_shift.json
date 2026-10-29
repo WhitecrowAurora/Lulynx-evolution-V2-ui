@@ -30,15 +30,13 @@
     "principle": "Flow Matching 的 timestep t 通常从均匀分布采样。discrete_flow_shift 对 t 做 logit-normal 变换：t' = σ(shift * logit(t) + mean)。shift > 1 使分布集中在中间，shift < 1 使分布更均匀。FLUX.1 论文推荐 shift=3.0。",
     "intervention": "training_step 中对采样的 timestep 施加 shift 变换。",
     "expectedImpact": "影响模型对不同噪声级别的关注程度。shift=3 通常是最优的。",
-    "tradeoffs": "flow_logit_mean 和 flow_logit_std 进一步控制 logit-normal 分布的形状。",
-    "codePath": "training_loop.py:discrete_flow_shift → logit-normal timestep sampling"
+    "tradeoffs": "flow_logit_mean 和 flow_logit_std 进一步控制 logit-normal 分布的形状。"
   },
   "advanced_en": {
     "principle": "Flow Matching's timestep t is usually sampled uniformly. discrete_flow_shift applies a logit-normal transform: t' = σ(shift * logit(t) + mean). shift > 1 concentrates the distribution in the middle; shift < 1 makes it more uniform. The FLUX.1 paper recommends shift=3.0.",
     "intervention": "Applies the shift transform to sampled timesteps in training_step.",
     "expectedImpact": "Affects how much the model attends to different noise levels. shift=3 is usually optimal.",
-    "tradeoffs": "flow_logit_mean and flow_logit_std further shape the logit-normal distribution.",
-    "codePath": "training_loop.py:discrete_flow_shift → logit-normal timestep sampling"
+    "tradeoffs": "flow_logit_mean and flow_logit_std further shape the logit-normal distribution."
   },
   "relatedConfigs": [
     "flow_logit_mean",

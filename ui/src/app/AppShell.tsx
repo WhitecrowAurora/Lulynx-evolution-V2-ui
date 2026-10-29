@@ -5,6 +5,7 @@ import { hydrateRuntimeCapabilities } from '@/stores/runtimeStore'
 import { Topbar } from './Topbar'
 import { PageHost } from './PageHost'
 import { ToastHost } from '@/components/overlay'
+import { CompanionToolHost } from '@/components/CompanionToolHost'
 import { useRouteStore } from '@/stores/routeStore'
 import { subscribeLauncherTheme } from '@/stores/themeStore'
 
@@ -38,6 +39,7 @@ export function AppShell() {
         <PageHost />
       </main>
       <ToastHost />
+      <CompanionToolHost />
     </>
   )
 }

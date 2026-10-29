@@ -103,11 +103,11 @@ function parseSchedule(value: unknown): ParsedSchedule {
     try {
       parsed = JSON.parse(value)
     } catch {
-      return { root: {}, phases: [clone(DEFAULT_PHASE)], invalid: 'JSON 格式无效，当前编辑不会覆盖原始内容。', wasArray: false }
+      return { root: {}, phases: [clone(DEFAULT_PHASE)], invalid: 'JSON 格式错误，未保存。', wasArray: false }
     }
   }
   if (Array.isArray(parsed)) {
-    return { root: null, phases: parsed.filter(asObject).map(clone), invalid: parsed.every(asObject) ? '' : 'Phase 必须为对象，当前编辑不会覆盖原始内容。', wasArray: true }
+    return { root: null, phases: parsed.filter(asObject).map(clone), invalid: parsed.every(asObject) ? '' : 'JSON 格式错误，未保存。', wasArray: true }
   }
   const root = asObject(parsed)
   if (root && Array.isArray(root.phases)) {
@@ -116,7 +116,7 @@ function parseSchedule(value: unknown): ParsedSchedule {
   if (root && ('start' in root || 'end' in root || 'lr_scale' in root)) {
     return { root: {}, phases: [clone(root)], invalid: '', wasArray: false }
   }
-  return { root: {}, phases: [], invalid: '请输入 JSON 数组或包含 phases 数组的对象。', wasArray: false }
+  return { root: {}, phases: [], invalid: '需要 JSON 数组，或包含 phases 数组的对象。', wasArray: false }
 }
 
 function scheduleText(parsed: ParsedSchedule): string {
@@ -241,7 +241,7 @@ export function ProgressivePhaseEditor({
       onChange(JSON.stringify(payload))
       setJsonError('')
     } catch {
-      setJsonError('无法导入：请输入 JSON 数组或包含 phases 数组的对象。')
+      setJsonError('JSON 格式错误，未保存。')
     }
   }
 

@@ -22,15 +22,13 @@
     "principle": "gpu_ids 与 cuda_visible_devices 是两级：前者是训练参数级的设备选择，后者是进程级的可见性。decide_queue_gpu_group 先读 gpu_ids，为空才读 cuda_visible_devices —— 所以两个都填时 gpu_ids 赢，继承逻辑也因此在任一字段非空时整体让位，避免一个决定被两个字段编码。",
     "intervention": "留空 + launcher 里选好卡，是推荐的默认用法：一处选择同时管住 launcher 自己的训练页和 WebUI 提交的任务。要在单次任务里临时换卡再填这里。",
     "expectedImpact": "只影响设备选择与排队可行性；world size 仍由已解析的分布式进程/机器配置决定（见 training_step_breakdown 的假设说明）。",
-    "tradeoffs": "填死编号可复现但不跟随硬件变化；留空跟随 launcher 但需要记得 launcher 当前选了什么。",
-    "codePath": "core/services/training_request_adapter.py:apply_launcher_gpu_default（留空时的继承）→ core/services/training_queue_gpu_group.py:_requested_indices（两级读取顺序、UUID 选择器容许范围）→ training_queue_control.py（把选中的编号写回 cuda_visible_devices）→ training_queue_support.py:build_worker_env（落成子进程的 CUDA_VISIBLE_DEVICES）"
+    "tradeoffs": "填死编号可复现但不跟随硬件变化；留空跟随 launcher 但需要记得 launcher 当前选了什么。"
   },
   "advanced_en": {
     "principle": "gpu_ids and cuda_visible_devices are two tiers: the former is training-parameter-level device selection, the latter is process-level visibility. decide_queue_gpu_group reads gpu_ids first and only falls back to cuda_visible_devices when it is empty — so when both are set gpu_ids wins, and the inheritance logic therefore stands down entirely whenever either field is non-empty, keeping one decision from being encoded by two fields.",
     "intervention": "Leave empty and pick the GPU in the launcher — the recommended default: one choice governs both the launcher's own training page and tasks submitted from the WebUI. Fill this in only to swap GPUs for a single task.",
     "expectedImpact": "Affects device selection and queue feasibility only; world size is still decided by the resolved distributed process/machine configuration (see the assumptions note in training_step_breakdown).",
-    "tradeoffs": "Hard-coding indices is reproducible but does not follow hardware changes; leaving it empty follows the launcher but requires remembering what the launcher currently has selected.",
-    "codePath": "core/services/training_request_adapter.py:apply_launcher_gpu_default (inheritance when empty) → core/services/training_queue_gpu_group.py:_requested_indices (two-tier read order, UUID selector allowance) → training_queue_control.py (writes the selected indices back to cuda_visible_devices) → training_queue_support.py:build_worker_env (lands as the child process's CUDA_VISIBLE_DEVICES)"
+    "tradeoffs": "Hard-coding indices is reproducible but does not follow hardware changes; leaving it empty follows the launcher but requires remembering what the launcher currently has selected."
   },
   "relatedConfigs": [
     "multi_gpu",

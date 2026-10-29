@@ -148,15 +148,29 @@ export const sparseSwapFields = (residencyKey) => [
 export const pcieDeltaCacheField = (residencyKey) => ({
   key: 'pcie_delta_cache_enabled',
   type: 'boolean',
-  label: 'PCIe Delta/Cache 候选分析',
-  desc: 'observe 输出候选报告',
+  label: '冻结权重显存缓存',
+  desc: '在预算内缓存冻结模型权重，减少 CPU→GPU 重复搬运。缓存会占用额外显存，速度收益取决于任务；显存紧张时可保持关闭。此选项与图像、latent 数据缓存独立。',
   defaultValue: false,
   visibleWhen: nonResidentBlockMode(residencyKey),
 });
 
 export const pcieDeltaCacheModeFields = (residencyKey) => [
-  { key: 'pcie_delta_cache_mode', type: 'select', label: 'PCIe Delta/Cache 模式', title: 'pcie_delta_cache_mode', desc: 'observe 只读观察；cache_v0 手动缓存。', defaultValue: 'observe', options: ['observe', 'cache_v0'], visibleWhen: all(nonResidentBlockMode(residencyKey), when('pcie_delta_cache_enabled', true)) },
-  { key: 'pcie_delta_cache_budget_mb', type: 'number', label: 'PCIe Cache v0 预算 MB', title: 'pcie_delta_cache_budget_mb', desc: 'GPU 缓存预算。建议 256MB 起步。0 表示不启用。', defaultValue: 256, min: 0, step: 64, visibleWhen: all(nonResidentBlockMode(residencyKey), when('pcie_delta_cache_enabled', true), when('pcie_delta_cache_mode', 'cache_v0')) },
+  {
+    key: 'pcie_delta_cache_mode', type: 'select', label: '权重缓存工作方式',
+    desc: '启用缓存会按预算复用权重和已有预取结果；仅观察只生成候选报告，不建立手动缓存。已有配置保留原来的选择。',
+    defaultValue: 'cache_v0',
+    options: [
+      { value: 'cache_v0', label: '启用缓存' },
+      { value: 'observe', label: '仅观察，不缓存' },
+    ],
+    visibleWhen: all(nonResidentBlockMode(residencyKey), when('pcie_delta_cache_enabled', true)),
+  },
+  {
+    key: 'pcie_delta_cache_budget_mb', type: 'number', label: '权重缓存显存预算（MiB）',
+    desc: '按权重在 GPU 上的实际占用计算，包含偏置。建议从 256～512 MiB 开始；0 关闭手动缓存。这是权重缓存额度，不是训练总显存上限。',
+    defaultValue: 256, min: 0, step: 64,
+    visibleWhen: all(nonResidentBlockMode(residencyKey), when('pcie_delta_cache_enabled', true), when('pcie_delta_cache_mode', 'cache_v0')),
+  },
 ];
 
 export const VORTEX_RUNTIME_MODE_OPTIONS = [
@@ -671,6 +685,7 @@ export const ds = (reso, bucketMax = 2048, bucketStep = 64, extra = []) => [
   { key: 'image_decode_backend', type: 'select', label: '图片解码后端', title: 'image_decode_backend', desc: 'pil 最兼容；pil_lru 会按文件 mtime/大小缓存已解码 RGB', defaultValue: 'pil', options: IMAGE_DECODE_BACKEND_OPTIONS, visibleWhen: when('performance_expert_mode', true) },
   { key: 'data_backend', type: 'select', label: '数据后端', title: 'data_backend', desc: 'auto/caption 当前继续走 CaptionDataset', defaultValue: 'auto', options: DATA_BACKEND_OPTIONS, visibleWhen: when('performance_expert_mode', true) },
   { key: 'image_decode_cache_size', type: 'number', label: '图片解码缓存张数', title: 'image_decode_cache_size', desc: '每个 DataLoader worker 的 PIL 解码 LRU', defaultValue: 0, min: 0, visibleWhen: all(when('performance_expert_mode', true), oneOf('image_decode_backend', ['auto', 'pil_lru'])) },
+  { key: 'image_worker_uint8', type: 'boolean', label: '紧凑图像传输', title: 'image_worker_uint8', desc: 'SD15/SDXL 在线图像训练：worker 保留 8 位 RGB，传输后按原顺序归一化，目标图像张量内存降为 FP32 的四分之一。缓存训练与自定义 transform 沿用原路径。', defaultValue: false, visibleWhen: when('performance_expert_mode', true) },
   ...extra,
 ];
 

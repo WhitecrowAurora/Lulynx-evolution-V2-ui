@@ -46,15 +46,13 @@
     "principle": "AGC: 对每个参数组，如果 ||g|| > clip_factor × ||θ||，则 g' = g × (clip_factor × ||θ|| / ||g||)。这确保更新幅度与参数尺度成比例。Centralized: g' = g - mean(g)，消除梯度中的共同方向（类似 LayerNorm 效果）。max_grad_norm 是全局裁剪，AGC 是 per-layer 自适应裁剪。",
     "intervention": "在 backward() 后、optimizer.step() 前对梯度进行变换。",
     "expectedImpact": "减少 loss spike 约 30-50%。稳定训练过程。",
-    "tradeoffs": "gradient_guard_agc_clip_factor 和 gradient_guard_agc_eps 控制 AGC 的裁剪强度和数值稳定性。",
-    "codePath": "training_loop.py:gradient_guard → AGC/centralized → gradient transform → optimizer.step()"
+    "tradeoffs": "gradient_guard_agc_clip_factor 和 gradient_guard_agc_eps 控制 AGC 的裁剪强度和数值稳定性。"
   },
   "advanced_en": {
     "principle": "AGC: per parameter group, if ||g|| > clip_factor × ||θ||, then g' = g × (clip_factor × ||θ|| / ||g||), keeping update magnitude proportional to parameter scale. Centralized: g' = g - mean(g), removing the gradient's common direction (LayerNorm-like effect). max_grad_norm is global clipping; AGC is per-layer adaptive clipping.",
     "intervention": "Transforms gradients after backward() and before optimizer.step().",
     "expectedImpact": "Reduces loss spikes by roughly 30-50%. Stabilizes training.",
-    "tradeoffs": "gradient_guard_agc_clip_factor and gradient_guard_agc_eps control AGC's clip strength and numerical stability.",
-    "codePath": "training_loop.py:gradient_guard → AGC/centralized → gradient transform → optimizer.step()"
+    "tradeoffs": "gradient_guard_agc_clip_factor and gradient_guard_agc_eps control AGC's clip strength and numerical stability."
   },
   "relatedConfigs": [
     "max_grad_norm",

@@ -21,15 +21,13 @@
     "principle": "训练完成后计算 FID / CLIP Score / LPIPS（默认关闭）。与训练中预览图无关。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Computes FID / CLIP Score / LPIPS after training completes (off by default). Unrelated to in-training preview images.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

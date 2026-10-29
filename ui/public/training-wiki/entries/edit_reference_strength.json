@@ -21,15 +21,13 @@
     "principle": "源图 latent 对当前 noisy latent 的残差注入强度。建议从 0.20-0.30 起试（默认 0.25，范围 0~1）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Strength of residual injection from the source-image latent into the current noisy latent. Start with 0.20-0.30 (default 0.25, range 0~1).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

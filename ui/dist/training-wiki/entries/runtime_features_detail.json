@@ -31,15 +31,13 @@
     "principle": "每步 PROGRESS_JSON 运行时特性详细度。不输出=默认(仅 loss/lr,控制台清爽);精简=压缩版(去掉逐层/基准大块);完整=全量。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Verbosity of per-step PROGRESS_JSON runtime features. none = default (loss/lr only, keeps the console clean); compact = condensed (drops per-layer/benchmark blocks); full = everything.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

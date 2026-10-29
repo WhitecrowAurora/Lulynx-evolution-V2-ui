@@ -21,15 +21,13 @@
     "principle": "按 style/character 等多维 scorer 引导 loss。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Guides the loss with multi-dimensional scorers such as style/character. Off by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

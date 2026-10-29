@@ -30,15 +30,13 @@
     "principle": "IP-Adapter 使用 CLIP image encoder 提取参考图像的特征向量，通过 cross-attention 或 concat 方式注入 UNet。ip_image_encoder_path 指定 image encoder 模型。ip_num_tokens 控制注入的 image token 数量（SD1.5 默认 4，SDXL 默认 16）。",
     "intervention": "在 UNet 中添加 IP-Adapter cross-attention 层。训练时同时优化 LoRA 和 IP-Adapter 权重。",
     "expectedImpact": "实现图像条件的生成控制。需要专门的推理管线。",
-    "tradeoffs": "easy_control_enabled 是更简单的图像条件方案。",
-    "codePath": "core/lulynx_trainer/ip_adapter_trainer.py → CLIP image encoder + cross-attention injection"
+    "tradeoffs": "easy_control_enabled 是更简单的图像条件方案。"
   },
   "advanced_en": {
     "principle": "IP-Adapter uses a CLIP image encoder to extract the reference image's feature vector, injected into the UNet via cross-attention or concat. ip_image_encoder_path specifies the image-encoder model. ip_num_tokens controls the number of injected image tokens (SD1.5 default 4, SDXL default 16).",
     "intervention": "Adds IP-Adapter cross-attention layers to the UNet. Training optimizes LoRA and IP-Adapter weights together.",
     "expectedImpact": "Enables image-conditioned generation control. Needs a dedicated inference pipeline.",
-    "tradeoffs": "easy_control_enabled is the simpler image-conditioning scheme.",
-    "codePath": "core/lulynx_trainer/ip_adapter_trainer.py → CLIP image encoder + cross-attention injection"
+    "tradeoffs": "easy_control_enabled is the simpler image-conditioning scheme."
   },
   "relatedConfigs": [
     "ip_image_encoder_path",

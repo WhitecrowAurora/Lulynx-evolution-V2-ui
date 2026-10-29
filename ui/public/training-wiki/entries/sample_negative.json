@@ -32,15 +32,13 @@
     "principle": "后端把预览 negative 收敛为单一权威字段：所有采样消费方（预览 pipeline、质量评估、验证套件）统一读 sample_negative，UI 层的 negative_prompts 仅是别名入口，避免多处 negative 定义不一致。",
     "intervention": "config_adapter_training_shared.py 与 field_alias_map.py：negative_prompts → sample_negative（仅在目标键缺失时映射）；消费方：trainer_config_preview_target_mixin.py（预览组回落）、trainer_quality_runtime.py、quality_evaluation_sampling.py、validation_suite.py。",
     "expectedImpact": "预览与评估图的 negative 行为一致、可追溯。",
-    "tradeoffs": "无训练影响；只作用于采样类输出。",
-    "codePath": "field_alias_map.py:'negative_prompts'→'sample_negative'；trainer_config_preview_target_mixin.py / quality_evaluation_sampling.py 消费"
+    "tradeoffs": "无训练影响；只作用于采样类输出。"
   },
   "advanced_en": {
     "principle": "The backend consolidates the preview negative into a single authoritative field: all sampling consumers (preview pipeline, quality evaluation, validation suite) read sample_negative uniformly, and the UI layer's negative_prompts is only an alias entry, avoiding inconsistent negative definitions in multiple places.",
     "intervention": "config_adapter_training_shared.py and field_alias_map.py: negative_prompts → sample_negative (mapped only when the target key is missing); consumers: trainer_config_preview_target_mixin.py (preview group fallback), trainer_quality_runtime.py, quality_evaluation_sampling.py, validation_suite.py.",
     "expectedImpact": "Preview and evaluation images behave identically for the negative and stay traceable.",
-    "tradeoffs": "No training impact; only affects sampling-type outputs.",
-    "codePath": "field_alias_map.py:'negative_prompts'→'sample_negative'; consumed by trainer_config_preview_target_mixin.py / quality_evaluation_sampling.py"
+    "tradeoffs": "No training impact; only affects sampling-type outputs."
   },
   "relatedConfigs": [
     "negative_prompts",

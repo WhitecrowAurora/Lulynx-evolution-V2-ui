@@ -33,15 +33,13 @@
     "principle": "none / latent_identity / jina_vision / dinov2。默认 none；视觉路径需本机权重。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "none / latent_identity / jina_vision / dinov2. Default none; visual paths need local weights.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

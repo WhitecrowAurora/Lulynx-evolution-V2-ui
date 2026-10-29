@@ -39,15 +39,13 @@
     "principle": "底层压缩后端。fp8_e4m3 默认；fp8_scaled_e4m3 逐输出通道存一个缩放系数，比裸 FP8 保住更多动态范围，但架构矩阵限定在 krea2 / FLUX.2 / Z-Image / Wan2.2 且只压 backbone；torchao/quanto 系列需对应依赖可用，启动前建议开探测。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Underlying compression backend. fp8_e4m3 is the default; fp8_scaled_e4m3 stores a scale factor per output channel, preserving more dynamic range than bare FP8, but the architecture matrix is limited to krea2 / FLUX.2 / Z-Image / Wan2.2 and it compresses only the backbone; the torchao/quanto family requires the corresponding dependencies available — run capability detection before launch.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

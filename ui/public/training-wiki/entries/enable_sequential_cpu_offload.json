@@ -21,15 +21,13 @@
     "principle": "将模型组件顺序 offload 到 CPU，仅在需要时加载到 GPU。大幅减少显存占用，但会增加延迟。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Sequentially offloads model components to CPU, loading them to GPU only when needed. Drastically reduces VRAM usage at the cost of added latency.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

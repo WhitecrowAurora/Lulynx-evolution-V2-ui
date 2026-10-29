@@ -32,15 +32,13 @@
     "principle": "标准 LoRA 注入所有 Linear 层（attention + FFN）。LoRA-FA 只对 attention 的 Q/K/V/O 投影注入，FFN 的 up/down/gate 投影保持冻结。attention 层通常占模型参数的 30-40%，所以参数减少比例显著。",
     "intervention": "修改 LoRA 注入的目标模块列表，排除 FFN 相关 Linear。",
     "expectedImpact": "质量损失通常 < 2%（attention 层承载了大部分跨模态信息），但训练速度和显存改善明显。",
-    "tradeoffs": "可与 network_train_unet_only 组合进一步减少训练范围。",
-    "codePath": "trainer.py: LoRA injection filter → attention-only target modules"
+    "tradeoffs": "可与 network_train_unet_only 组合进一步减少训练范围。"
   },
   "advanced_en": {
     "principle": "Standard LoRA injects all Linear layers (attention + FFN). LoRA-FA injects only attention's Q/K/V/O projections, keeping the FFN's up/down/gate projections frozen. Attention layers usually hold 30-40% of model parameters, so the parameter reduction is significant.",
     "intervention": "Modifies the LoRA injection target-module list, excluding FFN-related Linears.",
     "expectedImpact": "Quality loss usually < 2% (attention layers carry most cross-modal information), with clear training-speed and VRAM gains.",
-    "tradeoffs": "Can combine with network_train_unet_only to shrink the training scope further.",
-    "codePath": "trainer.py: LoRA injection filter → attention-only target modules"
+    "tradeoffs": "Can combine with network_train_unet_only to shrink the training scope further."
   },
   "relatedConfigs": [
     "network_dim",

@@ -21,8 +21,7 @@
     "principle": "按 schedule 逐步解冻 DiT block 做 full finetune。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Progressively unfreeze DiT blocks for full finetune according to a schedule. Off by default."

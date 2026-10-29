@@ -21,15 +21,13 @@
     "principle": "不要 offload 的模块名称模式（逗号分隔）。例如 \"*.norm,*.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Module-name patterns not to offload (comma-separated). E.g. \"*.norm,*.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

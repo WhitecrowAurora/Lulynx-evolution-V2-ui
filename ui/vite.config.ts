@@ -2,13 +2,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'node:path'
+import { copyTrainingWikiAssets } from '../../../backend/launcher/web/tools/shared/copyTrainingWikiAssets.mjs'
 
 // 铁律(launcher 踩坑经验):启动链依赖(react/scheduler/zustand/gsap 等)必须合并单一 vendor,
 // 互相 import 的包拆开会产生循环 chunk → React 导出对象初始化错乱、白屏。
 // 仅"只被懒加载页引用"的单向重依赖(echarts)可独立分包。
 export default defineConfig({
   base: './',
-  plugins: [react()],
+  plugins: [react(), copyTrainingWikiAssets(__dirname)],
   resolve: {
     alias: { '@': path.resolve(__dirname, 'src') },
   },

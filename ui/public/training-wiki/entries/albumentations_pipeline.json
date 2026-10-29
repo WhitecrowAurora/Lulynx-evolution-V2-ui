@@ -21,8 +21,7 @@
     "principle": "JSON 数组，例如 [{\"name\":\"GaussianBlur\",\"params\":{\"blur_limit\":7,\"p\":0.3}}]。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "JSON array, e.g. [{\"name\":\"GaussianBlur\",\"params\":{\"blur_limit\":7,\"p\":0.3}}]."

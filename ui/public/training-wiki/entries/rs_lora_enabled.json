@@ -32,15 +32,13 @@
     "principle": "标准 LoRA scaling = α/r。当 rank 增大时 scaling 减小，等效学习率降低。RS-LoRA scaling = α/√r，rank 增大时 scaling 降低更慢，保持更大的有效学习率。这使得 rank=128 和 rank=32 在相同 lr 下有相似的更新幅度。",
     "intervention": "修改 LoRA forward 中的 scaling 因子：scaling = alpha / sqrt(rank) 替代 alpha / rank。",
     "expectedImpact": "高 rank 训练的收敛速度提升，最终质量改善约 2-5%。",
-    "tradeoffs": "与 LoRA+ 策略兼容——两者作用在不同层面。",
-    "codePath": "networks/lora.py: scaling = alpha / math.sqrt(rank) when rs_lora_enabled"
+    "tradeoffs": "与 LoRA+ 策略兼容——两者作用在不同层面。"
   },
   "advanced_en": {
     "principle": "Standard LoRA scaling = α/r. As rank grows, scaling shrinks and the effective learning rate drops. RS-LoRA scaling = α/√r, so scaling decreases more slowly as rank grows, keeping a larger effective learning rate. This makes rank=128 and rank=32 have similar update magnitudes at the same lr.",
     "intervention": "Modifies the scaling factor in the LoRA forward: scaling = alpha / sqrt(rank) instead of alpha / rank.",
     "expectedImpact": "Improves convergence speed for high-rank training; final quality improves by about 2-5%.",
-    "tradeoffs": "Compatible with the LoRA+ strategy — the two act at different layers.",
-    "codePath": "networks/lora.py: scaling = alpha / math.sqrt(rank) when rs_lora_enabled"
+    "tradeoffs": "Compatible with the LoRA+ strategy — the two act at different layers."
   },
   "relatedConfigs": [
     "network_dim",

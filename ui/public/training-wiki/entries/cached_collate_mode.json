@@ -31,8 +31,7 @@
     "principle": "仅影响 Anima/Newbie cache-first 数据集。auto/pad_sequence 使用 PyTorch 原生序列 padding；legacy 保留旧预分配循环路径，用于对照或兼容排查。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Only affects Anima/Newbie cache-first datasets. auto/pad_sequence uses PyTorch native sequence padding; legacy keeps the old preallocated-loop path for comparison or compatibility debugging."

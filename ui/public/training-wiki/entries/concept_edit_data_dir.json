@@ -21,8 +21,7 @@
     "principle": "放置成对图像的数据集目录。当前版本先按固定分辨率读入，不走普通 LoRA 的子文件夹 repeat 语义。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Dataset directory holding paired images. The current version reads them at a fixed resolution and does not use the subfolder-repeat semantics of ordinary LoRA training."

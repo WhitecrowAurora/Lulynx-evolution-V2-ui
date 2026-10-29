@@ -21,15 +21,13 @@
     "principle": "训练时采样的最小时间步（包含）。0=几乎无噪声（最终细节），1000=纯噪声（整体结构）。例如风格 LoRA 可设置 500 只影响早期构图。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Minimum timestep sampled during training (inclusive). 0 = almost no noise (final details), 1000 = pure noise (overall structure). E.g. a style LoRA can set 500 to affect only early composition.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

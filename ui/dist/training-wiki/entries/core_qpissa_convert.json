@@ -21,15 +21,13 @@
     "principle": "手动把模型中的 2D 主体权重拆成 residual checkpoint + PiSSA/LoRA 初始化文件。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Manually splits a model's 2D principal weights into a residual checkpoint plus PiSSA/LoRA initialization files.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

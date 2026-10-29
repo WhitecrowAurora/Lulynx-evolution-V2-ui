@@ -21,15 +21,13 @@
     "principle": "有 preserve_mask 时额外约束保留区域。0 表示不启用额外保留损失。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "When a preserve_mask is present, adds an extra constraint on preserved regions. 0 disables the extra preservation loss.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

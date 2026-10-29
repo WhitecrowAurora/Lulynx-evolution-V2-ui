@@ -32,15 +32,13 @@
     "principle": "每 N 步才执行一次 θ_ema = decay × θ_ema + (1-decay) × θ_t，其余步 EMA 权重不变。",
     "intervention": "减少 EMA copy 操作次数，对大模型可降低同步开销。",
     "expectedImpact": "N=1 最精确；N>1 节省约 N-1 次 tensor copy，但平滑窗口等效变短。",
-    "tradeoffs": "EMA 更新本身开销很小（仅 tensor 加权），通常不是瓶颈，一般不需要调整。",
-    "codePath": "core/lulynx_trainer/training_loop.py → EMA update 条件判断"
+    "tradeoffs": "EMA 更新本身开销很小（仅 tensor 加权），通常不是瓶颈，一般不需要调整。"
   },
   "advanced_en": {
     "principle": "Only every N steps executes θ_ema = decay × θ_ema + (1-decay) × θ_t; EMA weights stay unchanged on other steps.",
     "intervention": "Reduces EMA copy operations, lowering sync overhead for large models.",
     "expectedImpact": "N=1 is most accurate; N>1 saves N-1 tensor copies but effectively shortens the smoothing window.",
-    "tradeoffs": "The EMA update itself is cheap (just tensor averaging) and rarely the bottleneck — usually no need to adjust.",
-    "codePath": "core/lulynx_trainer/training_loop.py → EMA update condition"
+    "tradeoffs": "The EMA update itself is cheap (just tensor averaging) and rarely the bottleneck — usually no need to adjust."
   },
   "relatedConfigs": [
     "ema_enabled",

@@ -21,15 +21,13 @@
     "principle": "手动合并 safetensors 模型：weighted_sum 或 add_difference，不进入训练链路。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Manually merges safetensors models via weighted_sum or add_difference; does not enter the training pipeline.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

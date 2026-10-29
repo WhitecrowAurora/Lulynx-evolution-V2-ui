@@ -29,15 +29,13 @@
     "principle": "交错插入使新增层均匀分布在原有层之间，每个新层深拷贝相邻源层的权重后归零输出投影。",
     "intervention": "minimax_h3_depth_expansion_runtime.py：expand 时校验目标层数并重建 block 容器与 config。",
     "expectedImpact": "线性增加主干计算量与参数量。",
-    "tradeoffs": "层数越多训练与推理成本越高；恒等初始化保证起点无损，但收益需训练兑现。",
-    "codePath": "minimax_h3_depth_expansion_runtime.py"
+    "tradeoffs": "层数越多训练与推理成本越高；恒等初始化保证起点无损，但收益需训练兑现。"
   },
   "advanced_en": {
     "principle": "Interleaved insertion distributes the new layers evenly among the original ones; each new layer deep-copies a neighboring source layer's weights and zeroes its output projection.",
     "intervention": "minimax_h3_depth_expansion_runtime.py: validates the target layer count on expand and rebuilds the block container and config.",
     "expectedImpact": "Linearly increases backbone compute and parameter count.",
-    "tradeoffs": "More layers mean higher training and inference cost; identity initialization guarantees a lossless start, but the gains must be earned through training.",
-    "codePath": "minimax_h3_depth_expansion_runtime.py"
+    "tradeoffs": "More layers mean higher training and inference cost; identity initialization guarantees a lossless start, but the gains must be earned through training."
   },
   "relatedConfigs": [
     "h3_depth_expansion_enabled",

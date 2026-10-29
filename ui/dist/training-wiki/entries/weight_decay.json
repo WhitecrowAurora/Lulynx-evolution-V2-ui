@@ -34,15 +34,13 @@
     "principle": "AdamW 的 weight decay 与 L2 正则化不同：L2 在 loss 上加 λ/2·||θ||²（梯度中多出 λ·θ），而 AdamW 直接在参数更新中减去 λ·θ·lr。AdamW 的方式不会干扰动量估计，效果更稳定。",
     "intervention": "optimizer = AdamW(params, lr=lr, weight_decay=weight_decay)。",
     "expectedImpact": "合适的 weight decay 可减少过拟合 5-10%。过大则欠拟合。",
-    "tradeoffs": "LoRA 的可训练参数少，weight decay 的影响比全参 finetune 更温和。",
-    "codePath": "training_loop.py:_build_optimizer() → AdamW(weight_decay=...)"
+    "tradeoffs": "LoRA 的可训练参数少，weight decay 的影响比全参 finetune 更温和。"
   },
   "advanced_en": {
     "principle": "AdamW's weight decay differs from L2 regularization: L2 adds λ/2·||θ||² to the loss (so the gradient gains λ·θ), while AdamW subtracts λ·θ·lr directly in the parameter update. AdamW's way does not disturb the momentum estimates and is more stable.",
     "intervention": "optimizer = AdamW(params, lr=lr, weight_decay=weight_decay).",
     "expectedImpact": "Appropriate weight decay reduces overfitting by 5-10%; too much causes underfitting.",
-    "tradeoffs": "LoRA's trainable parameter count is small, so weight decay's effect is milder than in full-parameter finetune.",
-    "codePath": "training_loop.py:_build_optimizer() → AdamW(weight_decay=...)"
+    "tradeoffs": "LoRA's trainable parameter count is small, so weight decay's effect is milder than in full-parameter finetune."
   },
   "relatedConfigs": [
     "optimizer_type",

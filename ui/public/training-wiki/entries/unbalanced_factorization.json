@@ -21,15 +21,13 @@
     "principle": "LoKr 在分解维度时交换较大的那一侧，改变 Kronecker 分解布局。属于实验型结构参数。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Swaps the larger side when LoKr factorizes dimensions, changing the Kronecker factorization layout. An experimental structural parameter.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

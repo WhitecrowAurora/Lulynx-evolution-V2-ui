@@ -30,15 +30,13 @@
     "principle": "把外部 adapter 作为训练环境的一部分：新 LoRA 学到的是相对「底座+adapter」的残差，推理时需同时挂载两者才能还原训练分布。",
     "intervention": "trainer_prepare_mixin.py：Anima 加载参数中传入 dit_adapter_path；anima_loader.py 把路径记到 model 上；trainer_prepare_finalize_mixin.py：model_arch=anima 且路径非空时经 lora_injector.load_lora 应用；别名 dit_adapter_path 由 config_adapter 与 field_alias_map 归一。",
     "expectedImpact": "训练起点分布对齐目标组合；产物对该 adapter 形成配套依赖。",
-    "tradeoffs": "路径受 training_path_contract 校验；adapter 与底模版本不匹配时注入报错。",
-    "codePath": "trainer_prepare_finalize_mixin.py：anima_dit_adapter_path 注入；anima_loader.py；field_alias_map.py:'dit_adapter_path'→'anima_dit_adapter_path'"
+    "tradeoffs": "路径受 training_path_contract 校验；adapter 与底模版本不匹配时注入报错。"
   },
   "advanced_en": {
     "principle": "Treats an external adapter as part of the training environment: the new LoRA learns the residual relative to \"base + adapter\", and at inference both must be mounted together to reproduce the training distribution.",
     "intervention": "trainer_prepare_mixin.py: passes dit_adapter_path among the Anima load parameters; anima_loader.py records the path on the model; trainer_prepare_finalize_mixin.py: when model_arch=anima and the path is non-empty, applies it via lora_injector.load_lora; the alias dit_adapter_path is normalized by config_adapter and field_alias_map.",
     "expectedImpact": "The training starting distribution aligns with the target combination; the artifact develops a pairing dependency on that adapter.",
-    "tradeoffs": "The path is validated by training_path_contract; injecting errors out when the adapter doesn't match the base model version.",
-    "codePath": "trainer_prepare_finalize_mixin.py: anima_dit_adapter_path injection; anima_loader.py; field_alias_map.py:'dit_adapter_path'→'anima_dit_adapter_path'"
+    "tradeoffs": "The path is validated by training_path_contract; injecting errors out when the adapter doesn't match the base model version."
   },
   "relatedConfigs": [
     "prefuse_adapter_path",

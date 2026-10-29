@@ -21,15 +21,13 @@
     "principle": "可添加多组预览，并为每组单独设置 seed、LoRA 权重和延迟启用轮次；例如第三组从第 3 个 epoch 后再开始测试泛化性。留空时仍使用上方旧提示词。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Multiple preview groups can be added, each with its own seed, LoRA weight, and deferred-enable epoch; e.g. a third group starts testing generalization only after epoch 3. When empty, the legacy prompts above are still used.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

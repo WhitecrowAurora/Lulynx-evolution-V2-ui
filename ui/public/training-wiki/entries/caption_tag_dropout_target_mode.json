@@ -29,8 +29,7 @@
     "principle": "drop_all 全部移除，random_n 仅在命中 tag 中随机丢弃 N 个",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "drop_all removes all matches; random_n randomly drops N of the matched tags."

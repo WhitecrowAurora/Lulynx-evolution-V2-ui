@@ -22,15 +22,13 @@
     "principle": "default-off；依赖 quality_evaluation_enabled。模型缺失记 skipped，不静默当 0 分。",
     "intervention": "",
     "expectedImpact": "额外 VRAM/下载；metrics 多 preference_* 键。",
-    "tradeoffs": "权重大；默认勿开。",
-    "codePath": "backend/core/lulynx_trainer/quality/preference_quality_integration.py"
+    "tradeoffs": "权重大；默认勿开。"
   },
   "advanced_en": {
     "principle": "Default off; depends on quality_evaluation_enabled. A missing model is recorded as skipped, not silently scored as 0.",
     "intervention": "",
     "expectedImpact": "Extra VRAM/downloads; metrics gain several preference_* keys.",
-    "tradeoffs": "Heavy weighting; do not enable by default.",
-    "codePath": "backend/core/lulynx_trainer/quality/preference_quality_integration.py"
+    "tradeoffs": "Heavy weighting; do not enable by default."
   },
   "relatedConfigs": [
     "quality_evaluation_enabled",

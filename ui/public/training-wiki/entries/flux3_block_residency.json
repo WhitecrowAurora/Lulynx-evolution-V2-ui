@@ -1,0 +1,36 @@
+{
+  "key": "flux3_block_residency",
+  "title": "FLUX.3 Block 驻留策略",
+  "title_en": "FLUX.3 Block Residency",
+  "category": "FLUX.3 / 显存",
+  "category_en": "FLUX.3 / VRAM",
+  "appliesTo": [
+    "flux3-lora",
+    "flux3-finetune"
+  ],
+  "standard": {
+    "summary": "resident=Transformer blocks 常驻 GPU；block_offload=按需在 CPU 与 GPU 间换入，默认使用 block_offload。",
+    "effect": "选择 FLUX.3 Transformer 的驻留和分块换入策略。",
+    "whenToUse": "显存足够时可选 resident；显存受限时使用 block_offload。",
+    "avoidWhen": "使用 resident 前确认显存能容纳训练所需的模型和激活。",
+    "optionDescriptions": {
+      "resident": "所有 Transformer blocks 常驻 GPU。",
+      "block_offload": "按 block 在 CPU 与 GPU 间换入。"
+    }
+  },
+  "standard_en": {
+    "summary": "resident keeps Transformer blocks on the GPU; block_offload transfers them between CPU and GPU as needed. Default: block_offload.",
+    "effect": "Selects the FLUX.3 Transformer residency and block-transfer strategy.",
+    "whenToUse": "Use resident when VRAM is sufficient; use block_offload when memory is constrained.",
+    "avoidWhen": "Before choosing resident, confirm that VRAM can hold the model and training activations.",
+    "optionDescriptions": {
+      "resident": "Keep all Transformer blocks on the GPU.",
+      "block_offload": "Transfer blocks between CPU and GPU as needed."
+    }
+  },
+  "advanced": null,
+  "relatedConfigs": [
+    "flux3_block_offload_gpu_slots",
+    "flux3_block_offload_ratio"
+  ]
+}

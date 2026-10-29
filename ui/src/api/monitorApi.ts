@@ -5,6 +5,11 @@ import type { CheckpointSaveReport } from '@/lib/runOutcomeNotices'
 /* 监控域 API:canonical /train/* 遥测 + /api 硬件状态 */
 
 export interface RunStatePayload {
+  adapter_targets?: AdapterTargetInventory
+  runtime_features?: {
+    adapter_targets?: AdapterTargetInventory
+    [extra: string]: unknown
+  }
   run_id?: string
   status?: string
   current_step?: number
@@ -25,6 +30,16 @@ export interface RunStatePayload {
   [extra: string]: unknown
 }
 
+export interface AdapterTargetInventory {
+  status: string
+  matched_modules?: number
+  frozen_modules?: number
+  trainable_parameters?: number
+  rank_counts?: Record<string, number>
+  unknown_rank_modules?: number
+  groups?: Record<string, { matched_modules: number; trainable_parameters: number }>
+}
+
 export interface ActivePayload {
   runs?: RunStatePayload[]
   queued_runs?: Record<string, unknown>[]
@@ -43,10 +58,15 @@ export interface LogPayload {
 export interface ChartPayload {
   points?: { step: number; value: number }[]
   series?: string
+  scope?: 'tail' | 'history'
+  total_points?: number
+  sampled?: boolean
+  sampling?: string
 }
 
 export interface TrainingPreviewItem {
   name: string
+  media_type?: 'image' | 'video'
   size: number
   mtime: number
   step: number
@@ -190,7 +210,7 @@ export const monitorApi = {
   log: (runId: string, offset: number, maxLines = 500) =>
     request<LogPayload>(`/train/log/${encodeURIComponent(runId)}?offset=${offset}&max_lines=${maxLines}`),
   chartSeries: (runId: string, series: 'loss' | 'lr', lastN = 400) =>
-    request<ChartPayload>(`/train/chart-series/${encodeURIComponent(runId)}?series=${series}&last_n=${lastN}`),
+    request<ChartPayload>(`/train/chart-series/${encodeURIComponent(runId)}?series=${series}&last_n=${lastN}&scope=history`),
   qualityReport: (runId: string, signal?: AbortSignal) =>
     request<TrainingQualityReportPayload>(
       `/train/runs/${encodeURIComponent(runId)}/quality-report`,

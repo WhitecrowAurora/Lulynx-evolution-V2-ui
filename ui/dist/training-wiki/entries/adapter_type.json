@@ -69,8 +69,7 @@
     "principle": "Newbie 适配器类型，会映射到原生 LoRA、LyCORIS 或对应扩展注入器。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Newbie adapter type; maps to native LoRA, LyCORIS, or the corresponding extension injector."

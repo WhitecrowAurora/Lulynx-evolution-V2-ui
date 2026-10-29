@@ -21,15 +21,13 @@
     "principle": "要 offload 的模块名称模式（逗号分隔，支持通配符）。例如 \"*.mlp,*.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Module-name patterns to offload (comma-separated, wildcards supported). E.g. \"*.mlp,*.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

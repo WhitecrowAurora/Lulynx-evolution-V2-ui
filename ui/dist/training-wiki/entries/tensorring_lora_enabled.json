@@ -24,15 +24,13 @@
     "principle": "Tensor-Ring 分解 W*=W₀T+Δ，单步 fused einsum。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Tensor-Ring decomposition W*=W₀T+Δ with a single-step fused einsum. Off by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

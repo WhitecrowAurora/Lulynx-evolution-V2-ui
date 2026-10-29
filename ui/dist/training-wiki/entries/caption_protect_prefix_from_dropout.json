@@ -34,15 +34,13 @@
     "principle": "keep_tokens 默认只影响 shuffle 前缀固定，不阻止 drop。本开关把 keep_tokens 前缀也排除在 dropout 之外。",
     "intervention": "dataset_loader 在 drop_tags / targeted / sFAD 路径传入 protect_prefix。",
     "expectedImpact": "触发词更稳定，避免全丢导致空 caption。",
-    "tradeoffs": "降低 dropout 强度；需与 keep_tokens 配合。",
-    "codePath": "dataset_loader.CaptionDataset._process_caption + caption_augment.mutate_scoped_tags(protect_prefix_from_dropout)"
+    "tradeoffs": "降低 dropout 强度；需与 keep_tokens 配合。"
   },
   "advanced_en": {
     "principle": "keep_tokens by default only pins the prefix against shuffle, not against drop. This switch also excludes the keep_tokens prefix from dropout.",
     "intervention": "dataset_loader passes protect_prefix on the drop_tags / targeted / sFAD paths.",
     "expectedImpact": "Trigger words stay stable, avoiding empty captions from full drops.",
-    "tradeoffs": "Lowers dropout strength; needs to pair with keep_tokens.",
-    "codePath": "dataset_loader.CaptionDataset._process_caption + caption_augment.mutate_scoped_tags(protect_prefix_from_dropout)"
+    "tradeoffs": "Lowers dropout strength; needs to pair with keep_tokens."
   },
   "relatedConfigs": [
     "keep_tokens",

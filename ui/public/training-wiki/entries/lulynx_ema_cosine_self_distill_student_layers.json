@@ -24,15 +24,13 @@
     "principle": "逗号分隔的 student 层索引，如 \"4\"；长度需与 teacher 一致。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Comma-separated student layer indices, e.g. \"4\"; length must match the teacher.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

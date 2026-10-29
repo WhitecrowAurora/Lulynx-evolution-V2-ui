@@ -30,17 +30,15 @@
   },
   "advanced": {
     "principle": "采样器（算法：euler/dpm++ 等）与调度器（sigma 序列的分布：karras/simple 等）共同决定生成轨迹；分开配置让预览尽量复现用户推理端的组合。",
-    "intervention": "配置定义在 configs_monitoring.py（空 = 默认）；warehouse/training_features/training_config_checks.py 对取值做检查；预览与验证采样链路（router_facade.py 的 preview 键集合、validation_suite）读取传递。",
+    "intervention": "配置定义在 configs_monitoring.py（空 = 默认）；warehouse/training_features/training_config_checks.py 对取值做检查；预览/评估链路（sampler_preview.py、preview/diffusers_flow.py、preview/native_flow.py）按 sample_scheduler 组织噪声调度。训练预检回传的 fixed_preview.values 会带上这个键，UI 因此能在启动前看到将用的调度器。",
     "expectedImpact": "只影响预览/评估图的观感一致性，不影响训练。",
-    "tradeoffs": "训练器内置采样器对调度器变体的支持面小于专业推理端，不支持的组合会回落默认并提示。",
-    "codePath": "configs_monitoring.py:sample_scheduler 定义；training_config_checks.py 取值检查；services/training/router_facade.py 预览键传递"
+    "tradeoffs": "训练器内置采样器对调度器变体的支持面小于专业推理端，不支持的组合会回落默认并提示。"
   },
   "advanced_en": {
     "principle": "The sampler (algorithm: euler/dpm++ etc.) and the scheduler (distribution of the sigma sequence: karras/simple etc.) together determine the generation trajectory; configuring them separately lets previews reproduce the user's inference-side combination as closely as possible.",
-    "intervention": "Defined in configs_monitoring.py (empty = default); warehouse/training_features/training_config_checks.py checks the value; the preview and validation sampling chains (router_facade.py's preview key set, validation_suite) read and pass it.",
+    "intervention": "Defined in configs_monitoring.py (empty = default); warehouse/training_features/training_config_checks.py checks the value; the preview/evaluation chain (sampler_preview.py, preview/diffusers_flow.py, preview/native_flow.py) organises the noise schedule from sample_scheduler. The preflight payload's fixed_preview.values carries this key, so the UI can show the scheduler that will be used before the run starts.",
     "expectedImpact": "Only affects the visual consistency of preview/evaluation images, not training.",
-    "tradeoffs": "The trainer's built-in samplers support fewer scheduler variants than a dedicated inference stack; unsupported combinations fall back to the default with a notice.",
-    "codePath": "configs_monitoring.py:sample_scheduler definition; training_config_checks.py value check; services/training/router_facade.py preview key passthrough"
+    "tradeoffs": "The trainer's built-in samplers support fewer scheduler variants than a dedicated inference stack; unsupported combinations fall back to the default with a notice."
   },
   "relatedConfigs": [
     "sample_sampler",

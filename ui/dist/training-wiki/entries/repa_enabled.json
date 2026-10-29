@@ -31,15 +31,13 @@
     "principle": "REPA 的核心思想：预训练视觉模型（如 DINOv2）的中间表示捕获了丰富的语义信息。通过让 UNet 的中间特征与这些表示对齐，UNet 可以学到更好的语义理解。repa_projection_dim 控制投影维度。softrepa 是 REPA 的改进版，使用 sigma 相关的调度策略在不同噪声级别上调整对齐强度。repa_stop_grad_target=True 时不对外部模型计算梯度。",
     "intervention": "forward pass 时同时计算 diffusion loss 和 REPA alignment loss，加权求和。",
     "expectedImpact": "生成质量和多样性提升约 3-8%。对复杂场景改善更明显。",
-    "tradeoffs": "softrepa_schedule 控制 sigma 相关的权重调度。",
-    "codePath": "core/lulynx_trainer/repa.py → DINOv2 feature alignment → auxiliary loss"
+    "tradeoffs": "softrepa_schedule 控制 sigma 相关的权重调度。"
   },
   "advanced_en": {
     "principle": "REPA's core idea: intermediate representations of pretrained vision models (e.g. DINOv2) capture rich semantic information. By aligning the UNet's intermediate features with these representations, the UNet learns better semantic understanding. repa_projection_dim controls the projection dimension. softrepa is an improved REPA using a sigma-dependent schedule to adjust alignment strength across noise levels. With repa_stop_grad_target=True no gradients are computed for the external model.",
     "intervention": "During the forward pass, computes both the diffusion loss and the REPA alignment loss, combined by weighted sum.",
     "expectedImpact": "Generation quality and diversity improve by roughly 3-8%. The improvement is more evident on complex scenes.",
-    "tradeoffs": "softrepa_schedule controls the sigma-dependent weight schedule.",
-    "codePath": "core/lulynx_trainer/repa.py → DINOv2 feature alignment → auxiliary loss"
+    "tradeoffs": "softrepa_schedule controls the sigma-dependent weight schedule."
   },
   "relatedConfigs": [
     "repa_target_modules",

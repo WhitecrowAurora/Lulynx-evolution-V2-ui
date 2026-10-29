@@ -32,15 +32,13 @@
     "principle": "DiT 的 VAE 通常是大型 autoencoder（如 FLUX AE），encode 一张 1024px 图片需要数百毫秒。cache_first 在训练前遍历所有图片做 VAE encode 并写入磁盘。训练时直接从磁盘加载 latent，跳过 VAE。rebuild_cache 强制重建所有缓存。",
     "intervention": "trainer.py 在 setup 阶段根据 cache_mode 决定缓存行为。",
     "expectedImpact": "cache_first 可让训练速度提升 2-5 倍（跳过 VAE encode）。",
-    "tradeoffs": "anima_cache_mode 是 native_cache_mode 的 Anima 专用别名。",
-    "codePath": "trainer.py:cache_mode dispatch → cache_first/online_cache/raw_online/rebuild_cache"
+    "tradeoffs": "anima_cache_mode 是 native_cache_mode 的 Anima 专用别名。"
   },
   "advanced_en": {
     "principle": "DiT's VAE is usually a large autoencoder (e.g. the FLUX AE); encoding one 1024px image takes hundreds of milliseconds. cache_first traverses all images before training, runs VAE encode, and writes to disk. During training, latents load straight from disk, skipping the VAE. rebuild_cache forces rebuilding all caches.",
     "intervention": "trainer.py decides cache behavior per cache_mode during setup.",
     "expectedImpact": "cache_first can speed training 2-5× (skipping VAE encode).",
-    "tradeoffs": "anima_cache_mode is the Anima-specific alias of native_cache_mode.",
-    "codePath": "trainer.py:cache_mode dispatch → cache_first/online_cache/raw_online/rebuild_cache"
+    "tradeoffs": "anima_cache_mode is the Anima-specific alias of native_cache_mode."
   },
   "relatedConfigs": [
     "cache_latents",

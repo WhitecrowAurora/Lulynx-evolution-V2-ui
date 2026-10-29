@@ -33,15 +33,13 @@
     "principle": "文本编码器输出磁盘缓存保存精度。auto 会尽量保留运行时 dtype；fp16 / bf16 更省空间，fp32 兼容性更高",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Storage precision for the text-encoder output disk cache. auto keeps the runtime dtype where possible; fp16 / bf16 save more space, fp32 is more compatible.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

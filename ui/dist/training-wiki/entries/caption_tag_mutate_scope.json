@@ -31,15 +31,13 @@
     "principle": "字符串级 split(sep,1) 切 head/tail；uniform drop + shuffle 只打 tail；keep_tokens 在 after_separator 下只作用于 tail 前缀。keep_tokens_separator 仍是输出插入符，不负责解析保护区。无分隔符时 after_separator 退化为 all。",
     "intervention": "CaptionDataset._process_caption → _process_caption_scoped；Anima 缓存路径仅对齐 shuffle 作用域（无 runtime tag dropout）。",
     "expectedImpact": "触发词与构图前缀稳定，特征/服装类 tag 仍可做正则增强。",
-    "tradeoffs": "定向 tag dropout 仍扫全列表；整句 caption_dropout 仍可清空整句。Anima multi_copy 只产生顺序变体，不在缓存路径补完整 tag dropout 栈。",
-    "codePath": "caption_augment.split_caption_by_scope_separator + dataset_loader._process_caption_scoped"
+    "tradeoffs": "定向 tag dropout 仍扫全列表；整句 caption_dropout 仍可清空整句。Anima multi_copy 只产生顺序变体，不在缓存路径补完整 tag dropout 栈。"
   },
   "advanced_en": {
     "principle": "String-level split(sep,1) cuts head/tail; uniform drop + shuffle act only on the tail; keep_tokens under after_separator applies only to the tail prefix. keep_tokens_separator remains the output joiner and is not responsible for parsing the protected zone. Without a separator, after_separator degrades to all.",
     "intervention": "CaptionDataset._process_caption → _process_caption_scoped; the Anima cache path only aligns shuffle scope (no runtime tag dropout).",
     "expectedImpact": "Trigger words and composition prefixes stay stable while feature/clothing tags can still be regularized.",
-    "tradeoffs": "Targeted tag dropout still scans the whole list; whole-sentence caption_dropout can still blank the caption. Anima multi_copy only produces sequential variants and does not add the full tag-dropout stack on the cache path.",
-    "codePath": "caption_augment.split_caption_by_scope_separator + dataset_loader._process_caption_scoped"
+    "tradeoffs": "Targeted tag dropout still scans the whole list; whole-sentence caption_dropout can still blank the caption. Anima multi_copy only produces sequential variants and does not add the full tag-dropout stack on the cache path."
   },
   "relatedConfigs": [
     "caption_tag_scope_separator",

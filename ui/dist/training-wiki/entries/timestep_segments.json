@@ -21,15 +21,13 @@
     "principle": "格式: \"start:end:weight, start:end:weight, ...\"。例如 \"0:300:0.2, 300:700:0.6, 700:1000:0.2\"。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Format: \"start:end:weight, start:end:weight, ...\". E.g. \"0:300:0.2, 300:700:0.6, 700:1000:0.2\".",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

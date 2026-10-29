@@ -21,15 +21,13 @@
     "principle": "防止纯 PyTorch O(n²) fallback 在长序列误跑。仅 torch_fallback 生效。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Prevents the pure-PyTorch O(n²) fallback from accidentally running on long sequences. Only effective for torch_fallback.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

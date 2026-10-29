@@ -12,6 +12,7 @@ import { trainApi } from '@/api/trainApi'
 import { applyConfigBag, extractRunRestorable } from '@/lib/applyConfigBag'
 import { findRunRecord } from '@/stores/historyStore'
 import { LossChart } from './LossChart'
+import { AdapterTargetPanel } from './AdapterTargetPanel'
 import { TrainingQualityReportPanel } from './TrainingQualityReportPanel'
 import { TrainingPreviewPanel } from './TrainingPreviewPanel'
 import { RunOutcomeNotices } from './RunOutcomeNotices'
@@ -283,6 +284,7 @@ export default function MonitorPage() {
         <>
           <StatusBanner run={run} etaText={etaText} stepsPerSec={stepsPerSec} stopping={stopping} />
           <HwStrip />
+          <AdapterTargetPanel inventory={run.adapter_targets ?? run.runtime_features?.adapter_targets} />
           <Panel title={t('monitor.chart')} idx="03" panelId="CHART.SERIES" className="lx-cfg-section">
             {lossPoints.length ? (
               <LossChart loss={lossPoints} lr={lrPoints} />

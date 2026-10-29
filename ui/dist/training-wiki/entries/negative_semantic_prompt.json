@@ -21,15 +21,13 @@
     "principle": "填写希望 LoRA 少学习或少强化的内容，例如 bad hands、watermark、extra fingers。留空时不会生效。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Fill in what you want the LoRA to learn or reinforce less of, e.g. bad hands, watermark, extra fingers. No effect when empty.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -21,15 +21,13 @@
     "principle": "由 FIM 扫描器一键写回的逐层精确 rank 映射（JSON：{完整层路径: rank}）。仅当 Rank 分配策略=fim_profile 时生效。一般不需要手动编辑。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Per-layer exact rank mapping written back by the FIM scanner in one click (JSON: {full layer path: rank}). Only takes effect when Rank allocation policy = fim_profile. Manual editing is normally unnecessary.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -32,15 +32,13 @@
     "principle": "LoRA 权重的线性可加性使 scale 与推理时的 adapter weight 严格等价；训练在 scale 化的底座上进行，新 LoRA 的最优解依赖这个 scale，改变它等于改变训练目标。",
     "intervention": "trainer_prepare_finalize_mixin.py 读取后传入 prefuse_adapter_into_model(model, path, scale=...)，日志记录融合层数与 scale。",
     "expectedImpact": "scale 越接近实际推理用法，训练/推理分布差越小、组合效果越可靠。",
-    "tradeoffs": "发布训练产物时需要注明「配套 LoRA + scale」，否则使用者无法复现训练分布。",
-    "codePath": "trainer_prepare_finalize_mixin.py——prefuse_adapter_into_model(..., scale=prefuse_adapter_scale)；configs_monitoring.py 定义"
+    "tradeoffs": "发布训练产物时需要注明「配套 LoRA + scale」，否则使用者无法复现训练分布。"
   },
   "advanced_en": {
     "principle": "The linear additivity of LoRA weights makes scale strictly equivalent to the adapter weight at inference; training runs on the scaled base, and the new LoRA's optimum depends on that scale — changing it changes the training objective.",
     "intervention": "trainer_prepare_finalize_mixin.py reads it and passes it to prefuse_adapter_into_model(model, path, scale=...), logging the number of fused layers and the scale.",
     "expectedImpact": "The closer scale is to the actual inference usage, the smaller the train/inference distribution gap and the more reliable the combined result.",
-    "tradeoffs": "When publishing the training artifact, note the \"paired LoRA + scale\"; otherwise users cannot reproduce the training distribution.",
-    "codePath": "trainer_prepare_finalize_mixin.py — prefuse_adapter_into_model(..., scale=prefuse_adapter_scale); defined in configs_monitoring.py"
+    "tradeoffs": "When publishing the training artifact, note the \"paired LoRA + scale\"; otherwise users cannot reproduce the training distribution."
   },
   "relatedConfigs": [
     "prefuse_adapter_path",

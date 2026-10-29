@@ -31,15 +31,13 @@
     "principle": "文本编码器输出磁盘缓存格式。默认 safetensors；若已有旧缓存会自动兼容读取 npz",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Disk format for the text-encoder output cache. Default safetensors; existing legacy npz caches are still read automatically.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

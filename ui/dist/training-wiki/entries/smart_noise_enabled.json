@@ -31,15 +31,13 @@
     "principle": "从 U[-6,6] 与 N(logsnr_focus, focus_spread) 的混合分布采样 logSNR，再用 sigma=sigmoid(-logSNR/2) 转为训练 sigma。本仓实现是可运行的工程启发式，不能据摘要声明与 arXiv:2407.03297 公式等价。",
     "intervention": "现有 request/config 字段经 TrainingLoop 进入 Anima flow 的最高优先级采样分支；smart_noise_enabled=false 时不改变默认路径。",
     "expectedImpact": "可能增加目标噪声区间的样本密度；质量与收敛影响必须本地 A/B 验证。",
-    "tradeoffs": "聚焦过强会减少其它噪声阶段覆盖；与其它 timestep sampler 同时配置时应确认实际优先级。",
-    "codePath": "backend/core/lulynx_trainer/anima/anima_flow.py；smart_noise_scheduler.py；trainer/trainer_execution_loop_builder.py"
+    "tradeoffs": "聚焦过强会减少其它噪声阶段覆盖；与其它 timestep sampler 同时配置时应确认实际优先级。"
   },
   "advanced_en": {
     "principle": "Samples logSNR from a mixture of U[-6,6] and N(logsnr_focus, focus_spread), then converts it to a training sigma via sigma=sigmoid(-logSNR/2). This repo's implementation is a runnable engineering heuristic and cannot be claimed, from the abstract, to be equivalent to the arXiv:2407.03297 formulas.",
     "intervention": "The existing request/config fields enter Anima flow's highest-priority sampling branch via TrainingLoop; with smart_noise_enabled=false the default path is unchanged.",
     "expectedImpact": "May increase sample density in the target noise range; quality and convergence impact must be locally A/B verified.",
-    "tradeoffs": "Too strong a focus reduces coverage of other noise stages; when combined with another timestep sampler, confirm the actual priority.",
-    "codePath": "backend/core/lulynx_trainer/anima/anima_flow.py; smart_noise_scheduler.py; trainer/trainer_execution_loop_builder.py"
+    "tradeoffs": "Too strong a focus reduces coverage of other noise stages; when combined with another timestep sampler, confirm the actual priority."
   },
   "relatedConfigs": [
     "smart_noise_logsnr_focus",

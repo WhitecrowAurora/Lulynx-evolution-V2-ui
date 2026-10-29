@@ -69,15 +69,13 @@
     "principle": "Anima 概念编辑当前支持原生 LoRA / DoRA / LoRA+ / rsLoRA / LoRA-FA / VeRA / lulynx 渐进秩 LoRA / FlexRank / HydraLoRA / FeRA / LyCORIS。渐进秩实现按全局训练进度调度，不承诺论文 T-LoRA 等价。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Anima concept editing currently supports native LoRA / DoRA / LoRA+ / rsLoRA / LoRA-FA / VeRA / lulynx progressive-rank LoRA / FlexRank / HydraLoRA / FeRA / LyCORIS. The progressive-rank implementation schedules by global training progress and does not promise paper-equivalent T-LoRA semantics.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

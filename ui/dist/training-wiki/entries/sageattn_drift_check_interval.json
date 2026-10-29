@@ -31,15 +31,13 @@
     "principle": "SageAttention 用 INT8 量化 QK^T 换速度，个别分布下量化误差会放大。周期性与全精度 SDPA 输出对比相对误差，把「量化是否可靠」从盲信变成可观测指标。",
     "intervention": "training_loop_init_core.py：interval > 0 时实例化 attention_drift_monitor.AttentionDriftMonitor(threshold, fallback)；epoch 循环每 N 步触发对比。",
     "expectedImpact": "检测步吞吐下降（双前向），其余步无开销；漂移事件会进日志/告警。",
-    "tradeoffs": "注意：UI 上的阈值键 sageattn_drift_check_threshold 后端实际读取的是 sageattn_drift_threshold（默认 0.01）；间隔与阈值需权衡误报率与检出率。",
-    "codePath": "training_loop_init_core.py：sageattn_drift_check_interval > 0 时构建 AttentionDriftMonitor；attention_drift_monitor.py；configs_performance.py 定义"
+    "tradeoffs": "注意：UI 上的阈值键 sageattn_drift_check_threshold 后端实际读取的是 sageattn_drift_threshold（默认 0.01）；间隔与阈值需权衡误报率与检出率。"
   },
   "advanced_en": {
     "principle": "SageAttention quantizes QK^T to INT8 for speed, and under some distributions the quantization error gets amplified. Periodically comparing relative error against full-precision SDPA output turns \"is quantization reliable\" from blind trust into an observable metric.",
     "intervention": "training_loop_init_core.py: when interval > 0 it instantiates attention_drift_monitor.AttentionDriftMonitor(threshold, fallback); the epoch loop triggers the comparison every N steps.",
     "expectedImpact": "Throughput drops on check steps (double forward), other steps have no overhead; drift events go to logs/alerts.",
-    "tradeoffs": "Note: the UI's threshold key sageattn_drift_check_threshold is actually read by the backend as sageattn_drift_threshold (default 0.01); interval and threshold must trade off false-positive rate against detection rate.",
-    "codePath": "training_loop_init_core.py: builds AttentionDriftMonitor when sageattn_drift_check_interval > 0; attention_drift_monitor.py; defined in configs_performance.py"
+    "tradeoffs": "Note: the UI's threshold key sageattn_drift_check_threshold is actually read by the backend as sageattn_drift_threshold (default 0.01); interval and threshold must trade off false-positive rate against detection rate."
   },
   "relatedConfigs": [
     "sageattn_drift_fallback",

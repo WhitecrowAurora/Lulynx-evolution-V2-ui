@@ -21,15 +21,13 @@
     "principle": "训练前用经验 Fisher 信息扫描各层对任务的敏感度，自动给出\"建议层 + 逐层 rank\"水填分配。扫描完成后可一键写回到上面的 Rank 分配策略（fim_profile 模式，逐层精确 rank）。这是独立的预扫描工具，不进入训练主链。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Scans each layer's task sensitivity with the empirical Fisher information before training and automatically allocates \"recommended layers + per-layer rank\". Once the scan finishes, it can be written back to the Rank allocation policy above in one click (fim_profile mode with exact per-layer ranks). A standalone pre-scan tool; not part of the main training chain.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -21,15 +21,13 @@
     "principle": "后端 pissa_init_iters；与 pissa_niter 并存（niter 为 UI 历史键）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Backend pissa_init_iters; coexists with pissa_niter (niter is the legacy UI key).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

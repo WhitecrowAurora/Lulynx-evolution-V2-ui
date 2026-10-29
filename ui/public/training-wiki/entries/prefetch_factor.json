@@ -21,15 +21,13 @@
     "principle": "DataLoader 预取的 batch 数量。默认 2 是经过测试的最佳值（平衡内存与吞吐）。增大可减少 GPU 等待数据的时间，但会占用更多内存。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Number of batches the DataLoader prefetches. The default 2 is the tested optimum (balancing memory and throughput). Increasing it reduces GPU waiting time for data but uses more memory.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

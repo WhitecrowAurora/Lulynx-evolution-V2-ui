@@ -21,15 +21,13 @@
     "principle": "线性外推用的历史窗口。窗口越大跳过越多、越快，但 latent 漂移越大。默认 3。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "History window for linear extrapolation. A bigger window skips more and runs faster, but latent drift grows. Default 3.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

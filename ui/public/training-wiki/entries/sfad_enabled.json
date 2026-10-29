@@ -21,15 +21,13 @@
     "principle": "按标签频率调节 caption tag dropout；关闭时保持均匀随机。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Adjusts caption tag dropout by tag frequency; when off, dropout stays uniformly random. Off by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

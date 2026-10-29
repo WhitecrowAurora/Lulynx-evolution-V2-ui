@@ -21,15 +21,13 @@
     "principle": "禁用 mmap 方式加载 safetensors，减少共享内存占用。适合网络存储或 HDD。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Disables mmap loading of safetensors to reduce shared-memory usage. Good for network storage or HDDs.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

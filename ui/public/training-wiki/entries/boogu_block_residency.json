@@ -29,8 +29,7 @@
     "principle": "默认 resident（Layer Offload OFF）。OOM 再开 block_offload；勿未测抄 Klein 4/3。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Default is resident (Layer Offload OFF). Only enable block_offload after an actual OOM; do not copy Klein's 4/3 without testing."

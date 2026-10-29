@@ -1,3 +1,4 @@
+import { rememberOptimizationChoice } from '../../../../lora-scripts-ui-main/ui/src/features/optimizationPreferences.js'
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
 import { create } from 'zustand'
 import { trainApi, type TrainDraftsPayload } from '@/api/trainApi'
@@ -53,7 +54,7 @@ function writeLocal(state: { typeId: string; drafts: Record<string, Record<strin
 
 function makeDraft(typeId: string, saved?: Record<string, unknown>): Record<string, unknown> {
   // 新 schema 字段拿默认值,已保存字段覆盖
-  const draft = stripModelCodePermission({ ...(schemaRuntime?.createDefaultConfig(typeId) ?? {}), ...(saved ?? {}) })
+  const draft = stripModelCodePermission({ ...(schemaRuntime?.createDefaultConfig(typeId) ?? {}), ...getPerfModeConfig(), ...(saved ?? {}) })
   // quant_train_mode 已从下拉(dequant/keep_w8 字符串)改为布尔开关。
   // 老草稿存的是字符串,直接沿用会被 Boolean() 判成 truthy(连 'dequant' 也是),
   // 导致开关误显示为开。这里把 legacy 字符串归一成布尔:仅 keep_w8 系为 true。
@@ -116,6 +117,7 @@ export const useTrainConfigStore = create<TrainConfigState>((set, get) => ({
     const { typeId, drafts } = get()
     const field = schemaRuntime?.getFieldDefinition(key, typeId)
     const value = stripModelCodePermission(schemaRuntime?.normalizeDraftValue(field, raw) ?? raw)
+    rememberOptimizationChoice(key, value)
     set({ drafts: { ...drafts, [typeId]: { ...drafts[typeId], [key]: value } } })
   },
   applyValues(values) {

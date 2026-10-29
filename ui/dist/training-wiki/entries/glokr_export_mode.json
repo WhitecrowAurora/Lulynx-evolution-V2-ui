@@ -30,15 +30,13 @@
     "principle": "GLoKr 用 Kronecker 积参数化 ΔW，参数量远小于同表达力的低秩分解；导出为 LoRA 格式需要把 Kronecker 因子乘开为稠密 delta 再做低秩表示，兼容性与文件体积/保真度之间取舍。",
     "intervention": "trainer_artifact_export.py 导出阶段按 export_mode 分支；config_adapter 系列归一化取值（非法值回落 native）。",
     "expectedImpact": "lora_compatible 即插即用；native 更小、保真、可续训。",
-    "tradeoffs": "与 glora_export_mode 相同：归一化的非法值回落是 native，与 UI 默认 lora_compatible 不一致，配置来源不规范时可能意外得到原生导出。",
-    "codePath": "trainer_artifact_export.py：glokr 导出分支；config_adapter_normalizers.py / config_adapter_conversion_runtime.py 归一化"
+    "tradeoffs": "与 glora_export_mode 相同：归一化的非法值回落是 native，与 UI 默认 lora_compatible 不一致，配置来源不规范时可能意外得到原生导出。"
   },
   "advanced_en": {
     "principle": "GLoKr parameterizes ΔW with Kronecker products, far fewer parameters than a same-capacity low-rank factorization; exporting to LoRA format requires multiplying the Kronecker factors out into a dense delta and then a low-rank representation — a trade-off between compatibility and file size/fidelity.",
     "intervention": "trainer_artifact_export.py branches on export_mode at export; the config_adapter family normalizes values (illegal values fall back to native).",
     "expectedImpact": "lora_compatible is plug-and-play; native is smaller, faithful, and resumable.",
-    "tradeoffs": "Same as glora_export_mode: the normalization fallback for illegal values is native, while the UI default is lora_compatible — sloppy config sources can silently yield native export.",
-    "codePath": "trainer_artifact_export.py: glokr export branch; normalized in config_adapter_normalizers.py / config_adapter_conversion_runtime.py"
+    "tradeoffs": "Same as glora_export_mode: the normalization fallback for illegal values is native, while the UI default is lora_compatible — sloppy config sources can silently yield native export."
   },
   "relatedConfigs": [
     "lycoris_algo",

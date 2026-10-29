@@ -29,15 +29,13 @@
     "principle": "dp_dmd_turbo=少步蒸馏；anyflow=AnyFlow 一致性蒸馏。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "dp_dmd_turbo = few-step distillation; anyflow = AnyFlow consistency distillation.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

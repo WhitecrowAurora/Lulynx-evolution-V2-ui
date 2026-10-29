@@ -33,15 +33,13 @@
     "principle": "warmup 阶段学习率从较低值上升，降低训练初期梯度统计（如 Adam 二阶矩）尚未稳定时大步长更新的风险。cosine 默认从目标学习率的 1% 开始；按比例表达可让预热长度随总步数自动伸缩。",
     "intervention": "调度器工厂先使用正数 lr_warmup_steps，否则计算 int(total_steps × warmup_ratio)，再夹到 [0, total_steps-1]。结果传给支持预热的调度器，如 cosine、constant_with_warmup；普通 linear 不使用此值。",
     "expectedImpact": "训练前期 loss 曲线更平滑，减少初期发散或「先坏后好」现象；对最终质量影响温和。",
-    "tradeoffs": "预热占比过大（>0.2）会浪费有效训练步数；过小则失去保护作用。与 Prodigy 等自适应学习率优化器同用时预热收益减弱。",
-    "codePath": "trainer/trainer_scheduler_warmup.py:resolve_scheduler_warmup_steps，由 trainer_scheduler_factory.py 和 trainer_execution_optimizer_phase.py 共用"
+    "tradeoffs": "预热占比过大（>0.2）会浪费有效训练步数；过小则失去保护作用。与 Prodigy 等自适应学习率优化器同用时预热收益减弱。"
   },
   "advanced_en": {
     "principle": "During warmup the learning rate rises from a lower value, reducing the risk of large-step updates early in training while gradient statistics (such as Adam's second moment) are not yet stable. cosine starts by default at 1% of the target learning rate; expressing warmup as a ratio lets its length scale automatically with total steps.",
     "intervention": "The scheduler factory uses a positive lr_warmup_steps first, otherwise computes int(total_steps × warmup_ratio), then clamps to [0, total_steps-1]. The result is passed to schedulers that support warmup, such as cosine and constant_with_warmup; plain linear does not use this value.",
     "expectedImpact": "A smoother loss curve early in training, reducing early divergence or \"worse before better\" behavior; a mild effect on final quality.",
-    "tradeoffs": "Too large a warmup fraction (>0.2) wastes effective training steps; too small loses the protection. With adaptive-LR optimizers like Prodigy the warmup benefit is diminished.",
-    "codePath": "trainer/trainer_scheduler_warmup.py:resolve_scheduler_warmup_steps, shared by trainer_scheduler_factory.py and trainer_execution_optimizer_phase.py"
+    "tradeoffs": "Too large a warmup fraction (>0.2) wastes effective training steps; too small loses the protection. With adaptive-LR optimizers like Prodigy the warmup benefit is diminished."
   },
   "relatedConfigs": [
     "lr_warmup_steps",

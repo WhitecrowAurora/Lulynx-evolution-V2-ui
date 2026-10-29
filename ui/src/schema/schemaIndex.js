@@ -1,3 +1,6 @@
+import { optimizationDefaults } from '../../../../lora-scripts-ui-main/ui/src/features/optimizationPreferences.js';
+import { withOptimizationSettings } from '../../../../lora-scripts-ui-main/ui/src/features/optimizationSettings.js';
+import { withBlockOffloadPrefill } from '../../../../lora-scripts-ui-main/ui/src/features/blockOffloadPrefillFields.js';
 // SPDX-License-Identifier: LicenseRef-PolyFormNoncommercial-1.0.0
 // ================================================================
 // schemaIndex.js — 训练族 schema 汇总入口 + 公共 API
@@ -8,8 +11,11 @@
 import { TRAINING_TYPES as ALL_TRAINING_TYPES, VISIBLE_TRAINING_TYPES, UI_TABS } from './trainingTypeRegistry.js';
 import { TARGET_LORA_OPTIMIZERS, schedulerOptions } from './features/settingsOptions.js';
 import { buildRunConfigFromSections } from './runConfigBuilder.js';
+import { withSwapWeightCache } from './weightCacheFields.js';
+import { withSubsetTimestepOffsets } from './features/subsetTimestepOffsets.js';
 import { withConceptDirection } from './conceptDirectionSchema.js';
 import { withAnimaRuntimeFields } from './features/animaRuntimeFields.js';
+import { withGradientClippingControls } from './features/gradientClipping.js';
 import {
   SDXL_LORA_SECTIONS, SDXL_ILECO_SECTIONS, SDXL_ADDIFT_SECTIONS, SDXL_MULTI_ADDIFT_SECTIONS,
   SDXL_FT_SECTIONS, SDXL_CN_SECTIONS, SDXL_CN_LLLITE_SECTIONS, SDXL_TI_SECTIONS,
@@ -25,7 +31,7 @@ import {
 import {
   FLUX_LORA_SECTIONS, LUMINA_LORA_SECTIONS, QWEN_IMAGE_LORA_SECTIONS, HUNYUAN_DIT_LORA_SECTIONS,
   HUNYUAN_IMAGE_COMPAT_SECTIONS, FLUX_FT_SECTIONS, LUMINA_FT_SECTIONS, FLUX_CN_SECTIONS, NEWBIE_LORA_SECTIONS,
-  KREA2_LORA_SECTIONS, KREA2_FT_SECTIONS, FLUX2_LORA_SECTIONS, ZIMAGE_LORA_SECTIONS, WAN22_TI2V_LORA_SECTIONS, WAN22_T2V_A14B_LORA_SECTIONS, LTX23_LORA_SECTIONS, LTX25_LORA_SECTIONS, BOOGU_LORA_SECTIONS, BOOGU_EDIT_LORA_SECTIONS, BOOGU_FT_SECTIONS, LTX23_FT_SECTIONS, LTX25_FT_SECTIONS, FLUX2_FT_SECTIONS, ZIMAGE_FT_SECTIONS, WAN22_FT_SECTIONS, QWEN_IMAGE_FT_SECTIONS,
+  KREA2_LORA_SECTIONS, KREA2_FT_SECTIONS, FLUX2_LORA_SECTIONS, FLUX3_LORA_SECTIONS, ZIMAGE_LORA_SECTIONS, WAN22_TI2V_LORA_SECTIONS, WAN22_T2V_A14B_LORA_SECTIONS, LTX23_LORA_SECTIONS, LTX25_LORA_SECTIONS, BOOGU_LORA_SECTIONS, BOOGU_EDIT_LORA_SECTIONS, BOOGU_FT_SECTIONS, LTX23_FT_SECTIONS, LTX25_FT_SECTIONS, FLUX2_FT_SECTIONS, FLUX3_FT_SECTIONS, ZIMAGE_FT_SECTIONS, WAN22_FT_SECTIONS, QWEN_IMAGE_FT_SECTIONS, QWEN_IMAGE_2_LORA_SECTIONS, QWEN_IMAGE_2_FT_SECTIONS,
 } from './otherDitSchemas.js';
 import {
   LAB_DISTILLER_SECTIONS, SDXL_TURBO_LORA_SECTIONS, ANIMA_FEW_STEP_LORA_SECTIONS, NEWBIE_FEW_STEP_LORA_SECTIONS,
@@ -35,6 +41,7 @@ import { S_TRAINING_INTENT_PROFILE } from './schemaFrontierGroups.js';
 import { applyAdapterFamilyCapabilities, sec, when } from './schemaCommon.js';
 import { S_UNIVERSAL_DIT } from './universalDitFields.js';
 import { MINIMAX_H3_LORA_SECTIONS, MINIMAX_H3_FT_SECTIONS } from './minimaxH3Schema.js';
+import { MOSS_IMAGE_LORA_SECTIONS, MOSS_IMAGE_FT_SECTIONS } from './mossImageSchema.js';
 
 export { ALL_TRAINING_TYPES, UI_TABS };
 export const TRAINING_TYPES = VISIBLE_TRAINING_TYPES;
@@ -45,6 +52,8 @@ export const TRAINING_TYPES = VISIBLE_TRAINING_TYPES;
 // SECTIONS_MAP
 // ================================================================
 const SECTIONS_MAP = {
+  'moss-image-lora':         MOSS_IMAGE_LORA_SECTIONS,
+  'moss-image-finetune':     MOSS_IMAGE_FT_SECTIONS,
   'sdxl-lora':              SDXL_LORA_SECTIONS,
   'sdxl-ileco':             SDXL_ILECO_SECTIONS,
   'sdxl-addift':            SDXL_ADDIFT_SECTIONS,
@@ -56,6 +65,7 @@ const SECTIONS_MAP = {
   'flux-lora':              FLUX_LORA_SECTIONS,
   'lumina-lora':            LUMINA_LORA_SECTIONS,
   'qwen-image-lora':        QWEN_IMAGE_LORA_SECTIONS,
+  'qwen-image-2-lora':      QWEN_IMAGE_2_LORA_SECTIONS,
   'hunyuan-dit-lora':       HUNYUAN_DIT_LORA_SECTIONS,
   'hunyuan-image-lora':     HUNYUAN_IMAGE_COMPAT_SECTIONS,
   'anima-lora':             ANIMA_LORA_SECTIONS,
@@ -66,6 +76,7 @@ const SECTIONS_MAP = {
   'newbie-lora':            NEWBIE_LORA_SECTIONS,
   'krea2-lora':             KREA2_LORA_SECTIONS,
   'flux2-lora':             FLUX2_LORA_SECTIONS,
+  'flux3-lora':             FLUX3_LORA_SECTIONS,
   'zimage-lora':            ZIMAGE_LORA_SECTIONS,
   'wan22-ti2v-lora':        WAN22_TI2V_LORA_SECTIONS,
   'wan22-t2v-a14b-lora':     WAN22_T2V_A14B_LORA_SECTIONS,
@@ -85,10 +96,12 @@ const SECTIONS_MAP = {
   'anima-finetune':         ANIMA_FT_SECTIONS,
   'krea2-finetune':         KREA2_FT_SECTIONS,
   'qwen-image-finetune':    QWEN_IMAGE_FT_SECTIONS,
+  'qwen-image-2-finetune':  QWEN_IMAGE_2_FT_SECTIONS,
   'boogu-finetune':         BOOGU_FT_SECTIONS,
   'ltx23-finetune':         LTX23_FT_SECTIONS,
   'ltx25-finetune':         LTX25_FT_SECTIONS,
   'flux2-finetune':         FLUX2_FT_SECTIONS,
+  'flux3-finetune':         FLUX3_FT_SECTIONS,
   'zimage-finetune':        ZIMAGE_FT_SECTIONS,
   'wan22-finetune':         WAN22_FT_SECTIONS,
   'minimax-h3-lora':        MINIMAX_H3_LORA_SECTIONS,
@@ -113,6 +126,7 @@ const TRAINING_INTENT_SUPPORTED_TYPES = new Set([
   'flux-lora',
   'lumina-lora',
   'qwen-image-lora',
+  'qwen-image-2-lora',
   'hunyuan-dit-lora',
   'hunyuan-image-lora',
   'anima-lora',
@@ -120,6 +134,7 @@ const TRAINING_INTENT_SUPPORTED_TYPES = new Set([
   'newbie-lora',
   'krea2-lora',
   'flux2-lora',
+  'flux3-lora',
   'zimage-lora',
   'boogu-lora',
   'boogu-edit-lora',
@@ -211,13 +226,16 @@ export const SDXL_SECTIONS = SDXL_LORA_SECTIONS;
 // 公共 API
 // ================================================================
 export function getSectionsForType(typeId) {
-  if (_sectionsCache[typeId]) return _sectionsCache[typeId];
-  const base = withAnimaRuntimeFields(SECTIONS_MAP[typeId] || SDXL_LORA_SECTIONS, typeId);
+  if (_sectionsCache[typeId]) return withOptimizationSettings(_sectionsCache[typeId]);
+  const source = withBlockOffloadPrefill(
+    SECTIONS_MAP[typeId] || SDXL_LORA_SECTIONS, SECTIONS_MAP[typeId] ? typeId : undefined,
+  );
+  const base = withSwapWeightCache(withGradientClippingControls(withAnimaRuntimeFields(source, typeId)), typeId);
   const withProfile = TRAINING_INTENT_SUPPORTED_TYPES.has(typeId)
     ? [TRAINING_INTENT_PROFILE_SECTION, UNIVERSAL_DIT_SECTION, ...base]
     : base;
-  _sectionsCache[typeId] = withConceptDirection(injectMaterialDecoupling(withProfile, typeId), typeId || 'sdxl-lora');
-  return _sectionsCache[typeId];
+  _sectionsCache[typeId] = withConceptDirection(withSubsetTimestepOffsets(injectMaterialDecoupling(withProfile, typeId), typeId), typeId || 'sdxl-lora');
+  return withOptimizationSettings(_sectionsCache[typeId]);
 }
 
 function buildFieldMap(sections) {
@@ -355,8 +373,9 @@ export function createDefaultConfig(typeId) {
   const config = {};
   for (const s of getSectionsForType(typeId || 'sdxl-lora'))
     for (const f of s.fields)
-      config[f.key] = Array.isArray(f.defaultValue) ? [...f.defaultValue] : (f.defaultValue ?? '');
-  return config;
+      config[f.key] = f.defaultValue && typeof f.defaultValue === 'object'
+        ? structuredClone(f.defaultValue) : (f.defaultValue ?? '');
+  return Object.assign(config, optimizationDefaults());
 }
 
 export function normalizeDraftValue(field, rawValue) {

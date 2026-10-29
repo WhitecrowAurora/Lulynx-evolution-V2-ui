@@ -21,8 +21,7 @@
     "principle": "Anima LLM Adapter 的独立学习率。0 = 使用全局学习率。仅在训练 LLM Adapter 时生效。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Standalone learning rate for the Anima LLM Adapter. 0 = use the global learning rate. Only takes effect when training the LLM Adapter."

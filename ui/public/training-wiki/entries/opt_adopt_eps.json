@@ -21,15 +21,13 @@
     "principle": "ADOPT 数值稳定 epsilon。推荐 1e-6（比 AdamW 大一阶）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "ADOPT numerical-stability epsilon. Recommended 1e-6 (an order larger than AdamW's).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -21,15 +21,13 @@
     "principle": "caption 长度 bucket 大小。0 表示关闭，仅按分辨率 bucket，更贴近官方",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Caption-length bucket size. 0 disables it and buckets by resolution only, closer to the official behavior.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

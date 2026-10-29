@@ -31,15 +31,13 @@
     "principle": "geometric_lock: 计算权重与预训练权重的偏移向量，投影到预训练权重的切空间中（lulynx_proj_dim 控制投影维度），限制偏移在流形内。ln_guard: 对 LayerNorm 的 γ/β 参数施加 lulynx_ln_lambda 强度的 L2 正则化。anti_fry: 检测生成图像中的高频过冲并降低对应 timestep 的 loss 权重。ghost_replay: 定期用旧权重生成图像作为正则化锚点（lulynx_ghost_weight 控制强度）。hutchinson_probes: Hutchinson 迹估算用于监控权重变化。",
     "intervention": "training_step 后对各组件施加正则化/投影约束。",
     "expectedImpact": "理论上减少灾难性遗忘和过拟合。实际效果需要实验验证。",
-    "tradeoffs": "各特性有独立的计算开销。不建议同时启用所有特性。",
-    "codePath": "core/lulynx_lab/ → geometric projection + LN guard + anti-fry + ghost replay"
+    "tradeoffs": "各特性有独立的计算开销。不建议同时启用所有特性。"
   },
   "advanced_en": {
     "principle": "geometric_lock: computes the offset vector between current and pretrained weights, projecting it into the pretrained weights' tangent space (lulynx_proj_dim controls projection dimension) to keep offsets on-manifold. ln_guard: applies L2 regularization of strength lulynx_ln_lambda to LayerNorm γ/β parameters. anti_fry: detects high-frequency overshoot in generated images and lowers the corresponding timesteps' loss weight. ghost_replay: periodically generates images with old weights as regularization anchors (lulynx_ghost_weight controls strength). hutchinson_probes: Hutchinson trace estimation for monitoring weight changes.",
     "intervention": "Applies regularization/projection constraints to each component after training_step.",
     "expectedImpact": "Theoretically reduces catastrophic forgetting and overfitting. Actual effects need experimental validation.",
-    "tradeoffs": "Each feature has its own compute cost. Enabling all of them at once is not recommended.",
-    "codePath": "core/lulynx_lab/ → geometric projection + LN guard + anti-fry + ghost replay"
+    "tradeoffs": "Each feature has its own compute cost. Enabling all of them at once is not recommended."
   },
   "relatedConfigs": [
     "lulynx_proj_dim",

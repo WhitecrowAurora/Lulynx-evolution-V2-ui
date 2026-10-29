@@ -21,15 +21,13 @@
     "principle": "逗号分隔：explicit,folder,nl,identity,tag,stem。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Comma-separated: explicit,folder,nl,identity,tag,stem.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

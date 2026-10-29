@@ -21,8 +21,7 @@
     "principle": "字符串替换规则，格式：old:new,old2:new2。支持批量替换 caption 中的词汇（如统一人称、修正标签）",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "String replacement rules, format: old:new,old2:new2. Supports batch-replacing words in captions (e.g. unifying pronouns, fixing tags)."

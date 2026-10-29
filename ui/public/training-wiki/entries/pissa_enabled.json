@@ -21,15 +21,13 @@
     "principle": "后端 injector 主开关。通常由 pissa_init / adapter_init_strategy=pissa 自动置真；也可单独开。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Backend injector master switch. Usually set true automatically by pissa_init / adapter_init_strategy=pissa; can also be enabled standalone.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

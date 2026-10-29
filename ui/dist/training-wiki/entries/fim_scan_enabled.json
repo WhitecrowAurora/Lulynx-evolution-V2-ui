@@ -21,15 +21,13 @@
     "principle": "Fisher 信息矩阵扫描。默认关闭。扫描后会写出 rank map 并停止在 epoch 循环前。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Fisher information matrix scan. Off by default. After the scan it writes out the rank map and stops before the epoch loop.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

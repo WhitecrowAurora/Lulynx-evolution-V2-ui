@@ -21,15 +21,13 @@
     "principle": "SmoothCache 论文（arXiv:2411.10510）/官方仓库使用 calibration 得到 layer-wise representation-error schedule；本仓只用相邻 step 的 relative-L1 probe 与本地 schedule/store seam，差异明确，不保证论文速度/质量结果。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": "lulynx_trainer/smoothcache.py → SmoothCacheCalibrator → SmoothCacheStore"
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "The SmoothCache paper (arXiv:2411.10510) / official repo uses calibration to derive a layer-wise representation-error schedule; this repo only uses a relative-L1 probe between adjacent steps plus a local schedule/store seam. The difference is explicit and paper speed/quality results are not guaranteed.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": "lulynx_trainer/smoothcache.py → SmoothCacheCalibrator → SmoothCacheStore"
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -33,15 +33,13 @@
     "principle": "DreamBooth 同时优化两个目标：(1) 重建目标（instance loss）——让模型从 instance_prompt 生成训练图片中的主体；(2) 先验保留（prior loss）——让模型对 class_prompt 的生成保持与预训练模型一致。num_class_images 控制生成的先验图片数量。use_lora=True 时用 LoRA 替代全参微调，减少过拟合。",
     "intervention": "training_loop 交替计算 instance loss 和 prior loss，按 prior_loss_weight 加权。",
     "expectedImpact": "5-20 张图片即可实现高质量个性化生成。",
-    "tradeoffs": "prior_loss_weight 太大会限制个性化程度；太小会导致类别概念被破坏。",
-    "codePath": "training_loop.py:DreamBooth → instance_loss + prior_loss_weight × prior_loss"
+    "tradeoffs": "prior_loss_weight 太大会限制个性化程度；太小会导致类别概念被破坏。"
   },
   "advanced_en": {
     "principle": "DreamBooth optimizes two objectives at once: (1) reconstruction (instance loss) — generate the subject in the training images from instance_prompt; (2) prior preservation (prior loss) — keep generation for class_prompt consistent with the pretrained model. num_class_images controls how many prior images are generated. use_lora=True uses LoRA instead of full fine-tuning, reducing overfitting.",
     "intervention": "training_loop alternates instance loss and prior loss, weighted by prior_loss_weight.",
     "expectedImpact": "High-quality personalized generation from just 5-20 images.",
-    "tradeoffs": "prior_loss_weight too large limits personalization; too small lets the class concept erode.",
-    "codePath": "training_loop.py:DreamBooth → instance_loss + prior_loss_weight × prior_loss"
+    "tradeoffs": "prior_loss_weight too large limits personalization; too small lets the class concept erode."
   },
   "relatedConfigs": [
     "class_prompt",

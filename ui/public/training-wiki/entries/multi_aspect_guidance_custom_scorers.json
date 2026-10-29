@@ -21,15 +21,13 @@
     "principle": "例如 {\"style\":\"path/to/model.safetensors\"}。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "E.g. {\"style\":\"path/to/model.safetensors\"}.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

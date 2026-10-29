@@ -33,15 +33,13 @@
     "principle": "observe/planner 不改变训练 tensor 路径；cache_observe 会接入候选统计；cache_v0 才会按预算尝试 GPU 解码缓存，建议只在监控显示 PCIe 等待明显时手动 。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "observe/planner do not change the training tensor path; cache_observe hooks into candidate statistics; only cache_v0 actually attempts GPU decode caching against a budget — enable it manually only when monitoring shows noticeable PCIe waits.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

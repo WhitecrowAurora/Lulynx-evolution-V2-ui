@@ -21,15 +21,13 @@
     "principle": "焦点在 logSNR 空间的位置（σ = sigmoid(-0.5·logSNR)，故 0.0 对应 σ=0.5）。正值偏向低噪声端，负值偏向高噪声端；默认 0.0，范围 -3~3。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Focus position in logSNR space (σ = sigmoid(-0.5·logSNR), so 0.0 corresponds to σ=0.5). Positive values lean toward low noise, negative values toward high noise; default 0.0, range -3~3.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

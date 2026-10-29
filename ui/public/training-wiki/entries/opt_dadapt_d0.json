@@ -21,15 +21,13 @@
     "principle": "初始步长估计 d0，推荐 1e-6（小值让 D-Adapt 从保守开始自适应）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Initial step-size estimate d0; 1e-6 recommended (a small value lets D-Adapt adapt conservatively at first).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

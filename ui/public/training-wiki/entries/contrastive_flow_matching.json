@@ -31,15 +31,13 @@
     "principle": "∆FM（Contrastive Flow Matching）：标准 FM 只最小化到自身目标速度场的距离，样本间共享的模型容量会把不同条件的流场拉向均值。加入负项 -λ·MSE(pred, 负目标) 等价于最大化与其它样本目标的间距，增强条件可分性。",
     "intervention": "training_step_loss_execution_core.py：主 loss 计算后、任何加权之前调用 sdxl_flow.apply_contrastive_flow_matching(loss, pred, target, lam)，负样本目标由 batch 内打乱（shuffle）得到；随后的权重对主项与对比项统一缩放。",
     "expectedImpact": "条件间区分度提升、多概念串味减少；主损失数值会整体下移（因为减了正数项），不要直接与基线 loss 对比。",
-    "tradeoffs": "λ 过大时排斥项主导，收敛变慢甚至发散；只在 flow 系（Rectified Flow/Anima/Flux 等）路线有意义，epsilon 预测路线不生效。",
-    "codePath": "training_step_loss_execution_core.py——apply_contrastive_flow_matching；sdxl_flow.py:apply_contrastive_flow_matching 实现；configs_dataset.py 定义"
+    "tradeoffs": "λ 过大时排斥项主导，收敛变慢甚至发散；只在 flow 系（Rectified Flow/Anima/Flux 等）路线有意义，epsilon 预测路线不生效。"
   },
   "advanced_en": {
     "principle": "∆FM (Contrastive Flow Matching): standard FM only minimizes the distance to its own target velocity field, and the model capacity shared across samples pulls different conditions' flow fields toward the mean. Adding the negative term -λ·MSE(pred, negative target) is equivalent to maximizing separation from other samples' targets, strengthening condition separability.",
     "intervention": "training_step_loss_execution_core.py: after the main loss and before any weighting, calls sdxl_flow.apply_contrastive_flow_matching(loss, pred, target, lam), with negative targets obtained by shuffling within the batch; subsequent weighting scales main and contrastive terms uniformly.",
     "expectedImpact": "Better inter-condition separation and less multi-concept flavor bleeding; the main loss value shifts down overall (a positive term is subtracted) — do not compare directly against baseline loss.",
-    "tradeoffs": "With λ too large the repulsion term dominates — slower convergence or divergence; only meaningful on flow-family routes (Rectified Flow/Anima/Flux etc.), no effect on epsilon-prediction routes.",
-    "codePath": "training_step_loss_execution_core.py — apply_contrastive_flow_matching; implemented in sdxl_flow.py:apply_contrastive_flow_matching; defined in configs_dataset.py"
+    "tradeoffs": "With λ too large the repulsion term dominates — slower convergence or divergence; only meaningful on flow-family routes (Rectified Flow/Anima/Flux etc.), no effect on epsilon-prediction routes."
   },
   "relatedConfigs": [
     "cfm_lambda",

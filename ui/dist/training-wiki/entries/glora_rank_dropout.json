@@ -32,15 +32,13 @@
     "principle": "GLoRA: ΔW = W_base·A + B，其中 A 是与 base 权重交互的变换矩阵，B 是标准低秩偏移。glora_rank_dropout 对 ΔW 每行做 dropout。glora_module_dropout 整层跳过。glora_no_materialize_forward 快速路径——链式矩阵乘法不显式构造 A,B。glora_use_tucker 对 Conv2d 使用 Tucker B 路径。GLoKr: Kronecker 参数化的广义适配器。glokr_factor 控制 Kronecker 因子。glokr_no_materialize_forward 实验性不具化前向路径。",
     "intervention": "LyCORIS 框架中作为 glora/glokr 算法分支注入。",
     "expectedImpact": "表达力比标准 LoRA 更强。质量提升因任务而异。",
-    "tradeoffs": "glora_export_mode/glokr_export_mode 控制导出格式（native/lora_compatible）。",
-    "codePath": "lycoris/ → GLoRA/GLoKr algorithm → ΔW = W·A + B / Kronecker parameterization"
+    "tradeoffs": "glora_export_mode/glokr_export_mode 控制导出格式（native/lora_compatible）。"
   },
   "advanced_en": {
     "principle": "GLoRA: ΔW = W_base·A + B, where A is a transform matrix interacting with the base weights and B a standard low-rank offset. glora_rank_dropout applies dropout per row of ΔW. glora_module_dropout skips whole layers. glora_no_materialize_forward is a fast path — chained matmuls without explicitly constructing A,B. glora_use_tucker uses the Tucker B path for Conv2d. GLoKr: a Kronecker-parameterized generalized adapter. glokr_factor controls the Kronecker factor. glokr_no_materialize_forward is an experimental non-materialized forward path.",
     "intervention": "Injected as the glora/glokr algorithm branches in the LyCORIS framework.",
     "expectedImpact": "More expressive than standard LoRA. Quality gains vary by task.",
-    "tradeoffs": "glora_export_mode/glokr_export_mode control the export format (native/lora_compatible).",
-    "codePath": "lycoris/ → GLoRA/GLoKr algorithm → ΔW = W·A + B / Kronecker parameterization"
+    "tradeoffs": "glora_export_mode/glokr_export_mode control the export format (native/lora_compatible)."
   },
   "relatedConfigs": [
     "lycoris_algo",

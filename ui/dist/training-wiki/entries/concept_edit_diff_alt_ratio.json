@@ -21,8 +21,7 @@
     "principle": "ADDifT 交替差分倍率。保持 1 最稳；更激进的实验可调成负值，但不建议默认这么做。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "ADDifT alternating-difference ratio. Keep 1 for stability; more aggressive experiments can push it negative, but that is not recommended as a default."

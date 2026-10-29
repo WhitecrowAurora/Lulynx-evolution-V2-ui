@@ -21,15 +21,13 @@
     "principle": "训练时用负面提示词做 LoRA-on / LoRA-off 差异约束，压制靠近负面语义的 LoRA 增量。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "During training, applies a LoRA-on / LoRA-off difference constraint with the negative prompt, suppressing LoRA increments close to the negative semantics. Off by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

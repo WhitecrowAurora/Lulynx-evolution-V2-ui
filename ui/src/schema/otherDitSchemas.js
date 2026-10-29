@@ -7,6 +7,7 @@
 // 依赖方向(单向无环):schemaCommon → schemaFieldGroups → 本文件 → schemaIndex。
 // ================================================================
 import { LTX23_AUDIO_FIELD_KEYS } from './ltx23AudioFields.js';
+import { blockWeightCacheFields, blockResidencyWithCacheFields } from './weightCacheFields.js';
 import {
   when,
   all,
@@ -41,11 +42,13 @@ import {
   VRAM_AUTO_ENHANCE_FIELDS,
   KREA2_OFFLOAD_FIELDS,
   FLUX2_OFFLOAD_FIELDS,
+  FLUX3_OFFLOAD_FIELDS,
   BOOGU_OFFLOAD_FIELDS,
   ZIMAGE_OFFLOAD_FIELDS,
   WAN22_OFFLOAD_FIELDS,
   LTX23_OFFLOAD_FIELDS,
   S_SAVE,
+  S_CACHED_DATALOADER,
   S_CAPTION,
   S_LR,
   S_LR_TARGET,
@@ -132,7 +135,7 @@ export const FLUX_LORA_SECTIONS = [
   sec('flux-params', 'model', 'FLUX 专用参数', '时间步采样、CFG、损失函数等。', [
     ...flowParams({ ts: 'sigmoid', gs: 1.0 }),
     { key: 't5xxl_max_token_length', type: 'number', label: 'T5XXL 最大 token', title: 't5xxl_max_token_length', desc: 'T5-XXL 最大 token 长度', defaultValue: '', min: 1 },
-    { key: 'apply_t5_attn_mask', type: 'boolean', label: '应用 T5 注意力掩码', title: 'apply_t5_attn_mask', desc: '应用 T5 注意力掩码以更好处理变长文本', defaultValue: true },
+    { key: 'apply_t5_attn_mask', type: 'boolean', label: '应用 T5 注意力掩码', title: 'apply_t5_attn_mask', desc: '技术储备：当前调整此字段不会改变训练或预览行为。', defaultValue: true },
     { key: 'train_t5xxl', type: 'boolean', label: '训练T5XXL（不推荐）', title: 'train_t5xxl', desc: '训练 T5-XXL 文本编码器（不推荐，显存开销极大）', defaultValue: false }
 ]),
   sec('save-settings', 'model', '保存设置', '', [...S_SAVE]),
@@ -151,7 +154,7 @@ export const FLUX_LORA_SECTIONS = [
   sec('progressive-training', 'frontier', '渐进式 / 分阶段训练', '按 optimizer progress 切换阶段；当前首版使用稳定 JSON contract。', [...S_PROGRESSIVE_TRAINING, ...S_ADAPTIVE_TRAINING]),
   sec('preview-settings', 'preview', '预览图设置', '', [...S_PREVIEW, ...S_QUALITY_EVAL]),
   sec('validation-settings', 'preview', '验证设置', '验证集划分与验证频率。', [...S_VALIDATION]),
-  sec('speed-settings', 'speed', '速度优化', '', [...FLUX_LORA_SPEED_FIELDS, ...S_FLUX_TRAINING.filter((f) => f.key === 'flux_transformer_offload')]),
+  sec('speed-settings', 'speed', '速度优化', '', [...FLUX_LORA_SPEED_FIELDS, ...S_FLUX_TRAINING.filter((f) => f.key === 'flux_transformer_offload'), ...blockWeightCacheFields('flux_transformer_offload', 'block_residency')]),
     sec('compile-settings', 'speed', '编译与执行后端',
     'execution_backend / torch.compile / Thunder 与 compile expert 旋钮；从速度页拆出以免与缓存/注意力搅在一起。',
     [...S_EXECUTION_BACKEND, ...S_COMPILE_EXPERT], { expert: true }),
@@ -180,7 +183,7 @@ export const LUMINA_LORA_SECTIONS = [
     { key: 'gemma2_max_token_length', type: 'number', label: 'Gemma2 最大 token', title: 'gemma2_max_token_length', desc: 'Gemma2 最大 token 长度', defaultValue: '', min: 1 },
     { key: 'use_sage_attn', type: 'boolean', label: '启用 Sage Attention', title: 'use_sage_attn', desc: '启用 Sage Attention 加速', defaultValue: false },
         { key: 'system_prompt', type: 'string', label: '系统提示词', title: 'system_prompt', desc: 'Lumina 系统提示词', defaultValue: '' },
-    { key: 'sample_batch_size', type: 'number', label: '预览图采样批量', title: 'sample_batch_size', desc: '预览图采样批量大小', defaultValue: '', min: 1 }
+    { key: 'sample_batch_size', type: 'number', label: '预览图采样批量', title: 'sample_batch_size', desc: '技术储备：当前调整此字段不会改变训练或预览行为。', defaultValue: '', min: 1 }
 ]),
   sec('save-settings', 'model', '保存设置', '', [...S_SAVE]),
   sec('dataset-settings', 'dataset', '数据集设置', '', ds('1024,1024', 2048, 64)),
@@ -221,6 +224,7 @@ const qwenImageSections = (typeId = 'qwen-image-lora') => [
     { key: 'resume', type: 'file', pickerType: 'output-model-file', allowModelDirectory: true, label: '继续训练路径', title: 'resume', desc: '从某个 save_state / 检查点继续训练：可选择检查点文件，或选择存档目录自动取最新', defaultValue: '' }
 ]),
   sec('qwen-image-params', 'model', 'Qwen Image 参数', '', [
+    ...blockResidencyWithCacheFields(typeId.startsWith('qwen-image-2') ? 'qwen_image_2_block_residency' : 'qwen_image_block_residency'),
     ...flowParams({ ts: 'shift', dfs: 3.0 })
 ]),
   sec('save-settings', 'model', '保存设置', '', [...S_SAVE]),
@@ -246,6 +250,57 @@ const qwenImageSections = (typeId = 'qwen-image-lora') => [
 // ---- Qwen Image LoRA ----
 export const QWEN_IMAGE_LORA_SECTIONS = qwenImageSections();
 
+// ---- Qwen Image 2.1 LoRA ----
+// 复用 Qwen Image 页面骨架，但参数名、网络模块与缓存后缀都属于 2.1 独立契约；
+// 不覆盖 Qwen-Image 1.0 的 qwen-image-* 路由。
+const qwenImage2Sections = (typeId = 'qwen-image-2-lora') => qwenImageSections(typeId).map((section) => {
+  if (section.id === 'model-settings') {
+    return {
+      ...section,
+      title: 'Qwen Image 2.1 模型',
+      description: 'Qwen-Image 2.1 模型目录（含 transformer / vae / text_encoder / processor / scheduler）。',
+      fields: section.fields.map((field) => {
+        if (field.key === 'pretrained_model_name_or_path') {
+          return { ...field, label: 'Qwen Image 2.1 模型目录', desc: '完整本地目录或 transformer 权重；单文件加载时必须另选 VAE。' };
+        }
+        if (field.key === 'vae') {
+          return { ...field, label: 'Qwen Image 2.1 VAE 路径', desc: '可选；留空时从模型目录 vae/ 读取 RGBA 64 通道 VAE。' };
+        }
+        if (field.key === 'text_encoder') {
+          return { ...field, label: 'Qwen3-VL 文本编码器路径', desc: '可选；留空时从模型目录 text_encoder/ 读取。' };
+        }
+        return field;
+      }),
+    };
+  }
+  if (section.id === 'qwen-image-params') {
+    return {
+      ...section,
+      id: 'qwen-image-2-params',
+      title: 'Qwen Image 2.1 参数',
+      fields: [
+          ...blockResidencyWithCacheFields('qwen_image_2_block_residency'),
+        { key: 'qwen_image_2_timestep_sampling', type: 'select', label: '时间步采样', title: 'qwen_image_2_timestep_sampling', desc: '2.1 原生 flow-matching 时间步分布。', defaultValue: 'uniform', options: ['uniform', 'sigmoid', 'shift'] },
+        { key: 'qwen_image_2_dynamic_shift', type: 'boolean', label: '动态 Shift', title: 'qwen_image_2_dynamic_shift', desc: '按图像序列长度使用 exponential dynamic shift。', defaultValue: true },
+        { key: 'qwen_image_2_match_target_res', type: 'boolean', label: '参考图匹配目标分辨率', title: 'qwen_image_2_match_target_res', desc: '将 reference latent 对齐到目标 latent 的网格，避免联合序列错位。', defaultValue: true },
+        { key: 'qwen_image_2_reference_max_pixels', type: 'number', label: '参考图最大像素', title: 'qwen_image_2_reference_max_pixels', desc: '参考图预处理上限，默认 1048576（1024×1024）。', defaultValue: 1048576, min: 256, step: 1 },
+        { key: 'qwen_image_2_latent_sample', type: 'boolean', label: 'Latent 采样缓存', title: 'qwen_image_2_latent_sample', desc: '缓存时对 VAE latent 做采样；关闭后缓存完整 latent 分布。', defaultValue: true },
+      ],
+    };
+  }
+  if (section.id === 'network-settings') {
+    return {
+      ...section,
+      fields: section.fields.map((field) => field.key === 'network_module'
+        ? { ...field, defaultValue: 'networks.lora_qwen_image_2', options: ['networks.lora_qwen_image_2', ...field.options.slice(1)] }
+        : field),
+    };
+  }
+  return section;
+});
+
+export const QWEN_IMAGE_2_LORA_SECTIONS = qwenImage2Sections();
+
 // ---- HunyuanDiT helper ----
 const hunyuanDitSections = (typeId = 'hunyuan-dit-lora') => [
   sec('model-settings', 'model', '训练用模型', 'HunyuanDiT 模型路径。', [
@@ -269,7 +324,7 @@ const hunyuanDitSections = (typeId = 'hunyuan-dit-lora') => [
 ] },
     { key: 'mode_scale', type: 'number', label: 'mode 权重缩放', title: 'mode_scale', desc: 'mode 权重策略的缩放系数', defaultValue: '', step: 0.01 },
     { key: 'split_attn', type: 'boolean', label: '拆分 attention', title: 'split_attn', desc: '拆分 attention 以节省显存', defaultValue: false },
-    { key: 'text_encoder_cpu', type: 'boolean', label: '文本编码器用 CPU', title: 'text_encoder_cpu', desc: '将文本编码器放在 CPU 上以节省显存', defaultValue: false },
+    { key: 'text_encoder_cpu', type: 'boolean', label: '文本编码器用 CPU', title: 'text_encoder_cpu', desc: '技术储备：当前调整此字段不会改变训练或预览行为。', defaultValue: false },
     { key: 'vae_chunk_size', type: 'number', label: 'VAE 解码分块', title: 'vae_chunk_size', desc: 'VAE 解码时的分块大小，更小值更省显存', defaultValue: '', min: 1 }
 ]),
   sec('save-settings', 'model', '保存设置', '', [...S_SAVE]),
@@ -352,7 +407,7 @@ export const FLUX_FT_SECTIONS = [
   sec('flux-params', 'model', 'FLUX 专用参数', '', [
     ...flowParams({ ts: 'sigma', mp: 'sigma_scaled', dfs: 3.0, gs: 3.5 }),
     { key: 't5xxl_max_token_length', type: 'number', label: 'T5XXL 最大 token', title: 't5xxl_max_token_length', desc: 'T5-XXL 最大 token 长度', defaultValue: '', min: 1 },
-    { key: 'apply_t5_attn_mask', type: 'boolean', label: '应用 T5 注意力掩码', title: 'apply_t5_attn_mask', desc: '应用 T5 注意力掩码以更好处理变长文本', defaultValue: false },
+    { key: 'apply_t5_attn_mask', type: 'boolean', label: '应用 T5 注意力掩码', title: 'apply_t5_attn_mask', desc: '技术储备：当前调整此字段不会改变训练或预览行为。', defaultValue: false },
     { key: 'mem_eff_save', type: 'boolean', label: '省内存保存', title: 'mem_eff_save', desc: '使用更省内存的保存方式', defaultValue: false }
 ]),
   sec('save-settings', 'model', '保存设置', '', [...S_SAVE]),
@@ -389,7 +444,7 @@ export const LUMINA_FT_SECTIONS = [
     ...flowParams({ ts: 'shift', dfs: 6.0 }),
     { key: 'gemma2_max_token_length', type: 'number', label: 'Gemma2 最大 token', title: 'gemma2_max_token_length', desc: 'Gemma2 编码的最大 token 长度，超长截断。', defaultValue: '', min: 1 },
     { key: 'use_sage_attn', type: 'boolean', label: '启用 Sage Attention', title: 'use_sage_attn', desc: '启用 SageAttention INT8 量化注意力加速。', defaultValue: false },
-        { key: 'sample_batch_size', type: 'number', label: '预览图采样批量', title: 'sample_batch_size', desc: '预览图采样批量大小', defaultValue: '', min: 1 },
+        { key: 'sample_batch_size', type: 'number', label: '预览图采样批量', title: 'sample_batch_size', desc: '技术储备：当前调整此字段不会改变训练或预览行为。', defaultValue: '', min: 1 },
     { key: 'mem_eff_save', type: 'boolean', label: '省内存保存', title: 'mem_eff_save', desc: '使用更省内存的保存方式', defaultValue: false }
 ]),
   sec('save-settings', 'model', '保存设置', '', [...S_SAVE]),
@@ -639,6 +694,7 @@ export const KREA2_LORA_SECTIONS = [
     { key: 'pretrained_model_name_or_path', type: 'file', pickerType: 'model-file', allowModelDirectory: true, label: 'Krea-2 模型路径', title: 'pretrained_model_name_or_path', desc: '可填模型目录或直接选单个 .safetensors 文件；选单文件时 TE/VAE 会从同目录的 text_encoder/、vae/ 子目录或兄弟 Krea-2 目录树自动解析，找不到时退用 CLIP/sdxl-vae 兜底（可能影响训练质量）', defaultValue: '' },
     { key: 'output_dir', type: 'folder', pickerType: 'folder', label: '输出目录', title: 'output_dir', desc: '训练输出目录', defaultValue: './output/krea2' },
     { key: 'output_name', type: 'string', label: '输出名称', title: 'output_name', desc: 'LoRA 输出文件名', defaultValue: 'krea2-lora' },
+    { key: 'resume', type: 'file', pickerType: 'output-model-file', allowModelDirectory: true, label: '继续训练路径', title: 'resume', desc: '从 save_state 检查点继续训练；可选择检查点文件，或存档目录自动取最新。', defaultValue: '' },
     { key: 'use_cache', type: 'boolean', label: '启用缓存流程', title: 'use_cache', desc: '优先复用 Krea-2 latent 与文本编码缓存，避免训练时常驻 VAE/文本编码器。', defaultValue: true },
     {
       key: 'krea2_training_mode',
@@ -694,7 +750,8 @@ export const KREA2_LORA_SECTIONS = [
     { key: 'min_bucket_reso', type: 'number', label: 'Bucket 最小分辨率', defaultValue: 256, min: 64 },
     { key: 'max_bucket_reso', type: 'number', label: 'Bucket 最大分辨率', defaultValue: 1024, min: 64 },
     { key: 'caption_extension', type: 'string', label: 'Caption 扩展名', title: 'caption_extension', defaultValue: '.txt' },
-    { key: 'dataloader_num_workers', type: 'number', label: 'DataLoader 线程数', defaultValue: 4, min: 0 }
+    { key: 'dataloader_num_workers', type: 'number', label: 'DataLoader 线程数', defaultValue: 4, min: 0 },
+    ...S_CACHED_DATALOADER
 ]),
   sec('save-settings', 'model', '保存设置', '', [
     { key: 'save_every_n_steps', type: 'number', label: '每 N 步保存', title: 'save_every_n_steps', defaultValue: 0, min: 0 },
@@ -804,6 +861,21 @@ export const QWEN_IMAGE_FT_SECTIONS = dropDuplicateFieldKeys(QWEN_IMAGE_LORA_SEC
       });
     if (section.id !== 'model-settings') return { ...section, fields };
     return { ...section, title: 'Qwen Image 全参微调', description: '训练完整 Qwen-Image DiT（20B 全参，需大显存/内存）。', fields };
+  }));
+
+// ---- Qwen Image 2.1 全参微调 ----
+export const QWEN_IMAGE_2_FT_SECTIONS = dropDuplicateFieldKeys(QWEN_IMAGE_2_LORA_SECTIONS
+  .filter((section) => section.id !== 'network-settings')
+  .map((section) => {
+    const sourceFields = section.id === 'optimizer-settings' ? S_LR_FT_DIT : section.fields;
+    const fields = sourceFields
+      .filter((field) => field.key !== 'network_weights')
+      .map((field) => {
+        if (field.key === 'model_train_type') return { ...field, defaultValue: 'qwen-image-2-finetune' };
+        return field;
+      });
+    if (section.id !== 'model-settings') return { ...section, fields };
+    return { ...section, title: 'Qwen Image 2.1 全参微调', description: '训练完整 Qwen-Image 2.1 DiT；需要大显存/内存。', fields };
   }));
 
 // ---- FLUX.2 Klein LoRA ----
@@ -1449,6 +1521,55 @@ export const FLUX2_FT_SECTIONS = dropDuplicateFieldKeys(FLUX2_LORA_SECTIONS
     if (section.id !== 'model-settings') return { ...section, fields };
     return { ...section, title: 'FLUX.2 全参微调', description: '训练完整 FLUX.2 Klein DiT，或扩展深度后只训练新增单流层。需要未旋转的稠密底座（ConvRot INT8 包仅支持冻结底座 LoRA）。', fields: [...fields, ...FLUX2_DEPTH_EXPANSION_FIELDS] };
   }));
+
+const flux3ize = (value) => {
+  if (Array.isArray(value)) return value.map(flux3ize);
+  if (!value || typeof value !== 'object') {
+    if (typeof value !== 'string') return value;
+    return value.replaceAll('flux2', 'flux3').replaceAll('FLUX.2', 'FLUX.3');
+  }
+  return Object.fromEntries(Object.entries(value).map(([key, item]) => [
+    key.replaceAll('flux2', 'flux3'), flux3ize(item),
+  ]));
+};
+
+export const FLUX3_LORA_SECTIONS = dropDuplicateFieldKeys(FLUX2_LORA_SECTIONS
+  .filter((section) => section.id !== 'flux2-offload-settings')
+  .map((section) => {
+    const fields = section.fields
+      .filter((field) => field.key !== 'flux2_model_version' && !field.key.startsWith('flux2_depth_expansion_'))
+      .map((field) => {
+        if (field.key === 'model_train_type') return { ...field, defaultValue: 'flux3-lora' };
+        if (field.key === 'output_dir') return { ...field, defaultValue: './output/flux3' };
+        if (field.key === 'output_name') return { ...field, defaultValue: 'flux3-lora' };
+        if (field.key === 'use_cache') return { ...field, desc: '读取 FLUX.3 sidecar latent 与文本条件缓存；缓存格式与 FLUX.2 不兼容。' };
+        return flux3ize(field);
+      });
+    if (section.id === 'model-settings') fields.splice(1, 0, {
+      key: 'flux3_max_text_length', type: 'number', label: '最大文本长度',
+      title: 'flux3_max_text_length', desc: 'FLUX.3 Qwen3-VL 文本条件长度；调整后应重新构建文本缓存。',
+      defaultValue: 512, min: 64, max: 2048, step: 1,
+    });
+    return { ...flux3ize(section), fields };
+  }).concat([
+    sec('flux3-triton-lora', 'speed', 'FLUX.3 Triton LoRA 算子', '仅 LoRA 训练；需要 BF16 与兼容 CUDA GPU。为标准 LoRA 前向及 Q/K/V 分支尝试共享 Triton 融合算子，不适用的层继续走原实现。', [
+      { key: 'triton_ops_enabled', type: 'boolean', label: '启用 Triton LoRA 算子', title: 'triton_ops_enabled', desc: '默认关闭。开启后只对满足条件的 LoRA 层尝试融合前向与 Q/K/V LoRA；不会改变模型权重格式。', defaultValue: false },
+    ]),
+    sec('flux3-offload-settings', 'speed', 'FLUX.3 Block Offload', 'FLUX.3 Transformer 分块驻留设置。', [...VRAM_AUTO_ENHANCE_FIELDS, ...FLUX3_OFFLOAD_FIELDS]),
+  ]));
+
+export const FLUX3_FT_SECTIONS = dropDuplicateFieldKeys(FLUX3_LORA_SECTIONS
+  .filter((section) => section.id !== 'adapter-settings' && section.id !== 'flux3-triton-lora')
+  .map((section) => ({
+    ...section,
+    fields: section.fields
+      .filter((field) => !KREA2_FT_EXCLUDED_FIELDS.has(field.key))
+      .map((field) => {
+        if (field.key === 'model_train_type') return { ...field, defaultValue: 'flux3-finetune' };
+        if (field.key === 'output_name') return { ...field, label: '底座输出名称', desc: '完整 FLUX.3 底座输出文件名', defaultValue: 'flux3-finetuned' };
+        return field;
+      }),
+  })));
 
 const ZIMAGE_DEPTH_EXPANSION_FIELDS = [
   { key: 'zimage_depth_expansion_enabled', type: 'boolean', label: '扩展 Transformer 深度', title: 'zimage_depth_expansion_enabled', desc: '交错复制 Z-Image 主干 layers block（attention 输出投影与 FFN w2 归零），以恒等残差初始化新增层。refiner 层不参与扩层。最终保存完整新底座。', defaultValue: false },

@@ -21,15 +21,13 @@
     "principle": "例如 `_closed_eyes`，则会把 `image.png` 与 `image_closed_eyes.png` 配对。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "E.g. `_closed_eyes` pairs `image.png` with `image_closed_eyes.png`.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

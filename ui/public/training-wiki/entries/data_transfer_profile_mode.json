@@ -31,15 +31,13 @@
     "principle": "event 使用 CUDA events 延迟同步；sync 保留旧全局同步计时；off 忽略 profiling。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "event uses CUDA events with deferred sync; sync keeps the legacy global-synchronization timing; off ignores profiling.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

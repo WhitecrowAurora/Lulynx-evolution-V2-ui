@@ -29,15 +29,13 @@
     "principle": "冻结源层保持原有能力不漂移，新增层从恒等起点学习增量容量；外围模块解冻用于适配新深度下的输入输出分布。",
     "intervention": "boogu/boogu_depth_expansion_runtime.py：apply_train_scope 按元数据设置 requires_grad 并输出 trainable_ratio。",
     "expectedImpact": "训练范围越大可塑性越强、成本与遗忘风险也越高。",
-    "tradeoffs": "new_layers 最省显存但容量增量有限；all 等价于扩层后全参微调。",
-    "codePath": "boogu/boogu_depth_expansion_runtime.py"
+    "tradeoffs": "new_layers 最省显存但容量增量有限；all 等价于扩层后全参微调。"
   },
   "advanced_en": {
     "principle": "Freezing source layers keeps original capability from drifting; new layers learn incremental capacity from an identity start; unfreezing periphery modules adapts input/output distributions to the new depth.",
     "intervention": "boogu/boogu_depth_expansion_runtime.py: apply_train_scope sets requires_grad from the metadata and reports trainable_ratio.",
     "expectedImpact": "Larger scopes are more mappable but cost more and carry higher forgetting risk.",
-    "tradeoffs": "new_layers is the most VRAM-friendly but limited in capacity gain; all equals full fine-tuning after expansion.",
-    "codePath": "boogu/boogu_depth_expansion_runtime.py"
+    "tradeoffs": "new_layers is the most VRAM-friendly but limited in capacity gain; all equals full fine-tuning after expansion."
   },
   "relatedConfigs": [
     "boogu_depth_expansion_enabled",

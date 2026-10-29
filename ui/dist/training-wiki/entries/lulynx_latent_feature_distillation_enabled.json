@@ -24,15 +24,13 @@
     "principle": "利用 DiT 中间层特征做可选归一化的加权 MSE，并可限制 sigma 窗口。它没有 LPIPS 的预训练视觉 backbone/感知距离语义，默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Uses DiT intermediate-layer features for a optionally-normalized weighted MSE, with an optional sigma window. It lacks LPIPS's pretrained visual backbone / perceptual-distance semantics. Off by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

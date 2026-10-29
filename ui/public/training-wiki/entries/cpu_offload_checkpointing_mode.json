@@ -31,15 +31,13 @@
     "principle": "梯度检查点与 CPU offload 结合模式：none=不结合；auto=自动选择；full=完整 offload。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "How gradient checkpointing combines with CPU offload: none = no combining; auto = chosen automatically; full = full offload.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -44,15 +44,13 @@
     "principle": "adapter_target_policy 有两种哲学：(1) coupled_prune——选择不重要的模块直接删除，保留的模块按重要性 score 分配 rank，节省显存。(2) orthogonal_redistribute——保留所有模块，只重新分配 rank（如 center_peak 给中间层更多 rank，ascending/descending 给特定方向更多）。fg_lora_rank_conserve_budget=True 确保总 rank 预算不变（纯重分配）。adapter_target_policy_fraction/top_k/min_score 控制模块选择。",
     "intervention": "LoRA 注入阶段根据 policy 决定哪些模块创建 adapter、每个模块的 rank。",
     "expectedImpact": "同等参数量下质量提升 5-15%。或同等质量下参数量减少 20-40%。",
-    "tradeoffs": "fg_lora_rank_profile 支持 center_peak/ascending/descending/flat。fg_lora_rank_min/max 控制每层 rank 范围。",
-    "codePath": "core/lulynx_trainer/fg_lora_rank_policy.py → per-layer rank allocation → adapter injection"
+    "tradeoffs": "fg_lora_rank_profile 支持 center_peak/ascending/descending/flat。fg_lora_rank_min/max 控制每层 rank 范围。"
   },
   "advanced_en": {
     "principle": "adapter_target_policy has two philosophies: (1) coupled_prune — directly drops unimportant modules and allocates rank to the kept ones by importance score, saving VRAM. (2) orthogonal_redistribute — keeps all modules and only reallocates rank (e.g. center_peak gives middle layers more rank, ascending/descending favor a particular direction). fg_lora_rank_conserve_budget=True keeps the total rank budget fixed (pure reallocation). adapter_target_policy_fraction/top_k/min_score control module selection.",
     "intervention": "At the LoRA injection stage, the policy decides which modules get adapters and each module's rank.",
     "expectedImpact": "5-15% quality improvement at equal parameter count, or 20-40% fewer parameters at equal quality.",
-    "tradeoffs": "fg_lora_rank_profile supports center_peak/ascending/descending/flat. fg_lora_rank_min/max bound each layer's rank.",
-    "codePath": "core/lulynx_trainer/fg_lora_rank_policy.py → per-layer rank allocation → adapter injection"
+    "tradeoffs": "fg_lora_rank_profile supports center_peak/ascending/descending/flat. fg_lora_rank_min/max bound each layer's rank."
   },
   "relatedConfigs": [
     "fg_lora_rank_policy",

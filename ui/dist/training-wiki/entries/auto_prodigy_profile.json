@@ -33,8 +33,7 @@
     "principle": "safe/balanced/aggressive 预设；custom 使用下方手填参数。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "safe/balanced/aggressive presets; custom uses the manually filled parameters below."

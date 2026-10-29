@@ -30,15 +30,13 @@
     "principle": "缓存训练把 VAE 编码前置，缩放策略在此刻固定了训练可见的图像几何。longest/shortest 是单档缩放的两种边界语义；freefit 按「恒定 token 预算」为同一图生成多个等效面积档位（等价方形换算），供 free-fit epoch 逐样本选档。",
     "intervention": "trainer_anima_cache_runtime.py：构建缓存时传 resize_mode 与 target_resolution（另有 anima_cache_resize_max_edge 在 shortest 模式下限制长边，0 时派生为 2×target）。",
     "expectedImpact": "决定训练时的有效分辨率分布，从而影响细节水平与显存；freefit 模式解锁多分辨率训练能力。",
-    "tradeoffs": "shortest 模式长边可能很大导致个别样本显存尖峰（用 max_edge 兜底）；缓存与训练配置强耦合，切模式需重建。",
-    "codePath": "trainer_anima_cache_runtime.py：resize_mode=anima_cache_resize_mode 传入缓存构建；configs_anima.py 定义与「恒定 token 预算」语义注释"
+    "tradeoffs": "shortest 模式长边可能很大导致个别样本显存尖峰（用 max_edge 兜底）；缓存与训练配置强耦合，切模式需重建。"
   },
   "advanced_en": {
     "principle": "Cached training fronts the VAE encode, so the resize policy fixes the image geometry training will see at that moment. longest/shortest are the two boundary semantics of single-profile scaling; freefit generates multiple equal-area profiles for the same image under a \"constant token budget\" (square-equivalent conversion) for the free-fit epoch to select per sample.",
     "intervention": "trainer_anima_cache_runtime.py: passes resize_mode and target_resolution when building the cache (anima_cache_resize_max_edge additionally caps the long edge in shortest mode, deriving 2×target when 0).",
     "expectedImpact": "Determines the effective resolution distribution during training, and thus detail level and VRAM; freefit unlocks multi-resolution training.",
-    "tradeoffs": "In shortest mode the long edge can become very large, causing per-sample VRAM spikes (use max_edge as the guard); the cache is strongly coupled to training config — switching modes requires a rebuild.",
-    "codePath": "trainer_anima_cache_runtime.py: resize_mode=anima_cache_resize_mode passed into cache build; defined in configs_anima.py with the \"constant token budget\" semantics note"
+    "tradeoffs": "In shortest mode the long edge can become very large, causing per-sample VRAM spikes (use max_edge as the guard); the cache is strongly coupled to training config — switching modes requires a rebuild."
   },
   "relatedConfigs": [
     "anima_cache_target_resolution",

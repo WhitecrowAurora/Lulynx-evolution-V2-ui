@@ -21,15 +21,13 @@
     "principle": "每个 micro-batch 的前后向 batch 大小。例如 batch=8 填 2，按 2+2+2+2 拆分",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Forward/backward batch size per micro-batch. E.g. with batch=8 fill in 2 to split as 2+2+2+2.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

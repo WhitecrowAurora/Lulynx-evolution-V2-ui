@@ -21,8 +21,7 @@
     "principle": "触发低分辨率反传的 sigma 阈值。仅 sigma > 该值的 timestep 会下采样。推荐 0.5（可调 0.1~0.9）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Sigma threshold that triggers low-resolution backward. Only timesteps with sigma above this value get downsampled. Recommended 0.5 (tunable 0.1~0.9)."

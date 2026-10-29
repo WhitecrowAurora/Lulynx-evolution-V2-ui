@@ -1,0 +1,28 @@
+{
+  "key": "flux3_block_offload_min_param_mb",
+  "title": "FLUX.3 Block Offload 最小参数量",
+  "title_en": "FLUX.3 Block Offload Minimum Size",
+  "category": "FLUX.3 / 显存",
+  "category_en": "FLUX.3 / VRAM",
+  "appliesTo": [
+    "flux3-lora",
+    "flux3-finetune"
+  ],
+  "standard": {
+    "summary": "低于该参数量的 block 不参与 CPU/GPU 换入。默认 50 MB。",
+    "effect": "设置 FLUX.3 block offload 的最小参数量阈值。",
+    "whenToUse": "通常保持默认；仅在小 block 的换入开销明显时调整。",
+    "avoidWhen": "不要为了省少量显存而频繁换入很小的 block。"
+  },
+  "standard_en": {
+    "summary": "Blocks below this parameter-size threshold are not transferred between CPU and GPU. Default: 50 MB.",
+    "effect": "Sets the minimum FLUX.3 block size eligible for offloading.",
+    "whenToUse": "Usually keep the default; adjust only when transfers of small blocks are a clear cost.",
+    "avoidWhen": "Avoid frequent transfers of tiny blocks to save only a small amount of VRAM."
+  },
+  "advanced": null,
+  "relatedConfigs": [
+    "flux3_block_residency",
+    "flux3_block_offload_ratio"
+  ]
+}

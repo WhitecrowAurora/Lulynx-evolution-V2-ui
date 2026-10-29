@@ -21,15 +21,13 @@
     "principle": "块间误差低于该阈值才复用缓存。阈值越松（越大）复用越多、越快，但漂移越大。该实现使用本地 relative-L1 probe，不能外推 SmoothCache 论文结果。默认 0.08。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Cache is reused only when the inter-block error is below this threshold. Looser (larger) thresholds reuse more and run faster, but drift more. This implementation uses a local relative-L1 probe and cannot be extrapolated to the SmoothCache paper's results. Default 0.08.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -31,15 +31,13 @@
     "principle": "强度作为权重函数的插值系数：weight(sigma) 在恒等 1 与完整 P2 曲线之间按 strength 插值，使加权效果可以连续调节并保证 0 点严格回到基线。",
     "intervention": "training_step_loss_execution_core.py 把 strength 传入 p2_weighting.p2_perception_weight；配置默认值与语义注释在 configs_dataset.py（strength=0 → 权重恒等 1）。",
     "expectedImpact": "小强度（0.25）温和倾斜、风险低；接近 1.0 时目标阶段梯度显著放大，loss 曲线形态明显改变。",
-    "tradeoffs": "与其它乘性 loss 加权（min-SNR、wavelet 调度）叠加时效果相乘，实际倾斜幅度会超出单项直觉，建议一次只调一项。",
-    "codePath": "configs_dataset.py:p2_weighting_strength 定义；training_step_loss_execution_core.py 传参给 p2_perception_weight"
+    "tradeoffs": "与其它乘性 loss 加权（min-SNR、wavelet 调度）叠加时效果相乘，实际倾斜幅度会超出单项直觉，建议一次只调一项。"
   },
   "advanced_en": {
     "principle": "Strength is the interpolation coefficient of the weight function: weight(sigma) interpolates between identity 1 and the full P2 curve according to strength, so the weighting effect is continuously adjustable and strength 0 returns exactly to the baseline.",
     "intervention": "training_step_loss_execution_core.py passes strength into p2_weighting.p2_perception_weight; the config default and semantic comments are in configs_dataset.py (strength=0 → weight is identity 1).",
     "expectedImpact": "A small strength (0.25) tilts gently with low risk; near 1.0 the target stage's gradients are amplified significantly and the loss curve shape changes noticeably.",
-    "tradeoffs": "When stacked with other multiplicative loss weightings (min-SNR, wavelet scheduling) the effects multiply, and the actual tilt can exceed per-item intuition; adjust one thing at a time.",
-    "codePath": "configs_dataset.py:p2_weighting_strength definition; training_step_loss_execution_core.py passes it to p2_perception_weight"
+    "tradeoffs": "When stacked with other multiplicative loss weightings (min-SNR, wavelet scheduling) the effects multiply, and the actual tilt can exceed per-item intuition; adjust one thing at a time."
   },
   "relatedConfigs": [
     "p2_weighting_mode",

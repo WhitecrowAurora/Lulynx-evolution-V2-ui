@@ -21,15 +21,13 @@
     "principle": "LoKr 同时训练模型中的归一化层可学习参数（如 LayerNorm/RMSNorm 的缩放/偏置），可增强特征尺度与风格适配；会小幅增加显存占用和 LoRA 文件大小，并增加过拟合风险，普通训练建议先关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Trains the learnable parameters of normalization layers (e.g. LayerNorm/RMSNorm scale/bias) alongside LoKr, which can improve feature-scale and style adaptation; it slightly increases VRAM usage and LoRA file size and raises overfitting risk — keep it off for ordinary training.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

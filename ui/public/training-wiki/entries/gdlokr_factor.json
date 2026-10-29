@@ -21,15 +21,13 @@
     "principle": "共享 Kronecker 因子 (0=自动平衡)。仅在适配器类型选 GDLoKr 时生效。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Shared Kronecker factor (0 = auto-balance). Only takes effect when the adapter type is GDLoKr.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

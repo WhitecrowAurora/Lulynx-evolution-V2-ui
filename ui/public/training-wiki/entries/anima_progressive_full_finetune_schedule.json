@@ -21,8 +21,7 @@
     "principle": "例：0:24-27,100:16-27,200:all。步号:block 范围。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Example: 0:24-27,100:16-27,200:all. Format is step:block-range."

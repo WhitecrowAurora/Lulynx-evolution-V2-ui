@@ -21,15 +21,13 @@
     "principle": "启动前探测当前运行时是否真的支持所选压缩后端。建议保持开启，这样可以明确确认 qfloat8 / torchao Float8 是否真实生效，避免出现“开了预设但实际没压缩”的假象。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Probes before launch whether the current runtime actually supports the selected compression backend. Recommended to keep on: it confirms explicitly whether qfloat8 / torchao Float8 is truly in effect, avoiding the illusion of \"preset enabled but nothing actually compressed\".",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

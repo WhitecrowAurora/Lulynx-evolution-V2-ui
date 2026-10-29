@@ -21,15 +21,13 @@
     "principle": "TRM 变换 rank (0/≤rank → 低秩 I+UVᵀ；≥in → dense T)。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "TRM transform rank (0/≤rank → low-rank I+UVᵀ; ≥in → dense T).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

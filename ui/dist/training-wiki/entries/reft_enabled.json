@@ -32,15 +32,13 @@
     "principle": "ReFT 在指定层的输出 h 上叠加干预：h' = h + R·(v - h)，其中 R 是低秩投影矩阵（rank × hidden_dim），v 是可训练干预向量。reft_rank 控制 R 的秩。这比 LoRA 参数更少（只学 R 和 v，不学 矩阵对）。",
     "intervention": "在指定模块的 forward hook 中叠加干预向量。",
     "expectedImpact": "参数量比 LoRA 少约 50%。效果取决于任务和 rank 选择。",
-    "tradeoffs": "reft_init_scale=0 时初始无效果（从零开始学）。",
-    "codePath": "core/lulynx/ → ReFT intervention layer → forward hook injection"
+    "tradeoffs": "reft_init_scale=0 时初始无效果（从零开始学）。"
   },
   "advanced_en": {
     "principle": "ReFT superimposes an intervention on the output h of specified layers: h' = h + R·(v - h), where R is a low-rank projection matrix (rank × hidden_dim) and v is a trainable intervention vector. reft_rank controls R's rank. It uses fewer parameters than LoRA (it learns only R and v, not the matrix pair).",
     "intervention": "Applies the intervention vector in forward hooks of the specified modules.",
     "expectedImpact": "About 50% fewer parameters than LoRA. Effectiveness depends on the task and rank choice.",
-    "tradeoffs": "With reft_init_scale=0 there is initially no effect (it learns from zero).",
-    "codePath": "core/lulynx/ → ReFT intervention layer → forward hook injection"
+    "tradeoffs": "With reft_init_scale=0 there is initially no effect (it learns from zero)."
   },
   "relatedConfigs": [
     "reft_target_modules",

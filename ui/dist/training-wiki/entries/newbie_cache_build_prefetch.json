@@ -21,15 +21,13 @@
     "principle": "首轮缓存构建时在 CPU 线程预解码下一批图像，与 GPU 编码重叠。仅批大小 > 1 时生效。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "During the first cache build, pre-decodes the next batch of images on CPU threads, overlapping with GPU encoding. Only effective when batch size > 1.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

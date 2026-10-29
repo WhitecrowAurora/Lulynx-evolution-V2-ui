@@ -21,15 +21,13 @@
     "principle": "预热步数，在此步数内 alpha/beta3 从初始值线性增大到目标值。0 = 无预热。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Warmup steps over which alpha/beta3 grow linearly from their initial values to the target values. 0 = no warmup.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -22,15 +22,13 @@
     "principle": "WebUI 字符串经 configs_validators 规范为 list[str]。",
     "intervention": "",
     "expectedImpact": "多模型 = 多下载与算力。",
-    "tradeoffs": "",
-    "codePath": "backend/core/configs_validators.py + preference_quality_integration.py"
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "WebUI strings are normalized to list[str] by configs_validators.",
     "intervention": "",
     "expectedImpact": "More models = more downloads and compute.",
-    "tradeoffs": "",
-    "codePath": "backend/core/configs_validators.py + preference_quality_integration.py"
+    "tradeoffs": ""
   },
   "relatedConfigs": [
     "preference_scoring_enabled"

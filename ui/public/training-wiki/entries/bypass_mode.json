@@ -21,8 +21,7 @@
     "principle": "仅保留兼容字段。当前 Anima DoRA 开启时会自动强制关闭；普通 Anima LoRA 默认也建议关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Compatibility field only. With current Anima DoRA enabled it is automatically forced off; plain Anima LoRA is also recommended to keep it off by default."

@@ -21,8 +21,7 @@
     "principle": "CPU 侧 pinned 缓冲。Windows 上可能抬高 shared GPU / 系统 RAM。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Pinned CPU-side buffers. On Windows this can raise shared GPU / system RAM usage."

@@ -34,15 +34,13 @@
     "principle": "将每个 caption 的标签分类为 trigger/style/quality/content/modifier 五种角色，每种角色有独立的丢弃概率。这比全局 dropout 更好——触发词应该始终保留（确保身份绑定），而质量标签经常丢弃（让模型不依赖质量标签生成高质量图像）。",
     "intervention": "训练建 dataset 时把六个 sc_* 速率传进 CaptionDataset；任一速率 > 0 才启用分桶 dropout，DataLoader 的 _process_caption 对分类后的标签按角色分别施加丢弃。",
     "expectedImpact": "在多概念训练中改善触发词绑定和 prompt 灵活性。",
-    "tradeoffs": "sc_locked_tags 指定不受 dropout 影响的标签列表。",
-    "codePath": "configs_dataset.py sc_* → trainer_model_prep_dataset_input.py _build_caption_dataset → dataset_loader.CaptionDataset(_smart_caption) → dataset_caption_policy.py apply_layered_tag_dropout() → smart_caption.SmartCaptionProcessor"
+    "tradeoffs": "sc_locked_tags 指定不受 dropout 影响的标签列表。"
   },
   "advanced_en": {
     "principle": "Classifies each caption's tags into five roles — trigger/style/quality/content/modifier — each with its own drop probability. This is better than global dropout: trigger words should always be kept (to secure identity binding), while quality tags are often dropped (so the model generates high-quality images without depending on quality tags).",
     "intervention": "At dataset build time the six sc_* rates are passed into CaptionDataset; bucketed dropout is enabled only when any rate > 0, and the DataLoader's _process_caption applies drops per role to the classified tags.",
     "expectedImpact": "Improves trigger binding and prompt flexibility in multi-concept training.",
-    "tradeoffs": "sc_locked_tags specifies a tag list exempt from dropout.",
-    "codePath": "configs_dataset.py sc_* → trainer_model_prep_dataset_input.py _build_caption_dataset → dataset_loader.CaptionDataset(_smart_caption) → dataset_caption_policy.py apply_layered_tag_dropout() → smart_caption.SmartCaptionProcessor"
+    "tradeoffs": "sc_locked_tags specifies a tag list exempt from dropout."
   },
   "relatedConfigs": [
     "sc_style_dropout",

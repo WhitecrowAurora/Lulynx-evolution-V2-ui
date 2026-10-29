@@ -32,15 +32,13 @@
     "principle": "对每个 LoRA 层的 矩阵做 SVD：A = U_A·S_A·V_A^T。分析指标包括：(1) 谱范数 σ_max；(2) 条件数 σ_max/σ_min；(3) 有效 rank = exp(entropy(σ²/||σ||²))；(4) stable rank = ||σ||²/σ_max²。这些指标反映 LoRA 学习到的子空间是否健康。",
     "intervention": "每 N 步在 optimizer.step 后提取 LoRA 权重，做 SVD 分析，写入审计日志。",
     "expectedImpact": "帮助诊断训练问题（如 rank collapse、过拟合）。不直接影响训练过程。",
-    "tradeoffs": "enable_dynamic_rank 与 SmartRank 联动——如果有效 rank 远低于 network_dim，自动降低 rank 节省计算。",
-    "codePath": "core/auditor/auditor.py:LoRAAuditor → periodic SVD analysis → audit report"
+    "tradeoffs": "enable_dynamic_rank 与 SmartRank 联动——如果有效 rank 远低于 network_dim，自动降低 rank 节省计算。"
   },
   "advanced_en": {
     "principle": "SVD on each LoRA layer's matrices: A = U_A·S_A·V_A^T. Metrics analyzed: (1) spectral norm σ_max; (2) condition number σ_max/σ_min; (3) effective rank = exp(entropy(σ²/||σ||²)); (4) stable rank = ||σ||²/σ_max². These reflect whether the LoRA's learned subspace is healthy.",
     "intervention": "Every N steps, extracts LoRA weights after optimizer.step, runs SVD analysis, and writes the audit log.",
     "expectedImpact": "Helps diagnose training problems (rank collapse, overfitting). Does not directly affect training.",
-    "tradeoffs": "enable_dynamic_rank links with SmartRank — if the effective rank is far below network_dim, rank is lowered automatically to save compute.",
-    "codePath": "core/auditor/auditor.py:LoRAAuditor → periodic SVD analysis → audit report"
+    "tradeoffs": "enable_dynamic_rank links with SmartRank — if the effective rank is far below network_dim, rank is lowered automatically to save compute."
   },
   "relatedConfigs": [
     "auditor_interval",

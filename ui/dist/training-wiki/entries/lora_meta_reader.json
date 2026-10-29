@@ -21,15 +21,13 @@
     "principle": "读取现有 LoRA 文件的训练参数元数据（network_dim、alpha、学习率、分辨率等），用于参考或复现训练配置。仅读取文件头部，不加载权重。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Reads the training-parameter metadata of an existing LoRA file (network_dim, alpha, learning rate, resolution, etc.) for reference or reproducing a training config. Reads only the file header, never loads weights.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

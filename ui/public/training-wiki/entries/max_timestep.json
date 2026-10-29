@@ -21,15 +21,13 @@
     "principle": "训练时采样的最大时间步（不包含）。例如细节修复 LoRA 可设置 300 只影响后期细节。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Maximum timestep sampled during training (exclusive). E.g. a detail-repair LoRA can set 300 to affect only late-stage details.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

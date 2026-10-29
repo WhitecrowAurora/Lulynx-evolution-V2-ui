@@ -21,15 +21,13 @@
     "principle": "默认关闭。开启后允许 Vortex 在低显存压力下收紧 prefetch/缓存策略；不会启用 active rematerialization。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Off by default. When on, Vortex may tighten prefetch/cache policies under low-VRAM pressure; it does not enable active rematerialization.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

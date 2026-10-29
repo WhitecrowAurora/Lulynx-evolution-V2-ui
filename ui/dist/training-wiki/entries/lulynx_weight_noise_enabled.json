@@ -21,15 +21,13 @@
     "principle": "每个 optimizer.step 后对可训练 LoRA/适配器参数加零均值高斯扰动（不碰底模）。默认关闭；小数据集抗过拟合/促 flat-minima 可试。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Adds zero-mean Gaussian perturbations to trainable LoRA/adapter parameters after each optimizer.step (the base model is untouched). Off by default; worth trying on small datasets for anti-overfitting / flat-minima encouragement.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

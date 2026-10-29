@@ -21,15 +21,13 @@
     "principle": "训练时重算 DiT block 以降低反传激活峰值。高分辨率非 resident 驻留会由后端自动启用；手动开启可让预检和配置更直观。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Recomputes DiT blocks during training to lower backward activation peaks. Enabled automatically by the backend for high-resolution non-resident residency; turning it on manually makes preflight and config more explicit.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

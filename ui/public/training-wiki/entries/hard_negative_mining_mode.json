@@ -29,15 +29,13 @@
     "principle": "topk=保留 top-k% 困难样本; threshold=保留 loss > threshold 的样本。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "topk = keep the top-k% hardest samples; threshold = keep samples with loss > threshold.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

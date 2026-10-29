@@ -33,15 +33,13 @@
     "principle": "gpu=训练安全点真实出 PNG（推荐）；cpu=只写 .cpu_preview.json 任务清单，当前不会生成图片；off=关闭",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "gpu = real PNG generation at training safe points (recommended); cpu = only writes a .cpu_preview.json task list, currently generates no images; off = disabled.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -47,15 +47,13 @@
     "principle": "DDP 每卡保留完整模型副本、只同步梯度；FSDP2（PyTorch fully_shard）把参数/梯度/优化器状态按 leaf module 分片到各卡，显存占用近似除以卡数，通信量增加。本实现 leaf 选择为「直接持有参数的子模块、深度优先、冻结优先」，包装前后校验参数可训练性不变、优化器参数集合一致。 fsdp2 的三个细项旋钮（fsdp_cpu_offload / fsdp_auto_wrap_policy / fsdp_state_dict_type）在 2026-09-05 之前声明了但零读点，现已各自接线；fsdp_version 只支持 2，填 1 会被拒绝而不是静默按 FSDP2 跑。",
     "intervention": "distributed_strategy.py:resolve_distributed_strategy 统一解析（queue 调度、资源预算、launch 决策共用）；distributed_runtime.py:build_distributed_runtime → _wrap_fsdp2/_wrap_ddp 在模型准备后包装；多进程策略仍由 torchrun 启动。",
     "expectedImpact": "ddp：吞吐近似线性扩展；fsdp2：单卡显存大幅下降、吞吐低于 DDP（通信换显存）。",
-    "tradeoffs": "fsdp2 与部分显存优化（block swap、模块 offload）机制重叠，不建议叠加；checkpoint 保存/恢复语义随策略变化，队列侧会把 strategy 元数据写入训练记录。",
-    "codePath": "distributed_strategy.py:resolve_distributed_strategy；distributed_runtime.py:_wrap_fsdp2（leaf-first fully_shard，任何失败都拒绝而不回退 DDP）；distributed_fsdp_policy.py（四个 fsdp_* 键的归一化）；configs_base.py 定义"
+    "tradeoffs": "fsdp2 与部分显存优化（block swap、模块 offload）机制重叠，不建议叠加；checkpoint 保存/恢复语义随策略变化，队列侧会把 strategy 元数据写入训练记录。"
   },
   "advanced_en": {
     "principle": "DDP keeps a full model replica per card and only syncs gradients; FSDP2 (PyTorch fully_shard) shards parameters/gradients/optimizer state across cards by leaf module, cutting VRAM roughly by the card count at the cost of more communication. This implementation's leaf selection is \"submodules that directly hold parameters, depth-first, frozen-first\", with pre/post-wrap validation that trainability and the optimizer parameter set are unchanged. FSDP2's three detail knobs (fsdp_cpu_offload / fsdp_auto_wrap_policy / fsdp_state_dict_type) were declared but had zero read points before 2026-09-05 — all now wired; fsdp_version only supports 2, and 1 is rejected rather than silently running as FSDP2.",
     "intervention": "distributed_strategy.py:resolve_distributed_strategy resolves uniformly (shared by queue scheduling, resource budgeting, and launch decisions); distributed_runtime.py:build_distributed_runtime → _wrap_fsdp2/_wrap_ddp wraps after model preparation; multi-process strategy is still launched by torchrun.",
     "expectedImpact": "ddp: throughput scales near-linearly; fsdp2: single-card VRAM drops substantially, throughput below DDP (communication for memory).",
-    "tradeoffs": "fsdp2 overlaps with some VRAM-optimization mechanisms (block swap, module offload) — avoid stacking; checkpoint save/restore semantics change with the strategy, and the queue side writes strategy metadata into the training record.",
-    "codePath": "distributed_strategy.py:resolve_distributed_strategy; distributed_runtime.py:_wrap_fsdp2 (leaf-first fully_shard, any failure rejects rather than falling back to DDP); distributed_fsdp_policy.py (normalization of the four fsdp_* keys); defined in configs_base.py"
+    "tradeoffs": "fsdp2 overlaps with some VRAM-optimization mechanisms (block swap, module offload) — avoid stacking; checkpoint save/restore semantics change with the strategy, and the queue side writes strategy metadata into the training record."
   },
   "relatedConfigs": [
     "enable_distributed_training",

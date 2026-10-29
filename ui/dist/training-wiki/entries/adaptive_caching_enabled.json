@@ -21,8 +21,7 @@
     "principle": "训练时按变化率智能跳过部分 block（Aircon）。默认关闭；与固定 DiT BlockSkip 互斥（BlockSkip 优先）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "During training, intelligently skips some blocks based on their change rate (Aircon). Off by default; mutually exclusive with fixed DiT BlockSkip (BlockSkip wins)."

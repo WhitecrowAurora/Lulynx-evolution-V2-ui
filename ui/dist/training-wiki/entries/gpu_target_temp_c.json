@@ -21,15 +21,13 @@
     "principle": "温度闭环：超过目标温度自动降低有效占空比，降温后自动恢复速度。留空关闭；与上方手动占空比同设时取更低者",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Temperature closed loop: above the target temperature the effective duty cycle is lowered automatically, and speed recovers once temperatures drop. Empty disables it; when set together with the manual duty cycle above, the lower of the two wins.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

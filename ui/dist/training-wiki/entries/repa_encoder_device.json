@@ -29,15 +29,13 @@
     "principle": "DINOv2/Jina 权重所在设备。cpu=不占 GPU（推荐）；cuda=大卡 opt-in。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Device holding the DINOv2/Jina weights. cpu = no GPU usage (recommended); cuda = opt-in on large cards.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

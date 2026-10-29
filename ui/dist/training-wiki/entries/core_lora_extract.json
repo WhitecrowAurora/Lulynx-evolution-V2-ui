@@ -21,15 +21,13 @@
     "principle": "从底模和微调模型的差分中提取 LoRA。大模型会比较慢，建议先小 rank 测试。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Extracts a LoRA from the difference between the base model and a fine-tuned model. Large models are slow; start with a small rank to test.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -31,15 +31,13 @@
     "principle": "让 PyTorch 优化器的 step 走 Triton 内核后端（非顶栏 TurboCore CUDA 路径）。off=原生 step；auto=支持则加速；force=强制（不支持则报错）。与顶栏 TurboCore CUDA 硬互斥：顶栏开时本项强制 off。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Routes the PyTorch optimizer's step through a Triton kernel backend (not the top-bar TurboCore CUDA path). off = native step; auto = accelerate when supported; force = force it (error if unsupported). Hard-mutually-exclusive with top-bar TurboCore CUDA: when the top bar is on, this is forced off.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

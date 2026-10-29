@@ -17,7 +17,9 @@ import { trainApi } from '@/api/trainApi'
 import { unwrap } from '@/api/transport'
 import { autofillEmptyModelPaths } from '@/lib/inventoryAutofill'
 import { submitTrainingDraft } from '@/lib/trainingSubmission'
+import type { ComparisonRequest } from '@/api/comparisonApi'
 import { applySavedConfigDraft } from '@/lib/savedConfigDraft'
+import { missingRequiredKeys, requiredKeysFor } from '@/lib/requiredFields'
 import {
   fetchRestorableLastTraining,
   isDraftNearDefault,
@@ -50,7 +52,6 @@ import './train.css'
 import { useI18n } from '@/i18n/useI18n'
 import { resolveTabLabel, resolveGroupLabel } from '@/i18n/schemaI18n'
 import { validateConfig } from '@/utils/configValidator'
-import { usePerfModeStore } from '@/stores/perfModeStore'
 
 configureTrainSchema({ createDefaultConfig, getFieldDefinition, normalizeDraftValue })
 
@@ -184,15 +185,6 @@ export default function TrainPage() {
 
   const typeId = useTrainConfigStore((s) => s.typeId)
   const diskHydrated = useTrainConfigStore((s) => s.diskHydrated)
-  const lulynxOpt = usePerfModeStore((s) => s.lulynxOptimization)
-  const turbocore = usePerfModeStore((s) => s.turbocore)
-  useEffect(() => {
-    const { applyValues, drafts, typeId: currentType } = useTrainConfigStore.getState()
-    const current = drafts[currentType] ?? {}
-    if (current.lulynx_optimization_enabled !== lulynxOpt || current.turbocore_enabled !== turbocore) {
-      applyValues({ lulynx_optimization_enabled: lulynxOpt, turbocore_enabled: turbocore })
-    }
-  }, [lulynxOpt, turbocore, typeId, diskHydrated])
   useDraftHydrateAndAutofill(typeId)
   const schemaRev = useTrainConfigStore((s) => s.schemaRev)
   const setType = useTrainConfigStore((s) => s.setType)
@@ -233,6 +225,24 @@ export default function TrainPage() {
 
   // P2: 配置冲突检测 + 自动修正
   const validation = useMemo(() => validateConfig(displayDraft), [displayDraft])
+
+  // 必填:打 `*` 常驻(让用户知道哪些是硬闸);红框另有门控 —— 见下方 invalidKeys。
+  const schemaKeys = useMemo(() => {
+    const keys = new Set<string>()
+    for (const s of getSectionsForType(typeId)) {
+      for (const f of s.fields) if (f.type !== 'hidden') keys.add(f.key)
+    }
+    return keys
+  }, [typeId, schemaRev])
+  const requiredKeys = useMemo(
+    () => requiredKeysFor(typeId, displayDraft, schemaKeys),
+    [typeId, displayDraft, schemaKeys],
+  )
+  const missingRequired = useMemo(
+    () => missingRequiredKeys(typeId, displayDraft, schemaKeys),
+    [typeId, displayDraft, schemaKeys],
+  )
+  const [submitAttempted, setSubmitAttempted] = useState(false)
 
   useEffect(() => {
     if (validation.autoFixes) {
@@ -279,6 +289,16 @@ export default function TrainPage() {
     markExplicit([key])
     setValue(key, raw)
   }, [managedKeys, markExplicit, setValue])
+
+  // 红框门控:用户亲手改过(哪怕改空了)的必填字段立刻变红,没碰过的不标记;
+  // 点过一次「开始训练」之后全部点亮。
+  const invalidKeys = useMemo(() => {
+    if (submitAttempted) return missingRequired
+    const explicit = explicitFieldsByType.current.get(typeId) ?? new Set<string>()
+    const out = new Set<string>()
+    for (const key of missingRequired) if (explicit.has(key)) out.add(key)
+    return out
+  }, [submitAttempted, missingRequired, typeId, explicitFields.size])
 
   const applySuggestedValues = useCallback((values: Record<string, unknown>) => {
     if (useTrainConfigStore.getState().typeId !== typeId) return
@@ -328,13 +348,14 @@ export default function TrainPage() {
     return buildRunConfig(state.drafts[state.typeId] ?? {}, state.typeId)
   }
 
-  const doIgnite = async () => {
+  const doIgnite = async (comparison?: ComparisonRequest) => {
     setIgniting(true)
     try {
       const submitted = await submitTrainingDraft(
         (message, name) => window.confirm(message || tt('train.outdir_exists', { name })),
         preflightBypassRef.current,
         modelCodeTrust.consume,
+        comparison,
       )
       if (!submitted) return
       const label = TRAINING_TYPES.find((t) => t.id === submitted.typeId)?.label ?? submitted.typeId
@@ -342,7 +363,8 @@ export default function TrainPage() {
       for (const notice of submitted.notices) {
         if (notice.kind !== 'info') toast.warn(notice.messages.join('；'), notice.title)
       }
-      navigate('monitor')
+      if (submitted.comparisonJobId) setShowPreflight(false)
+      navigate(submitted.comparisonJobId ? 'queue' : 'monitor')
     } catch (e) {
       toast.err((e as Error).message, tt('train.submit_fail'))
     } finally {
@@ -537,6 +559,8 @@ export default function TrainPage() {
               onApplySuggestions={applySuggestedValues}
               managedKeys={managedKeys}
               managedMessage={VRAM_PROFILE_MANAGED_MESSAGE}
+              requiredKeys={requiredKeys}
+              invalidKeys={invalidKeys}
             />
           ))}
           {search.trim() && !sections.some((s) => s.fields.some((f) => isFieldVisible(f, displayDraft))) ? (
@@ -614,6 +638,7 @@ export default function TrainPage() {
         open={showPreflight}
         onClose={() => setShowPreflight(false)}
         buildPayload={buildPayload}
+        onCompare={doIgnite}
         onReport={(report) => {
           const record = report?.dataset_validation_bypass
           preflightBypassRef.current =

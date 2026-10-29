@@ -32,15 +32,13 @@
     "principle": "每个优化步后执行 θ_ema = decay × θ_ema + (1-decay) × θ_t。ema_update_after_step 控制从第几步才开始累积，避免早期不稳定权重污染 EMA。",
     "intervention": "对所有可训练参数维护影子副本，不参与梯度计算。保存时将 ema 副本以 _ema 后缀或单独文件写出。",
     "expectedImpact": "推理质量更稳定；不影响训练速度，显存增加约等于一份参数大小。",
-    "tradeoffs": "EMA 权重滞后于真实权重，若训练末期需要快速适应某方向，EMA 可能不如最后一步权重激进。",
-    "codePath": "core/lulynx_trainer/training_loop.py → EMA 更新 hook → 保存时写出 ema state"
+    "tradeoffs": "EMA 权重滞后于真实权重，若训练末期需要快速适应某方向，EMA 可能不如最后一步权重激进。"
   },
   "advanced_en": {
     "principle": "After each optimizer step, θ_ema = decay × θ_ema + (1-decay) × θ_t. ema_update_after_step controls from which step accumulation begins, keeping early unstable weights from polluting the EMA.",
     "intervention": "Maintains shadow copies of all trainable parameters, excluded from gradient computation. On save, the EMA copy is written with an _ema suffix or as a separate file.",
     "expectedImpact": "More stable inference quality; no effect on training speed, VRAM grows by roughly one parameter set.",
-    "tradeoffs": "EMA weights lag the true weights; if the end of training needs rapid adaptation in some direction, EMA may be less aggressive than the final-step weights.",
-    "codePath": "core/lulynx_trainer/training_loop.py → EMA update hook → writes ema state on save"
+    "tradeoffs": "EMA weights lag the true weights; if the end of training needs rapid adaptation in some direction, EMA may be less aggressive than the final-step weights."
   },
   "relatedConfigs": [
     "ema_decay",

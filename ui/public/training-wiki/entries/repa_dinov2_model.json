@@ -21,15 +21,13 @@
     "principle": "provider=dinov2 时 torch.hub 模型名。默认 dinov2_vits14。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "torch.hub model name when provider=dinov2. Default dinov2_vits14.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

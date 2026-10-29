@@ -34,15 +34,13 @@
     "principle": "TurboCore 是一个优化的执行路径，可能包含：融合 kernel、自定义 CUDA 算子、异步数据管线等。turbocore_features 可以细粒度启用/禁用特定 TurboCore 特性。turbocore_strict=True 时在 TurboCore 不可用时直接失败而非回退。",
     "intervention": "entry_train.py 根据 execution_core 选择执行路径。",
     "expectedImpact": "turbo 在支持的硬件上可能提速 10-20%，但稳定性不如 standard。",
-    "tradeoffs": "turbocore_allow_fallback=True 在 turbo 不可用时自动回退到 standard。",
-    "codePath": "entry_train.py:execution_core dispatch → standard/turbo/auto"
+    "tradeoffs": "turbocore_allow_fallback=True 在 turbo 不可用时自动回退到 standard。"
   },
   "advanced_en": {
     "principle": "TurboCore is an optimized execution path that may include fused kernels, custom CUDA ops, and asynchronous data pipelines. turbocore_features can enable/disable specific TurboCore features finely. With turbocore_strict=True, TurboCore unavailability fails outright instead of falling back.",
     "intervention": "entry_train.py selects the execution path per execution_core.",
     "expectedImpact": "turbo may speed up 10-20% on supporting hardware but is less stable than standard.",
-    "tradeoffs": "turbocore_allow_fallback=True auto-falls back to standard when turbo is unavailable.",
-    "codePath": "entry_train.py:execution_core dispatch → standard/turbo/auto"
+    "tradeoffs": "turbocore_allow_fallback=True auto-falls back to standard when turbo is unavailable."
   },
   "relatedConfigs": [
     "turbocore_features",

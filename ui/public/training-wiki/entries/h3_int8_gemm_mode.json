@@ -29,15 +29,13 @@
     "principle": "INT8 GEMM 把冻结主干的权重（W8）与可选的激活（A8/A16）量化后用整数核计算：W8A8 快但激活量化误差大，W8A16 数值好且省激活显存但当前 kernel 慢；oracle 模式按层特征选择安全的组合。",
     "intervention": "minimax_h3/loader.py：normalize_int8_gemm_mode(config.h3_int8_gemm_mode) 后传入模型构建；configs_h3.py：取值集合校验。",
     "expectedImpact": "oracle：接近 BF16 的质量与最优速度；w8a16：-1.55GB reserved、约 -46% 吞吐（本机实测）。",
-    "tradeoffs": "量化 GEMM 的数值特征与 BF16 不同，切换模式后 loss 曲线不可直接对比。",
-    "codePath": "minimax_h3/loader.py：normalize_int8_gemm_mode + int8_gemm_mode 传参；configs_h3.py 校验"
+    "tradeoffs": "量化 GEMM 的数值特征与 BF16 不同，切换模式后 loss 曲线不可直接对比。"
   },
   "advanced_en": {
     "principle": "INT8 GEMM quantizes the frozen backbone's weights (W8) and optionally activations (A8/A16) for integer-kernel compute: W8A8 is fast but has large activation-quantization error; W8A16 has good numerics and saves activation VRAM but the current kernel is slow; oracle picks safe combinations per layer characteristics.",
     "intervention": "minimax_h3/loader.py: normalize_int8_gemm_mode(config.h3_int8_gemm_mode) then passed into model construction; configs_h3.py: value-set validation.",
     "expectedImpact": "oracle: near-BF16 quality with the best speed; w8a16: -1.55GB reserved, roughly -46% throughput (measured locally).",
-    "tradeoffs": "Quantized GEMM's numerical character differs from BF16 — loss curves are not directly comparable across modes.",
-    "codePath": "minimax_h3/loader.py: normalize_int8_gemm_mode + int8_gemm_mode passthrough; validated in configs_h3.py"
+    "tradeoffs": "Quantized GEMM's numerical character differs from BF16 — loss curves are not directly comparable across modes."
   },
   "relatedConfigs": [
     "h3_preserve_lora_master_dtype",

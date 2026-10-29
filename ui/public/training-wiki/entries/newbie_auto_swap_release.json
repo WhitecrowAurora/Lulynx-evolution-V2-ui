@@ -21,15 +21,13 @@
     "principle": "开启后会在显存占用持续偏低时逐步减少 blocks_to_swap，以回收一部分训练速度",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "When on, gradually reduces blocks_to_swap while VRAM usage stays low, reclaiming some training speed.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

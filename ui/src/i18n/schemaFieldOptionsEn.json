@@ -1,4 +1,6 @@
 {
+  "pcie_delta_cache_mode|cache_v0": "Enable Cache",
+  "pcie_delta_cache_mode|observe": "Observe Only (No Cache)",
   "anima_depth_expansion_train_scope|all": "Train All Layers",
   "anima_depth_expansion_train_scope|new_layers": "New Layers Only",
   "anima_depth_expansion_train_scope|new_layers_periphery": "New Layers + Periphery",

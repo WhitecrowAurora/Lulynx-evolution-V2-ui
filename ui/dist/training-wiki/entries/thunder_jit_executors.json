@@ -35,15 +35,13 @@
     "principle": "auto 自动选择；nvfuser / torchcompile / sdpa 用于对照或排障。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "auto selects automatically; nvfuser / torchcompile / sdpa are for comparison or troubleshooting.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

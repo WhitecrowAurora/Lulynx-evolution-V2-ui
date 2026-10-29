@@ -21,8 +21,7 @@
     "principle": "同时保留在 GPU 上的 block 数（当前 + 前/后向预取）。越大越快、越吃显存。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Number of blocks kept on the GPU at once (current + forward/backward prefetch). Larger is faster and more VRAM-hungry."

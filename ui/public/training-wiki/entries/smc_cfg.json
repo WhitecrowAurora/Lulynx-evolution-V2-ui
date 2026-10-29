@@ -30,15 +30,13 @@
     "principle": "在 conditional/unconditional velocity 合成处加入滑动模态校正。",
     "intervention": "GenerationRequest → Anima/Newbie sampler CFG combine。",
     "expectedImpact": "训练时间无变化；推理质量取决于 guidance 区间和模型族。",
-    "tradeoffs": "SDXL/SD1.5 输出空间兼容性未证明前不应宣称全路线支持。",
-    "codePath": "backend/core/lulynx_trainer/smc_cfg.py"
+    "tradeoffs": "SDXL/SD1.5 输出空间兼容性未证明前不应宣称全路线支持。"
   },
   "advanced_en": {
     "principle": "Adds sliding-mode correction where conditional/unconditional velocities are combined.",
     "intervention": "GenerationRequest → Anima/Newbie sampler CFG combine.",
     "expectedImpact": "No change to training time; inference quality depends on the guidance range and model family.",
-    "tradeoffs": "Do not claim full-route support until SDXL/SD1.5 output-space compatibility is proven.",
-    "codePath": "backend/core/lulynx_trainer/smc_cfg.py"
+    "tradeoffs": "Do not claim full-route support until SDXL/SD1.5 output-space compatibility is proven."
   },
   "relatedConfigs": [
     "smc_cfg",

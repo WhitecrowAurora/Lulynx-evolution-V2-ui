@@ -32,15 +32,13 @@
     "principle": "每步从 [flexrank_lora_rank_range_min, network_dim] 中随机采样一个 active_rank，只激活前 active_rank 个 LoRA 通道参与 forward/backward。训练完成后，checkpoint 中的任何前 k 行/列切片都是可用的 rank-k LoRA。",
     "intervention": "LoRA forward 时按 active_rank 切片 矩阵。backward 时只更新活跃通道的梯度。",
     "expectedImpact": "多 rank 兼容的便利性代价约 5-10% 质量（相比单一最优 rank 训练）。",
-    "tradeoffs": "flexrank_lora_rank_range_min 控制最小可用 rank。",
-    "codePath": "networks/flexrank_lora.py: random rank sampling per step → sliced forward/backward"
+    "tradeoffs": "flexrank_lora_rank_range_min 控制最小可用 rank。"
   },
   "advanced_en": {
     "principle": "Each step randomly samples an active_rank from [flexrank_lora_rank_range_min, network_dim] and only the first active_rank LoRA channels participate in forward/backward. After training, any first-k row/column slice of the checkpoint is a usable rank-k LoRA.",
     "intervention": "LoRA forward slices the matrices by active_rank; backward only updates the active channels' gradients.",
     "expectedImpact": "The convenience of multi-rank compatibility costs about 5-10% quality (versus training a single optimal rank).",
-    "tradeoffs": "flexrank_lora_rank_range_min sets the minimum usable rank.",
-    "codePath": "networks/flexrank_lora.py: random rank sampling per step → sliced forward/backward"
+    "tradeoffs": "flexrank_lora_rank_range_min sets the minimum usable rank."
   },
   "relatedConfigs": [
     "flexrank_lora_rank_range_min",

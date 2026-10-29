@@ -29,15 +29,13 @@
     "principle": "H3 Transformer 的 block 前向是顺序的，block 权重可以在使用前异步预取、用完立即释放，显存峰值从「全部 block」降为「常驻 + 少数在途 block」。与激活检查点的 unsloth 模式配合是因为反传需要按同样的调度重载权重。",
     "intervention": "trainer_prepare_mixin.py：model_arch=minimax_h3 时 config.blocks_to_swap = h3_blocks_to_swap、swap_granularity=block；minimax_h3/loader.py 把该值传入模型构建；configs_h3.py 校验与 checkpoint 模式的互斥关系。",
     "expectedImpact": "48 全交换时 16GB 卡可跑；吞吐受 PCIe 带宽影响，async 策略下传输大部分被计算掩盖。",
-    "tradeoffs": "交换数量与吞吐近似单调互换；与 h3_block_swap_strategy 联合决定实际重叠效率。",
-    "codePath": "trainer_prepare_mixin.py：h3_blocks_to_swap → blocks_to_swap/swap_granularity；minimax_h3/loader.py：blocks_to_swap 传参；configs_h3.py 校验"
+    "tradeoffs": "交换数量与吞吐近似单调互换；与 h3_block_swap_strategy 联合决定实际重叠效率。"
   },
   "advanced_en": {
     "principle": "H3 Transformer's block forward is sequential, so block weights can be prefetched asynchronously before use and released right after, dropping peak VRAM from \"all blocks\" to \"resident + a few in-flight blocks\". It pairs with unsloth-mode activation checkpointing because backward must reload weights on the same schedule.",
     "intervention": "trainer_prepare_mixin.py: when model_arch=minimax_h3, config.blocks_to_swap = h3_blocks_to_swap and swap_granularity=block; minimax_h3/loader.py passes the value into model construction; configs_h3.py validates the mutual exclusion with checkpoint mode.",
     "expectedImpact": "Full swap of 48 runs on a 16GB card; throughput depends on PCIe bandwidth, with most transfers hidden by compute under the async strategy.",
-    "tradeoffs": "Swap count and throughput trade off near-monotonically; the actual overlap efficiency is decided jointly with h3_block_swap_strategy.",
-    "codePath": "trainer_prepare_mixin.py: h3_blocks_to_swap → blocks_to_swap/swap_granularity; minimax_h3/loader.py: blocks_to_swap passthrough; validated in configs_h3.py"
+    "tradeoffs": "Swap count and throughput trade off near-monotonically; the actual overlap efficiency is decided jointly with h3_block_swap_strategy."
   },
   "relatedConfigs": [
     "h3_block_swap_strategy",

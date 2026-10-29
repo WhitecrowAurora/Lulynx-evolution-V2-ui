@@ -32,15 +32,13 @@
     "principle": "用文本池化向量预测 AdaLN 调制 delta,让 guidance 依赖 prompt 而非简单常量 bias;投影器零初始化 → 装上即恒等。",
     "intervention": "pooled text → PooledTextModulationProjector → 每站点 (shift_δ, scale_δ) 加到 AdaLN 输出(gate 原样) → 专用 distill loss(off=base / on 加 MSE+反传)蒸馏投影器 → 推理经 pooled-text context 复用同一发布路径。base 权重(llm_adapter/timestep_embed/adaln_modulation)零改动。",
     "expectedImpact": "默认关时不改变训练性能(bitwise parity);开启后增加少量投影计算并让 AdaLN 受 prompt 条件化。真机机制门已验证:85 个站点、投影器从 0 训起、distill 收敛、parity/remove 逐位、faithful 不降级。配色/身份美学质量仍是用户的活。",
-    "tradeoffs": "constant-bias 的 adaln_guidance 仍是独立 partial fallback,full 路由不静默替换它。蒸馏/引导质量需 curated 数据 + 真长训(操作员/用户判断)。",
-    "codePath": "backend/core/lulynx_trainer/modulation_guidance_reserve_seam.py + modulation_guidance_reconciliation.py"
+    "tradeoffs": "constant-bias 的 adaln_guidance 仍是独立 partial fallback,full 路由不静默替换它。蒸馏/引导质量需 curated 数据 + 真长训(操作员/用户判断)。"
   },
   "advanced_en": {
     "principle": "Uses the text pooled vector to predict AdaLN modulation deltas, making guidance depend on the prompt rather than a simple constant bias; the projector is zero-initialized → identity upon installation.",
     "intervention": "pooled text → PooledTextModulationProjector → per-site (shift_δ, scale_δ) added to AdaLN output (gate untouched) → dedicated distill loss (off = base / on adds MSE + backward) distills the projector → inference reuses the same release path via pooled-text context. Base weights (llm_adapter/timestep_embed/adaln_modulation) unchanged.",
     "expectedImpact": "Off by default, no change to training performance (bitwise parity); when on, adds a little projector compute and conditions AdaLN on the prompt. On-device mechanism gate verified: 85 sites, projector trained from zero, distillation converges, parity/remove bitwise, faithful not degraded. Color/identity aesthetic quality remains the user's job.",
-    "tradeoffs": "The constant-bias adaln_guidance remains an independent partial fallback; the full route does not silently replace it. Distillation/guidance quality needs curated data + real long runs (operator/user judgment).",
-    "codePath": "backend/core/lulynx_trainer/modulation_guidance_reserve_seam.py + modulation_guidance_reconciliation.py"
+    "tradeoffs": "The constant-bias adaln_guidance remains an independent partial fallback; the full route does not silently replace it. Distillation/guidance quality needs curated data + real long runs (operator/user judgment)."
   },
   "relatedConfigs": [
     "adaln_guidance",

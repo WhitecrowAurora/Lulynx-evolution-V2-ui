@@ -21,15 +21,13 @@
     "principle": "本地 jina-clip 目录或权重；空=尝试 models/newbie/clip_model。默认空。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Local jina-clip directory or weights; empty = tries models/newbie/clip_model. Empty by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -21,15 +21,13 @@
     "principle": "按最佳 EMA loss 的比例判断有效下降。默认 0.001 会过滤后期很小的训练 loss 抖动。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Judges meaningful improvement as a proportion of the best EMA loss. The default 0.001 filters out small late-training loss jitter.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

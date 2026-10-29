@@ -40,15 +40,13 @@
     "principle": "标准实现使用 ΔW=(W1a@W1b)⊙(W2a@W2b)·(alpha/rank)。简化实现使用 ΔW=(W2a⊙W2b)^T@(W1a⊙W1b)·(alpha/rank)。",
     "intervention": "仅在 network_module 为 LyCORIS 且 lycoris_algo=loha 时生效。",
     "expectedImpact": "标准实现提高与 LyCORIS、ComfyUI、Musubi 等生态的 checkpoint 兼容性；简化实现保持历史结果可继续训练。",
-    "tradeoffs": "两种实现不能静默互读。Lulynx 会依据 metadata 和 tensor shape 识别并拒绝不匹配的运行时。",
-    "codePath": "lycoris_loha.py → LyCORISConfig → LyCORISInjector → checkpoint identity contract"
+    "tradeoffs": "两种实现不能静默互读。Lulynx 会依据 metadata 和 tensor shape 识别并拒绝不匹配的运行时。"
   },
   "advanced_en": {
     "principle": "The standard implementation uses ΔW=(W1a@W1b)⊙(W2a@W2b)·(alpha/rank). The simplified implementation uses ΔW=(W2a⊙W2b)^T@(W1a⊙W1b)·(alpha/rank).",
     "intervention": "Only effective when network_module is LyCORIS and lycoris_algo=loha.",
     "expectedImpact": "The standard implementation improves checkpoint compatibility with the LyCORIS/ComfyUI/Musubi ecosystem; the simplified keeps historical results trainable and continuing.",
-    "tradeoffs": "The two implementations must not silently read each other. Lulynx identifies and rejects mismatched runtimes via metadata and tensor shape.",
-    "codePath": "lycoris_loha.py → LyCORISConfig → LyCORISInjector → checkpoint identity contract"
+    "tradeoffs": "The two implementations must not silently read each other. Lulynx identifies and rejects mismatched runtimes via metadata and tensor shape."
   },
   "relatedConfigs": [
     "network_module",

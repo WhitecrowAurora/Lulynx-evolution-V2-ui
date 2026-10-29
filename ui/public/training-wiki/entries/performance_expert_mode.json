@@ -21,15 +21,13 @@
     "principle": "启用高级性能选项（TurboCore 优化器加速、Native 优化器、窗口注意力等实验性功能）",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Enables advanced performance options (TurboCore optimizer acceleration, Native optimizer, window attention, and other experimental features).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

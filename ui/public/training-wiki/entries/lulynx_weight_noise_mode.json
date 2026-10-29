@@ -29,15 +29,13 @@
     "principle": "relative（默认）：σ 按参数 RMS 缩放，零初始化 up 层早期几乎不加噪；absolute：全局固定 σ。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "relative (default): σ scales with each parameter's RMS, so zero-initialized up layers get almost no noise early on; absolute: one global fixed σ.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

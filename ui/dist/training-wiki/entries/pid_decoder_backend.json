@@ -31,15 +31,13 @@
     "principle": "按 backbone 做 latent normalization，再用 PiD decoder 逐步输出像素结果。",
     "intervention": "Future decode backend selector → local checkpoint preflight → preview/generation/postprocess route。",
     "expectedImpact": "可能改善解码质量和放大结果；训练时间无直接影响。",
-    "tradeoffs": "源码许可证和权重许可证分开处理；未确认权重授权前不能自动启用。",
-    "codePath": "backend/core/lulynx_trainer/pid_decoder_backend.py"
+    "tradeoffs": "源码许可证和权重许可证分开处理；未确认权重授权前不能自动启用。"
   },
   "advanced_en": {
     "principle": "Performs latent normalization per backbone, then the PiD decoder outputs pixel results step by step.",
     "intervention": "Future decode backend selector → local checkpoint preflight → preview/generation/postprocess route.",
     "expectedImpact": "May improve decode quality and upscale results; no direct effect on training time.",
-    "tradeoffs": "Source license and weight license are handled separately; it cannot be auto-enabled until weight licensing is confirmed.",
-    "codePath": "backend/core/lulynx_trainer/pid_decoder_backend.py"
+    "tradeoffs": "Source license and weight license are handled separately; it cannot be auto-enabled until weight licensing is confirmed."
   },
   "relatedConfigs": [
     "decode_backend",

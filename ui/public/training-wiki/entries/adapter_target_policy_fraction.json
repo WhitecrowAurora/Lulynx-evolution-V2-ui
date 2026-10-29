@@ -21,8 +21,7 @@
     "principle": "保留多少比例的层（0.0-1.0）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Fraction of layers to keep (0.0-1.0)."

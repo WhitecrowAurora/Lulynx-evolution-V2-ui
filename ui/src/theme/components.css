@@ -225,4 +225,6 @@
 }
 .lx-page-title .line { display: block; overflow: hidden; padding-bottom: 0.05em; }
 .lx-page-title .ch { display: inline-block; will-change: transform; }
+/* 标题第二行的整行描框(原先由 Tailwind .outline 误触发,保留为正式样式) */
+.lx-page-title .line.is-outline { outline: 3px solid currentColor; }
 .lx-page-sub { color: var(--lx-dim); font-size: 13px; max-width: 640px; }

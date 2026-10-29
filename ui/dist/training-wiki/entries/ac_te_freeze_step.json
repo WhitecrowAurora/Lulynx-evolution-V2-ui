@@ -1,30 +1,30 @@
 {
   "key": "ac_te_freeze_step",
   "title": "TE 冻结步数",
-  "title_en": "TE Steps",
+  "title_en": "TE freeze step",
   "category": "训练 / 自动化",
   "category_en": "Training / Automation",
   "appliesTo": [
     "anima-lora"
   ],
   "standard": {
-    "summary": "在第几个优化步冻结文本编码器。需开启 ac_enable_auto_te_freeze 才生效。",
-    "effect": "在此步数后 TE 不再被优化器更新，后续步骤只训练 UNet/DiT 层。",
+    "summary": "大于 0 时，在优化步达到此步数后冻结文本编码器；0 表示关闭（不冻结）。需开启 ac_enable_auto_te_freeze 才生效。",
+    "effect": "冻结后 TE 参数不再更新，后续步骤只训练 UNet/DiT 层。实际触发点不会早于 ac_warmup_steps。",
     "whenToUse": "通常设为总步数的 40%~60%。如总步数 500，可设为 200~300。",
-    "avoidWhen": "设为 0 时等于立即冻结（从第 0 步就不训练 TE），相当于关闭 TE 训练。"
+    "avoidWhen": "需要全程训练 TE 时保持 0；设为 0 不会立即冻结。"
   },
   "standard_en": {
-    "summary": "The optimizer step at which the text encoder is frozen. Requires ac_enable_auto_te_freeze to take effect.",
-    "effect": "After this step the TE is no longer updated by the optimizer and only the UNet/DiT layers keep training.",
+    "summary": "When greater than 0, freezes the text encoder once the optimizer step reaches this value; 0 disables the freeze. Requires ac_enable_auto_te_freeze.",
+    "effect": "Frozen TE parameters stop updating and only the UNet/DiT layers keep training. The actual trigger never fires before ac_warmup_steps.",
     "whenToUse": "Usually 40% to 60% of the total steps. With 500 total steps, 200 to 300 is a good choice.",
-    "avoidWhen": "Setting it to 0 freezes immediately -- the TE is never trained, which is the same as turning TE training off."
+    "avoidWhen": "Keep 0 when the TE should train for the whole run; 0 does not freeze immediately."
   },
   "advanced": {
-    "principle": "step >= ac_te_freeze_step 时触发一次性冻结操作，之后每步跳过 TE backward。",
+    "principle": "step >= ac_te_freeze_step 且已过预热步数时触发一次性冻结：TE 参数 requires_grad=False，后续反向不再计算 TE 梯度。",
     "tradeoffs": "需要与 train_text_encoder 联动，确认 TE 确实在前半段被训练。"
   },
   "advanced_en": {
-    "principle": "At step >= ac_te_freeze_step a one-shot freeze fires; from then on the TE backward is skipped each step.",
+    "principle": "At step >= ac_te_freeze_step, after warmup, a one-shot freeze sets TE parameters requires_grad=False so later backward passes skip TE gradients.",
     "tradeoffs": "Must be coordinated with train_text_encoder — confirm the TE really is trained in the first phase."
   },
   "relatedConfigs": [

@@ -33,8 +33,7 @@
     "principle": "alternate 轮换；ratio 按比例；curriculum 课程；custom 自定义序列。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "alternate = rotate; ratio = by proportion; curriculum = staged; custom = custom sequence."

@@ -33,15 +33,13 @@
     "principle": "sidecar 压缩编码。lz4fast=速度优先（默认），zstd1=压缩率优先，raw=不压缩，fast-cache=组合。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Sidecar compression codec. lz4fast = speed-first (default); zstd1 = ratio-first; raw = no compression; fast-cache = combined.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

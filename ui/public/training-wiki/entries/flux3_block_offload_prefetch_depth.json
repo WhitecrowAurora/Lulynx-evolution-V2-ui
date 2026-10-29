@@ -1,0 +1,28 @@
+{
+  "key": "flux3_block_offload_prefetch_depth",
+  "title": "FLUX.3 Block Offload 预取深度",
+  "title_en": "FLUX.3 Block Offload Prefetch Depth",
+  "category": "FLUX.3 / 显存",
+  "category_en": "FLUX.3 / VRAM",
+  "appliesTo": [
+    "flux3-lora",
+    "flux3-finetune"
+  ],
+  "standard": {
+    "summary": "提前载入 GPU 的后续 Transformer block 数。默认 1。",
+    "effect": "控制 offload 预取后续 block 的深度。",
+    "whenToUse": "默认值适用于通常情况；只有在传输等待明显时再小幅增加。",
+    "avoidWhen": "显存余量不足时不要增加预取深度。"
+  },
+  "standard_en": {
+    "summary": "Number of upcoming Transformer blocks prefetched to the GPU. Default: 1.",
+    "effect": "Controls how far ahead block offload loads blocks onto the GPU.",
+    "whenToUse": "Keep the default for typical runs; increase slightly only when transfer stalls are evident.",
+    "avoidWhen": "Do not increase prefetch depth when VRAM headroom is insufficient."
+  },
+  "advanced": null,
+  "relatedConfigs": [
+    "flux3_block_residency",
+    "flux3_block_offload_gpu_slots"
+  ]
+}

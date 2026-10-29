@@ -21,15 +21,13 @@
     "principle": "Shampoo 因子的指数平均系数。-1 = 使用 beta2（默认）；如需单独设定，取值范围 -1 ~ 1。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Exponential-averaging coefficient for the Shampoo factors. -1 = use beta2 (default); to set it independently, range -1 ~ 1.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

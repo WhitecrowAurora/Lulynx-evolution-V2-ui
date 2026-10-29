@@ -34,15 +34,13 @@
     "principle": "NaN 检测：检查 loss tensor 是否包含 NaN/Inf。Loss spike：维护 loss 的滑动窗口均值和标准差，当前 loss > mean + threshold * std 时判定为 spike。LR 死锁：连续 N 步 lr < threshold 时判定为死锁。自动恢复：lr *= reduction_factor，或跳过当前 batch。so_enable_bad_sample_culling 将连续导致 NaN 的样本移到 quarantine_dir。",
     "intervention": "在 training_step 的 loss 计算后插入检查逻辑。检测到问题时：(1) 记录事件到 safeguard_events.jsonl；(2) 执行恢复动作；(3) 如果连续失败超过 max_nan_count 则 abort 训练。",
     "expectedImpact": "防止训练因 NaN/spike 而静默失败。不改善正常训练的质量，但在异常情况下挽救训练。",
-    "tradeoffs": "so_gradient_scan_mode 控制梯度检查的粒度：batched 最快，foreach 最精确，off 禁用。",
-    "codePath": "core/training_components/safe_guard.py:TrainingSafeGuard → per-step health check → auto recovery"
+    "tradeoffs": "so_gradient_scan_mode 控制梯度检查的粒度：batched 最快，foreach 最精确，off 禁用。"
   },
   "advanced_en": {
     "principle": "NaN detection: checks whether the loss tensor contains NaN/Inf. Loss spike: maintains a sliding-window mean and standard deviation of loss; the current loss > mean + threshold * std counts as a spike. LR deadlock: lr < threshold for N consecutive steps counts as a deadlock. Automatic recovery: lr *= reduction_factor, or skip the current batch. so_enable_bad_sample_culling moves samples that repeatedly cause NaN into quarantine_dir.",
     "intervention": "Inserts check logic after the loss computation in training_step. When a problem is detected: (1) record the event to safeguard_events.jsonl; (2) execute the recovery action; (3) if consecutive failures exceed max_nan_count, abort training.",
     "expectedImpact": "Prevents training from failing silently due to NaN/spikes. Does not improve normal training quality but rescues the run in abnormal situations.",
-    "tradeoffs": "so_gradient_scan_mode controls gradient-check granularity: batched is fastest, foreach most precise, off disables.",
-    "codePath": "core/training_components/safe_guard.py:TrainingSafeGuard → per-step health check → auto recovery"
+    "tradeoffs": "so_gradient_scan_mode controls gradient-check granularity: batched is fastest, foreach most precise, off disables."
   },
   "relatedConfigs": [
     "so_nan_check_interval",

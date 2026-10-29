@@ -30,15 +30,13 @@
     "principle": "ToMe 的合并数量 r = ratio × token 数；合并按 token 相似度贪心配对，加权平均后序列长度缩短，attention 复杂度从 O(N²) 降到 O((N-r)²)。",
     "intervention": "training_loop.py:_get_tome_seam 把 ratio 传入 build_tome_seam；tome_runtime.py 在模型前向作用域内应用。",
     "expectedImpact": "attention 耗时按 (1-ratio)² 量级下降；高分辨率（token 多）时绝对收益更大。",
-    "tradeoffs": "速度与质量单调互换；训练时合并、推理时不合并造成的训推差异随 ratio 增大。",
-    "codePath": "training_loop.py——build_tome_seam(enabled=True, ratio=float(tome_ratio))；tome_runtime.py"
+    "tradeoffs": "速度与质量单调互换；训练时合并、推理时不合并造成的训推差异随 ratio 增大。"
   },
   "advanced_en": {
     "principle": "ToMe's merge count r = ratio × token count; merging greedily pairs tokens by similarity and averages them weighted, shortening the sequence and dropping attention complexity from O(N²) to O((N-r)²).",
     "intervention": "training_loop.py:_get_tome_seam passes the ratio into build_tome_seam; tome_runtime.py applies it within the model forward scope.",
     "expectedImpact": "Attention time falls on the order of (1-ratio)²; the absolute benefit is larger at high resolution (many tokens).",
-    "tradeoffs": "Speed and quality trade off monotonically; the train/inference gap from merging during training but not inference grows with ratio.",
-    "codePath": "training_loop.py — build_tome_seam(enabled=True, ratio=float(tome_ratio)); tome_runtime.py"
+    "tradeoffs": "Speed and quality trade off monotonically; the train/inference gap from merging during training but not inference grows with ratio."
   },
   "relatedConfigs": [
     "tome_enabled",

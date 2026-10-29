@@ -30,15 +30,13 @@
     "principle": "LLLite 在 UNet 的多个层注入小型适配器，每个适配器接收条件图像的 embedding 并通过 MLP 注入到 UNet 的中间层。lllite_skip_input_blocks/skip_output_blocks 控制是否跳过 input/output block 的注入（减少参数量）。条件图像通过 CLIP image encoder 或自定义 encoder 编码后注入。",
     "intervention": "UNet forward 时在注入点将条件 embedding 通过 MLP 变换后叠加到特征图上。",
     "expectedImpact": "文件大小约 10-50MB（vs 完整 ControlNet 的 1.4GB）。",
-    "tradeoffs": "控制精度不如完整 ControlNet。",
-    "codePath": "core/lulynx/ → ControlNet-LLLite adapter → UNet layer injection"
+    "tradeoffs": "控制精度不如完整 ControlNet。"
   },
   "advanced_en": {
     "principle": "LLLite injects small adapters at several UNet layers; each adapter takes the conditioning image's embedding and injects it through an MLP into UNet intermediate layers. lllite_skip_input_blocks/skip_output_blocks control whether input/output block injection is skipped (fewer parameters). The conditioning image is encoded via a CLIP image encoder or a custom encoder before injection.",
     "intervention": "At UNet forward, the conditioning embedding is transformed through the MLP at injection points and added to feature maps.",
     "expectedImpact": "File size roughly 10-50MB (vs 1.4GB for a full ControlNet).",
-    "tradeoffs": "Control precision below a full ControlNet.",
-    "codePath": "core/lulynx/ → ControlNet-LLLite adapter → UNet layer injection"
+    "tradeoffs": "Control precision below a full ControlNet."
   },
   "relatedConfigs": [
     "lllite_mlp_dim",

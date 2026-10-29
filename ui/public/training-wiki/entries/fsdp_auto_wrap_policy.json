@@ -43,15 +43,13 @@
     "principle": "FSDP2 的分片粒度由「谁被 fully_shard 包过」决定：每个被包装的模块在前向前 all-gather 自己那份参数、用完立即释放。包装粒度细则峰值显存低、通信次数多；粗则相反。本实现的叶子选择是「直接持有参数的子模块，按深度优先、冻结优先」，size 在这份清单上再按直接参数量筛一次。",
     "intervention": "distributed_fsdp_policy.py:apply_fsdp2_wrap_policy 过滤 select_fsdp2_leaf_modules 的结果；阈值 SIZE_POLICY_MIN_DIRECT_PARAMS=100 万写死在该模块里，理由是再加一个旋钮就又是一个「声明了没人读」的键。",
     "expectedImpact": "size 在层很碎的模型上减少分片组数量、降低通信次数，峰值显存略升；none 峰值显存最高。三种取值都不改变数值结果，只改变显存与通信的分布。",
-    "tradeoffs": "阈值不可配置是刻意的。真要按模型调，改的应该是 select_fsdp2_leaf_modules 的选择规则，而不是再加一个前端旋钮。",
-    "codePath": "configs_base.py:fsdp_auto_wrap_policy 声明；distributed_runtime.py:select_fsdp2_leaf_modules 选叶子；distributed_fsdp_policy.py:apply_fsdp2_wrap_policy 按策略过滤；判据 fsdp2_shard_policy_contract_smoke.py"
+    "tradeoffs": "阈值不可配置是刻意的。真要按模型调，改的应该是 select_fsdp2_leaf_modules 的选择规则，而不是再加一个前端旋钮。"
   },
   "advanced_en": {
     "principle": "FSDP2's sharding granularity is decided by \"who got fully_shard-wrapped\": each wrapped module all-gathers its own shard of parameters before forward and releases it immediately after use. Finer wrapping means lower peak VRAM but more communication rounds; coarser is the opposite. This implementation's leaf selection is \"submodules that directly hold parameters, depth-first, frozen-first\", with size filtering the list once more by direct parameter count.",
     "intervention": "distributed_fsdp_policy.py:apply_fsdp2_wrap_policy filters select_fsdp2_leaf_modules' results; the threshold SIZE_POLICY_MIN_DIRECT_PARAMS = 1M is hard-coded in that module — the reasoning being that one more knob would just be another \"declared but never read\" key.",
     "expectedImpact": "size reduces shard-group count and communication rounds on models with many small layers at slightly higher peak VRAM; none has the highest peak. None of the three values changes numerical results — only the distribution of VRAM and communication.",
-    "tradeoffs": "The non-configurable threshold is deliberate. To tune per model, change select_fsdp2_leaf_modules' selection rules rather than adding another front-end knob.",
-    "codePath": "configs_base.py:fsdp_auto_wrap_policy declaration; distributed_runtime.py:select_fsdp2_leaf_modules leaf selection; distributed_fsdp_policy.py:apply_fsdp2_wrap_policy filters per policy; criterion fsdp2_shard_policy_contract_smoke.py"
+    "tradeoffs": "The non-configurable threshold is deliberate. To tune per model, change select_fsdp2_leaf_modules' selection rules rather than adding another front-end knob."
   },
   "relatedConfigs": [
     "distributed_strategy",

@@ -35,15 +35,13 @@
     "principle": "auto/caption 当前继续走 CaptionDataset；webdataset 会探测 Python 包与 tar shard ，但暂不替换训练主路径；dali 目前只做预留 profile。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "auto/caption currently keep using CaptionDataset; webdataset probes the Python package and tar shards but does not replace the main training path yet; dali is a reserved profile only.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

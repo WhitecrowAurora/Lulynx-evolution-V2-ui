@@ -34,15 +34,13 @@
     "principle": "每步从短/长 caption 中按比例选择一种作为当前 batch 的文本条件。可以理解为 caption 层面的 dropout——有时只给触发词（强化身份绑定），有时给完整描述（强化视觉属性学习）。",
     "intervention": "DataLoader 读取 JSON sidecar 时提取 short/long 字段，按比例选择。",
     "expectedImpact": "在同时需要精确触发和自然语言控制的场景下改善 5-10%。",
-    "tradeoffs": "与 caption_source_mix_enabled 互斥——两者都做多路 caption 采样。",
-    "codePath": "dataset/elements.py:dual_caption_loader() → select short/long by ratio"
+    "tradeoffs": "与 caption_source_mix_enabled 互斥——两者都做多路 caption 采样。"
   },
   "advanced_en": {
     "principle": "Each step picks one of short/long captions by ratio as the batch's text condition. Think of it as dropout at the caption level — sometimes only the trigger word (reinforcing identity binding), sometimes the full description (reinforcing visual-attribute learning).",
     "intervention": "The DataLoader extracts short/long fields when reading the JSON sidecar and selects by ratio.",
     "expectedImpact": "5-10% improvement in scenarios needing both precise triggering and natural-language control.",
-    "tradeoffs": "Mutually exclusive with caption_source_mix_enabled — both do multi-way caption sampling.",
-    "codePath": "dataset/elements.py:dual_caption_loader() → select short/long by ratio"
+    "tradeoffs": "Mutually exclusive with caption_source_mix_enabled — both do multi-way caption sampling."
   },
   "relatedConfigs": [
     "dual_caption_short_key",

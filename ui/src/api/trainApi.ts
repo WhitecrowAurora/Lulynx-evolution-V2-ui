@@ -42,8 +42,19 @@ export const trainApi = {
   trainingIntentPreview: (config: Record<string, unknown>, intent: string, explicitFields: string[]) =>
     postJson('/api/train/training-intent/preview', { config, intent, explicit_fields: explicitFields }),
 
+  trainingVisualization: (schemaId: string, config: Record<string, unknown>) =>
+    postJson('/api/train/config/resolve', {
+      schema_id: schemaId,
+      config,
+      include_trainer_config_preview: false,
+      include_training_visualization: true,
+    }),
+
   weightComposerPreview: (config: Record<string, unknown>, points = 65) =>
     postJson('/api/train/weight-composer/preview', { config, points }),
+
+  subsetTimestepPreview: (config: Record<string, unknown>, scanDataset = false, subsetSampleCounts: Record<string, number> = {}) =>
+    postJson('/api/train/subset-timestep/preview', { config, scan_dataset: scanDataset, subset_sample_counts: subsetSampleCounts }),
 
   startSampleDifficultyScoring: (payload: Record<string, unknown>) =>
     postJson('/api/train/sample-difficulty/score', payload),

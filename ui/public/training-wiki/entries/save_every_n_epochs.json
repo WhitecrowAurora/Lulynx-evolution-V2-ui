@@ -34,15 +34,13 @@
     "principle": "在每个 epoch 结束时（或每 N 步时）触发保存。mem_efficient_save 在保存前将 tensor 移到 CPU 以减少 GPU 显存峰值。save_n_epoch_ratio 根据总 epoch 数自动计算保存间隔。",
     "intervention": "training_loop 在 epoch end / step checkpoint 时调用 save_model。",
     "expectedImpact": "不影响训练质量。确保训练中断时不丢失过多进度。",
-    "tradeoffs": "checkpoint_keep_last 限制保留最近 N 个 checkpoint，自动删除旧的。save_model_as 控制保存格式（safetensors/ckpt/pt）。",
-    "codePath": "training_loop.py:save_model() → safetensors.torch.save_file / torch.save"
+    "tradeoffs": "checkpoint_keep_last 限制保留最近 N 个 checkpoint，自动删除旧的。save_model_as 控制保存格式（safetensors/ckpt/pt）。"
   },
   "advanced_en": {
     "principle": "Triggers a save at the end of each epoch (or every N steps). mem_efficient_save moves tensors to CPU before saving to reduce the GPU VRAM peak. save_n_epoch_ratio computes the save interval automatically from the total epoch count.",
     "intervention": "training_loop calls save_model at epoch end / step checkpoints.",
     "expectedImpact": "Does not affect training quality. Ensures an interruption does not lose too much progress.",
-    "tradeoffs": "checkpoint_keep_last keeps only the most recent N checkpoints and deletes older ones automatically. save_model_as controls the save format (safetensors/ckpt/pt).",
-    "codePath": "training_loop.py:save_model() → safetensors.torch.save_file / torch.save"
+    "tradeoffs": "checkpoint_keep_last keeps only the most recent N checkpoints and deletes older ones automatically. save_model_as controls the save format (safetensors/ckpt/pt)."
   },
   "relatedConfigs": [
     "save_every_n_steps",

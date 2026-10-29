@@ -21,15 +21,13 @@
     "principle": "Schedule-Free 内置预热步数（与外部 lr_warmup_steps 叠加）。推荐与 lr_warmup_steps 保持一致。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Schedule-Free's built-in warmup steps (stacks with external lr_warmup_steps). Recommended to match lr_warmup_steps.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

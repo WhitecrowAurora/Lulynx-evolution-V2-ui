@@ -32,15 +32,13 @@
     "principle": "classic 使用完整 DoRA 方向/幅度梯度；lulynx_stopgrad_dora 仅在归一化 row-norm 梯度上做 detached 近似，前向权重值保持一致。",
     "intervention": "在 LoRALinear 基础上增加 magnitude 参数和列归一化。dora_mode='full' 对所有目标层启用，'partial' 只对 attention 层启用。",
     "expectedImpact": "不要从论文质量数字外推到 lulynx 变体；应使用相同 seed、数据和步数做 A/B。",
-    "tradeoffs": "dora_wd（weight-decomposed）是 Anima UI 的别名。bypass_mode 已弃用。",
-    "codePath": "backend/core/lulynx/dora_layer.py 与 set_dora_layer.py"
+    "tradeoffs": "dora_wd（weight-decomposed）是 Anima UI 的别名。bypass_mode 已弃用。"
   },
   "advanced_en": {
     "principle": "classic uses full DoRA direction/magnitude gradients; lulynx_stopgrad_dora does a detached approximation only on the normalized row-norm gradient, with forward weight values kept identical.",
     "intervention": "Adds a magnitude parameter and column normalization on top of LoRALinear. dora_mode='full' enables on all target layers; 'partial' only on attention layers.",
     "expectedImpact": "Do not extrapolate paper quality numbers to the lulynx variant; A/B with the same seed, data, and step count instead.",
-    "tradeoffs": "dora_wd (weight-decomposed) is the Anima UI's alias. bypass_mode is deprecated.",
-    "codePath": "backend/core/lulynx/dora_layer.py and set_dora_layer.py"
+    "tradeoffs": "dora_wd (weight-decomposed) is the Anima UI's alias. bypass_mode is deprecated."
   },
   "relatedConfigs": [
     "network_dim",

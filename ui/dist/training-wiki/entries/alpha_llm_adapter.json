@@ -21,8 +21,7 @@
     "principle": "LLM Adapter 的 alpha。留空 = 用全局 Network Alpha。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Alpha for the LLM Adapter. Empty = use the global Network Alpha."

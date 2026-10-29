@@ -19,10 +19,15 @@ export interface ValidationMessage {
 /**
  * 验证训练配置，检测冲突和潜在问题
  */
+import { isNmCompileOffloadConflict } from '../features/nmQuantization.js'
+
 export function validateConfig(config: Record<string, any>): ValidationResult {
   const errors: ValidationMessage[] = []
   const warnings: ValidationMessage[] = []
   const autoFixes: Record<string, any> = {}
+  if (isNmCompileOffloadConflict(config)) {
+    errors.push({ message: 'N:M W4A16 + 2:4 下，Compile 与顺序 CPU Offload 不能同时开启，请关闭其中一项。', fields: ['execution_backend', 'enable_sequential_cpu_offload'] })
+  }
 
   // ========== 冲突 1: Gradient Release Full/Compatible vs TurboCore → 自动 fallback ==========
   const turbocoreEnabled = config.turbocore_enabled === true
@@ -164,7 +169,7 @@ export function validateConfig(config: Record<string, any>): ValidationResult {
     warnings.push({
       message:
         'Anima LoRA 短训练（< 800 步）建议启用以下优化：' +
-        '(1) 启用 lulynx_steady_accel_default=true（稳态加速）' +
+        '(1) 保持顶栏 TurboCore 与 Lulynx 优化开启' +
         '(2) 设置 gradient_accumulation_steps=2（提高稳定性）',
       fields: ['max_train_steps']
     })

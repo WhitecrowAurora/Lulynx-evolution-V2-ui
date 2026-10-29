@@ -33,15 +33,13 @@
     "principle": "phase 为默认训练生命周期策略；aggressive 面向 6GB 低显存目标；resident 保持兼容但显存占用更高；grouped 只让 CLIP-L 与 VAE 常驻，T5 仍每步搬运",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "phase is the default training-lifecycle strategy; aggressive targets 6GB low-VRAM setups; resident stays compatible but uses more VRAM; grouped keeps only CLIP-L and VAE resident, with T5 still moved every step.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

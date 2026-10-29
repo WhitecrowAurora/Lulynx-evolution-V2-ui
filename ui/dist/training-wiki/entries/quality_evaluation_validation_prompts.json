@@ -21,15 +21,13 @@
     "principle": "每行一个。无 preview_groups 时作为指标评估与 XY 的 Y 轴。建议同时配置预览测试组以获得更清晰的对照。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "One per line. Without preview_groups, serves metric evaluation and the XY grid's Y axis. Configure preview groups alongside for cleaner comparisons.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

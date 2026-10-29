@@ -33,15 +33,13 @@
     "principle": "对 pred 和 target 做 DWT 分解后，对 LL 子带用 pattern_loss_ll_type（如 l2），对 LH/HL/HH 子带用 pattern_loss_high_type（如 huber，对离群高频噪声更鲁棒）。pattern_loss_high_huber_c 控制高频 Huber 的转折点。",
     "intervention": "training_step 中替代或叠加 wavelet_loss。",
     "expectedImpact": "在高频有噪声（JPEG 压缩伪影、传感器噪声）的数据集上比纯 L2 高频 loss 更稳定。",
-    "tradeoffs": "pattern_loss_levels 控制 DWT 分解层数。",
-    "codePath": "training_loop.py:pattern_loss() → per-band loss with configurable functions"
+    "tradeoffs": "pattern_loss_levels 控制 DWT 分解层数。"
   },
   "advanced_en": {
     "principle": "After DWT decomposition of pred and target, the LL subband uses pattern_loss_ll_type (e.g. l2) and the LH/HL/HH subbands use pattern_loss_high_type (e.g. huber, more robust to outlier high-frequency noise). pattern_loss_high_huber_c controls the Huber knee of the high-frequency bands.",
     "intervention": "In training_step, replaces or stacks with wavelet_loss.",
     "expectedImpact": "On datasets with high-frequency noise (JPEG compression artifacts, sensor noise) it is more stable than a pure L2 high-frequency loss.",
-    "tradeoffs": "pattern_loss_levels controls the number of DWT decomposition levels.",
-    "codePath": "training_loop.py:pattern_loss() → per-band loss with configurable functions"
+    "tradeoffs": "pattern_loss_levels controls the number of DWT decomposition levels."
   },
   "relatedConfigs": [
     "pattern_loss_levels",

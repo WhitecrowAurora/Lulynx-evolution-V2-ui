@@ -30,15 +30,13 @@
     "principle": "双池 MoE-LoRA 使用两个 routing 分布生成 additive delta，并拒绝静态 merge。",
     "intervention": "Adapter primitive → future adapter registry → live routing loader。",
     "expectedImpact": "可能提升容量和细节分工，但推理端必须支持 live dual-pool routing。",
-    "tradeoffs": "文件和计算开销高于普通 LoRA，不能静默替换 hydralora。",
-    "codePath": "backend/core/lulynx_trainer/chimera_hydra.py"
+    "tradeoffs": "文件和计算开销高于普通 LoRA，不能静默替换 hydralora。"
   },
   "advanced_en": {
     "principle": "Dual-pool MoE-LoRA uses two routing distributions to generate an additive delta and refuses static merge.",
     "intervention": "Adapter primitive → future adapter registry → live routing loader.",
     "expectedImpact": "May improve capacity and detail division of labor, but the inference side must support live dual-pool routing.",
-    "tradeoffs": "File and compute overhead above ordinary LoRA; must not silently replace hydralora.",
-    "codePath": "backend/core/lulynx_trainer/chimera_hydra.py"
+    "tradeoffs": "File and compute overhead above ordinary LoRA; must not silently replace hydralora."
   },
   "relatedConfigs": [
     "chimera_hydra_enabled",

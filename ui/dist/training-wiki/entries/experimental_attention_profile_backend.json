@@ -33,15 +33,13 @@
     "principle": "auto 优先使用启动器/预检传入的 attention 参数；FlexAttention 需要 CUDA 与对应 PyTorch 支持。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "auto prefers the attention parameters passed in by the launcher/preflight; FlexAttention requires CUDA and matching PyTorch support.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

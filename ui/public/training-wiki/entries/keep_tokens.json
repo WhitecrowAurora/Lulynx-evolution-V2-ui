@@ -36,15 +36,13 @@
     "principle": "tokenize 后取前 keep_tokens 个 token 作为固定前缀，剩余 token shuffle 后拼接。keep_tokens_separator 只是输出时插入的标记，不是解析边界。caption_tag_mutate_scope=after_separator 时，head 已整段保护，keep_tokens 只作用于 tail 内部。",
     "intervention": "DataLoader __getitem__ → _process_caption：drop → (可选 scope 切分) → keep 前缀 + shuffle 后缀 → join。",
     "expectedImpact": "确保触发词始终在最显著的位置，增强触发词的绑定强度。",
-    "tradeoffs": "与 caption_source_mix_enabled 组合时，trigger-only 模式只保留触发词。",
-    "codePath": "dataset_loader.CaptionDataset._process_caption / _process_caption_scoped"
+    "tradeoffs": "与 caption_source_mix_enabled 组合时，trigger-only 模式只保留触发词。"
   },
   "advanced_en": {
     "principle": "After tokenization, the first keep_tokens tokens become the fixed prefix and the rest are shuffled and appended. keep_tokens_separator is only a marker inserted at output, not a parsing boundary. With caption_tag_mutate_scope=after_separator, the head is already protected wholesale and keep_tokens acts only within the tail.",
     "intervention": "DataLoader __getitem__ → _process_caption: drop → (optional scope split) → keep prefix + shuffle suffix → join.",
     "expectedImpact": "Keeps the trigger word in the most salient position, strengthening its binding.",
-    "tradeoffs": "Combined with caption_source_mix_enabled, trigger-only mode keeps only the trigger word.",
-    "codePath": "dataset_loader.CaptionDataset._process_caption / _process_caption_scoped"
+    "tradeoffs": "Combined with caption_source_mix_enabled, trigger-only mode keeps only the trigger word."
   },
   "relatedConfigs": [
     "shuffle_caption",

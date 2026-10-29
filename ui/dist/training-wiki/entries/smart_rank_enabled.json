@@ -21,15 +21,13 @@
     "principle": "按间隔在 [min,max] 内调整有效 rank。与「Lulynx 实验核心」里的 SmartRank keep_ratio 不同。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Adjusts the effective rank within [min,max] at intervals. Different from the SmartRank keep_ratio in the \"Lulynx experimental core\". Off by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -31,15 +31,13 @@
     "principle": "降低原生 DiT LoRA 反传激活峰值。auto 会在 Anima/Newbie 路线默认开启；off 主要用于 benchmark 对比。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Reduces native DiT LoRA backward activation peaks. auto is on by default on the Anima/Newbie routes; off is mainly for benchmark comparisons.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -33,15 +33,13 @@
     "principle": "在 forward 时 hook autograd save_for_backward，将大于阈值的激活张量异步复制到预分配的 CPU pinned memory pool，GPU 端释放。backward 时自动触发 CUDA→CPU→GPU 的来回搬运。pool_gb 控制 pinned memory 预分配量。min_tensor_mb 避免迁移太小的张量（开销不划算）。",
     "intervention": "save_for_backward hook → async CPU copy → GPU free → backward 时 copy back。",
     "expectedImpact": "GPU 激活内存减少 30-60%。PCIe 传输开销约 5-15%。",
-    "tradeoffs": "与 activation_compression_enabled 可以互补——先压缩再 offload。",
-    "codePath": "training_loop.py:activation_cpu_offload → pinned CPU pool → async copy → backward hook"
+    "tradeoffs": "与 activation_compression_enabled 可以互补——先压缩再 offload。"
   },
   "advanced_en": {
     "principle": "During forward, hooks autograd save_for_backward, asynchronously copying activation tensors larger than the threshold into a preallocated CPU pinned memory pool and freeing them on the GPU side. Backward automatically triggers the CUDA→CPU→GPU round trip. pool_gb controls the pinned-memory preallocation. min_tensor_mb avoids migrating tensors too small to be worth it.",
     "intervention": "save_for_backward hook → async CPU copy → GPU free → copy back on backward.",
     "expectedImpact": "GPU activation memory reduced 30-60%. PCIe transfer overhead roughly 5-15%.",
-    "tradeoffs": "Complements activation_compression_enabled — compress first, then offload.",
-    "codePath": "training_loop.py:activation_cpu_offload → pinned CPU pool → async copy → backward hook"
+    "tradeoffs": "Complements activation_compression_enabled — compress first, then offload."
   },
   "relatedConfigs": [
     "activation_cpu_offload_min_tensor_mb",

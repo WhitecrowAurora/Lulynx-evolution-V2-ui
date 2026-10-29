@@ -21,15 +21,13 @@
     "principle": "学习率自动增长上界（D-Adapt 步长估计允许每步最多增长多少倍）。推荐 inf（不限制）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Upper bound on automatic learning-rate growth (how many times the D-Adapt step-size estimate may grow per step at most). Recommended inf (unlimited).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

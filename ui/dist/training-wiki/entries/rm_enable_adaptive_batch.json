@@ -36,15 +36,13 @@
     "principle": "三级阈值管理：warning（0.85）→ 日志提醒；critical（0.92）→ 触发自动调整（降 batch/增 accumulation/激活 checkpoint）；emergency（0.97）→ 强制保护措施。rm_enable_peak_tracking 追踪显存峰值用于更准确的阈值判断。rm_enable_adaptive_cpu_offload 在 VRAM 超过阈值时自动激活 CPU offload。",
     "intervention": "每 N 步检查显存 → 阈值判断 → 触发对应级别的自适应调整。",
     "expectedImpact": "显著减少 OOM 崩溃。自动管理显存无需手动调参。",
-    "tradeoffs": "自适应调整会改变 effective batch size，可能影响收敛速度。",
-    "codePath": "core/resource_manager/ → VRAM monitor → threshold dispatch → adaptive batch/accumulation/offload"
+    "tradeoffs": "自适应调整会改变 effective batch size，可能影响收敛速度。"
   },
   "advanced_en": {
     "principle": "Three-level threshold management: warning (0.85) → log reminder; critical (0.92) → triggers automatic adjustments (lower batch / raise accumulation / enable checkpointing); emergency (0.97) → forced protective measures. rm_enable_peak_tracking tracks VRAM peaks for more accurate threshold judgment. rm_enable_adaptive_cpu_offload automatically activates CPU offload when VRAM exceeds the threshold.",
     "intervention": "Checks VRAM every N steps → threshold judgment → triggers the matching level of adaptive adjustment.",
     "expectedImpact": "Markedly fewer OOM crashes; VRAM is managed automatically with no manual tuning.",
-    "tradeoffs": "Adaptive adjustment changes the effective batch size, which can affect convergence speed.",
-    "codePath": "core/resource_manager/ → VRAM monitor → threshold dispatch → adaptive batch/accumulation/offload"
+    "tradeoffs": "Adaptive adjustment changes the effective batch size, which can affect convergence speed."
   },
   "relatedConfigs": [
     "rm_vram_warning_threshold",

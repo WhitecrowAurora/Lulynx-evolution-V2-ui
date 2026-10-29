@@ -21,15 +21,13 @@
     "principle": "每层被保留（不跳过）的概率。0.8 表示平均保留 80% 的层。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Probability that a layer is kept (not skipped). 0.8 means on average 80% of layers are kept.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

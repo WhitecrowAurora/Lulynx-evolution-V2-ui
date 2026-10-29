@@ -21,15 +21,13 @@
     "principle": "非 resident 时异步预取后续 DiT block 的 CPU-pinned 权重。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "When not resident, asynchronously prefetches CPU-pinned weights of upcoming DiT blocks. Off by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

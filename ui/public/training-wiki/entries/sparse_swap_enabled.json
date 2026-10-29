@@ -21,15 +21,13 @@
     "principle": "仅对 Streaming Offload 生效。把冷层分成 warm prefetch 与 cold on-demand，减少低端卡 PCIe 预取队列压力。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Only affects Streaming Offload. Splits cold layers into warm prefetch and cold on-demand, easing the PCIe prefetch-queue load on low-end cards. Off by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

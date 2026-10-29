@@ -21,15 +21,13 @@
     "principle": "训练前自动设置 PYTORCH_ALLOC_CONF=expandable_segments:True，缓解显存碎片导致的 OOM。一般对速度影响很小",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Automatically sets PYTORCH_ALLOC_CONF=expandable_segments:True before training to mitigate fragmentation-driven OOM. Usually has very little speed impact.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

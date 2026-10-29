@@ -21,15 +21,13 @@
     "principle": "按目标模块分别设置 LoRA alpha。每行「目标模块=alpha」（如 attention.qkv=16），或 JSON（如 {\"attention.qkv\": 16}）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Sets LoRA alpha per target module. One \"target module=alpha\" per line (e.g. attention.qkv=16), or JSON (e.g. {\"attention.qkv\": 16}).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

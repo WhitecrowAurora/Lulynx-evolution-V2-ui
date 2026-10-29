@@ -21,15 +21,13 @@
     "principle": "CPU 侧 pinned 缓冲，加速 H2D（真机吞吐关键）。Windows 上可能抬高 shared GPU / 系统 RAM；内存紧张可关。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "CPU-side pinned buffers that speed up H2D copies (key to real-machine throughput). On Windows this can raise shared GPU / system RAM; turn it off if memory is tight.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

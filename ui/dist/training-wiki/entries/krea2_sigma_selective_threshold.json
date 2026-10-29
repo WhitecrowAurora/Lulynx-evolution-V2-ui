@@ -21,15 +21,13 @@
     "principle": "sigma_selective 模式下的最低 sigma 值，范围 0-1，默认 0.5。值越大越聚焦高噪声（全局构图），值越小越覆盖细节。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Minimum sigma in sigma_selective mode, range 0-1, default 0.5. Higher values focus on high noise (global composition); lower values cover more detail.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

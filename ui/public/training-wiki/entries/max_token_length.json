@@ -31,15 +31,13 @@
     "principle": "CLIP 的单次前向最多处理 77 token（含 BOS/EOS）。Lulynx 将长文本分成多个 75-token chunk（不含 BOS/EOS），分别编码后拼接。max_token_length=225 表示最多 3 个 chunk。SDXL 使用两个 TE（CLIP-L + CLIP-G），拼接方式不同。",
     "intervention": "在 tokenize 后截断到 max_token_length，然后分段 encode。",
     "expectedImpact": "长 caption 场景下保留更多文本信息。对短 tag 无影响。",
-    "tradeoffs": "enable_fixed_token_padding 强制 pad 到固定长度，配合 torch.compile 的 static shape 需求。",
-    "codePath": "trainer.py:encode_prompt() → tokenize → chunk → encode → concat"
+    "tradeoffs": "enable_fixed_token_padding 强制 pad 到固定长度，配合 torch.compile 的 static shape 需求。"
   },
   "advanced_en": {
     "principle": "CLIP's single forward processes at most 77 tokens (incl. BOS/EOS). Lulynx splits long text into multiple 75-token chunks (excluding BOS/EOS), encoding each and concatenating. max_token_length=225 means at most 3 chunks. SDXL uses two TEs (CLIP-L + CLIP-G) with a different concatenation.",
     "intervention": "Truncates to max_token_length after tokenization, then encodes in segments.",
     "expectedImpact": "Preserves more text information for long captions. No effect on short tags.",
-    "tradeoffs": "enable_fixed_token_padding forces padding to a fixed length, meeting torch.compile's static-shape needs.",
-    "codePath": "trainer.py:encode_prompt() → tokenize → chunk → encode → concat"
+    "tradeoffs": "enable_fixed_token_padding forces padding to a fixed length, meeting torch.compile's static-shape needs."
   },
   "relatedConfigs": [
     "clip_skip",

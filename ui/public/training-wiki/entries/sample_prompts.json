@@ -21,15 +21,13 @@
     "principle": "后端 sample_prompts：每行一个；可与 positive_prompts / preview_groups 并存。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Backend sample_prompts: one per line; can coexist with positive_prompts / preview_groups.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -21,15 +21,13 @@
     "principle": "目标模块为空时按模型族自动选单层 mid。关且模块空 → fail-closed 不装 hook。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "When target modules are empty, automatically picks a single mid layer per model family. Off with empty modules → fail-closed, no hooks installed.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

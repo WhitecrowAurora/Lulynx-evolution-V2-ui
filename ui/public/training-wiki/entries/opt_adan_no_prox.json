@@ -21,15 +21,13 @@
     "principle": "禁用近端更新（weight decay 的处理方式）。通常保持默认 False。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Disables the proximal update (how weight decay is handled). Usually keep the default False.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

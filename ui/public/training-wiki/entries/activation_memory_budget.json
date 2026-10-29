@@ -31,15 +31,13 @@
     "principle": "AOT Autograd 的 min-cut partitioner 在「保存激活」与「反传重算」之间求最小割；budget<1.0 时给保存集合加上体积约束，优先重算重计算成本最低的中间量，是 PyTorch 官方认可的显存-速度连续调节杆。",
     "intervention": "runtime_optimizations_attention_plan.py 读取配置进 plan；runtime_optimizations_attention_apply.py 在 compile 生效前调用 dynamo_budget.apply_activation_memory_budget(budget, gradient_checkpointing=...)，越界（>1.0）忽略、与 grad-ckpt 冲突时记录跳过原因。",
     "expectedImpact": "预算越小显存越省、反传越慢；0.8 左右常能以个位数百分比的速度代价换取可观激活显存下降。",
-    "tradeoffs": "只作用于被 compile 的子图；与 unsloth/selective checkpoint 等其它激活管理机制不叠加使用更易归因。失败时降级为警告不阻塞编译。",
-    "codePath": "dynamo_budget.py:apply_activation_memory_budget（torch._functorch.config.activation_memory_budget）；runtime_optimizations_attention_apply.py 应用点；configs_performance.py 定义"
+    "tradeoffs": "只作用于被 compile 的子图；与 unsloth/selective checkpoint 等其它激活管理机制不叠加使用更易归因。失败时降级为警告不阻塞编译。"
   },
   "advanced_en": {
     "principle": "AOT Autograd's min-cut partitioner finds a minimum cut between \"save activation\" and \"recompute in backward\"; with budget<1.0 a size constraint is added to the save set, preferring to recompute intermediates with the lowest recompute cost — PyTorch's officially sanctioned VRAM-vs-speed continuum knob.",
     "intervention": "runtime_optimizations_attention_plan.py reads the config into the plan; runtime_optimizations_attention_apply.py calls dynamo_budget.apply_activation_memory_budget(budget, gradient_checkpointing=...) before compile takes effect — out-of-range (>1.0) values are ignored and conflicts with grad-ckpt are logged with the skip reason.",
     "expectedImpact": "Smaller budgets save more VRAM and slow backward; around 0.8 often trades a single-digit-percent speed cost for a substantial activation-VRAM drop.",
-    "tradeoffs": "Only acts on the compiled subgraph; avoid stacking with unsloth/selective checkpoint and other activation-management mechanisms for easier attribution. On failure it degrades to a warning without blocking compilation.",
-    "codePath": "dynamo_budget.py:apply_activation_memory_budget (torch._functorch.config.activation_memory_budget); applied in runtime_optimizations_attention_apply.py; defined in configs_performance.py"
+    "tradeoffs": "Only acts on the compiled subgraph; avoid stacking with unsloth/selective checkpoint and other activation-management mechanisms for easier attribution. On failure it degrades to a warning without blocking compilation."
   },
   "relatedConfigs": [
     "gradient_checkpointing",

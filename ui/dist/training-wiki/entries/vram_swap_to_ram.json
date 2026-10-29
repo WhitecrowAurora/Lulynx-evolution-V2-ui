@@ -21,15 +21,13 @@
     "principle": "让原生 LoRA / LoRA-FA / lulynx 渐进秩 LoRA / VeRA 适配器权重常驻 CPU RAM，前向时再按需拉回训练设备。更省显存，但通常更慢；暂不支持 LyCORIS、DeepSpeed、多进程、full_fp16/full_bf16 以及部分 8bit/paged 优化器",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Keeps native LoRA / LoRA-FA / lulynx progressive-rank LoRA / VeRA adapter weights resident in CPU RAM, pulling them back to the training device on demand during forward. Saves VRAM but is usually slower; not yet supported with LyCORIS, DeepSpeed, multi-process, full_fp16/full_bf16, or some 8bit/paged optimizers.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

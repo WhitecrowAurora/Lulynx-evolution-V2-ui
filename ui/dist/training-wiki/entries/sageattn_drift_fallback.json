@@ -31,15 +31,13 @@
     "principle": "量化漂移通常随训练分布变化渐进出现，一次超阈值往往预示后续持续劣化；自动回退把「发现问题→人工干预」的延迟压缩为零，代价是从此失去量化加速。",
     "intervention": "training_loop_init_core.py 把 fallback 策略传入 AttentionDriftMonitor；监视器在对比误差超 sageattn_drift_threshold 时执行对应动作。",
     "expectedImpact": "fallback_sdpa 触发后吞吐回落到 SDPA 水平，训练数值恢复全精度 attention 语义。",
-    "tradeoffs": "warn 模式下漂移持续存在可能积累训练偏差；fallback 模式误报（阈值过严）会白白丢掉加速。",
-    "codePath": "training_loop_init_core.py：AttentionDriftMonitor(threshold=sageattn_drift_threshold, fallback=sageattn_drift_fallback)；attention_drift_monitor.py"
+    "tradeoffs": "warn 模式下漂移持续存在可能积累训练偏差；fallback 模式误报（阈值过严）会白白丢掉加速。"
   },
   "advanced_en": {
     "principle": "Quantization drift usually appears gradually as the training distribution shifts, and one over-threshold event often predicts continued degradation; automatic fallback compresses the \"notice problem → manual intervention\" delay to zero, at the cost of losing the quantization speedup from then on.",
     "intervention": "training_loop_init_core.py passes the fallback strategy into AttentionDriftMonitor; the monitor executes the corresponding action when the comparison error exceeds sageattn_drift_threshold.",
     "expectedImpact": "After fallback_sdpa triggers, throughput falls back to SDPA levels and training numerics recover full-precision attention semantics.",
-    "tradeoffs": "In warn mode, persistent drift can accumulate training bias; in fallback mode, false positives (threshold too strict) throw away the speedup for nothing.",
-    "codePath": "training_loop_init_core.py: AttentionDriftMonitor(threshold=sageattn_drift_threshold, fallback=sageattn_drift_fallback); attention_drift_monitor.py"
+    "tradeoffs": "In warn mode, persistent drift can accumulate training bias; in fallback mode, false positives (threshold too strict) throw away the speedup for nothing."
   },
   "relatedConfigs": [
     "sageattn_drift_check_interval",

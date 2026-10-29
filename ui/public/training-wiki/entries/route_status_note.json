@@ -21,15 +21,13 @@
     "principle": "${familyName} 当前只是轻量选择入口，训练核心尚未深度接入；可以保存配置，暂不能直接启动训练。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "${familyName} is currently only a lightweight selection entry; the training core is not deeply wired in yet. Configs can be saved, but training cannot be launched directly from here yet.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

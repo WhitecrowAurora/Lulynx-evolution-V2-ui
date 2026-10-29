@@ -21,15 +21,13 @@
     "principle": "第一次真正算 REPA loss 时打 shape / pool / cuda_max_alloc。默认开。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Logs shape / pool / cuda_max_alloc the first time the REPA loss is actually computed. On by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

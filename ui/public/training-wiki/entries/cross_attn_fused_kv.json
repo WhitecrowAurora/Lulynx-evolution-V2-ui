@@ -21,15 +21,13 @@
     "principle": "启用 SDXL cross-attn 的 fused K/V projection 实验开关",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Experimental switch enabling fused K/V projection for SDXL cross-attention.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

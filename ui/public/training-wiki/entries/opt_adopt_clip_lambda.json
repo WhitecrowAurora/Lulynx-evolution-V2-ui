@@ -21,15 +21,13 @@
     "principle": "梯度裁剪系数 λ，防止早期步的梯度爆炸。推荐 0.1 ~ 1.0（默认 0.1）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Gradient clipping coefficient λ, guarding against early-step gradient explosion. Recommended 0.1 ~ 1.0 (default 0.1).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

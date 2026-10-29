@@ -21,15 +21,13 @@
     "principle": "Text embedding 分解为 V=V_rand+V_class 用于多概念定制，保留概念身份。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Decomposes the text embedding into V=V_rand+V_class for multi-concept customization while preserving concept identity. Off by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

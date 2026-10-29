@@ -21,15 +21,13 @@
     "principle": "限制 warm prefetch 的 FP16 等效预算。0 表示不额外限制，只按 Warm 比例。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Caps the FP16-equivalent budget for warm prefetch. 0 = no extra limit, governed by the warm ratio alone.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

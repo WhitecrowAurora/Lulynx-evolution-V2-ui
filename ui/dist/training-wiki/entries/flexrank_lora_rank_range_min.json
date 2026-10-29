@@ -21,15 +21,13 @@
     "principle": "FlexRank 每步随机采样激活 rank 的下界；最大 rank 仍使用 network_dim。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Lower bound of the rank FlexRand randomly samples and activates each step; the maximum rank still uses network_dim.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

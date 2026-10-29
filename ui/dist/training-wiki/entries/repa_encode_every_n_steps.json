@@ -21,15 +21,13 @@
     "principle": "每 N 步才 VAE decode + 编码器；中间步跳过 visual REPA（主 loss 仍训）。默认 4（16G 友好）；填 1=每步最真最贵。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "VAE decode + encoder run only every N steps; intermediate steps skip visual REPA (the main loss still trains). Default 4 (16G-friendly); 1 = every step, most faithful and most expensive.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

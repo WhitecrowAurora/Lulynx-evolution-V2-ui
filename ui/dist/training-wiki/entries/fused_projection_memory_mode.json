@@ -31,15 +31,13 @@
     "principle": "keep_original 最兼容；drop_original 会移除原始 Q/K/V 层以节省显存；materialize_on_save 训练中移除，state_dict 保存时从 fused 权重补回原始 key。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "keep_original is the most compatible; drop_original removes the original Q/K/V layers to save VRAM; materialize_on_save removes them during training and restores the original keys from the fused weights when the state_dict is saved.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

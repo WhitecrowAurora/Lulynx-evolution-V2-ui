@@ -30,15 +30,13 @@
     "principle": "TI 只优化 text encoder 的 embedding 层——为 placeholder token 学习一个 d 维向量（SD1.5: 768d，SDXL: 1280d）。ti_init_token 指定初始化来源（如用 'dog' 的嵌入初始化学习狗的概念）。ti_num_vectors > 1 时学习多个连续向量，表达能力更强但推理时需要输入 '<new1> <new2> ...'。",
     "intervention": "text encoder 前向传播时替换 placeholder token 的 embedding 为可训练向量。",
     "expectedImpact": "文件大小仅几 KB。推理时通过文本即可触发概念。",
-    "tradeoffs": "ti_num_vectors 增加会提升表达力但增加 prompt 长度。",
-    "codePath": "training_loop.py:TextualInversion → optimize embedding vector for placeholder token"
+    "tradeoffs": "ti_num_vectors 增加会提升表达力但增加 prompt 长度。"
   },
   "advanced_en": {
     "principle": "TI optimizes only the text encoder's embedding layer — it learns a d-dimensional vector for the placeholder token (SD1.5: 768d, SDXL: 1280d). ti_init_token specifies the initialization source (e.g. initialize with 'dog''s embedding to learn a dog concept). With ti_num_vectors > 1 it learns multiple consecutive vectors — more expressive, but inference requires inputting '<new1> <new2> ...'.",
     "intervention": "During the text encoder forward, the placeholder token's embedding is replaced with the trainable vectors.",
     "expectedImpact": "File size is only a few KB. The concept is triggered at inference purely via text.",
-    "tradeoffs": "Raising ti_num_vectors increases expressiveness but lengthens the prompt.",
-    "codePath": "training_loop.py:TextualInversion → optimize embedding vector for placeholder token"
+    "tradeoffs": "Raising ti_num_vectors increases expressiveness but lengthens the prompt."
   },
   "relatedConfigs": [
     "ti_init_token",

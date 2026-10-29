@@ -21,15 +21,13 @@
     "principle": "按指定比例合并多个 Stable Diffusion 模型。多个模型/比例用空格分隔。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Merges multiple Stable Diffusion models at specified ratios. Separate multiple model/ratio pairs with spaces.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

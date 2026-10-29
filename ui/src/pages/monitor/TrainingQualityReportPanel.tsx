@@ -224,7 +224,7 @@ export function TrainingQualityReportPanel({ runId, runStatus }: { runId: string
     try {
       const payload = unwrap<TrainingQualityReportPayload>(await monitorApi.qualityReport(normalized, controller.signal))
       if (payload.schema_id !== SCHEMA_ID || Number(payload.schema_version) !== 1) {
-        throw new Error('后端返回了不受支持的训练质量报告 schema')
+        throw new Error('训练质量报告格式不支持，请更新前端。')
       }
       if (requestId === requestRef.current) setReport(payload)
     } catch (reason) {

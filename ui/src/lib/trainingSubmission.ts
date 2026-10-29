@@ -6,13 +6,15 @@ import { flushTrainDraftsToDisk, useTrainConfigStore } from '@/stores/configStor
 import { addRunRecord } from '@/stores/historyStore'
 import { stripModelCodePermission, type ModelCodePermission } from '@/lib/modelCodePermission'
 import { buildRunOutcomeNotices, type RunOutcomeNotice } from '@/lib/runOutcomeNotices'
+import type { ComparisonRequest } from '@/api/comparisonApi'
 
 /** 一次点击只使用一个独立快照；后续编辑只影响下一次提交。 */
 export async function submitTrainingDraft(
   confirmOverwrite: (message: string, name: string) => boolean,
   bypass: Record<string, unknown> | null,
   consumeModelCodePermission?: () => ModelCodePermission,
-): Promise<{ typeId: string; notices: RunOutcomeNotice[] } | null> {
+  comparison?: ComparisonRequest,
+): Promise<{ typeId: string; notices: RunOutcomeNotice[]; comparisonJobId?: string } | null> {
   const state = useTrainConfigStore.getState()
   // Consume before the first await; retries and cancelled submissions need fresh consent.
   const permission = consumeModelCodePermission?.()
@@ -20,6 +22,7 @@ export async function submitTrainingDraft(
     typeId: state.typeId,
     config: stripModelCodePermission(state.drafts[state.typeId] ?? {}),
     bypass,
+    comparison,
   })
   const payload = stripModelCodePermission(structuredClone(buildRunConfig(snapshot.config, snapshot.typeId)))
   if (snapshot.typeId === 'aesthetic-scorer') {
@@ -29,6 +32,7 @@ export async function submitTrainingDraft(
   if (snapshot.bypass && snapshot.config.allow_unverified_dataset_start) {
     payload.dataset_validation_bypass = snapshot.bypass
   }
+  if (snapshot.comparison) payload.training_comparison_request = snapshot.comparison
   // flush 同步捕获当前全部草稿后才等待 I/O；失败仍由自动保存兜底。
   try {
     await flushTrainDraftsToDisk()
@@ -39,7 +43,8 @@ export async function submitTrainingDraft(
   const saveTo = String(payload.save_to ?? '')
   const name = String(payload.output_name ?? '')
   let overwriteAcknowledged = false
-  if ((dir || saveTo) && name) {
+  // Comparison children own fresh run directories; the source output is never overwritten.
+  if (!snapshot.comparison && (dir || saveTo) && name) {
     try {
       const conflict = unwrap<Record<string, unknown>>(
         await trainApi.checkOutputConflict(dir, name, {
@@ -56,7 +61,8 @@ export async function submitTrainingDraft(
     }
   }
   const request = overwriteAcknowledged ? { ...payload, output_collision_policy: 'overwrite' } : payload
-  const response = unwrap(await trainApi.run(request))
+  const response = unwrap<Record<string, unknown>>(await trainApi.run(request))
   addRunRecord(snapshot.typeId, snapshot.config, response)
-  return { typeId: snapshot.typeId, notices: buildRunOutcomeNotices(response) }
+  return { typeId: snapshot.typeId, notices: buildRunOutcomeNotices(response),
+    comparisonJobId: typeof response.comparison_job_id === 'string' ? response.comparison_job_id : undefined }
 }

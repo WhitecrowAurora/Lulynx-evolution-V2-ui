@@ -33,15 +33,13 @@
     "principle": "Vortex 动态分析模型各部分的显存使用模式（计算密集 vs 内存密集），自动决定哪些部分应该常驻 GPU、哪些应该流式交换。low_vram profile 更激进的交换，extreme profile 可能导致性能大幅下降但显存需求最低。",
     "intervention": "在训练循环中注入显存管理调度器，动态调整数据驻留策略。",
     "expectedImpact": "extreme profile 可将显存需求降低 40-60%，但速度损失 30-50%。",
-    "tradeoffs": "vortex_profile 选择决定显存/速度的权衡。",
-    "codePath": "core/vortex/ → memory usage pattern analysis → dynamic residency scheduling"
+    "tradeoffs": "vortex_profile 选择决定显存/速度的权衡。"
   },
   "advanced_en": {
     "principle": "Vortex dynamically analyzes each model part's VRAM usage pattern (compute-intensive vs memory-intensive) and automatically decides which parts should stay resident on GPU and which should be streamed/swapped. The low_vram profile swaps more aggressively; the extreme profile may hurt performance substantially but has the lowest VRAM requirement.",
     "intervention": "Injects a VRAM management scheduler into the training loop, dynamically adjusting data residency strategy.",
     "expectedImpact": "The extreme profile can lower VRAM needs by 40-60% at a 30-50% speed cost.",
-    "tradeoffs": "The vortex_profile choice is the VRAM/speed trade-off.",
-    "codePath": "core/vortex/ → memory usage pattern analysis → dynamic residency scheduling"
+    "tradeoffs": "The vortex_profile choice is the VRAM/speed trade-off."
   },
   "relatedConfigs": [
     "vortex_strategy",

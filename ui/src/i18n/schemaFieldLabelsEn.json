@@ -995,7 +995,7 @@
   "opt_ademamix_alpha": "AdEMAMix alpha",
   "opt_ademamix_beta3": "AdEMAMix beta3",
   "opt_ademamix_t_alpha_beta3": "AdEMAMix T_alpha_beta3",
-  "opt_adopt_clip_lambda": "ADOPT clip_lambda",
+  "opt_adopt_clip_lambda": "ADOPT clip λ (→ normalized_grad_clip)",
   "opt_adopt_eps": "ADOPT eps",
   "opt_came_eps_group": "CAME eps_group",
   "opt_came_eps_rho": "CAME eps_rho",
@@ -1041,9 +1041,9 @@
   "pcgrad_conflict_threshold": "PCGrad threshold",
   "pcgrad_enabled": "PCGrad",
   "pcgrad_reduction": "PCGrad",
-  "pcie_delta_cache_budget_mb": "PCIe Cache v0 budget in MB",
-  "pcie_delta_cache_enabled": "PCIe Delta/Cache candidate analysis",
-  "pcie_delta_cache_mode": "PCIe Delta/Cache mode",
+  "pcie_delta_cache_budget_mb": "Weight cache VRAM budget (MiB)",
+  "pcie_delta_cache_enabled": "Frozen weight GPU cache",
+  "pcie_delta_cache_mode": "Weight cache mode",
   "pcie_transfer_format": "PCIe transfer format",
   "peak_vram_auto_protection_enabled": "VRAMprotection",
   "peak_vram_control_enabled": "Enable VRAM",
@@ -1780,5 +1780,8 @@
   "parallel_backend": "Collective Backend",
   "tensor_parallel_degree": "Tensor-Parallel Degree",
   "allow_unverified_dataset_start": "Allow start without completed dataset validation (advanced)",
-  "subset_content_roles": "Material decoupling config"
+  "subset_content_roles": "Material decoupling config",
+  "faster_dit_snr_enabled": "FasterDiT SNR sampling",
+  "faster_dit_snr_sampling": "FasterDiT sampling mode",
+  "faster_dit_snr_bias_strength": "FasterDiT bias strength"
 }

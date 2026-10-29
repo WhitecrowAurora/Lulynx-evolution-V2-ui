@@ -21,15 +21,13 @@
     "principle": "训练时随机跳过部分 DiT block 以加速训练并提供正则化效果。预期加速 5-10%。仅适用于 DiT 架构（Anima/Flux）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Randomly skips some DiT blocks during training to speed it up and provide regularization. Expected 5-10% speedup. DiT architectures only (Anima/Flux).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

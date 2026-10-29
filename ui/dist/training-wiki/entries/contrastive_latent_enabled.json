@@ -21,15 +21,13 @@
     "principle": "对比学习风格的一致性损失：同一 clean latent 在不同噪声下的 x0 预测应该接近。简化模式 (noise_pairs=1) 无额外前向传播。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Contrastive-learning-style consistency loss: the x0 prediction for the same clean latent under different noise levels should stay close. Simplified mode (noise_pairs=1) adds no extra forward passes. Off by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-30",
+  "updatedAt": "2026-10-26",
   "title": "Lulynx Training Wiki",
   "description": "Shared help entries for WebUI option hints and the launcher learning center.",
   "entries": [
@@ -20,9 +20,9 @@
     },
     {
       "key": "ac_batch_size_step",
-      "title": "批量大小调整步长",
+      "title": "批量大小调整步长（预留）",
       "category": "训练 / 自动化",
-      "summary": "动态批量大小调整时每次增减的步长。默认 1。",
+      "summary": "预留字段，当前版本未实现动态批量大小。此值不会改变训练 batch，只保留配置兼容性。",
       "entry": "entries/ac_batch_size_step.json"
     },
     {
@@ -64,7 +64,7 @@
       "key": "ac_enable_auto_lr_adjustment",
       "title": "自动学习率调整（GSNR）",
       "category": "训练 / 自动化",
-      "summary": "根据梯度信噪比（GSNR）或目标 loss 自动调整学习率，追踪训练健康指标实现更精确的控制。",
+      "summary": "根据梯度信噪比（GSNR）自动调整学习率，追踪训练健康指标实现更精确的控制。",
       "entry": "entries/ac_enable_auto_lr_adjustment.json"
     },
     {
@@ -76,9 +76,9 @@
     },
     {
       "key": "ac_enable_dynamic_loss_scaling",
-      "title": "动态损失缩放",
+      "title": "动态损失缩放（预留）",
       "category": "训练 / 自动化",
-      "summary": "根据梯度范数动态调整 loss 的缩放系数，防止梯度爆炸或消失。",
+      "summary": "预留字段，当前版本未实现。开启它不会改变 loss 缩放或梯度行为，只保留配置兼容性。",
       "entry": "entries/ac_enable_dynamic_loss_scaling.json"
     },
     {
@@ -157,16 +157,16 @@
     },
     {
       "key": "ac_target_loss",
-      "title": "目标 Loss",
+      "title": "目标 Loss（收敛早停）",
       "category": "训练 / 自动化",
-      "summary": "期望达到的目标 loss 值。达到此值后 AutoController 可触发收敛相关策略。默认 0.0（不设目标）。",
+      "summary": "最近一个损失平台窗口（ac_loss_plateau_window）的平均 loss 小于等于此值时，AutoController 自动停止训练。默认 0.0（关闭）。与智能早停相互独立，但仍受预热步数约束。",
       "entry": "entries/ac_target_loss.json"
     },
     {
       "key": "ac_te_freeze_step",
       "title": "TE 冻结步数",
       "category": "训练 / 自动化",
-      "summary": "在第几个优化步冻结文本编码器。需开启 ac_enable_auto_te_freeze 才生效。",
+      "summary": "大于 0 时，在优化步达到此步数后冻结文本编码器；0 表示关闭（不冻结）。需开启 ac_enable_auto_te_freeze 才生效。",
       "entry": "entries/ac_te_freeze_step.json"
     },
     {
@@ -4406,6 +4406,55 @@
       "entry": "entries/flux2_model_version.json"
     },
     {
+      "key": "flux3_block_offload_gpu_slots",
+      "title": "FLUX.3 Block Offload GPU 槽位",
+      "category": "FLUX.3 / 显存",
+      "summary": "Block Offload 时同时驻留 GPU 的 Transformer block 数。默认 2。",
+      "entry": "entries/flux3_block_offload_gpu_slots.json"
+    },
+    {
+      "key": "flux3_block_offload_min_param_mb",
+      "title": "FLUX.3 Block Offload 最小参数量",
+      "category": "FLUX.3 / 显存",
+      "summary": "低于该参数量的 block 不参与 CPU/GPU 换入。默认 50 MB。",
+      "entry": "entries/flux3_block_offload_min_param_mb.json"
+    },
+    {
+      "key": "flux3_block_offload_pin_memory",
+      "title": "FLUX.3 Block Offload Pin Memory",
+      "category": "FLUX.3 / 显存",
+      "summary": "为 CPU 侧 offload 缓冲启用页锁定内存，默认关闭。",
+      "entry": "entries/flux3_block_offload_pin_memory.json"
+    },
+    {
+      "key": "flux3_block_offload_prefetch_depth",
+      "title": "FLUX.3 Block Offload 预取深度",
+      "category": "FLUX.3 / 显存",
+      "summary": "提前载入 GPU 的后续 Transformer block 数。默认 1。",
+      "entry": "entries/flux3_block_offload_prefetch_depth.json"
+    },
+    {
+      "key": "flux3_block_offload_ratio",
+      "title": "FLUX.3 Block Offload 比例",
+      "category": "FLUX.3 / 显存",
+      "summary": "设置参与 block offload 的比例，范围 0–100%，默认 100%。",
+      "entry": "entries/flux3_block_offload_ratio.json"
+    },
+    {
+      "key": "flux3_block_residency",
+      "title": "FLUX.3 Block 驻留策略",
+      "category": "FLUX.3 / 显存",
+      "summary": "resident=Transformer blocks 常驻 GPU；block_offload=按需在 CPU 与 GPU 间换入，默认使用 block_offload。",
+      "entry": "entries/flux3_block_residency.json"
+    },
+    {
+      "key": "flux3_max_text_length",
+      "title": "FLUX.3 最大文本长度",
+      "category": "FLUX.3 / 文本编码",
+      "summary": "限制 Qwen3-VL 文本条件的最大序列长度。修改后应重新构建文本缓存。",
+      "entry": "entries/flux3_max_text_length.json"
+    },
+    {
       "key": "flux_paths",
       "title": "FLUX 模型路径配置",
       "category": "FLUX / 路径",
@@ -8170,23 +8219,23 @@
     },
     {
       "key": "pcie_delta_cache_budget_mb",
-      "title": "PCIe Cache v0 预算 MB",
+      "title": "权重缓存显存预算（MiB）",
       "category": "速度 / 显存",
-      "summary": "GPU 缓存预算。",
+      "summary": "按 GPU 实际 dtype 和偏置大小计费的缓存额度。1 MiB = 1048576 字节。",
       "entry": "entries/pcie_delta_cache_budget_mb.json"
     },
     {
       "key": "pcie_delta_cache_enabled",
-      "title": "PCIe Delta / Cache",
-      "category": "PCIe / 缓存",
-      "summary": "分析哪些交换层适合缓存或复用，减少重复传输。",
+      "title": "冻结权重显存缓存",
+      "category": "速度 / 显存",
+      "summary": "默认关闭。在预算内把部分冻结权重保留在 GPU，减少重复 CPU→GPU 搬运；与 latent、图像和文本数据缓存独立。",
       "entry": "entries/pcie_delta_cache_enabled.json"
     },
     {
       "key": "pcie_delta_cache_mode",
-      "title": "PCIe Delta/Cache 模式（pcie_delta_cache_mode）",
-      "category": "训练参数",
-      "summary": "PCIe Delta/Cache 模式（pcie_delta_cache_mode）：下列可选值说明含换档影响。",
+      "title": "权重缓存工作方式",
+      "category": "速度 / 显存",
+      "summary": "启用缓存会复用 GPU 权重副本；仅观察只生成候选报告。",
       "entry": "entries/pcie_delta_cache_mode.json"
     },
     {
@@ -10432,6 +10481,13 @@
       "entry": "entries/subset_content_roles.json"
     },
     {
+      "key": "subset_timestep_offsets",
+      "title": "子集时间步偏移",
+      "category": "数据集 / 噪声分布",
+      "summary": "为训练数据集的每个子集单独设置噪声分布偏移。先选择数据集目录，再点击扫描数据集子集；根目录的子集 ID 为 .。",
+      "entry": "entries/subset_timestep_offsets.json"
+    },
+    {
       "key": "svd_check_interval",
       "title": "SVD 检查间隔",
       "category": "训练参数",
@@ -11169,7 +11225,7 @@
       "key": "triton_ops_enabled",
       "title": "Triton Ops (融合内核)",
       "category": "性能 / 内核",
-      "summary": "使用 Triton 编写的融合 CUDA 内核替代 PyTorch 原生操作，覆盖 LoRA 计算、QKV 投影和 AdaLN 调制，减少 kernel launch 开销。",
+      "summary": "按模型支持范围使用 Triton 融合 CUDA 内核，减少 LoRA 或注意力路径中的 kernel launch 开销。FLUX.3 LoRA 使用兼容 BF16 的融合 LoRA 前向与 Q/K/V 分支。",
       "entry": "entries/triton_ops_enabled.json"
     },
     {

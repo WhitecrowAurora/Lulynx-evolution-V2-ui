@@ -21,15 +21,13 @@
     "principle": "ADDifT / Multi-ADDifT 可按原图/目标图像素差自动生成 mask，减少无关区域干扰。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "ADDifT / Multi-ADDifT can auto-generate a mask from pixel differences between the original and target images, reducing interference from irrelevant regions.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

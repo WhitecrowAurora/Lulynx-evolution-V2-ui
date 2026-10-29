@@ -21,15 +21,13 @@
     "principle": "有 edit_mask 时用于提高或降低编辑区域 loss 权重。1.0 表示不额外改权重。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "When an edit_mask is present, raises or lowers the loss weight of the edited region. 1.0 means no extra weighting.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -8,6 +8,7 @@ const MonitorPage = lazy(() => import('@/pages/monitor/MonitorPage'))
 const QueuePage = lazy(() => import('@/pages/queue/QueuePage'))
 const ResourceCenterPage = lazy(() => import('@/pages/resources/ResourceCenterPage'))
 const GalleryPage = lazy(() => import('@/pages/gallery/GalleryPage'))
+const WorkbenchPage = lazy(() => import('@/pages/workbench/WorkbenchPage'))
 
 export function PageHost() {
   const route = useRouteStore((s) => s.route)
@@ -18,6 +19,7 @@ export function PageHost() {
       {route === 'monitor' && <MonitorPage />}
       {route === 'queue' && <QueuePage />}
       {route === 'resources' && <ResourceCenterPage />}
+      {route === 'workbench' && <WorkbenchPage />}
       {route === 'gallery' && <GalleryPage />}
     </Suspense>
   )

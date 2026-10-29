@@ -25,15 +25,13 @@
     "principle": "全局训练进度 rank schedule 的下限。仅在历史 network_module=networks.tlora / canonical lulynx progressive-rank mapping 时生效。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Lower bound of the global training-progress rank schedule. Only effective with legacy network_module=networks.tlora / the canonical lulynx progressive-rank mapping.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

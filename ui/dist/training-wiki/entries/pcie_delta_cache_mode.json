@@ -1,32 +1,60 @@
 {
   "key": "pcie_delta_cache_mode",
-  "title": "PCIe Delta/Cache 模式（pcie_delta_cache_mode）",
-  "title_en": "PCIe Delta/Cache mode",
-  "category": "训练参数",
-  "category_en": "Training Parameters",
+  "title": "权重缓存工作方式",
+  "title_en": "Weight cache mode",
+  "category": "速度 / 显存",
+  "category_en": "Speed / VRAM",
   "appliesTo": [
-    "all"
+    "moss-image-lora",
+    "krea2-lora",
+    "flux-lora",
+    "flux2-lora",
+    "flux3-lora",
+    "qwen-image-lora",
+    "qwen-image-2-lora",
+    "zimage-lora",
+    "wan22-ti2v-lora",
+    "wan22-t2v-a14b-lora",
+    "ltx23-lora",
+    "ltx25-lora",
+    "boogu-lora",
+    "boogu-edit-lora",
+    "minimax-h3-lora",
+    "sd-lora",
+    "sdxl-lora",
+    "anima-lora",
+    "newbie-lora"
   ],
   "standard": {
-    "summary": "PCIe Delta/Cache 模式（pcie_delta_cache_mode）：下列可选值说明含换档影响。",
-    "effect": "不同枚举会改变算法目标、资源占用或导出兼容性。",
-    "whenToUse": "先默认，再按显存/质量/兼容目标换档。",
-    "avoidWhen": "未做短测对照前不要同时叠多个激进实验档。",
+    "summary": "启用缓存会复用 GPU 权重副本；仅观察只生成候选报告。",
+    "effect": "只改变权重驻留和搬运，不改变训练目标或导出格式。",
+    "whenToUse": "要减少搬运请选择启用缓存；要查看候选而不占缓存显存请选择仅观察。",
+    "avoidWhen": "全 GPU 驻留时没有重复权重搬运可节约。",
     "optionDescriptions": {
-      "observe": "只看信号，不改缓存语义。",
-      "cache_v0": "开 v0 缓存实验。"
+      "observe": "仅观察，不建立手动缓存。",
+      "cache_v0": "启用预算内的冻结权重缓存。"
     }
   },
   "standard_en": {
-    "summary": "The PCIe Delta/Cache mode (pcie_delta_cache_mode): the values below include what changing gear does.",
-    "effect": "Different enum values change the algorithm's target, its resource use, or export compatibility.",
-    "whenToUse": "Start on the default, then change gear according to your VRAM, quality or compatibility goal.",
-    "avoidWhen": "Do not stack several aggressive experimental gears before running a short controlled test.",
+    "summary": "Cache mode reuses GPU weight copies; observe mode only reports candidates.",
+    "effect": "Changes residency and transfers, without changing the training objective or export format.",
+    "whenToUse": "Choose cache mode to reduce copies, or observe to inspect candidates without allocating a manual cache.",
+    "avoidWhen": "Fully resident weights have no repeated offload transfers to avoid.",
     "optionDescriptions": {
-      "observe": "Watches the signals only, without changing cache semantics.",
-      "cache_v0": "Turns the v0 cache experiment on."
+      "observe": "Observe only; allocate no manual cache.",
+      "cache_v0": "Enable budgeted frozen-weight caching."
     }
   },
-  "advanced": {},
-  "relatedConfigs": []
+  "advanced": {
+    "principle": "MOSS、Krea2 等分块卸载复用同一控制器；Krea2 支持逐层缓存，传统 swap 支持冻结 Linear/Conv2d。新接线仅选择普通 FP16/BF16/FP32 冻结参数；特殊量化格式继续原卸载。Anima、Newbie 和 Native SDXL 保留已有缓存路径。",
+    "tradeoffs": "当前按显式预算静态选择，不是动态 I/O 预测。运行报告包含实际缓存量、选中层和命中次数。"
+  },
+  "relatedConfigs": [
+    "pcie_delta_cache_enabled",
+    "pcie_delta_cache_budget_mb"
+  ],
+  "advanced_en": {
+    "principle": "Shared block offload, Krea2 layer offload and traditional Linear/Conv2d swap use the same planner. New adapters select plain frozen FP16/BF16/FP32 parameters; specialized quantized formats keep their existing path. Anima, Newbie and native SDXL retain their existing caches.",
+    "tradeoffs": "Selection is static within the explicit budget, not dynamic I/O prediction. Runtime reports include actual bytes, selected layers and hits."
+  }
 }

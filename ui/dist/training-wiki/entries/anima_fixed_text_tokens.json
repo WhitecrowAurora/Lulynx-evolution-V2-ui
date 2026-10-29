@@ -21,8 +21,7 @@
     "principle": "0 = 动态批内 padding（默认）；>0 = 固定长度（如 512）。固定长度可加速编译优化路径，但会增加 padding 开销。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "0 = dynamic in-batch padding (default); >0 = fixed length (e.g. 512). Fixed length speeds up the compile-optimized path but adds padding overhead."

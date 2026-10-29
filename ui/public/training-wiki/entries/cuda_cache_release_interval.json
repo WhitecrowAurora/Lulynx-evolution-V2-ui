@@ -21,15 +21,13 @@
     "principle": "每 N 个优化 step 允许一次缓存释放。1 最省显存；2~10 可减少同步频率，适合显存略紧但想保留速度时尝试。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Allows one cache release every N optimizer steps. 1 saves the most VRAM; 2~10 reduces sync frequency — worth trying when VRAM is a bit tight but you want to keep speed.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

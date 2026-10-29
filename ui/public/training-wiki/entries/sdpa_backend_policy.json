@@ -32,15 +32,13 @@
     "principle": "PyTorch scaled_dot_product_attention 内部有多个实现（FlashAttention-2、memory-efficient/cutlass、cuDNN、math），默认按启发式挑选。固定 kernel 可换取可复现的性能与数值特征——不同 kernel 的浮点归约顺序不同，位级结果不同。",
     "intervention": "runtime_optimizations_attention_plan.py 归一化取值进 RuntimeOptimizationPlan；runtime_optimizations_attention_apply.py 在前向作用域用对应的 sdpa_kernel 上下文限定后端；Apple MPS 运行时被强制为 math。",
     "expectedImpact": "kernel 之间吞吐差异可达 10%~30%（依 shape 与硬件）；对训练质量无影响，只有位级数值差异。",
-    "tradeoffs": "固定 kernel 后若该 kernel 不支持当前 shape/dtype 会报错而不是静默回退；auto 最稳但性能不保证最优。",
-    "codePath": "runtime_optimizations_attention_plan.py:_normalize_sdpa_backend_policy；runtime_optimizations_attention_apply.py 应用 sdpa kernel 上下文；configs_performance.py 定义"
+    "tradeoffs": "固定 kernel 后若该 kernel 不支持当前 shape/dtype 会报错而不是静默回退；auto 最稳但性能不保证最优。"
   },
   "advanced_en": {
     "principle": "PyTorch's scaled_dot_product_attention has multiple internal implementations (FlashAttention-2, memory-efficient/cutlass, cuDNN, math), selected by heuristics by default. Pinning a kernel buys reproducible performance and numerics — different kernels use different floating-point reduction orders, so bitwise results differ.",
     "intervention": "runtime_optimizations_attention_plan.py normalizes the value into RuntimeOptimizationPlan; runtime_optimizations_attention_apply.py restricts the backend with the matching sdpa_kernel context inside the forward scope; the Apple MPS runtime is forced to math.",
     "expectedImpact": "Throughput differences between kernels can reach 10%~30% (depending on shape and hardware); no effect on training quality, only bitwise numeric differences.",
-    "tradeoffs": "With a pinned kernel, if that kernel does not support the current shape/dtype it errors rather than silently falling back; auto is the safest but does not guarantee best performance.",
-    "codePath": "runtime_optimizations_attention_plan.py:_normalize_sdpa_backend_policy; runtime_optimizations_attention_apply.py applies the sdpa kernel context; defined in configs_performance.py"
+    "tradeoffs": "With a pinned kernel, if that kernel does not support the current shape/dtype it errors rather than silently falling back; auto is the safest but does not guarantee best performance."
   },
   "relatedConfigs": [
     "attention_backend",

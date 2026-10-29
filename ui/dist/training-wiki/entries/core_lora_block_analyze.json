@@ -21,15 +21,13 @@
     "principle": "按 IN/MID/OUT/TE 区块统计 LoRA 作用强度，适合做剪枝和 block weight 判断。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Per-block (IN/MID/OUT/TE) statistics of LoRA influence strength; useful for pruning and block-weight decisions.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

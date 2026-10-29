@@ -31,15 +31,13 @@
     "principle": "控制原生 Newbie 冻结 DiT 权重的驻留策略。Block CPU pinned 牺牲速度换更少显存使用量，1024/4096-token 训练需要配合 DiT Block Checkpointing。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Controls the residency policy for native Newbie frozen DiT weights. Block CPU pinned trades speed for lower VRAM usage; 1024/4096-token training needs DiT Block Checkpointing alongside it.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

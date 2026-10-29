@@ -21,15 +21,13 @@
     "principle": "检测 LoRA 网络的训练信息。底模必须是对应的 SD 1.5 模型。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Detects the training information of a LoRA network. The base model must be the corresponding SD 1.5 model.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

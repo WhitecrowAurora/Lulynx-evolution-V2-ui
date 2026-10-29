@@ -33,15 +33,13 @@
     "principle": "edit_dataset_manifest.py 只构建和验证 manifest，不解码图像、不调用生成器。manifest sample 会转换为 normalize_edit_batch() 可消费的 batch dict，后续由模型族 adapter 决定 source/target encode 和 forward 表面。",
     "intervention": "数据集合同层提供 source_image_path、target_image_path、instruction、edit_mask、source_prompt、target_prompt 和 metadata。",
     "expectedImpact": "让不同模型族共享同一种编辑数据描述，避免为 Anima、SDXL、SD15 分别发明数据格式。",
-    "tradeoffs": "manifest 只证明配对和字段可读，真实质量仍依赖 paired 数据、mask 质量和模型先验。",
-    "codePath": "core/lulynx_trainer/edit_dataset_manifest.py -> edit_dataset_contract.py"
+    "tradeoffs": "manifest 只证明配对和字段可读，真实质量仍依赖 paired 数据、mask 质量和模型先验。"
   },
   "advanced_en": {
     "principle": "edit_dataset_manifest.py only builds and validates the manifest — it decodes no images and calls no generators. Manifest samples convert to batch dicts consumable by normalize_edit_batch(); the model-family adapter then decides source/target encode and the forward surface.",
     "intervention": "The dataset contract layer provides source_image_path, target_image_path, instruction, edit_mask, source_prompt, target_prompt, and metadata.",
     "expectedImpact": "Lets different model families share one edit-data description instead of inventing separate formats for Anima, SDXL, and SD15.",
-    "tradeoffs": "The manifest only proves pairing and field readability; real quality still depends on paired data, mask quality, and model priors.",
-    "codePath": "core/lulynx_trainer/edit_dataset_manifest.py -> edit_dataset_contract.py"
+    "tradeoffs": "The manifest only proves pairing and field readability; real quality still depends on paired data, mask quality, and model priors."
   },
   "relatedConfigs": [
     "edit_training_enabled",

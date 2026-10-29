@@ -33,15 +33,13 @@
     "principle": "标准 PyTorch 在所有参数 backward 完成后才释放梯度，导致峰值显存 = 所有参数梯度同时驻留。during_backward 模式注册 backward hook，每个参数 backward 后在 optimizer step 中处理完就立即释放 .grad，使峰值显存降低到单个参数梯度的量级。post_step 模式更安全——在 optimizer step 后遍历所有参数并释放 .grad。",
     "intervention": "register_hook on each parameter's backward → .grad = None after processing。",
     "expectedImpact": "梯度峰值显存减少 30-50%（取决于模型大小）。",
-    "tradeoffs": "during_backward 模式不兼容梯度累积 > 1。",
-    "codePath": "training_loop.py:gradient_release → per-parameter backward hook → immediate .grad release"
+    "tradeoffs": "during_backward 模式不兼容梯度累积 > 1。"
   },
   "advanced_en": {
     "principle": "Standard PyTorch only releases gradients after all parameters finish backward, so peak VRAM = all parameter gradients resident at once. during_backward mode registers backward hooks: each parameter's .grad is released immediately after being consumed in the optimizer step, bringing peak VRAM down to single-parameter-gradient magnitude. post_step mode is safer — after the optimizer step, iterate all parameters and release .grad.",
     "intervention": "register_hook on each parameter's backward → .grad = None after processing.",
     "expectedImpact": "Gradient peak VRAM reduced 30-50% (model-size dependent).",
-    "tradeoffs": "The during_backward mode is incompatible with gradient accumulation > 1.",
-    "codePath": "training_loop.py:gradient_release → per-parameter backward hook → immediate .grad release"
+    "tradeoffs": "The during_backward mode is incompatible with gradient accumulation > 1."
   },
   "relatedConfigs": [
     "gradient_release_mode",

@@ -21,15 +21,13 @@
     "principle": "Threshold 模式的阈值系数 (threshold = mean_loss × multiplier)。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Threshold coefficient for threshold mode (threshold = mean_loss × multiplier).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

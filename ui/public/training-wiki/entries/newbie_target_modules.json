@@ -29,15 +29,13 @@
     "principle": "Newbie 使用 Gemma3 作为文本编码器。newbie_gemma3_prompt 可以指定额外的系统 prompt。newbie_use_flash_attn2 启用 Flash Attention 2 加速。newbie_block_residency 控制 DiT block 的 GPU 驻留策略。newbie_adapter_type 可以切换 lora/lora_fa/vera/lokr。",
     "intervention": "trainer.py 根据 newbie_lora_target 预设决定注入哪些 Transformer 层。",
     "expectedImpact": "balanced 在参数效率和表达能力之间取得最佳平衡。",
-    "tradeoffs": "newbie_target_modules 允许手动指定目标模块列表（覆盖预设）。newbie_force_cache_only 强制使用缓存路径。",
-    "codePath": "trainer.py:Newbie route → lora_target preset → layer injection"
+    "tradeoffs": "newbie_target_modules 允许手动指定目标模块列表（覆盖预设）。newbie_force_cache_only 强制使用缓存路径。"
   },
   "advanced_en": {
     "principle": "Newbie uses Gemma3 as its text encoder. newbie_gemma3_prompt can specify an extra system prompt. newbie_use_flash_attn2 enables Flash Attention 2 acceleration. newbie_block_residency controls the DiT blocks' GPU residency policy. newbie_adapter_type can switch lora/lora_fa/vera/lokr.",
     "intervention": "trainer.py decides which Transformer layers to inject per the newbie_lora_target preset.",
     "expectedImpact": "balanced strikes the best balance between parameter efficiency and expressiveness.",
-    "tradeoffs": "newbie_target_modules allows manually specifying the target module list (overriding the preset). newbie_force_cache_only forces the cached path.",
-    "codePath": "trainer.py:Newbie route → lora_target preset → layer injection"
+    "tradeoffs": "newbie_target_modules allows manually specifying the target module list (overriding the preset). newbie_force_cache_only forces the cached path."
   },
   "relatedConfigs": [
     "newbie_diffusers_path",

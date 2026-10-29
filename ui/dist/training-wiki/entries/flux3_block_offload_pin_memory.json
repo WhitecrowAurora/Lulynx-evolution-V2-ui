@@ -1,0 +1,28 @@
+{
+  "key": "flux3_block_offload_pin_memory",
+  "title": "FLUX.3 Block Offload Pin Memory",
+  "title_en": "FLUX.3 Block Offload Pin Memory",
+  "category": "FLUX.3 / 显存",
+  "category_en": "FLUX.3 / VRAM",
+  "appliesTo": [
+    "flux3-lora",
+    "flux3-finetune"
+  ],
+  "standard": {
+    "summary": "为 CPU 侧 offload 缓冲启用页锁定内存，默认关闭。",
+    "effect": "让 CPU 缓冲使用 pinned memory，供异步 H2D 传输使用。",
+    "whenToUse": "CPU 内存充足且需要优化 offload 传输时再开启。",
+    "avoidWhen": "系统内存紧张或 pinned memory 造成资源压力时保持关闭。"
+  },
+  "standard_en": {
+    "summary": "Use pinned memory for CPU-side offload buffers. Disabled by default.",
+    "effect": "Allows asynchronous host-to-device transfers from CPU buffers.",
+    "whenToUse": "Enable it when system memory is sufficient and offload transfer speed matters.",
+    "avoidWhen": "Keep it off when system memory is tight or pinned memory adds pressure."
+  },
+  "advanced": null,
+  "relatedConfigs": [
+    "flux3_block_residency",
+    "flux3_block_offload_prefetch_depth"
+  ]
+}

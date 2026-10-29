@@ -21,15 +21,13 @@
     "principle": "周期性压缩低能量 rank 通道。与实验探针里的「SmartRank 动态区间」(smart_rank_*) 是不同后端键。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Periodically compresses low-energy rank channels. This is a different backend key from the \"SmartRank dynamic range\" (smart_rank_*) in the experimental probes.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

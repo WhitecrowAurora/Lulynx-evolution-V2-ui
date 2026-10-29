@@ -21,15 +21,13 @@
     "principle": "启用 Triton fused kernel，加速 Lion 更新步（需要 Triton 支持）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Enables a Triton fused kernel to accelerate the Lion update step (requires Triton support).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

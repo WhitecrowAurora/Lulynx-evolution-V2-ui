@@ -1,0 +1,11 @@
+.lx-config-preview-content { min-height: 0; overflow: auto; flex: 1; }
+.lx-training-visualization { padding: 12px; font-size: 12px; }
+.lx-training-visualization section { margin-top: 16px; }
+.lx-training-visualization svg { display: block; width: 100%; margin-top: 8px; }
+.lx-training-visualization p { margin: 8px 0; opacity: .8; overflow-wrap: anywhere; }
+.lx-training-visualization details { margin-top: 8px; }
+.lx-training-visualization-table { max-height: 240px; overflow: auto; }
+.lx-training-visualization table { width: 100%; border-spacing: 8px 4px; font-variant-numeric: tabular-nums; }
+.lx-training-visualization th, .lx-training-visualization td { text-align: right; white-space: nowrap; }
+.lx-training-visualization-targets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.lx-training-visualization-targets code { border: 1px solid currentColor; border-radius: 4px; padding: 2px 5px; overflow-wrap: anywhere; }

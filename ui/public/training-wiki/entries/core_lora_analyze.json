@@ -21,15 +21,13 @@
     "principle": "读取 LoRA 权重结构、rank、RMS、稀疏度、异常层和 block 分布。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Reads LoRA weight structure, rank, RMS, sparsity, abnormal layers, and block distribution.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

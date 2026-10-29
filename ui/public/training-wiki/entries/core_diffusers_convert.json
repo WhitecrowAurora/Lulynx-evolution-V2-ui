@@ -21,15 +21,13 @@
     "principle": "手动把单文件 checkpoint/safetensors 转成 Diffusers 目录，依赖 diffusers 环境。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Manually converts a single-file checkpoint/safetensors into a Diffusers directory; requires a diffusers environment.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

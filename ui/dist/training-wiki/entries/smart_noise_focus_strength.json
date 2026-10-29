@@ -21,15 +21,13 @@
     "principle": "聚焦强度，范围 [0,1]。0.0 = 均匀分布（关闭），1.0 = 最强聚焦；默认 0.5。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Focus strength, range [0,1]. 0.0 = uniform distribution (off), 1.0 = strongest focus; default 0.5.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

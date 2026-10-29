@@ -21,15 +21,13 @@
     "principle": "EDM2 Fourier 特征库大小。更大值表达能力更强，但参数更多。推荐 128。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Size of the EDM2 Fourier feature bank. Larger values are more expressive but add parameters. 128 recommended.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

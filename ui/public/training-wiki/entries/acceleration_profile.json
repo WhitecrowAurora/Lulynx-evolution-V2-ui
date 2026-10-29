@@ -48,15 +48,13 @@
     "principle": "acceleration_profile 会批量设置多个底层参数：attention_backend（auto→flash2/sdpa）、torch_compile（True/False + mode）、compile_runtime（off→compile/cudagraph）、native_cache_mode（cache_first）、weight_compression（off→fp8）、以及各 swap/offload 选项。aggressive 模式下 compile_fullgraph=True + cudagraph 组合可能获得最大加速但兼容性风险最高。",
     "intervention": "config validator 阶段根据预设自动设置底层参数。",
     "expectedImpact": "balanced 通常提速 30-50%。aggressive 可达 2-3 倍。low_vram 在显存受限时提速 20-40%。",
-    "tradeoffs": "预设可能与特定模型/硬件不兼容。建议先用 balanced，稳定后再尝试 aggressive。",
-    "codePath": "core/model_acceleration_policy.py → profile dispatch → set attention/compile/cache/compression params"
+    "tradeoffs": "预设可能与特定模型/硬件不兼容。建议先用 balanced，稳定后再尝试 aggressive。"
   },
   "advanced_en": {
     "principle": "acceleration_profile batch-sets many low-level parameters: attention_backend (auto→flash2/sdpa), torch_compile (True/False + mode), compile_runtime (off→compile/cudagraph), native_cache_mode (cache_first), weight_compression (off→fp8), plus the various swap/offload options. In aggressive mode the compile_fullgraph=True + cudagraph combination may yield the greatest speedup but carries the highest compatibility risk.",
     "intervention": "The config validator stage sets the low-level parameters automatically per preset.",
     "expectedImpact": "balanced usually speeds up 30-50%. aggressive can reach 2-3×. low_vram speeds up 20-40% when VRAM-constrained.",
-    "tradeoffs": "Presets may be incompatible with specific models/hardware. Start with balanced, then try aggressive once stable.",
-    "codePath": "core/model_acceleration_policy.py → profile dispatch → set attention/compile/cache/compression params"
+    "tradeoffs": "Presets may be incompatible with specific models/hardware. Start with balanced, then try aggressive once stable."
   },
   "relatedConfigs": [
     "torch_compile",

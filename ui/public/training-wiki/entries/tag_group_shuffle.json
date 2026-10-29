@@ -34,15 +34,13 @@
     "principle": "caption 示例：'sks girl, 1girl ||| red hair, blue eyes ||| outdoor, sunset'。组内打乱后可能变成：'sks girl, 1girl ||| blue eyes, red hair ||| sunset, outdoor'。与 caption_tag_mutate_scope=after_separator 叠加时：先切 head/tail，只对可变区做 group shuffle，head 不动。",
     "intervention": "CaptionDataset._process_caption → shuffle_tags_groups_flexible（token 边界或字符串级多组）。group on 时替换全局 random.shuffle。",
     "expectedImpact": "比全局 shuffle 更好地保持 prompt 结构理解。多概念训练中减少概念混淆。",
-    "tradeoffs": "需要标注时就有意识地分层。分隔符需与数据一致。",
-    "codePath": "backend/core/lulynx_trainer/caption/caption_augment.py:shuffle_tags_groups_flexible → dataset_loader.CaptionDataset._process_caption"
+    "tradeoffs": "需要标注时就有意识地分层。分隔符需与数据一致。"
   },
   "advanced_en": {
     "principle": "Caption example: 'sks girl, 1girl ||| red hair, blue eyes ||| outdoor, sunset'. After group shuffling it might become: 'sks girl, 1girl ||| blue eyes, red hair ||| sunset, outdoor'. Combined with caption_tag_mutate_scope=after_separator: the head/tail are split first, group shuffle applies only to the mutable region, and the head stays put.",
     "intervention": "CaptionDataset._process_caption → shuffle_tags_groups_flexible (token boundaries or string-level multi-group). When group is on it replaces the global random.shuffle.",
     "expectedImpact": "Preserves prompt-structure understanding better than global shuffle; reduces concept confusion in multi-concept training.",
-    "tradeoffs": "Layer tags deliberately at annotation time if you want grouping. The separator must match your data.",
-    "codePath": "backend/core/lulynx_trainer/caption/caption_augment.py:shuffle_tags_groups_flexible → dataset_loader.CaptionDataset._process_caption"
+    "tradeoffs": "Layer tags deliberately at annotation time if you want grouping. The separator must match your data."
   },
   "relatedConfigs": [
     "tag_group_separator",

@@ -21,15 +21,13 @@
     "principle": "只托管参数量达到该阈值的 Linear/Conv2d。0 表示全部托管；调高可保留小层在 GPU，减少频繁传输。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Only manages Linear/Conv2d layers whose parameter count reaches this threshold. 0 = manage everything; raising it keeps small layers on the GPU and reduces frequent transfers.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

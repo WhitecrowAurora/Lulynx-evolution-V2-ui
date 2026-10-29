@@ -34,15 +34,13 @@
     "principle": "在 baseline_steps 内采集显存使用数据建立基线。之后每 window_steps 比较当前值与基线，如果增长率超过 slowdown_ratio 则触发：(1) streaming swap → 渐进式 CPU offload；(2) sparse swap → 只交换最冷的参数；(3) delta cache → PCIe 传输差量压缩。",
     "intervention": "training_step 后检查显存 → 趋势分析 → 触发/解除保护措施。",
     "expectedImpact": "显著降低 OOM 崩溃风险。自动保护模式下性能损失约 5-15%。",
-    "tradeoffs": "vram_smart_sensing_sparse_swap_enabled 和 vram_smart_sensing_delta_cache_enabled 是两种保护手段。",
-    "codePath": "core/vram_smart_sensing/ → baseline profiling → trend detection → adaptive protection"
+    "tradeoffs": "vram_smart_sensing_sparse_swap_enabled 和 vram_smart_sensing_delta_cache_enabled 是两种保护手段。"
   },
   "advanced_en": {
     "principle": "Collects VRAM usage data within baseline_steps to build a baseline. Afterwards, every window_steps it compares current values with the baseline, and if the growth rate exceeds slowdown_ratio it triggers: (1) streaming swap → progressive CPU offload; (2) sparse swap → swap only the coldest parameters; (3) delta cache → PCIe transfer delta compression.",
     "intervention": "After training_step, checks VRAM → trend analysis → triggers/lifts protective measures.",
     "expectedImpact": "Markedly lowers OOM crash risk. In auto-protection mode the performance cost is about 5-15%.",
-    "tradeoffs": "vram_smart_sensing_sparse_swap_enabled and vram_smart_sensing_delta_cache_enabled are the two protection mechanisms.",
-    "codePath": "core/vram_smart_sensing/ → baseline profiling → trend detection → adaptive protection"
+    "tradeoffs": "vram_smart_sensing_sparse_swap_enabled and vram_smart_sensing_delta_cache_enabled are the two protection mechanisms."
   },
   "relatedConfigs": [
     "vram_smart_sensing_baseline_steps",

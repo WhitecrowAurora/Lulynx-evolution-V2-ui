@@ -21,15 +21,13 @@
     "principle": "首轮缓存构建时每批编码的图像数。1 为逐图串行（慢）；8（默认）批量编码 VAE/Gemma/CLIP，首轮构建约 7× 加速。显存紧张可降到 4。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Images encoded per batch during the first cache build. 1 = serial per-image (slow); 8 (default) batch-encodes VAE/Gemma/CLIP, roughly a 7× speedup on first build. Drop to 4 if VRAM is tight.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

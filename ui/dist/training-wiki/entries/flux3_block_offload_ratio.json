@@ -1,0 +1,28 @@
+{
+  "key": "flux3_block_offload_ratio",
+  "title": "FLUX.3 Block Offload 比例",
+  "title_en": "FLUX.3 Block Offload Ratio",
+  "category": "FLUX.3 / 显存",
+  "category_en": "FLUX.3 / VRAM",
+  "appliesTo": [
+    "flux3-lora",
+    "flux3-finetune"
+  ],
+  "standard": {
+    "summary": "设置参与 block offload 的比例，范围 0–100%，默认 100%。",
+    "effect": "按比例选择 FLUX.3 Transformer blocks 参与 CPU/GPU 换入。",
+    "whenToUse": "需要在显存占用与传输开销间取舍时调整。",
+    "avoidWhen": "诊断性能时一次只改一个 offload 参数。"
+  },
+  "standard_en": {
+    "summary": "Percentage of blocks included in block offload, from 0 to 100. Default: 100%.",
+    "effect": "Selects the proportion of FLUX.3 Transformer blocks moved between CPU and GPU.",
+    "whenToUse": "Adjust when balancing VRAM use against transfer overhead.",
+    "avoidWhen": "Change only one offload setting at a time while diagnosing performance."
+  },
+  "advanced": null,
+  "relatedConfigs": [
+    "flux3_block_residency",
+    "flux3_block_offload_min_param_mb"
+  ]
+}

@@ -21,15 +21,13 @@
     "principle": "学习一个按 sigma 的不确定度 u(σ)，损失变为 loss/exp(u)+u（EDM2）。自动下调高噪声区权重，无需手挑 weighting_scheme。默认关闭=与原损失逐位一致。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Learns a sigma-dependent uncertainty u(σ); the loss becomes loss/exp(u)+u (EDM2). Automatically down-weights high-noise regions without hand-picking a weighting_scheme. Off by default = bit-identical to the original loss.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -31,15 +31,13 @@
     "principle": "anima_faithful_forward: 使用原始 sigma 范围 [0,1]、运行冻结 LLM adapter 的 cross-attention、启用 3D-RoPE 旋转位置编码。lulynx_ema_cosine_self_distill: 用 EMA shadow 做余弦特征自蒸馏；不使用 JLT 随机投影，不能称为 JLT-style。lulynx_weight_noise: 在 optimizer step 后对 LoRA 参数值添加零均值高斯噪声。其余 latent anchor、freq texture 与 flow uncertainty 仍是本仓工程特性。",
     "intervention": "各特性在训练循环的不同阶段注入。",
     "expectedImpact": "各特性效果需实验验证。均为 TECHNICAL RESERVE 状态。",
-    "tradeoffs": "anima_faithful_forward 需要 block-checkpoint/cache/reducer 关闭。weight_noise 有 bound_norm 选项限制漂移。",
-    "codePath": "core/lulynx/ → faithful forward + EMA align + weight noise + latent anchor + freq texture"
+    "tradeoffs": "anima_faithful_forward 需要 block-checkpoint/cache/reducer 关闭。weight_noise 有 bound_norm 选项限制漂移。"
   },
   "advanced_en": {
     "principle": "anima_faithful_forward: uses the original sigma range [0,1], runs the frozen LLM adapter's cross-attention, and enables 3D-RoPE rotary position encoding. lulynx_ema_cosine_self_distill: cosine feature self-distillation with the EMA shadow; it does not use JLT random projection and cannot be called JLT-style. lulynx_weight_noise: adds zero-mean Gaussian noise to LoRA parameter values after the optimizer step. The remaining latent anchor, freq texture, and flow uncertainty are this repo's engineering features.",
     "intervention": "Each feature is injected at a different stage of the training loop.",
     "expectedImpact": "Each feature's effect needs experimental validation. All are in TECHNICAL RESERVE status.",
-    "tradeoffs": "anima_faithful_forward requires block-checkpoint/cache/reducer off. weight_noise has a bound_norm option to limit drift.",
-    "codePath": "core/lulynx/ → faithful forward + EMA align + weight noise + latent anchor + freq texture"
+    "tradeoffs": "anima_faithful_forward requires block-checkpoint/cache/reducer off. weight_noise has a bound_norm option to limit drift."
   },
   "relatedConfigs": [
     "anima_ema_feat_align_enabled",

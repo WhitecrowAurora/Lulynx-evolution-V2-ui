@@ -21,15 +21,13 @@
     "principle": "逗号分隔的触发词列表或文件路径。每个 batch 随机选一个注入到 caption 中",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Comma-separated trigger-word list or a file path. One is randomly picked per batch and injected into the caption.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

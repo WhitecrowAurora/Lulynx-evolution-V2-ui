@@ -21,15 +21,13 @@
     "principle": "仅在 Anima 原生 LoRA 路线下生效。DoRA 会把权重分成方向与幅度两部分来训练，通常比普通 LoRA 更接近全量微调表现。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Only takes effect on the Anima native LoRA route. DoRA splits weights into direction and magnitude components for training, usually approaching full fine-tuning quality more closely than plain LoRA.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

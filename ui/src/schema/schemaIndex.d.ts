@@ -35,6 +35,8 @@ export interface SchemaField {
   preserveSelectionOrder?: boolean
   /** schema 自己锁死这个控件（不是运行时 profile 接管），后端会拒绝非默认值 */
   disabled?: boolean
+  /** 根据当前草稿动态锁定控件 */
+  disabledWhen?: (config: Record<string, unknown>) => boolean
   /** 锁死的理由，渲染层拿它当提示文案 */
   disabledReason?: string
   [extra: string]: unknown

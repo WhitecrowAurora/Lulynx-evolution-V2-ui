@@ -31,15 +31,13 @@
     "principle": "预设的 offload 策略：balanced=平衡；aggressive=激进（最省显存）；conservative=保守（更快）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Preset offload strategies: balanced = balanced; aggressive = aggressive (most VRAM saved); conservative = conservative (faster).",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

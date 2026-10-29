@@ -38,13 +38,11 @@
   },
   "advanced": {
     "principle": "TorchDynamo 将 Python 计算图降级到 FX 图 → 送入后端：inductor 通过 Triton/CUDA 生成 kernel；cudagraphs 捕获 CUDA stream 命令序列实现零-overhead 重放；eager 直接执行 FX 图。",
-    "tradeoffs": "cudagraphs 要求每次前向输入形状完全相同（否则需重新捕获），变长 token 场景不适用；inductor 首次编译慢但一次编译多次复用。",
-    "codePath": "backend/core/lulynx_trainer/trainer_execution_mixin.py → runtime_optimizations_attention.py:708-718"
+    "tradeoffs": "cudagraphs 要求每次前向输入形状完全相同（否则需重新捕获），变长 token 场景不适用；inductor 首次编译慢但一次编译多次复用。"
   },
   "advanced_en": {
     "principle": "TorchDynamo lowers the Python compute graph to an FX graph → handed to the backend: inductor generates kernels via Triton/CUDA; cudagraphs captures the CUDA stream command sequence for zero-overhead replay; eager executes the FX graph directly.",
-    "tradeoffs": "cudagraphs requires identical input shapes every forward (otherwise re-capture is needed) — not applicable to variable-length tokens; inductor compiles slowly the first time but reuses the compilation thereafter.",
-    "codePath": "backend/core/lulynx_trainer/trainer_execution_mixin.py → runtime_optimizations_attention.py:708-718"
+    "tradeoffs": "cudagraphs requires identical input shapes every forward (otherwise re-capture is needed) — not applicable to variable-length tokens; inductor compiles slowly the first time but reuses the compilation thereafter."
   },
   "relatedConfigs": [
     "torch_compile",

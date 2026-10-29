@@ -21,8 +21,7 @@
     "principle": "选择 Anima 模型根目录，自动识别并填充 DiT / VAE / Qwen3 / T5 Tokenizer / LLM Adapter 路径字段。支持文件名模式 + safetensors 架构检测（仅读文件头，不加载权重）。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Pick an Anima model root directory and the DiT / VAE / Qwen3 / T5 Tokenizer / LLM Adapter path fields are auto-detected and filled in. Supports filename patterns plus safetensors architecture probing (reads only file headers, never loads weights)."

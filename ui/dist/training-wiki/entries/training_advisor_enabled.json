@@ -31,18 +31,16 @@
     "avoidWhen": "No need to turn it off. Only if you are very sure of your configuration and want to skip preflight to save a few seconds."
   },
   "advanced": {
-    "principle": "Advisor 在训练启动前执行一系列检查器：(1) ConfigValidator 检查超参数范围；(2) DatasetInspector 统计数据集状态；(3) ResourceChecker 评估 GPU/磁盘资源；(4) RuntimeDependencyChecker 验证包版本。每个检查器产出 Pass/Warn/Fail 结果。",
-    "intervention": "在 entry_train.py 的 trainer.train() 调用前执行。Warn 不阻止训练，Fail 阻止训练启动。",
+    "principle": "Advisor 读配置做静态评估，不加载模型：(1) 显存估算与舒适区间；(2) 爆显存防护（safeguard）参数；(3) LR finder 设置；(4) 数据集路径与规模；(5) 文本编码器与 compile token shape；(6) A/B 两层可选特性的兼容性。每条产出带 severity 的 finding。",
+    "intervention": "WebUI 点“训练预检”时由 /api/train/preflight 现算并回传（payload.training_advisor）；训练启动后训练器再把同一份报告写到 output_dir/training_advisor_report.json。预检里只有“数据集缺失”会阻断启动，显存与特性类估算一律降级成警告，避免估价误拦训练。",
     "expectedImpact": "防止常见配置错误导致的训练失败。不直接影响训练质量。",
-    "tradeoffs": "training_advisor_log_summary 在日志中输出简要报告。",
-    "codePath": "core/warehouse/training_features/preflight.py:PreflightOrchestrator → pre-training checks"
+    "tradeoffs": "training_advisor_log_summary 在日志中输出简要报告。"
   },
   "advanced_en": {
-    "principle": "The Advisor runs a series of checkers before training starts: (1) ConfigValidator checks hyperparameter ranges; (2) DatasetInspector profiles dataset state; (3) ResourceChecker assesses GPU/disk resources; (4) RuntimeDependencyChecker verifies package versions. Each checker produces a Pass/Warn/Fail result.",
-    "intervention": "Runs before the trainer.train() call in entry_train.py. Warn does not block training; Fail blocks the training start.",
+    "principle": "The Advisor evaluates the config statically without loading a model: (1) VRAM estimate and comfort band; (2) out-of-memory safeguard settings; (3) LR finder settings; (4) dataset path and size; (5) text encoder and compile token shape; (6) compatibility of the optional A/B feature tiers. Every item is a finding with a severity.",
+    "intervention": "The WebUI's \"training preflight\" button calls /api/train/preflight, which computes the report and returns it as payload.training_advisor; once training starts the trainer writes the same report to output_dir/training_advisor_report.json. Only \"dataset missing\" blocks the start -- VRAM and feature estimates are downgraded to warnings so an estimate can never refuse a run.",
     "expectedImpact": "Prevents training failures from common config mistakes. Does not directly affect training quality.",
-    "tradeoffs": "training_advisor_log_summary outputs a brief report to the logs.",
-    "codePath": "core/warehouse/training_features/preflight.py:PreflightOrchestrator → pre-training checks"
+    "tradeoffs": "training_advisor_log_summary outputs a brief report to the logs."
   },
   "relatedConfigs": [
     "training_advisor_report_name",

@@ -21,8 +21,7 @@
     "principle": "压缩前加载冻结 recovery adapter 并 merge 进基座。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Before compression, loads a frozen recovery adapter and merges it into the base. Off by default."

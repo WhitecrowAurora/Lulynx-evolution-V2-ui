@@ -29,15 +29,13 @@
     "principle": "仅 t2v-a14b：每次训练选择 high 或 low 单塔；当前产品不提供 both 双塔训练。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "t2v-a14b only: each training run picks a single high or low tower; the product currently offers no both dual-tower training.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

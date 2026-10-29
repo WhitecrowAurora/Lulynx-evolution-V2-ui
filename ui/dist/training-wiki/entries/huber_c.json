@@ -33,15 +33,13 @@
     "principle": "Huber 损失在 |残差| ≤ delta 区间为二次型（梯度与残差成正比），超过后变线性（梯度饱和为常数），从而限制单个大残差样本对总梯度的贡献。实际生效阈值为 huber_c × huber_scale，下限被夹在 1e-6。",
     "intervention": "training_loop_loss_mixin.py 的阈值解析函数按 huber_schedule 生成标量或逐样本 delta：constant 直接用 huber_c；exponential/snr 随 timestep 调制；auto 用 batch 残差分位数估计。概念编辑路线由 concept_edit_loss.py 以同样公式解析。",
     "expectedImpact": "对离群样本的鲁棒性提升，loss 曲线尖峰减少；细节保真度可能略降（大残差方向学习被压制）。",
-    "tradeoffs": "阈值是与残差量纲绑定的绝对值，换分辨率/换模型族后合适区间会变；建议配合 huber_schedule=auto 让后端按分位数自适应。",
-    "codePath": "training_loop_loss_mixin.py:_huber 阈值解析（base=max(huber_c,1e-6)，×huber_scale）；concept_edit_loss.py 同公式"
+    "tradeoffs": "阈值是与残差量纲绑定的绝对值，换分辨率/换模型族后合适区间会变；建议配合 huber_schedule=auto 让后端按分位数自适应。"
   },
   "advanced_en": {
     "principle": "Huber loss is quadratic while |residual| ≤ delta (gradient proportional to residual) and linear beyond it (gradient saturates to a constant), capping any single large-residual sample's contribution to the total gradient. The effective threshold is huber_c × huber_scale, floored at 1e-6.",
     "intervention": "training_loop_loss_mixin.py's threshold resolver produces a scalar or per-sample delta per huber_schedule: constant uses huber_c directly; exponential/snr modulate by timestep; auto estimates from batch residual quantiles. The concept-edit route parses with the same formula in concept_edit_loss.py.",
     "expectedImpact": "Improves robustness to outlier samples and reduces loss-curve spikes; detail fidelity may drop slightly (large-residual directions are suppressed).",
-    "tradeoffs": "The threshold is an absolute value bound to the residual's magnitude — the right range changes with resolution or model family; prefer huber_schedule=auto so the backend adapts by percentile.",
-    "codePath": "training_loop_loss_mixin.py:_huber threshold resolution (base=max(huber_c,1e-6), ×huber_scale); concept_edit_loss.py same formula"
+    "tradeoffs": "The threshold is an absolute value bound to the residual's magnitude — the right range changes with resolution or model family; prefer huber_schedule=auto so the backend adapts by percentile."
   },
   "relatedConfigs": [
     "huber_schedule",

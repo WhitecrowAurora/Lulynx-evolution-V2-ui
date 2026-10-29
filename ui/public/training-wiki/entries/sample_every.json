@@ -34,15 +34,13 @@
     "principle": "在指定的训练步暂停训练循环，用当前的 LoRA 权重 + 底模做一次推理。sample_sampler 控制采样器（euler_a 最常用），sample_steps 控制去噪步数，sample_cfg 控制 classifier-free guidance 强度。ephemeral_preview_pipeline 在生成后立即释放推理 pipeline 显存。",
     "intervention": "training_loop 在 step % sample_every == 0 时插入采样代码。",
     "expectedImpact": "不影响训练质量。生成耗时取决于分辨率和步数。",
-    "tradeoffs": "preview_device='gpu' 在 GPU 上生成最快但占用训练显存；'cpu' 慢但不占 GPU；'off' 禁用。micro_vae_preview 使用小型 VAE 加速解码。",
-    "codePath": "training_loop.py:training_step() → if step % sample_every == 0: generate previews"
+    "tradeoffs": "preview_device='gpu' 在 GPU 上生成最快但占用训练显存；'cpu' 慢但不占 GPU；'off' 禁用。micro_vae_preview 使用小型 VAE 加速解码。"
   },
   "advanced_en": {
     "principle": "Pauses the training loop at the specified step and runs one inference with the current LoRA weights + base model. sample_sampler controls the sampler (euler_a is most common), sample_steps the denoising steps, sample_cfg the classifier-free guidance strength. ephemeral_preview_pipeline releases the inference pipeline's VRAM immediately after generation.",
     "intervention": "training_loop inserts the sampling code when step % sample_every == 0.",
     "expectedImpact": "Does not affect training quality. Generation time depends on resolution and step count.",
-    "tradeoffs": "preview_device='gpu' is fastest but occupies training VRAM; 'cpu' is slow but uses no GPU; 'off' disables. micro_vae_preview uses a small VAE to speed up decoding.",
-    "codePath": "training_loop.py:training_step() → if step % sample_every == 0: generate previews"
+    "tradeoffs": "preview_device='gpu' is fastest but occupies training VRAM; 'cpu' is slow but uses no GPU; 'off' disables. micro_vae_preview uses a small VAE to speed up decoding."
   },
   "relatedConfigs": [
     "sample_prompts",

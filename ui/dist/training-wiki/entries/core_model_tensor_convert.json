@@ -21,15 +21,13 @@
     "principle": "在 safetensors 与 PyTorch pt/pth tensor 容器之间转换。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Converts between safetensors and PyTorch pt/pth tensor containers.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

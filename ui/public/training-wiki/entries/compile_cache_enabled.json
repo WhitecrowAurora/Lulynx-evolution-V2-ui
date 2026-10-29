@@ -21,8 +21,7 @@
     "principle": "启用 torch.compile 图缓存，跨 run 复用编译结果。默认开启；关闭后每次冷启动重新编译。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Enables the torch.compile graph cache, reusing compilation results across runs. On by default; turning it off recompiles on every cold start."

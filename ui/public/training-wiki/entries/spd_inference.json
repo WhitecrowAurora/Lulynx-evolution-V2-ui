@@ -32,15 +32,13 @@
     "principle": "构建多级 latent schedule，在阶段边界 resize latent 并记录 metadata。",
     "intervention": "Future sampler loop → latent resize schedule → optional trajectory LoRA。",
     "expectedImpact": "完整接入后可能降低大图推理成本；当前不改变运行时行为。",
-    "tradeoffs": "trajectory LoRA 被阻断到 SPD route 和 metadata 稳定之后。",
-    "codePath": "backend/core/lulynx_trainer/spd_inference.py"
+    "tradeoffs": "trajectory LoRA 被阻断到 SPD route 和 metadata 稳定之后。"
   },
   "advanced_en": {
     "principle": "Builds a multi-level latent schedule, resizing latents at stage boundaries and recording metadata.",
     "intervention": "Future sampler loop → latent resize schedule → optional trajectory LoRA.",
     "expectedImpact": "Once fully wired in, may reduce large-image inference cost; currently does not change runtime behavior.",
-    "tradeoffs": "The trajectory LoRA is blocked until the SPD route and metadata stabilize.",
-    "codePath": "backend/core/lulynx_trainer/spd_inference.py"
+    "tradeoffs": "The trajectory LoRA is blocked until the SPD route and metadata stabilize."
   },
   "relatedConfigs": [
     "spd_enabled",

@@ -25,15 +25,13 @@
     "principle": "每隔 nan_check_interval 步在 loss 值上执行 torch.isnan/isinf 检查，并维护一个 loss_window_size 大小的滑动窗口检测 spike（当前 loss 超过窗口均值 × spike_threshold 倍判定为 spike）。",
     "intervention": "三档干预：NaN/Inf 计数超 max_nan_count → 停止；spike → 可选自动降低 LR（系数 lr_reduction_factor）；gradients 扫描模式（batched/foreach/legacy）控制梯度异常检测的 CUDA 同步策略。",
     "expectedImpact": "正常训练不受影响；发生 NaN 爆炸时及时止损，避免浪费整个训练 run。",
-    "tradeoffs": "每步多一次 loss tensor 检查（几乎无开销）；自动降 LR 会改变训练轨迹，若 loss 抖动属正常范围应适当调高 spike_threshold。",
-    "codePath": "core/lulynx_trainer/training_loop.py → safeguard_check_step → lulynx_trainer/safeguard.py"
+    "tradeoffs": "每步多一次 loss tensor 检查（几乎无开销）；自动降 LR 会改变训练轨迹，若 loss 抖动属正常范围应适当调高 spike_threshold。"
   },
   "advanced_en": {
     "principle": "Every nan_check_interval steps it runs torch.isnan/isinf checks on the loss value and maintains a sliding window of loss_window_size to detect spikes (the current loss exceeding the window mean × spike_threshold counts as a spike).",
     "intervention": "Three intervention tiers: NaN/Inf count above max_nan_count → stop; spike → optional automatic LR reduction (factor lr_reduction_factor); the gradients scan mode (batched/foreach/legacy) controls the CUDA sync strategy for gradient anomaly detection.",
     "expectedImpact": "Normal training is unaffected; when a NaN explosion happens it stops the bleeding promptly, saving the whole run.",
-    "tradeoffs": "One extra loss tensor check per step (nearly free); auto LR reduction changes the training trajectory, so if the loss jitter is within the normal range raise spike_threshold appropriately.",
-    "codePath": "core/lulynx_trainer/training_loop.py → safeguard_check_step → lulynx_trainer/safeguard.py"
+    "tradeoffs": "One extra loss tensor check per step (nearly free); auto LR reduction changes the training trajectory, so if the loss jitter is within the normal range raise spike_threshold appropriately."
   },
   "relatedConfigs": [
     "safeguard_nan_check_interval",

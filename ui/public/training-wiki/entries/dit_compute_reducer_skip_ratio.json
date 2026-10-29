@@ -21,15 +21,13 @@
     "principle": "按比例推导跳过频率。0.25 约等于每 4 个 block 跳 1 个；仅在下方“固定间隔”=0 时生效。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Derives skip frequency from a ratio. 0.25 ≈ skip 1 of every 4 blocks; only takes effect when the fixed interval above is 0.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

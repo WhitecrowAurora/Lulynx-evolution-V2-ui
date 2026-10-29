@@ -21,15 +21,13 @@
     "principle": "LoKr 强制走 full matrix 路线，避免自动退回到分解矩阵。更吃参数和显存，只建议明确需要时启用。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Forces LoKr down the full-matrix route, avoiding automatic fallback to the factorized matrix. Heavier in parameters and VRAM; enable only when clearly needed.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

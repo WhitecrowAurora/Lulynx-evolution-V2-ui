@@ -30,15 +30,13 @@
     "principle": "在采样噪声空间调整频谱分布，保持 default-off，并通过 sampler capability matrix 判断是否能接入。",
     "intervention": "GenerationRequest → sampler capability → stochastic noise seam。",
     "expectedImpact": "训练时间无变化；若 sampler seam 成熟，推理质量可能提升高频细节。",
-    "tradeoffs": "它不是训练方法，也不能作为 LoRA 训练开关暴露。",
-    "codePath": "backend/core/lulynx_trainer/cns_sampling.py"
+    "tradeoffs": "它不是训练方法，也不能作为 LoRA 训练开关暴露。"
   },
   "advanced_en": {
     "principle": "Adjusts the spectral distribution of sampling noise; stays default-off and gates on a sampler capability matrix to decide whether it can attach.",
     "intervention": "GenerationRequest → sampler capability → stochastic noise seam.",
     "expectedImpact": "No change to training time; if the sampler seam matures, inference may gain high-frequency detail.",
-    "tradeoffs": "It is not a training method and must not be exposed as a LoRA training switch.",
-    "codePath": "backend/core/lulynx_trainer/cns_sampling.py"
+    "tradeoffs": "It is not a training method and must not be exposed as a LoRA training switch."
   },
   "relatedConfigs": [
     "cns",

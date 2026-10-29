@@ -29,15 +29,13 @@
     "principle": "resident=全 GPU；block_offload=按 block LRU（推荐）。Phase A 无 layer_offload。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "resident = all-GPU; block_offload = per-block LRU (recommended). Phase A has no layer_offload.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

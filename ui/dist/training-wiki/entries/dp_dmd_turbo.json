@@ -32,15 +32,13 @@
     "principle": "dp_dmd_variant=lulynx_optimized 使用 teacher prediction regression 及可选 anchor/critic/SoftRank；standard 不是该 MSE 组合的别名，使用独立 teacher/fake score 与 5:1 默认更新节奏。",
     "intervention": "trainer_anima_cache_runtime.py → anima_standard_cache_migration.py → dp_dmd_standard_anima_runtime.py → training_step_loss_execution_specialized.py",
     "expectedImpact": "理论上降低推理步数；训练成本取决于 teacher 生成和 质量门槛。",
-    "tradeoffs": "standard 当前为单进程路径且需要三套独立 DiT；旧 cache 迁移会重新编码数据。它不会退回 raw-Qwen 或 teacher MSE，两种模式的训练成本和质量不能互相外推。",
-    "codePath": "backend/core/lulynx_trainer/anima/anima_standard_cache_migration.py；dp_dmd_standard_anima_runtime.py；training_step_loss_execution_specialized.py"
+    "tradeoffs": "standard 当前为单进程路径且需要三套独立 DiT；旧 cache 迁移会重新编码数据。它不会退回 raw-Qwen 或 teacher MSE，两种模式的训练成本和质量不能互相外推。"
   },
   "advanced_en": {
     "principle": "dp_dmd_variant=lulynx_optimized uses teacher prediction regression plus optional anchor/critic/SoftRank; standard is not an alias for that MSE combination — it uses an independent teacher/fake score and a 5:1 default update cadence.",
     "intervention": "trainer_anima_cache_runtime.py → anima_standard_cache_migration.py → dp_dmd_standard_anima_runtime.py → training_step_loss_execution_specialized.py",
     "expectedImpact": "Theoretically reduces inference steps; training cost depends on teacher generation and the quality gate.",
-    "tradeoffs": "standard is currently a single-process path requiring three independent DiTs; legacy cache migration re-encodes data. It does not fall back to raw-Qwen or teacher MSE, and the two modes' training cost and quality cannot be extrapolated to each other.",
-    "codePath": "backend/core/lulynx_trainer/anima/anima_standard_cache_migration.py; dp_dmd_standard_anima_runtime.py; training_step_loss_execution_specialized.py"
+    "tradeoffs": "standard is currently a single-process path requiring three independent DiTs; legacy cache migration re-encodes data. It does not fall back to raw-Qwen or teacher MSE, and the two modes' training cost and quality cannot be extrapolated to each other."
   },
   "relatedConfigs": [
     "dp_dmd_enabled",

@@ -21,15 +21,13 @@
     "principle": "LoKr 分解因子。当前 Anima LoKr 会自动回落到可整除的线性注入 factor",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "LoKr decomposition factor. Current Anima LoKr automatically falls back to a linearly injectable divisible factor.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

@@ -32,15 +32,13 @@
     "principle": "θ_ema = decay × θ_ema + (1-decay) × θ_t，等效记忆步数约为 1/(1-decay)。",
     "intervention": "仅影响 EMA 副本更新速率，不影响训练主路径。",
     "expectedImpact": "decay 越高平滑效果越强，但需要更多步数才能「追上」训练权重的变化方向。",
-    "tradeoffs": "decay 过高在步数不足时 EMA 权重可能长期偏向初始化，导致 EMA 权重质量反而差于直接保存权重。",
-    "codePath": "core/lulynx_trainer/training_loop.py → EMA update"
+    "tradeoffs": "decay 过高在步数不足时 EMA 权重可能长期偏向初始化，导致 EMA 权重质量反而差于直接保存权重。"
   },
   "advanced_en": {
     "principle": "θ_ema = decay × θ_ema + (1-decay) × θ_t; the equivalent memory horizon is about 1/(1-decay).",
     "intervention": "Only affects the EMA replica's update rate; the main training path is untouched.",
     "expectedImpact": "Higher decay smooths more strongly but needs more steps to \"catch up\" with the training weights' direction of change.",
-    "tradeoffs": "Decay too high with too few steps can leave the EMA weights biased toward initialization for a long time, making EMA quality worse than directly saved weights.",
-    "codePath": "core/lulynx_trainer/training_loop.py → EMA update"
+    "tradeoffs": "Decay too high with too few steps can leave the EMA weights biased toward initialization for a long time, making EMA quality worse than directly saved weights."
   },
   "relatedConfigs": [
     "ema_enabled",

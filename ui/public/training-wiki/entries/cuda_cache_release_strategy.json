@@ -35,15 +35,13 @@
     "principle": "oom_only 仅在 OOM 恢复时释放；phase_boundary 在 TE/VAE / 组件下 CPU 边界释放；after_optimizer 保留旧低显存稳妥档；aggressive 会把阶段边界和训练步释放都打开。旧 every_step 配置会自动按 aggressive 兼容。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "oom_only releases only during OOM recovery; phase_boundary releases at TE/VAE / component-to-CPU boundaries; after_optimizer keeps the old conservative low-VRAM tier; aggressive turns on both phase-boundary and per-training-step releases. Legacy every_step configs are auto-mapped to aggressive.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

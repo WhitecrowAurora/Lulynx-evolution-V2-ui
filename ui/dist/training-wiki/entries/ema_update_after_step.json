@@ -32,15 +32,13 @@
     "principle": "step < ema_update_after_step 时跳过 EMA 更新，EMA 副本保持初始化状态（通常等于初始模型权重）。",
     "intervention": "控制 EMA 热身：确保 EMA 副本只从相对稳定的训练阶段开始积累。",
     "expectedImpact": "有效防止早期爆炸性 loss 污染 EMA，最终 EMA 权重更可信。",
-    "tradeoffs": "设置过大时 EMA 实际只积累了末期权重，平滑效果降低。",
-    "codePath": "core/lulynx_trainer/training_loop.py → EMA update 起始判断"
+    "tradeoffs": "设置过大时 EMA 实际只积累了末期权重，平滑效果降低。"
   },
   "advanced_en": {
     "principle": "While step < ema_update_after_step, EMA updates are skipped and the EMA replica stays at its initialization (usually the initial model weights).",
     "intervention": "Controls EMA warmup: the EMA replica only starts accumulating from a relatively stable training phase.",
     "expectedImpact": "Effectively prevents early explosive loss from polluting the EMA; the final EMA weights are more trustworthy.",
-    "tradeoffs": "Set too large, the EMA only accumulates late-phase weights and its smoothing effect weakens.",
-    "codePath": "core/lulynx_trainer/training_loop.py → EMA update start check"
+    "tradeoffs": "Set too large, the EMA only accumulates late-phase weights and its smoothing effect weakens."
   },
   "relatedConfigs": [
     "ema_enabled",

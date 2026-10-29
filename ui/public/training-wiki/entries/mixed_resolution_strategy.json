@@ -30,15 +30,13 @@
     "principle": "staged 是时间维度的分辨率课程（不同阶段不同档）；free-fit 是样本维度的混合（同 batch 周期内并存多档），后者保留原始构图信息、避免长图被强裁，需要缓存构建阶段就按 freefit 模式生成多 profile latent。",
     "intervention": "anima_free_fit_epoch.py:normalize_mixed_resolution_strategy 严格校验取值（非法直接抛错）；trainer_config_runtime_profile_mixin.py 判定 staged 生效条件；trainer_anima_free_fit_epoch_runtime.py 把策略写入缓存 manifest。",
     "expectedImpact": "staged：前期吞吐高、细节在后期补足；free-fit：多分辨率数据利用率高，桶分布更均匀。",
-    "tradeoffs": "free-fit 依赖 Anima cached 训练链路且缓存需重建为 freefit 模式；两种策略的显存峰值都由最大档位决定。",
-    "codePath": "anima_free_fit_epoch.py:normalize_mixed_resolution_strategy / 前置校验；trainer_config_runtime_profile_mixin.py:_anima_staged_resolution_enabled；configs_dataset.py 定义"
+    "tradeoffs": "free-fit 依赖 Anima cached 训练链路且缓存需重建为 freefit 模式；两种策略的显存峰值都由最大档位决定。"
   },
   "advanced_en": {
     "principle": "staged is a resolution curriculum along the time axis (different stages use different profiles); free-fit mixes along the sample axis (multiple profiles coexist within the same batch cycle), which preserves original composition and avoids hard-cropping tall images — it requires the cache build stage to generate multi-profile latents in freefit mode.",
     "intervention": "anima_free_fit_epoch.py:normalize_mixed_resolution_strategy validates the value strictly (illegal values raise immediately); trainer_config_runtime_profile_mixin.py decides when staged takes effect; trainer_anima_free_fit_epoch_runtime.py writes the strategy into the cache manifest.",
     "expectedImpact": "staged: high throughput early, details filled in later; free-fit: better multi-resolution data utilization and a more even bucket distribution.",
-    "tradeoffs": "free-fit depends on the Anima cached training chain and requires rebuilding the cache in freefit mode; for both strategies the VRAM peak is set by the largest profile.",
-    "codePath": "anima_free_fit_epoch.py:normalize_mixed_resolution_strategy / pre-validation; trainer_config_runtime_profile_mixin.py:_anima_staged_resolution_enabled; defined in configs_dataset.py"
+    "tradeoffs": "free-fit depends on the Anima cached training chain and requires rebuilding the cache in freefit mode; for both strategies the VRAM peak is set by the largest profile."
   },
   "relatedConfigs": [
     "enable_mixed_resolution_training",

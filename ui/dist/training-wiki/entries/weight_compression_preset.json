@@ -35,15 +35,13 @@
     "principle": "Krea-2 当前正式推荐使用这里选择冻结主干压缩方案。experimental_float8 对应 qfloat8 / torchao Float8 权重压缩：它只压冻结 DiT 主干权重，不会把 LoRA、text fusion 等可训练参数改成原生 FP8，数值更稳，也更符合当前低显存训练目标。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Krea-2 currently formally recommends choosing the frozen-backbone compression scheme here. experimental_float8 corresponds to qfloat8 / torchao Float8 weight compression: it compresses only frozen DiT backbone weights and does not convert trainable parameters like LoRA or text fusion to native FP8, which is numerically steadier and better fits the current low-VRAM training goal.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

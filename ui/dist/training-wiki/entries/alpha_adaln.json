@@ -21,8 +21,7 @@
     "principle": "AdaLN 调制层的 alpha。留空 = 用全局 Network Alpha。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Alpha for the AdaLN modulation layers. Empty = use the global Network Alpha."

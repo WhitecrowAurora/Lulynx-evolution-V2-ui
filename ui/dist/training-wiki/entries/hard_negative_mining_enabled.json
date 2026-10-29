@@ -21,15 +21,13 @@
     "principle": "只回传 loss 最高的 top-k% 样本梯度，聚焦困难样本训练。类似 Focal Loss 思想。默认关闭。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "Backpropagates gradients only for the top-k% highest-loss samples, focusing training on hard examples — similar in spirit to Focal Loss. Off by default.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }

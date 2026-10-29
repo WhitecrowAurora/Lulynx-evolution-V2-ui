@@ -21,15 +21,13 @@
     "principle": "orthogonal 重分配时，确保总 rank 数不超过传统 LoRA（所有层 × network_dim）。关闭则允许重点层获得更多 rank。",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "advanced_en": {
     "principle": "During orthogonal reallocation, keeps total rank within the traditional LoRA budget (all layers × network_dim). Turning this off lets key layers receive more rank.",
     "intervention": "",
     "expectedImpact": "",
-    "tradeoffs": "",
-    "codePath": ""
+    "tradeoffs": ""
   },
   "relatedConfigs": []
 }
